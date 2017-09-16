@@ -1,0 +1,48 @@
+<div class="img-container {{if hasUploader 'pull-left'}} {{if circleMode 'circle'}}">
+{{#if errorThrown}}
+<div class="lazy-image-error-message">{{defaultErrorText}}</div>
+{{else}}
+<div class="lazy-image-placeholder"></div>
+{{/if}}
+{{#if useDimensionsAttrs}}
+<img class="{{unbound class}}" src="{{imgSrcReal}}" alt="{{unbound alt}}"
+  height={{height}} width={{width}} id="{{concat 'img-interg-' name}}" {{action "showBigImgAction" on="click"}}/>
+{{else}}
+<img class="{{unbound class}}" src="{{imgSrcReal}}" alt="{{unbound alt}}" id="{{concat 'img-interg-' name}}" {{action "showBigImgAction" on="click"}} />
+{{/if}}
+{{#if showProgress}}
+{{bs-progress-bar value=progressValue minValue=0 maxValue=100 showLabel=true
+  roundDigits=0 type='info' striped=false animate=false}}
+{{/if}}
+</div>
+{{#if hasUploader}}
+{{yield this}}
+<!-- <div id="{{concat 'uploader-' name}}"  class="barInBottom"
+  style="width:{{width}}px; cursor:pointer" {{action "avatarUpload" on="click"}}>
+  上传新图片
+</div> -->
+{{/if}}
+<!--  点击是否显示大图  -->
+{{#if showBigImageModal}}
+    {{#bs-modal body=false footer=false header=false closedAction=(action "invitation")}}
+        <!-- {{#bs-modal-header}}
+            <h4 class="modal-title">大图弹出层</h4>
+        {{/bs-modal-header}} -->
+        {{#bs-modal-body}}
+            <!-- 打印startprint与endprint之间的内容-->
+            <!--startprint-->
+            <div id="print-img" class="modal-body clearfix">
+                <div class="width80B" style="text-align: center; margin:0 auto;">
+                  <img class="width100B" src="{{imgSrcBig}}" alt="{{unbound alt}}">
+                </div>
+            </div>
+            <!--endprint-->
+        {{/bs-modal-body}}
+        {{#bs-modal-footer class="user-add-btn"}}
+          {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-print"  text='打印' clickAction="printImg" printImg="printImg"}}
+          {{/ui/mix-button}}
+          {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="invitation" invitation="invitation"}}
+          {{/ui/mix-button}}
+    		{{/bs-modal-footer}}
+    {{/bs-modal}}
+{{/if}}

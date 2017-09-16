@@ -1,0 +1,81 @@
+{{outlet}}
+<div class="col-md-12">
+	<div class="box">
+		<!-- BOX-BODY -->
+		<div class="box-body">
+			<div class="row">
+				<div class="col-xs-12">
+	        <p class="user-add-btn">
+						<button class="btn btn-primary" type="button"><i class="fa fa-check icon-white"></i>&ensp;保存</button>
+						<button class="btn btn-light-grey" disabled=""><i class="fa fa-times"></i>&ensp;取消</button>
+					</p>
+				</div>
+			</div>
+			<div class="divide-20"></div>
+			<!-- 列表详细介绍 -->
+			<div class="marginLR-100">
+				<div class="row form-input-group">
+						<div class="col-xs-1 col-sm-1 org-title">项目名称：</div>
+						<div class="col-xs-5 col-sm-5">
+								<input class="input-group-content" value=""/>
+						</div>
+		        <div class="col-xs-1 col-sm-1 org-title">项目费用(元/天)：</div>
+						<div class="col-xs-5 col-sm-5">
+		            <input class="input-group-content" value=""/>
+						</div>
+		      </div>
+
+		      <div class="row form-input-group">
+						<div class="col-xs-1 col-sm-1 org-title">护理类别：</div>
+						<div class="col-xs-5 col-sm-5">
+		            <select class="input-group-content">
+		              <option value="普通床位" selected="selected">必填项</option>
+		              <option value="普通床位">生活照料</option>
+		              <option value="高级床位">康复护理</option>
+		              <option value="普通床位">医疗护理</option>
+		              <option value="普通床位">房音护理</option>
+		            </select>
+						</div>
+		        <div class="col-xs-1 col-sm-1 org-title">类&emsp;&emsp;别：</div>
+						<div class="col-xs-5 col-sm-5">
+								<select id="ategoriesSelect" class="input-group-content" {{action "ategoriesSelect" on="change"}}>
+									<option value="1" selected="selected">计次</option>
+									<option value="2">按时</option>
+								</select>
+						</div>
+				</div>
+		    {{#if count}}
+
+				<div class="row form-input-group">
+						<div class="col-xs-1 col-sm-1 org-title">周&emsp;&emsp;期：</div>
+						<div class="col-xs-5 col-sm-5">
+		          <select class="input-group-content">
+		            <option value="普通床位" selected="selected">日</option>
+		            <option value="高级床位">周</option>
+		          </select>
+						</div>
+		        <div class="col-xs-1 col-sm-1 org-title">频次&nbsp;(次)：</div>
+						<div class="col-xs-5 col-sm-5">
+								<input class="input-group-content" value=""/>
+						</div>
+				</div>
+		    {{else}}
+		    {{/if}}
+
+				<div class="row form-input-group">
+						<div class="col-xs-1 col-sm-1 org-title">所需时间(分钟)：</div>
+						<div class="col-xs-5 col-sm-5">
+								<input class="input-group-content" value=""/>
+						</div>
+		        <div class="col-xs-1 col-sm-1 org-title">项目说明：</div>
+		        <div class="col-xs-5 col-sm-5">
+		            <input class="input-group-content" value=""/>
+		        </div>
+				</div>
+
+			</div>
+			<!-- 列表详细介绍 -->
+		</div>
+		<!-- /BOX-BODY -->
+	</div>
+</div>

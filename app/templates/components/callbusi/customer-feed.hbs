@@ -1,0 +1,351 @@
+<!--
+<ul class="cbp_tmtimeline">
+  <li>
+    <time class="cbp_tmtime" datetime="2014-10-03T18:30"><span class="hidden">03/10/2014</span> <span class="large">当前</span></time>
+
+    <div class="cbp_tmicon timeline-bg-gray">
+      <i class="fa-user"></i>
+    </div>
+
+    <div class="cbp_tmlabel empty">
+      <span>正在二楼房间一</span>
+    </div>
+  </li>
+
+  <li>
+    <time class="cbp_tmtime" datetime="2014-10-03T03:45"><span>03:45 AM</span> <span>今天</span></time>
+
+    <div class="cbp_tmicon timeline-bg-success">
+      <i class="fa-paper-plane-o"></i>
+    </div>
+
+    <div class="cbp_tmlabel">
+      <h2><span>身体健康数据</span></h2>
+      <p>心率：62,血压：120/80,睡眠：正常</p>
+    </div>
+  </li>
+
+  <li>
+    <time class="cbp_tmtime" datetime="2014-10-02T13:22"><span>01:22 PM</span> <span>昨天</span></time>
+
+    <div class="cbp_tmicon timeline-bg-primary">
+      <i class="fa-warning"></i>
+    </div>
+
+    <div class="cbp_tmlabel">
+      <h2><a href="#">预警呼叫</a></h2>
+      <p>发起了一个预警呼叫，原因：身体不适。处理结果：身体检查正常，提示多休息</p>
+    </div>
+  </li>
+
+  <li>
+    <time class="cbp_tmtime" datetime="2014-09-19T20:23"><span>08:23 PM</span> <span>两周前</span></time>
+
+    <div class="cbp_tmicon timeline-bg-warning">
+      <i class="fa-camera-retro"></i>
+    </div>
+
+    <div class="cbp_tmlabel">
+      <h2><span>进行了身体健康检查</span></h2>
+
+      <blockquote>检查了心率血压，xxx等多项指标，检查报告。。。</blockquote>
+
+      <div class="row">
+        <div class="col-xs-5">
+          <a href="#">
+            <img src="assets/images/image-1.jpg" class="img-responsive img-rounded full-width">
+          </a>
+        </div>
+
+        <div class="col-xs-3">
+          <a href="#">
+            <img src="assets/images/image-4.jpg" class="img-responsive img-rounded full-width">
+          </a>
+        </div>
+
+        <div class="col-xs-4">
+
+          <a href="#">
+            <img src="assets/images/image-5.jpg" class="img-responsive img-rounded full-width margin-bottom">
+          </a>
+
+          <div class="vspacer v2"></div>
+
+          <a href="#">
+            <img src="assets/images/image-3.jpg" class="img-responsive img-rounded full-width">
+          </a>
+        </div>
+      </div>
+    </div>
+  </li>
+</ul>
+-->
+
+<div class="change-view">
+  <span class="clearfix">
+    <a id="listBtn" title="列表式" {{action "showList" on="click"}}><i class="fa fa-list-ul"></i></a>
+    <a id="textBtn" class="cur" title="图文式" {{action "showText" on="click"}}><i class="fa fa-th-large"></i></a>
+  </span>
+</div>
+{{#if textShow}}
+<!-- 列表式 -->
+<div class="row">
+  <div class="col-md-12 top10">
+    <!--搜索-->
+    <div class="pull-left">
+      <div>
+        <label>按处理事件搜索：</label>
+        <label class="right15">
+          <select size="1" name="datatable1_length" aria-controls="datatable1" class="form-control input-sm" style="touch-action: manipulation; -ms-touch-action: manipulation;">
+            <option value="普通床位">身体健康数据</option>
+            <option value="高级床位" selected="selected">预警呼叫</option>
+            <option value="高级床位" selected="selected">身体健康检查</option>
+          </select>
+        </label>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="data-title pull-left">按时间搜索：</div>
+      <span class="date-range pull-left">
+        <div class="btn-group">
+          <a class="js_update btn btn-default" href="#">今天</a>
+          <a class="js_update btn btn-default" href="#">最近7天</a>
+          <a class="js_update btn btn-default hidden-xs" href="#">最近一个月</a>
+
+          <a id="reportrange" class="btn reportrange" {{action "showDate" on="click"}}>
+            <i class="fa fa-calendar"></i>
+            <span>自定义日期</span>
+            <i class="fa fa-angle-down"></i>
+          </a>
+        </div>
+
+        {{#if dateShow}}
+        <!-- 日期选择弹窗 -->
+        <div class="date-box form-input-group">
+            <div class="row">
+              <div class="col-xs-4 col-sm-4 org-title">开始时间：</div>
+              <div class="col-xs-8 col-sm-8"><input class="input-group-content" type="date"></div>
+            </div>
+            <div class="row">
+              <div class="col-xs-4 col-sm-4 org-title">结束时间：</div>
+              <div class="col-xs-8 col-sm-8"><input class="input-group-content" type="date"></div>
+            </div>
+            <div class="btn-row text-center">
+              <button class="btn btn-primary"  {{action "hideDate" on="click"}}><i class="fa fa-check icon-white"></i>&ensp;确定</button>
+              <button class="btn btn-light-grey"  {{action "hideDate" on="click"}}><i class="fa fa-times"></i>&ensp;取消</button>
+            </div>
+        </div>
+        <!-- End 日期选择弹窗 -->
+        {{else}}
+        {{/if}}
+      </span>
+    </div>
+    <!--搜索-->
+  </div>
+</div>
+<div class="pt20">
+  <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+    <thead>
+      <tr role="row">
+        <th rowspan="1" colspan="1" width="10%">日期</th>
+        <th rowspan="1" colspan="1" width="10%">时间</th>
+        <th rowspan="1" colspan="1" width="35%">事项</th>
+        <th rowspan="1" colspan="1" width="" class="hidden-xs">具体内容</th>
+      </tr>
+    </thead>
+    <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+      <tr>
+        <td class="ellipsis hidden-xs">当前</td>
+        <td class="ellipsis hidden-xs"></td>
+        <td class="ellipsis hidden-xs">正在二楼房间一</td>
+        <td class="ellipsis hidden-xs"></td>
+      </tr>
+      <tr>
+        <td class="ellipsis hidden-xs">今天</td>
+        <td class="ellipsis hidden-xs">08:25 am</td>
+        <td class="ellipsis hidden-xs">身体健康数据</td>
+        <td class="ellipsis hidden-xs">心率：62,血压：120/80,睡眠：正常</td>
+      </tr>
+      <tr>
+        <td class="ellipsis hidden-xs">昨天</td>
+        <td class="ellipsis hidden-xs">01:20 pm</td>
+        <td class="ellipsis hidden-xs">预警呼叫</td>
+        <td class="ellipsis hidden-xs">发起了一个预警呼叫，原因：身体不适。处理结果：身体检查正常，提示多休息</td>
+      </tr>
+      <tr>
+        <td class="ellipsis hidden-xs">2013-12-20</td>
+        <td class="ellipsis hidden-xs">07:49 pm</td>
+        <td class="ellipsis hidden-xs">进行了身体健康检查</td>
+        <td class="ellipsis hidden-xs">
+          <p>检查了心率血压，xxx等多项指标，检查报告。。。</p>
+          <div class="album">
+              <a {{action "showBigImg" on="click"}}><img src="assets/images/image-1.jpg"></a>
+              <a {{action "showBigImg" on="click"}}><img src="assets/images/image-4.jpg"></a>
+              <a {{action "showBigImg" on="click"}}><img src="assets/images/image-5.jpg"></a>
+              <a {{action "showBigImg" on="click"}}><img src="assets/images/image-3.jpg"></a>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<!-- 分页 -->
+<div class="row">
+  <div class="col-sm-12">
+    <div class="pull-left">
+      <div class="dataTables_info" id="datatable1_info">Showing 1 to 10 of 57 entries</div>
+    </div>
+    <div class="pull-right">
+      <div class="dataTables_paginate paging_bs_full" id="datatable1_paginate">
+        <ul class="pagination">
+          <li class="disabled">
+            <a tabindex="0" class="paginate_button first" id="datatable1_first" style="touch-action: manipulation; -ms-touch-action: manipulation;">首页</a>
+          </li>
+          <li class="disabled">
+            <a tabindex="0" class="paginate_button previous" id="datatable1_previous" style="touch-action: manipulation; -ms-touch-action: manipulation;">第一页</a>
+          </li>
+          <li class="active">
+            <a tabindex="0" style="touch-action: manipulation; -ms-touch-action: manipulation;">1</a>
+          </li>
+          <li>
+            <a tabindex="0" style="touch-action: manipulation; -ms-touch-action: manipulation;">2</a>
+          </li>
+          <li>
+            <a tabindex="0" style="touch-action: manipulation; -ms-touch-action: manipulation;">3</a>
+          </li>
+          <li>
+            <a tabindex="0" style="touch-action: manipulation; -ms-touch-action: manipulation;">4</a>
+          </li>
+          <li>
+            <a tabindex="0" style="touch-action: manipulation; -ms-touch-action: manipulation;">5</a>
+          </li>
+          <li>
+            <a tabindex="0" class="paginate_button next" id="datatable1_next" style="touch-action: manipulation; -ms-touch-action: manipulation;">下一页</a>
+          </li>
+          <li>
+            <a tabindex="0" class="paginate_button last" id="datatable1_last" style="touch-action: manipulation; -ms-touch-action: manipulation;">末页</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+</div>
+{{else}}
+<!-- 图文式 -->
+<div class="row">
+  <div class="col-sm-12">
+      <div class="timeline">
+          <article class="timeline-item alt">
+              <div class="text-right">
+                  <div class="time-show first">
+                      <a href="#" class="btn btn-primary">当前</a>
+                  </div>
+              </div>
+          </article>
+          <article class="timeline-item">
+              <div class="timeline-desk">
+                  <div class="panel">
+                      <div class="panel-body">
+                          <span class="arrow-alt"></span>
+                          <span class="timeline-icon">
+                            <i class="fa-user"></i>
+                          </span>
+                          <span class="timeline-date"></span>
+                          <h1 class="red"></h1>
+                          <p>正在二楼房间一 </p>
+                      </div>
+                  </div>
+              </div>
+          </article>
+
+          <article class="timeline-item alt">
+              <div class="text-right">
+                  <div class="time-show">
+                      <a href="#" class="btn btn-primary">今天</a>
+                  </div>
+              </div>
+          </article>
+          <article class="timeline-item alt">
+              <div class="timeline-desk">
+                  <div class="panel">
+                      <div class="panel-body">
+                          <span class="arrow-alt"></span>
+                          <span class="timeline-icon">
+                            <i class="fa-paper-plane-o"></i>
+                          </span>
+                          <span class="timeline-date">08:25 am</span>
+                          <h1 class="red">身体健康数据</h1>
+                          <p>心率：62,血压：120/80,睡眠：正常</p>
+                      </div>
+                  </div>
+              </div>
+          </article>
+
+          <article class="item-name alt">
+              <div class="text-right">
+                  <div class="time-show">
+                      <a href="#" class="btn btn-primary">昨天</a>
+                  </div>
+              </div>
+          </article>
+          <article class="timeline-item">
+              <div class="timeline-desk">
+                  <div class="panel">
+                      <div class="panel-body">
+                          <span class="arrow"></span>
+                          <span class="timeline-icon">
+                            <i class="fa-warning"></i>
+                          </span>
+                          <span class="timeline-date">01:20 pm</span>
+                          <h1 class="yellow">预警呼叫</h1>
+                          <p>发起了一个预警呼叫，原因：身体不适。处理结果：身体检查正常，提示多休息</p>
+                      </div>
+                  </div>
+              </div>
+          </article>
+          <article class="item-name alt">
+              <div class="text-right">
+                  <div class="time-show">
+                      <a href="#" class="btn btn-primary">2013-12-20</a>
+                  </div>
+              </div>
+          </article>
+
+          <article class="timeline-item alt">
+              <div class="timeline-desk">
+                  <div class="panel">
+                      <div class="panel-body">
+                          <span class="arrow-alt"></span>
+                          <span class="timeline-icon">
+                            <i class="fa-camera-retro"></i>
+                          </span>
+                          <span class="timeline-date">07:49 pm</span>
+                          <h1 class="">进行了身体健康检查</h1>
+                          <p>检查了心率血压，xxx等多项指标，检查报告。。。</p>
+                          <div class="album">
+                              <a {{action "showBigImg" on="click"}}><img src="assets/images/image-1.jpg"></a>
+                              <a {{action "showBigImg" on="click"}}><img src="assets/images/image-4.jpg"></a>
+                              <a {{action "showBigImg" on="click"}}><img src="assets/images/image-5.jpg"></a>
+                              <a {{action "showBigImg" on="click"}}><img src="assets/images/image-3.jpg"></a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </article>
+
+      </div>
+  </div>
+</div>
+
+{{/if}}
+
+{{#if bigImg}}
+<!-- 图片放大图层 -->
+<div id="mask" {{action "hideBigImg" on="click"}}>
+  <div class="image-window">
+    <span><img src="assets/images/image-5.jpg"/></span>
+  </div>
+</div>
+{{else}}
+{{/if}}

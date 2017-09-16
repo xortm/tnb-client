@@ -1,0 +1,159 @@
+<div class="col-sm-12 nopadding-left nopadding-right" style="background:#fff;">
+  <!-- BOX -->
+  <div class="box nopadding-left nopadding-right">
+    <div class="box-body nopadding-left nopadding-right" >
+      <div id="" class="dataTables_wrapper form-inline col-sm-4" style="padding-left:20px;" role="grid">
+        <div class="col-sm-12 nopadding-left nopadding-right" style="font-size:14px;margin-bottom:5px;font-weight: bold;color:#8d8d8d;line-height:30px;">
+          考核项目
+          <div class="col-sm-4 pull-right user-add-btn nopadding-right" >
+            {{#ui/mix-button class="user-btn pull-right" iconClass="fa-plus"  text='新增项目'  clickAction="toAddParent"  toAddParent="toAddParent" clickActParams='parent'}}
+            {{/ui/mix-button}}
+          </div>
+        </div>
+        {{#if assessmentList}}
+        {{#each assessmentList as |assessment|}}
+          <div class="customer-drug-list col-sm-12 nopadding-left pointer nopadding-right {{if assessment.hasChoosed 'drugcolor' ''}}"
+          style="font-size:13px;" {{action 'chooseParent' assessment on="click"}}
+          {{action 'hoverAssessment' assessment on="mouseEnter" bubbles=false}}
+          {{action 'leaveAssessment' assessment on="mouseLeave" bubbles=false}}
+          >
+            {{#if assessment.edit}}
+              {{input class="form-control " value=assessment.name type="text" autofocus=true placeholder="必填" focusOut=(action "saveAssessment" assessment) bubbles=false}}
+            {{else}}
+              <span class="col-sm-8" >{{assessment.name}}({{assessment.maxScore}}分)</span>
+            {{/if}}
+            {{#if assessment.hover}}
+              {{#unless assessment.edit}}
+              <span class="col-sm-2 pull-right nopadding-left nopadding-right">
+                <i class="fa fa-edit" {{action 'detailEditClick' assessment on="click" bubbles=false}}>{{bs-tooltip title="编辑" class="light-tooltip"}}</i>
+                <i class="fa fa-trash-o" {{action 'delById' assessment on="click" bubbles=false}}>{{bs-tooltip title="删除" class="light-tooltip"}}</i>
+              </span>
+              {{/unless}}
+            {{/if}}
+          </div>
+        {{/each}}
+        <div class="col-sm-12" style="height:16px;"></div>
+        {{else}}
+        <div class="col-sm-12 center nopadding-left" style="font-size:24px;">暂无数据</div>
+        {{/if}}
+      </div>
+      {{#if curParent}}
+      <div id="datatable2_wrapper" class="dataTables_wrapper form-inline col-sm-8  curcustomer-drug-list"  role="grid" >
+          <div class="col-sm-2 pull-left  nopadding-left nopadding-right" style="font-weight: bold;color:#8d8d8d;line-height:30px;">
+            考核细项
+          </div>
+          <div class="col-sm-2 pull-right  nopadding-left nopadding-right user-add-btn">
+            {{#ui/mix-button class="user-btn pull-left" iconClass="fa-plus"  text='新增细项'  clickAction="toAddParent" toAddParent="toAddParent" clickActParams='child'}}
+            {{/ui/mix-button}}
+          </div>
+          {{#if childrenList}}
+          <div class="col-sm-12 nopadding-left nopadding-right" style="margin-top:4px;">
+              {{#each childrenList as |child|}}
+                <div class="assessment-item pointer"
+                {{action 'hoverAssessment' child on="mouseEnter" bubbles=false}}
+                {{action 'leaveAssessment' child on="mouseLeave" bubbles=false}}>
+                  <div class="name" {{action 'editChild' child 'name' on='click'}}>名称：
+                    {{#if child.editName}}
+                      {{input class="name-input" value=child.name type="text" autofocus=true placeholder="必填" focusOut=(action "saveChild" child) bubbles=false}}
+                    {{else}}
+                      {{child.name}}
+                    {{/if}}
+                  </div>
+                  <div class="max-score"{{action 'editChild' child 'score' on='click'}}>最高分：
+                    {{#if child.editScore}}
+                    {{input class="score-input" value=child.maxScore type="text" autofocus=true placeholder="必填" focusOut=(action "saveChild" child) bubbles=false}}
+                    {{else}}
+                      {{child.maxScore}}
+                    {{/if}}
+                    </div>
+                    {{#if child.hover}}
+                    <i class="fa fa-trash-o" {{action 'delById' child on="click" }}>{{bs-tooltip title="删除" class="light-tooltip"}}</i>
+                    {{/if}}
+                </div>
+              {{/each}}
+          </div>
+          {{else}}
+          <div class="center col-sm-12">请添加考核细项</div>
+          {{/if}}
+      </div>
+      {{/if}}
+    </div>
+  </div>
+  <!-- /BOX -->
+</div>
+
+{{#if parentModel}}
+  {{#bs-modal body=false footer=false header=false closeAction='invitation'}}
+    {{#bs-modal-header}}
+      <h3 class="modal-title">{{modelName}}</h3>
+    {{/bs-modal-header}}
+    {{#bs-modal-body}}
+    {{#bs-form formLayout=formLayout model=assessmentModel }}
+      <div>
+        <div class="col-xs-12 nopadding-left nopadding-right">
+          <div class="form-input-group col-sm-6">
+            <span class="input-group-addon">考核名称：</span>
+            {{#bs-form-element controlType="name"  property="name" }}
+              {{input class="form-control " value=newAssessment.name type="text" placeholder="必填"}}
+            {{/bs-form-element}}
+          </div>
+          <div class="form-input-group col-sm-6">
+            <span class="input-group-addon">最高分：</span>
+            {{#bs-form-element  controlType="maxScore"  property="maxScore" }}
+              {{input class="form-control " value=newAssessment.maxScore type="text" placeholder="必填"}}
+            {{/bs-form-element}}
+          </div>
+        </div>
+        <div class="col-xs-12">
+          <div class="form-input-group">
+            <span class="input-group-addon">备注：</span>
+            {{textarea class="form-control " value=newAssessment.remark type="text" }}
+          </div>
+        </div>
+      </div>
+    {{/bs-form}}
+    {{/bs-modal-body}}
+    {{#bs-modal-footer class="user-add-btn"}}
+      {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="saveNewAssessment" saveNewAssessment="saveNewAssessment"}}
+      {{/ui/mix-button}}
+      {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="invitation" invitation="invitation"}}
+      {{/ui/mix-button}}
+		{{/bs-modal-footer}}
+  {{/bs-modal}}
+{{/if}}
+
+{{#if childModel}}
+  {{#bs-modal body=false footer=false header=false closeAction='invitation'}}
+    {{#bs-modal-header}}
+      <h3 class="modal-title">新增</h3>
+    {{/bs-modal-header}}
+    {{#bs-modal-body}}
+    {{#bs-form formLayout=formLayout model=assessmentModel }}
+      <div>
+        <div class="col-xs-8 nopadding-left">
+          <div class="form-input-group">
+            <span class="input-group-addon">考核名称：</span>
+            {{#bs-form-element controlType="name"  property="name" }}
+              {{input class="form-control " value=newAssessment.name type="text" placeholder="必填"}}
+            {{/bs-form-element}}
+          </div>
+        </div>
+        <div class="col-xs-4 nopadding-left">
+          <div class="form-input-group">
+            <span class="input-group-addon">最高分：</span>
+            {{#bs-form-element  controlType="maxScore"  property="maxScore" }}
+              {{input class="form-control " value=newAssessment.maxScore type="text" placeholder="必填"}}
+            {{/bs-form-element}}
+          </div>
+        </div>
+      </div>
+    {{/bs-form}}
+    {{/bs-modal-body}}
+    {{#bs-modal-footer class="user-add-btn"}}
+      {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="saveNewAssessment" saveNewAssessment="saveNewAssessment" clickActParams="child"}}
+      {{/ui/mix-button}}
+      {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="invitation" invitation="invitation"}}
+      {{/ui/mix-button}}
+		{{/bs-modal-footer}}
+  {{/bs-modal}}
+{{/if}}

@@ -1,0 +1,22 @@
+<div itemId="{{item.id}}" name="listContainer" class="contentArea contentAreaList width100B">
+  {{#if (eq item.publishStatus 0)}}
+    <div class="finish-tag" style="right:-63px;font-size:12px;">已结束</div>
+  {{else}}
+    <div class="finish-tag" style="right:-63px;font-size:12px;">进行中</div>
+  {{/if}}
+  <div   class="col-xs-middle time-content nopadding-horizontal width100B clearfix position-relative" id="scoreItem_{{item.id}}" {{action "gotoDetail" on="tap"}}>
+    <!-- <div class="title pull-left" style="width:110px;">
+      <div class="time-label color2FA7FD" style="font-size:14px;">{{item.endTimeShortString}}</div>
+      <div class="task-title extend font12">创建人:{{item.createUser.name}}</div>
+    </div>
+    <div class="item-split"></div> -->
+    <div class="clearfix width93B margin0auto" style="float:none;">
+      <div class="user-info font14 color666666 top10 line-height-20">问卷名称: <span class="font12 color999999">{{item.name}}</span></div>
+      <div class="user-info font14 color666666 line-height-20">结束时间: <span class="font12 color999999">{{item.endTimeShortString}}</span></div>
+      <div class="user-info font14 color666666 line-height-20">创建人: <span class="font12 color999999">{{item.createUser.name}}</span></div>
+      <div class="user-info font14 color666666 bottom10 line-height-20">备注: <span class="font12 color999999">{{item.remark}}</span></div>
+      <!-- <div class="detail extend color999999">问卷名称:{{item.name}}</div> -->
+      <!-- <div class="detail extend color999999">备注: {{item.remark}}</div> -->
+    </div>
+  </div>
+</div>

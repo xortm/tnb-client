@@ -1,0 +1,28 @@
+
+<div id="selfChooseContainer" class="mainContent">
+  <div class="wrapperInner">
+    <div class="padding-left-10 padding-right-10 height40 line-height-40 bottom10 bgcolor-white">
+      {{theChoose.typename}}
+      {{#if theChoose.typename}}
+      <span class="pull-right">已选中</span>
+      {{else}}
+      <span class="pull-right">请在下方选择</span>
+      {{/if}}
+    </div>
+    {{#ui/mobile/gestures-container}}
+    {{#each selfChooseList as |data|}}
+      <div class="padding-left-10 padding-right-10 height40 line-height-40 bgcolor-white" id="choose_{{data.id}}" {{action 'choose' data on="tap"}}>
+        {{data.typename}}
+        {{#if (eq theChoose.typename data.typename)}}
+        <span class="pull-right">已选中</span>
+        {{/if}}
+      </div>
+      <div class="border-bottom-1 margin-leftright10"></div>
+    {{/each}}
+    {{/ui/mobile/gestures-container}}
+  </div>
+</div>
+<!-- {{ui/container/infinite-scroll moniteData="selfChooseList" didUpdateAction="didUpdate"
+didInsertElementAction="didInsertElement"}} -->
+{{ui/container/infinite-scroll moniteData="selfChooseList" didRenderAction="didRender"
+didInsertElementAction="didInsertElement"}}

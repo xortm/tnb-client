@@ -1,0 +1,134 @@
+{{log 'curUser' curUser}}
+<div class="page-content">
+  <div class="col-sm-12">
+    <div class="col-sm-12 padding20 top15 bgcolor-w ember-power-select">
+      {{#callbusi/cs-item
+        csuser=user
+        curTask = curTask
+        curUser = curUser
+        ageInfo = ageInfo
+        invitation="invitation"
+        agreeApply = 'agreeApply'
+        refuseApply = 'refuseApply'
+      }}
+      {{/callbusi/cs-item }}
+      <!-- 发送消息 -->
+      <div class="positionAbsolute">
+        {{#ui/common-button clickActParams=curUser iconClass="fa-envelope-o"
+          clickAction="sendMessage" sendMessage="sendMessage"  text="发送消息"}}
+        {{/ui/common-button}}
+      </div>
+    </div>
+    <div class="col-sm-12 panel panel-default bottom0">
+      <div class="panel-heading">
+        简介
+      </div>
+      <div class="panel-body">
+        {{#if user.introduce}}
+        <p class="indent24 line2">{{user.introduce}}</p>
+        {{else}}
+        <p class="indent24 line2">客服暂无简介~</p>
+        {{/if}}
+      </div>
+    </div>
+    {{#if userTask.user.inWork}}
+    <div class="col-sm-12 top15 padding20 bgcolor-w text-muted">
+      <div>
+        <div class="col-sm-6">最近签入时间：{{userTask.nearestSigninTimeStr}}</div>
+        <div class="col-sm-6">最近签出时间：{{userTask.nearestSignoutTimeStr}}</div>
+      </div>
+      <div class="top30">
+        <div class="col-sm-6">今日呼入数量：{{userTask.todayCallinCount}}</div>
+        <div class="col-sm-6">今日呼出数量：{{userTask.todayCalloutCount}}</div>
+      </div>
+    </div>
+    <div class="col-sm-12 top15 bgcolor-w bottom10">
+      <div class="col-sm-12 bgcolor-w padding20">
+        <strong><h4>客户列表</h4></strong>
+        {{#if csCustomerList}}
+        <table class="table responsive text-muted">
+          <thead>
+            <tr>
+              <th>姓名</th>
+              <th>电话</th>
+              <th>创建日期</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each csCustomerList as |csCustomer|}}
+            <tr>
+              <td class="text-muted">{{csCustomer.customer.name}}</td>
+              <td class="text-muted">{{csCustomer.customer.phone}}</td>
+              <td class="text-muted">{{csCustomer.createTimeStr}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        {{else}}
+        <tr>
+          <td class="text-muted center">客服暂无客户~</td>
+        </tr>
+        {{/if}}
+      </div>
+      {{#if csCustomerList}}
+      <div class="tight-row bk-color-white padding5">
+        {{page-numbers content=csCustomerList showFL=true numPagesToShow=3}}
+      </div>
+      {{/if}}
+    </div>
+    {{/if}}
+  </div>
+</div>
+{{#if alertModal}}
+{{#bs-modal body=false footer=false header=false closedAction=(action "closeAlert")}}
+{{#bs-modal-header}}
+<h4 class="modal-title">提醒</h4>
+{{/bs-modal-header}}
+{{#bs-modal-body}}
+{{alertInfo}}
+{{/bs-modal-body}}
+{{#bs-modal-footer as |footer|}}
+{{#bs-button action=(action "closeAlert") type="warning"}}关闭{{/bs-button}}
+{{/bs-modal-footer}}
+{{/bs-modal}}
+{{/if}}
+
+{{#if showpopInvitePassModal}}
+{{#bs-modal body=false footer=false header=false submitAction=(action "refuseCsUser" user)
+closedAction=(action "cancelPassSubmit")}}
+{{#bs-modal-header}}
+<h4 class="modal-title">是否确认拒绝</h4>
+{{/bs-modal-header}}
+{{#bs-modal-body}}
+<div class="row">
+  <div class="col-sm-12 top10">
+    <label for="refuseEnt" class="col-sm-3 col-sm-offset-1 control-label top5"><strong>拒绝原因:</strong></label>
+    <div class="col-sm-6">
+      {{input type="text" class="form-control" id="refuseEnt" value=refuseInfo}}
+    </div>
+  </div>
+</div>
+{{/bs-modal-body}}
+{{bs-modal-footer closeTitle="取消" submitTitle="确定"}}
+{{/bs-modal}}
+{{/if}}
+
+<!-- 发送消息弹层 -->
+{{#if showsendMessageModel}}
+ {{#bs-modal body=false footer=false header=false submitAction=(action "sendTheMessage")
+    closedAction=(action "cancelSubmit")}}
+  {{#bs-modal-header}}
+     <div class="modal-title inline-block icon-init">发送消息给：</div>&nbsp;<strong class="platformProportion black">{{user.name}}</strong>
+   {{/bs-modal-header}}
+   {{#bs-modal-body}}
+     <!-- {{input type="text" value=dialogue class="form-control" placeholder=""}} -->
+     <div class="textarea">
+       {{textarea data-toggle='tooltip' data-placement='bottom' disabled=isDisabled value=dialogue}}
+     </div>
+   {{/bs-modal-body}}
+  {{#bs-modal-footer as |footer|}}
+    {{#bs-button action=(action "cancelSubmit") type="default"}}取消{{/bs-button}}
+    {{#bs-button action=(action "sendTheMessage") type="default" disabled=applyDisabled}}发送{{/bs-button}}
+  {{/bs-modal-footer}}
+   {{/bs-modal}}
+{{/if}}

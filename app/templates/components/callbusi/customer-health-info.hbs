@@ -1,0 +1,369 @@
+<div class="busi-info ">
+    {{#bs-form formLayout=formLayout model=customerModel action=(action "detailSaveClick") invalid=(action "invalid")}}
+        <div class="line">
+            <div class="col-xs-12 col-sm-12 nopadding-left margin10">
+                <div class="form-input-group label-normal" style="line-height:35px;">
+                    <span class="">药物过敏史：</span>
+                    <div class="choose-inline-block">
+                        <div class="choose-inline-block pointer" {{action "drugallegyChooseNoHave" on="click"}}>
+                            <div class="{{if drugallegyNOHave 'fa-dot-circle-o' 'fa-circle-o'}} choose-inline-block" style="width:10px;height:10px;"></div>
+                            <div class="choose-inline-block">无</div>
+                        </div>
+                        <div class=" choose-inline-block pointer" {{action "drugallegyChooseHave" on="click"}}>
+                            <div class=" {{if drugallegyHave 'fa-dot-circle-o' 'fa-circle-o'}} choose-inline-block" style="width:10px;height:10px;"></div>
+                            <div class="choose-inline-block">有</div>
+                        </div>&nbsp;&nbsp;
+                        {{#each drugAllegyAry as |drugAllegy|}}
+                            <div class="choose-inline-block pointer" {{action "chooseDrugAllegyType" drugAllegy on="click"}}>
+                                <div class="choose-box choose-inline-block {{if drugAllegy.hasSelcted 'fa-check' ''}}"></div>
+                                <div class="choose-inline-block">{{drugAllegy.drugAllegyType.typename}}</div>&nbsp;&nbsp;
+                            </div>
+                            {{#if (eq drugAllegy.drugAllegyType.typecode 'allergyType3')}}
+                                {{#if drugAllegy.showInput}}
+                                    {{input class="choose-inline-block form-input-group" value=drugAllegy.remark type="text"}}
+                                {{/if}}
+                            {{else}}
+                            {{/if}}
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="line">
+            <div class="col-xs-12 col-sm-12 nopadding-left margin10">
+                <div class="form-input-group label-normal">
+                    <span class="">暴露史：</span>
+                    <div class="choose-inline-block">
+                        <div class="choose-inline-block pointer" {{action "exposurehistoryChooseNoHave" on="click"}}>
+                            <div class="{{if exposurehistoryNOHave 'fa-dot-circle-o' 'fa-circle-o'}} choose-inline-block" style="width:10px;height:10px;"></div>
+                            <div class="choose-inline-block">无</div>
+                        </div>
+                        <div class=" choose-inline-block pointer" {{action "exposurehistoryChooseHave" on="click"}}>
+                            <div class=" {{if exposurehistoryHave 'fa-dot-circle-o' 'fa-circle-o'}} choose-inline-block" style="width:10px;height:10px;"></div>
+                            <div class="choose-inline-block">有</div>
+                        </div>&nbsp;&nbsp;
+                        {{#each exposureAry as |exposure |}}
+                            <div class="choose-inline-block pointer" {{action "chooseExposureType" exposure on="click"}}>
+                                <div class="choose-box choose-inline-block {{if exposure.hasSelcted 'fa-check' ''}}"></div>
+                                <div class="choose-inline-block">{{exposure.exposureType.typename}}</div>&nbsp;&nbsp;
+                            </div>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="line ">
+            <div class="col-xs-12 col-sm-12 nopadding-left margin10">
+                <div class="form-input-group label-normal">
+                    <span class="choose-inline-block verticalTOP">疾病史：</span>
+                    <div class="choose-inline-block" style="line-height:35px;">
+                        {{#each diseaseAry as |disease|}}
+                            {{#if (eq disease.diseaseType.typecode 'diseaseType6')}}
+                                <div class="choose-inline-block pointer" {{action "chooseDiseaseType" disease on="click"}}>
+                                    <div class="choose-box choose-inline-block {{if disease.hasSelcted 'fa-check' ''}}"></div>
+                                    <div class="choose-inline-block">{{disease.diseaseType.typename}}</div>
+                                </div>
+                                {{#if disease.showInput}}
+                                    {{input class="choose-inline-block form-input-group" value=disease.tumourRemark type="text"}}&nbsp;&nbsp;
+                                {{/if}}
+                            {{else}}
+                                {{#if (eq disease.diseaseType.typecode 'diseaseType13')}}
+                                    <div class="choose-inline-block pointer" {{action "chooseDiseaseType" disease on="click"}}>
+                                        <div class="choose-box choose-inline-block {{if disease.hasSelcted 'fa-check' ''}}"></div>
+                                        <div class="choose-inline-block">{{disease.diseaseType.typename}}</div>
+                                    </div>
+                                    {{#if disease.showInput}}
+                                        {{input class="choose-inline-block form-input-group" value=disease.otherRemark type="text" }}&nbsp;&nbsp;
+                                    {{/if}}
+                                {{else}}
+                                    {{#if (eq disease.diseaseType.typecode 'diseaseType12')}}
+                                        <div class="choose-inline-block pointer" {{action "chooseDiseaseType" disease on="click"}}>
+                                            <div class="choose-box choose-inline-block {{if disease.hasSelcted 'fa-check' ''}}"></div>
+                                            <div class="choose-inline-block">{{disease.diseaseType.typename}}</div>
+                                        </div>
+                                        {{#if disease.showInput}}
+                                            {{input class="choose-inline-block form-input-group" value=disease.occupationRemark type="text" }}&nbsp;&nbsp;
+                                        {{/if}}
+                                    {{else}}
+                                    {{#if (eq disease.diseaseType.typecode 'diseaseType10')}}
+                                    <div class="choose-inline-block pointer" {{action "chooseDiseaseType" disease on="click"}}>
+                                        <div class="choose-box choose-inline-block {{if disease.hasSelcted 'fa-check' ''}}"></div>
+                                        <div class="choose-inline-block">{{disease.diseaseType.typename}}</div>&nbsp;&nbsp;
+                                    </div>
+                                    <br />
+                                    {{else}}
+                                        <div class="choose-inline-block pointer" {{action "chooseDiseaseType" disease on="click"}}>
+                                            <div class="choose-box choose-inline-block {{if disease.hasSelcted 'fa-check' ''}}"></div>
+                                            <div class="choose-inline-block">{{disease.diseaseType.typename}}</div>&nbsp;&nbsp;
+                                        </div>
+                                        {{/if}}
+                                    {{/if}}
+                                {{/if}}
+                            {{/if}}
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="line">
+            <div class="col-xs-12 col-sm-12 nopadding-left margin10">
+                <div class="form-input-group label-normal">
+                    <span class="">手术史：</span>
+                    <div class="choose-inline-block">
+                        <div class="choose-inline-block pointer" {{action "operationhistoryChooseNoHave" on="click"}}>
+                            <div class="{{if operationhistoryNOHave 'fa-dot-circle-o' 'fa-circle-o'}} choose-inline-block" style="width:10px;height:10px;"></div>
+                            <div class="choose-inline-block">无</div>
+                        </div>
+                        <div class=" choose-inline-block pointer" {{action "operationhistoryChooseHave" on="click"}}>
+                            <div class=" {{if operationhistoryHave 'fa-dot-circle-o' 'fa-circle-o'}} choose-inline-block" style="width:10px;height:10px;"></div>
+                            <div class="choose-inline-block">有</div>
+                        </div>&nbsp;&nbsp;
+                        {{#each operationAry as |operation|}}
+                            <div class="choose-inline-block">{{operation.operatInjuryType.typename}}</div>
+                            {{#if operationhistoryNOHave}}
+                                {{input class="choose-inline-block form-input-group" value=operation.operationName type="text" disabled='disabled'}}&nbsp;&nbsp;
+                            {{else}}
+                                {{input class="choose-inline-block form-input-group" value=operation.operationName type="text"}}&nbsp;&nbsp;
+                            {{/if}}
+                            {{#if operationhistoryHave}}
+                            <div class="choose-inline-block">时间</div>
+                            <div class="choose-inline-block margin-bottom">
+                                {{#if operationhistoryNOHave}}
+                                    {{input class="choose-inline-block form-input-group" value='' type="text" disabled='disabled'}}&nbsp;&nbsp;
+                                {{else}}
+                                    {{ui/addon/bs-datetimepicker date=operation.operationDate placeholder="" 
+                                    locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'  maxDate=today show="dpShowAction"
+                                     value=operation.operationTime change="" }}
+                                {{/if}}
+                            </div>&nbsp;&nbsp;
+                            {{/if}}
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="line">
+            <div class="col-xs-12 col-sm-12 nopadding-left margin10">
+                <div class="form-input-group label-normal">
+                    <span class="">外伤史：</span>
+                    <div class="choose-inline-block">
+                        <div class="choose-inline-block pointer" {{action "injuryhistoryChooseNoHave" on="click"}}>
+                            <div class="{{if injuryhistoryNOHave 'fa-dot-circle-o' 'fa-circle-o'}} choose-inline-block" style="width:10px;height:10px;"></div>
+                            <div class="choose-inline-block">无</div>
+                        </div>
+                        <div class=" choose-inline-block pointer" {{action "injuryhistoryChooseHave" on="click"}}>
+                            <div class=" {{if injuryhistoryHave 'fa-dot-circle-o' 'fa-circle-o'}} choose-inline-block" style="width:10px;height:10px;"></div>
+                            <div class="choose-inline-block">有</div>
+                        </div>&nbsp;&nbsp;
+                        {{#each injuryAry as |injury|}}
+                            <div class="choose-inline-block">{{injury.operatInjuryType.typename}}</div>
+                            {{#if injuryhistoryNOHave}}
+                                {{input class="choose-inline-block form-input-group" value=injury.injuryName type="text" disabled='disabled'}}&nbsp;&nbsp;
+                            {{else}}
+                                {{input class="choose-inline-block form-input-group" value=injury.injuryName type="text"}}&nbsp;&nbsp;
+                            {{/if}}
+                            {{#if injuryhistoryHave}}
+                            <div class="choose-inline-block">时间</div>
+                            <div class="choose-inline-block margin-bottom">
+                                {{#if injuryhistoryNOHave}}
+                                    {{input class="choose-inline-block form-input-group" value='' type="text" disabled='disabled'}}&nbsp;&nbsp;
+                                {{else}}
+                                    {{ui/addon/bs-datetimepicker date=injury.injuryDate placeholder="" locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'  maxDate=today show="dpShowAction" value=injury.injuryTime change="" }}
+                                {{/if}}
+                            </div>&nbsp;&nbsp;
+                            {{/if}}
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="line">
+            <div class="col-xs-12 col-sm-12 nopadding-left nopadding-right margin10">
+                <div class="form-input-group label-normal">
+                    <span class="">输血史：</span>
+                    <div class="choose-inline-block">
+                        <div class="choose-inline-block pointer" {{action "bloodhistoryChooseNoHave" on="click"}}>
+                            <div class="{{if bloodhistoryNOHave 'fa-dot-circle-o' 'fa-circle-o'}} choose-inline-block" style="width:10px;height:10px;"></div>
+                            <div class="choose-inline-block">无</div>
+                        </div>
+                        <div class=" choose-inline-block pointer" {{action "bloodhistoryChooseHave" on="click"}}>
+                            <div class=" {{if bloodhistoryHave 'fa-dot-circle-o' 'fa-circle-o'}} choose-inline-block" style="width:10px;height:10px;"></div>
+                            <div class="choose-inline-block">有</div>
+                        </div>&nbsp;&nbsp;
+                        {{#each bloodAry as |blood|}}
+                            <div class="choose-inline-block">{{blood.bloodReasonType.typename}}</div>
+                            {{#if bloodhistoryNOHave}}
+                                {{input class="choose-inline-block form-input-group" value=blood.causes type="text" disabled='disabled'}}&nbsp;&nbsp;
+                            {{else}}
+                                {{input class="choose-inline-block form-input-group" value=blood.causes type="text"}}&nbsp;&nbsp;
+                            {{/if}}
+                            {{#if bloodhistoryHave}}
+                            <div class="choose-inline-block">时间</div>
+                            <div class="choose-inline-block margin-bottom">
+                                {{#if bloodhistoryNOHave}}
+                                    {{input class="choose-inline-block form-input-group" value='' type="text" disabled='disabled'}}&nbsp;&nbsp;
+                                {{else}}
+                                    {{ui/addon/bs-datetimepicker date=blood.bloodDate placeholder="" locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'  maxDate=today show="dpShowAction" value=blood.bloodTime change="" }}
+                                {{/if}}
+                            </div>&nbsp;&nbsp;
+                            {{/if}}
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="line ">
+            <div class="col-xs-12 col-sm-12 nopadding-left margin10">
+                <div class="form-input-group label-normal">
+                    <span class="">家族史：</span>
+                    {{#each homeHistoryTypeList as |homeHistoryType|}}
+                        <div class="choose-inline-block" style="padding-top:10px;">{{homeHistoryType.remark}}、</div>
+                        <div class="choose-inline-block" style="padding-top:10px;">{{homeHistoryType.typename}}</div>&nbsp;&nbsp;
+                    {{/each}}
+                    <br />
+
+                    <div class="choose-inline-block margin52 " style="line-height:35px;">父亲：</div>
+                    {{#each familyAry1 as |family|}}
+                        <div class="choose-inline-block pointer" {{action "chooseHomeHistoryType1" family on="click"}}>
+                            <div class="choose-box choose-inline-block {{if family.hasSelcted 'fa-check' ''}}"></div>
+                            <div class="choose-inline-block">{{family.homeHistoryType.remark}}</div>&nbsp;&nbsp;&nbsp;&nbsp;
+                        </div>
+                        {{#if (eq family.homeHistoryType.typecode 'homeHistoryType12')}}
+                            {{#if family.showInput}}
+                                {{input class="choose-inline-block form-input-group" value=family.remark type="text"}}
+                            {{/if}}
+                        {{else}}
+                        {{/if}}
+                    {{/each}}
+
+                    <br />
+                    <div class="choose-inline-block margin52" style="line-height:35px;">母亲：</div>
+                    {{#each familyAry2 as |family|}}
+                        <div class="choose-inline-block pointer" {{action "chooseHomeHistoryType2" family on="click"}}>
+                            <div class="choose-box choose-inline-block {{if family.hasSelcted 'fa-check' ''}}"></div>
+                            <div class="choose-inline-block">{{family.homeHistoryType.remark}}</div>&nbsp;&nbsp;&nbsp;&nbsp;
+                        </div>
+                        {{#if (eq family.homeHistoryType.typecode 'homeHistoryType12')}}
+                            {{#if family.showInput}}
+                                {{input class="choose-inline-block form-input-group" value=family.remark type="text"}}
+                            {{/if}}
+                        {{else}}
+                        {{/if}}
+                    {{/each}}
+                    <br />
+                    <div class="choose-inline-block margin52" style="line-height:35px;">子女：</div>
+                    {{#each familyAry3 as |family|}}
+                        <div class="choose-inline-block pointer" {{action "chooseHomeHistoryType3" family on="click"}}>
+                            <div class="choose-box choose-inline-block {{if family.hasSelcted 'fa-check' ''}}"></div>
+                            <div class="choose-inline-block">{{family.homeHistoryType.remark}}</div>&nbsp;&nbsp;&nbsp;&nbsp;
+                        </div>
+                        {{#if (eq family.homeHistoryType.typecode 'homeHistoryType12')}}
+                            {{#if family.showInput}}
+                                {{input class="choose-inline-block form-input-group" value=family.remark type="text"}}
+                            {{/if}}
+                        {{else}}
+                        {{/if}}
+                    {{/each}}
+                    <br />
+                    <div class="choose-inline-block margin52" style="line-height:35px;">兄弟姐妹：</div>
+                    {{#each familyAry4 as |family|}}
+                        <div class="choose-inline-block pointer" {{action "chooseHomeHistoryType4" family on="click"}}>
+                            <div class="choose-box choose-inline-block {{if family.hasSelcted 'fa-check' ''}}"></div>
+                            <div class="choose-inline-block">{{family.homeHistoryType.remark}}</div>&nbsp;&nbsp;&nbsp;&nbsp;
+                        </div>
+                        {{#if (eq family.homeHistoryType.typecode 'homeHistoryType12')}}
+                            {{#if family.showInput}}
+                                {{input class="choose-inline-block form-input-group" value=family.remark type="text"}}
+                            {{/if}}
+                        {{else}}
+                        {{/if}}
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+        <div class="line ">
+            <div class="col-xs-12 col-sm-12 nopadding-left margin10">
+                <div class="form-input-group label-normal">
+                    <span class="">遗传病史：</span>
+                    <div class="choose-inline-block">
+                        <div class="choose-inline-block pointer" {{action "genetichistoryChooseNoHave" on="click"}}>
+                            <div class="{{if genetichistoryNOHave 'fa-dot-circle-o' 'fa-circle-o'}} choose-inline-block" style="width:10px;height:10px;"></div>
+                            <div class="choose-inline-block">无</div>
+                        </div>
+                        <div class=" choose-inline-block pointer" {{action "genetichistoryChooseHave" on="click"}}>
+                            <div class=" {{if genetichistoryHave 'fa-dot-circle-o' 'fa-circle-o'}} choose-inline-block" style="width:10px;height:10px;"></div>
+                            <div class="choose-inline-block">有</div>
+                        </div>&nbsp;&nbsp;
+                        {{#if genetichistoryHave}}
+                            {{input class="choose-inline-block form-input-group" value=healthRecordInfo.geneticHistory type="text"}}
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="line ">
+            <div class="col-xs-12 col-sm-12 nopadding-left margin10">
+                <div class="form-input-group label-normal">
+                    <span class="">疾病情况：</span>
+                    <div class="choose-inline-block">
+                        {{#each diseaseconditionAry as |diseasecondition |}}
+                            <div class="choose-inline-block pointer" {{action "chooseDisabledType" diseasecondition on="click"}}>
+                                <div class="choose-box choose-inline-block {{if diseasecondition.hasSelcted 'fa-check' ''}}"></div>
+                                <div class="choose-inline-block">{{diseasecondition.disabledType.typename}}</div>&nbsp;&nbsp;
+                            </div>
+                            {{#if (eq diseasecondition.disabledType.typecode 'disabledType8')}}
+                                {{#if diseasecondition.showInput}}
+                                    {{input class="choose-inline-block form-input-group" value=diseasecondition.remark type="text"}}
+                                {{/if}}
+                            {{else}}
+                            {{/if}}
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{#if showCustomer}}
+        {{else}}
+            <div class="col-sm-12">
+                <div class="text-center padding-top30 padding-bottom100">
+                    <p class="text-center user-add-btn" style="display:inline-block;:0 auto!important ">
+                        {{#if shortSave}}
+                            {{#ui/mix-button class=" user-btn edit-btn " iconClass="fa-save" text='暂存' clickAction="shortSaveInfo" shortSaveInfo="shortSaveInfo" }}
+                            {{/ui/mix-button}}
+                            {{#ui/mix-button class=" user-btn edit-btn " iconClass="fa-check" text='下一步' clickAction="next" next="next" }}
+                            {{/ui/mix-button}}
+                            {{#ui/mix-button class=" user-btn times-btn " iconClass="fa fa-mail-reply" text='取消' clickAction="remove" remove="remove" }}
+                            {{/ui/mix-button}}
+                        {{else}}
+                            {{#if addMode}}
+                                {{#if detailModify}}
+                                    {{#ui/mix-button class=" user-btn edit-btn " iconClass="fa-check" text='保存' }}
+                                    {{/ui/mix-button}}
+                                    {{#ui/mix-button class=" user-btn times-btn " iconClass="fa fa-mail-reply" text='取消' clickAction="cancelClick" cancelClick="cancelClick" }}
+                                    {{/ui/mix-button}}
+                                {{else}}
+                                    {{#ui/mix-button class=" user-btn edit-btn " iconClass="fa-check" text='保存' }}
+                                    {{/ui/mix-button}}
+                                    {{#ui/mix-button class=" user-btn times-btn " iconClass="fa fa-mail-reply" text='取消' clickAction="cancelClick" cancelClick="cancelClick" }}
+                                    {{/ui/mix-button}}
+                                {{/if}}
+                            {{else}}
+                                {{#if detailModify}}
+                                    {{#ui/mix-button class=" user-btn edit-btn " iconClass="fa-check" text='保存' }}
+                                    {{/ui/mix-button}}
+                                    <!-- {{#ui/mix-button class=" user-btn times-btn " iconClass="fa fa-mail-reply" text='取消' clickAction="cancelClick" cancelClick="cancelClick" }}
+                          {{/ui/mix-button}} -->
+                                {{else}}
+                                    {{#ui/mix-button class=" user-btn edit-btn " iconClass="fa-check" text='保存' }}
+                                    {{/ui/mix-button}}
+                                    <!-- {{#ui/mix-button class=" user-btn times-btn " iconClass="fa fa-mail-reply" text='取消' clickAction="cancelClick" cancelClick="cancelClick" }}
+                      {{/ui/mix-button}} -->
+                                {{/if}}
+                            {{/if}}
+                        {{/if}}
+                    </p>
+                </div>
+            </div>
+        {{/if}}
+    {{/bs-form}}
+</div>

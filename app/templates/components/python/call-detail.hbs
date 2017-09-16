@@ -1,0 +1,32 @@
+  <div class="panel panel-default" style="border-radius:10px">
+    <div class="panel-heading">
+      通话详情
+    </div>
+    <div class="panel-body">
+      {{#if record}}
+      <div class="row top8">
+        <div class="col-sm-4">
+          <strong>呼叫类型:{{record.direction.name}}</strong>
+        </div>
+        <div class="col-sm-4"><strong>主叫:{{record.callingNumber}}</strong></div>
+        <div class="col-sm-4"><strong>被叫:{{record.calledNumber}}</strong></div>
+      </div>
+      <div class="row top8">
+        <div class="col-sm-4"><strong>开始时间:{{moment-format record.beginTime 'YYYY-MM-DD HH:mm:ss'}}</strong></div>
+        <div class="col-sm-4"><strong>结束时间:{{moment-format record.endTime 'YYYY-MM-DD HH:mm:ss'}}</strong></div>
+        <div class="col-sm-4"><strong>通话时长:{{record.duration}}秒</strong></div>
+      </div>
+      <div class="row top8">
+        <div class="col-sm-4"><strong>处理状态:{{record.state.name}}</strong></div>
+        <div class="col-sm-4"><strong>处理坐席:{{record.agent.name}}</strong></div>
+        <div class="col-sm-4"><strong>技能组:</strong></div>
+      </div>
+      <div class="row top8">
+        <div class="col-sm-12">
+          <strong>通话录音</strong>
+          <audio controls src=""/>
+        </div>
+      </div>
+      {{/if}}
+    </div>
+  </div>

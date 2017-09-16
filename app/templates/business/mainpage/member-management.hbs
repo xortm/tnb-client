@@ -1,0 +1,67 @@
+<!--pc端-->
+<div class="col-sm-12">
+    <div class="box">
+        <!-- BOX-BODY -->
+        <div class="box-body">
+            <div class="row clearfix" style="margin-bottom:15px">
+                <div class="col-sm-4">
+                    <div class="pull-left">
+                        <div class="input-group bottom8">
+                            {{input class="form-control" type="text" placeholder="搜索会员名称" value=queryCondition enter="search"}}
+                            <!-- <input class="form-control" type="text" placeholder="搜索姓名/房间号/护工姓名"> -->
+                            <span class="input-group-btn">
+                <button class="btn btn-primary btn-reduce" type="button" style="touch-action: manipulation; -ms-touch-action: manipulation;" {{action "search" on="click"}}>
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+                        </div>
+                    </div>
+                    <!--搜索-->
+                </div>
+                <!-- 新加切换按钮 -->
+                <!-- <div class="col-sm-5">
+                    <div class="change-view  pull-left nomargin-vertical change-list-btn">
+                        <span class="clearfix  pull-left">
+    <a id="listBtn2" {{action "showList" on="click"}}>{{bs-tooltip title="列表式" class="light-tooltip"}}<i class="fa fa-list-ul change-fa"></i></a>
+    <a id="textBtn2" class="cur"{{action "showText" on="click"}}>{{bs-tooltip title="卡片式" class="light-tooltip"}}<i class="fa fa-picture-o change-fa"></i></a>
+  </span>
+                    </div>
+                </div> -->
+                <div class="user-add-btn col-sm-3 pull-right nopadding-right">
+                    {{#ui/mix-button class=" user-btn pull-right" iconClass="fa-plus" text='新增会员' clickAction="toAddPage" toAddPage="toAddPage" }}
+                    {{/ui/mix-button}}
+                </div>
+            </div>
+            {{#if textShow}}
+                <!-- 卡片式 -->
+                <div class="clearfix">
+                    <div class="row" id="datatable1_wrapper">
+                        {{#if cusList}}
+                            {{#each cusList as |customer|}}
+                                {{callbusi/customer-list-item customer=customer goDetail="goDetail"}}
+                            {{/each}}
+                        {{else}}
+                            <div class="nodateCustomer">暂无数据</div>
+                        {{/if}}
+                    </div>
+                </div>
+            {{else}}
+                <!-- 列表式 -->
+                <div class="clearfix">
+                    <div class="row">
+                        {{callbusi/customer-tabulation cusList=cusList goDetail="goDetail"}}
+                    </div>
+                </div>
+            {{/if}}
+            {{#if cusList }}
+                {{#if textShow}}
+                    {{page-numbers content=cusList showFL=true numPagesToShow=12 export=true}}
+                {{else}}
+                    {{page-numbers content=cusList showFL=true numPagesToShow=12 }}
+                {{/if}}
+            {{else}}
+                <h1 class="col-sm-12 center unTask"></h1>
+            {{/if}}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,110 @@
+
+<div class="col-md-12">
+	<div class="box margin-middle max-width">
+		<!-- BOX-BODY -->
+		<div class="box-body">
+			{{#bs-form formLayout=formLayout model=analysisModel action=(action "saveAnalysis") invalid=(action "invalid")}}
+			<!-- 列表编辑-->
+			<div class="row">
+				<div class="col-xs-12">
+					<p class="user-add-btn">
+						{{#if detailEdit}}
+
+						{{else}}
+							{{#ui/form-function editAction="detailEditClick" detailEditClick="detailEditClick" removeAction="delById" delById="delById" }}
+							{{/ui/form-function}}
+						{{/if}}
+					</p>
+				</div>
+					<div class="col-xs-12 nopadding-horizontal mt20">
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">用户姓名：</span>
+								{{#if detailEdit}}
+                {{#if flagEdit}}
+									<div class="input-group-content">{{analysis.customer.name}}</div>
+									{{else}}
+									{{#bs-form-element class="inline-block form-input-group" controlType="customer"  property="customer" }}
+                  {{#power-select class="inline-block input-group-content" placeholder="必填项" options=customerList selected=defaultCustomer searchField="namePinyin" noMatchesMessage="没有相关内容"
+                  allowClear=false onchange=(action "selectParent" ) as |name|}}
+					        {{name.name}}
+					        {{/power-select}}
+									{{/bs-form-element}}
+										{{/if}}
+								{{else}}
+									<div class="input-group-content">{{analysis.customer.name}}</div>
+								{{/if}}
+		           </div>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">创建时间：</span>
+								{{#if detailEdit}}
+								{{#bs-form-element class="inline-block form-input-group" controlType="createTime"  property="createTime" }}
+									{{ui/addon/bs-datetimepicker date=analysisModel.createDate placeholder=""
+									locale="zh-CN" iconClasses="fa fa-calendar" maxDate=today
+									show="dpShowAction" change="changeAnalysisAction" }}
+							  {{/bs-form-element}}
+								{{else}}
+									<div class="input-group-content">{{analysisModel.createTimeString}}</div>
+								{{/if}}
+							</div>
+						</div>
+
+            <div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">项目类型：</span>
+								{{#if detailEdit}}
+                {{#bs-form-element class="inline-block form-input-group" controlType="type" property="type" }}
+                    {{callbusi/dict-selector curDict=analysisModel.type groupCode=constants.healthExamType showName="" dictSelect="typeSelect" value=analysisModel.type preselected=false }}
+                {{/bs-form-element}}
+								{{else}}
+									<div class="input-group-content">{{analysisModel.type.typename}}</div>
+								{{/if}}
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-12">
+		          <div class="form-input-group">
+		            <span class="input-group-addon">基本建议：</span>
+								{{#if detailEdit}}
+								{{#bs-form-element class="inline-block form-input-group" controlType="contents" property="contents" }}
+									{{textarea type="text" class="full-width inline-block form-input-group label-normal form-control" value=analysis.contents}}
+								{{/bs-form-element}}
+								{{else}}
+									<div class="input-group-content">{{analysis.contents}}</div>
+								{{/if}}
+		          </div>
+		        </div>
+
+            <div class="col-xs-12 col-sm-12">
+		          <div class="form-input-group">
+		            <span class="input-group-addon">综合建议：</span>
+								{{#if detailEdit}}
+								{{#bs-form-element class="inline-block form-input-group" controlType="mul_contents" property="mul_contents" }}
+									{{textarea type="text" class="full-width inline-block form-input-group label-normal form-control" value=analysis.mul_contents}}
+								{{/bs-form-element}}
+								{{else}}
+									<div class="input-group-content">{{analysis.mul_contents}}</div>
+								{{/if}}
+		          </div>
+		        </div>
+					</div>
+			</div>
+			<!-- 列表编辑 -->
+			<div class="padding-top30 center">
+				<p class="text-center user-add-btn margin0auto inlineBlock">
+					{{#if detailEdit}}
+					{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check"  text='保存' }}
+					{{/ui/mix-button}}
+					{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply"  text='取消'  clickAction="detailCancel" detailCancel="detailCancel" }}
+					{{/ui/mix-button}}
+					{{/if}}
+				</p>
+			</div>
+			{{/bs-form}}
+		</div>
+		<!-- /BOX-BODY -->
+	</div>
+</div>

@@ -1,0 +1,51 @@
+<div id="userActivityOrderContainer" class="mainContent">
+  <div class="wrapperInner jujia-Bd">
+{{#ui/mobile/gestures-container}}
+<div class="jujia-container member activity-order">
+  <section class="msg-box">
+    <i class="head-out glyphicon business-mine-img">
+        {{#ui/img-intergration name="headImg"
+        imgSrc=curCustomer.avatarUrl height=69 width=70
+        businessType=constants.uploadBusinessType_headimg}}
+        {{/ui/img-intergration}}
+    </i>
+    <div class="msg">
+      <p class="name">{{curCustomer.name}}</p>
+      <p class="tell">手机号：{{curCustomer.phone}}</p>
+    </div>
+    <p class="vip" style="background: url('../assets/images/kangyi/vip.png') no-repeat left center;">{{curCustomer.customerVipInfo.level.typename}}</p>
+  </section>
+  <section class="msg-box">
+    <div class="matter">
+      <span class="">预约事项：</span>
+      <select id="orderItem" name="orderItem" {{action "selectOrderItem" on="change"}}>
+        {{#each activityList as |activity|}}
+        <option value="{{activity.id}}">{{activity.title}}</option>
+        {{/each}}
+      </select>
+    </div>
+    <div class="matter">
+      <span class="">预约时间：</span>
+      <select id="orderTime" name="orderTime">
+        {{#each activityPlanList as |activityPlan|}}
+        <option value="{{activityPlan.id}}">{{activityPlan.day.typename}}</option>
+        {{/each}}
+      </select>
+    </div>
+    <div class="matter">
+      <span class="">预约服务人：</span>
+      <select id="orderEmployee" name="orderEmployee">
+        {{#each employeeList as |employee|}}
+        <option value="{{employee.id}}">{{employee.name}}</option>
+        {{/each}}
+      </select>
+    </div>
+    <button type="button" name="button" {{ action "saveItem"}}>确定预约</button>
+  </section>
+</div>
+
+
+{{/ui/mobile/gestures-container}}
+</div>
+</div>
+{{ui/container/infinite-scroll moniteData="userJujiaMy" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

@@ -1,0 +1,56 @@
+<div class="col-sm-12">
+  <div class="box">
+    <div class="box-body">
+    <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+    	<div class="row">
+        <!--搜索-->
+        <div class="col-sm-3 ">
+          {{#power-select class="inline-block" placeholder="选择活动名称" options=activityList selected=activity searchField="namePinyin" noMatchesMessage="没有相关内容"
+          allowClear=true onchange=(action "selectActivity" ) as |activity|}}
+          {{activity.title}}
+          {{/power-select}}
+          </div>
+          <div class="col-sm-6 nopadding-right">
+            {{callbusi/time-search class="inline-block" text='按活动时间搜索' dateShow=dateShow chooseDate=chooseDate search="search"
+            submmit="submmit" emptied='emptied' changeBeginDateAction='changeBeginDateAction' changeEndDateAction='changeEndDateAction'}}
+      	  </div>
+          <div class="user-add-btn col-sm-3 pull-right nopadding-right">
+            {{#ui/mix-button class=" user-btn pull-right" iconClass="fa-plus"  text='新增活动预约'  clickAction="toDetailPage" toDetailPage="toDetailPage" style="padding-right:0px;margin-right:0px;"}}
+            {{/ui/mix-button}}
+      	  </div>
+    	  <!--搜索-->
+    	</div>
+      <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable mt15" aria-describedby="datatable1_info">
+        <thead>
+          <tr role="row">
+            <th rowspan="1" colspan="1" width="">预约用户</th>
+            <th rowspan="1" colspan="1" width="">活动时间</th>
+            <th rowspan="1" colspan="1" width="">活动名称</th>
+            <th rowspan="1" colspan="1" width="">服务人员</th>
+          </tr>
+        </thead>
+        {{#if activityOrderList}}
+      <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+          {{#each activityOrderList as |activityOrder|}}
+          <tr class="gradeA odd" style="cursor:default;" {{action "toDetailPage" activityOrder on="click"}}>
+            <td class=" ellipsis sorting_1">{{activityOrder.customer.name}}</td>
+            <td class=" ellipsis sorting_1">{{activityOrder.activityTimeString}}</td>
+            <td class=" ellipsis ">{{activityOrder.activityPlan.activity.title}}</td>
+            <td class=" ellipsis">{{activityOrder.employee.name}}</td>
+      	  </tr>
+          {{/each}}
+       </tbody>
+       {{else}}
+       <div class="nodate">暂无数据</div>
+       {{/if}}
+        </table>
+        {{#if activityOrderList }}
+            {{page-numbers content=activityOrderList showFL=true numPagesToShow=5}}
+            {{else}}
+                <h1 class="col-sm-12 center unTask"></h1>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+  <!-- /BOX -->
+</div>

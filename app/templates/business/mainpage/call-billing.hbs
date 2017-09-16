@@ -1,0 +1,18 @@
+<div class="col-sm-5 nopadding-left">
+  <div class="panel panel-default" style="border-radius:10px">
+    <div class="panel-heading">
+      通话列表
+    </div>
+    <div class="panel-body">
+      <div clas="list-group list-group-minimal nopadding-left">
+        {{#each model.records as |record|}}
+            {{python/call-record record=record action="showDetail"}}
+        {{/each}}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="col-sm-7 nopadding-left">
+  {{python/call-detail record=record}}
+</div>

@@ -1,0 +1,16 @@
+<!-- 头部信息 -->
+<div class="line-height-44 center header-title" style="">健康数据</div>
+
+<div class="" style="position:absolute;top:8px;right:6px;">
+  {{#if chartShow}}
+    <div class="pull-right color-white select-warning bk-color-ccc" {{action 'chartShowAction' on='tap'}}>
+      <div class="pull-left padding-right-3">数据</div>
+      <div class=" pull-left select-backg-true" style=""></div>
+    </div>
+  {{else}}
+    <div class="pull-right color-white select-warning bk-color-ccc" {{action 'chartShowAction' on='tap'}}>
+      <div class="pull-left select-backg-true" style=""></div>
+      <div class="pull-left padding-left-3">图表</div>
+    </div>
+  {{/if}}
+</div>

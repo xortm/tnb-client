@@ -1,0 +1,37 @@
+<div class="col-sm-12">
+  <div class="box clearfix">
+    <div class="bottom12">
+        <ul class="nopadding-left border-bottom">
+            <li class="pull-left margin-right30 {{if dietParams 'jujia-select-bottom-border' ''}}" {{action "dietClick" "dietParams" on="click"}}><a href="#tab_1_1" data-toggle="tab" class="{{if dietParams 'jujia-select-title' 'noselect-title'}} the-a">膳食方案记录</a></li>
+            <li class="pull-left margin-right30 {{if sportsParams 'jujia-select-bottom-border' ''}}" {{action "sportsClick" "sportsParams" on="click"}}><a href="#tab_1_2" data-toggle="tab" class="{{if sportsParams 'jujia-select-title' 'noselect-title'}} the-a">运动方案记录</a></li>
+            <li class="pull-left margin-right30 {{if medicationParams 'jujia-select-bottom-border' ''}}" {{action "medicationClick" "medicationParams" on="click"}}><a href="#tab_1_3" data-toggle="tab" class="{{if medicationParams 'jujia-select-title' 'noselect-title'}} the-a">用药方案记录</a></li>
+        </ul>
+        <div class="clear"></div>
+    </div>
+    <div class="tab-content fade in nopadding-left nopadding-right col-sm-12">
+        <div class="row">
+          <!--搜索-->
+          <div class="col-sm-2">
+            {{#power-select class="inline-block" placeholder="选择老人姓名" options=customerList selected=customer searchField="namePinyin" noMatchesMessage="没有相关老人信息"
+            allowClear=true onchange=(action "selectCustomer" ) as |customer|}}
+            {{customer.name}}
+            {{/power-select}}
+          </div>
+          <!--搜索-->
+        </div>
+        <div class="tab-pane fade in  active" id="tab_1_1">
+            {{#callbusi/scheme-diet-record dietList=dietList toBlownUp="toBlownUp"}}
+            {{/callbusi/scheme-diet-record}}
+        </div>
+        <div class="tab-pane fade in " id="tab_1_2">
+            {{#callbusi/scheme-sports-record sportsList=sportsList}}
+            {{/callbusi/scheme-sports-record}}
+        </div>
+        <div class="tab-pane fade in " id="tab_1_3">
+            {{#callbusi/scheme-medication-record medicationList=medicationList}}
+            {{/callbusi/scheme-medication-record}}
+        </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,173 @@
+<div class="page-content">
+{{#if curtask}}
+{{log 'djfasfnweonforangofa' curtask}}
+<div class="row">
+  <div class="col-sm-2">
+    <!-- <div class="col-sm-4 nopadding-horizontal" >
+      <button class="btn bk-color-white">工单状态：</button>
+    </div>
+    <div class="col-sm-7 nopadding-horizontal">
+      <select class="form-control hovertype no-border-top-bottom" onchange={{action 'statuschoose' value="target.value"}} value=status>
+        <option value="-1" selected="selected" class="hovertype">全部</option>
+        <option value="1" class="hovertype">已成单</option>
+        <option value="0" class="hovertype">未成单</option>
+      </select>
+    </div> -->
+    {{#power-select placeholder="工单状态" options=completeList selected=status
+      allowClear=true onchange=(action "statuschoose") as |sta|}}
+      {{sta.typename}}
+    {{/power-select}}
+  </div>
+  <div class="col-sm-5">
+    修改日期：
+      {{input type="date" value=chooseDateFrom class='choosedatetype' focus-out="choosetime"}}~
+      {{input type="date" value=chooseDateTo class='choosedatetype' focus-out="choosetime"}}
+  </div>
+  <div class="col-sm-1 pull-right">
+    {{#ui/mix-button iconClass="el-plus"
+    clickAction="addWorkorder" addWorkorder="addWorkorder" text="创建工单"}}
+    {{/ui/mix-button}}
+  </div>
+  <div class="col-sm-3 pull-right">
+    <div class="input-group">
+        {{input type="search" class="form-control" name="search" value=ordername enter='searchorder' placeholder="搜索（姓名/标题）"}}
+        <span class="input-group-addon">
+          <span class="linecons-search" id="linecons-search" {{action 'searchorder'}}></span>
+        </span>
+    </div>
+  </div>
+</div>
+{{#if workOrderList}}
+{{log 'workorderlistget2'}}
+<div class="row">
+    <div class="col-sm-4">
+      {{log 'workOrderget1' workOrderList}}
+      {{#each workOrderList as |workOrder|}}
+      {{log 'workOrderget' workOrderList}}
+       <!-- value={{workOrder.id}} style={{choosecolor}}-->
+        <div class="hovertype list-line border-bot1 {{if workOrder.choosecolor 'chooseco' ''}}" {{action 'displayDetail' workOrder on="click"}}>
+            {{log 'workorderlistget'}}
+            {{#callbusi/workorder-list
+                workOrder=workOrder
+              }}
+            {{/callbusi/workorder-list}}
+        </div>
+      {{/each}}
+      <div class="tight-row bk-color-white">
+        {{log 'workorderlist get has the meta ?' workOrderList}}
+        {{page-numbers content=workOrderList showFL=true numPagesToShow=3 pageChange="pageChange"}}
+      </div>
+    </div>
+
+    <div class="col-sm-8">
+          <div class="list-line margin10-notop ">
+            {{log 'this.get(workOrder) in management' workOrder}}
+            {{#callbusi/workorder-item
+              workOrder=workOrder
+              editMode=false
+              successOrder="successOrder"
+              popFollow="popFollow"
+              isnotCheck = true
+              }}
+            {{/callbusi/workorder-item}}
+          </div>
+          {{#if workOrderAddlist}}
+          <div class="panel panel-default bottom-buffer-little rightmove">
+            {{#each workOrderAddlist as |workOrderAdd|}}
+              {{log 'workorderaddlistget in hbs' workOrderAdd.additionalType}}
+              <div class="row">
+                <div class="col-sm-8 fontBigger weight-bold">
+                  {{workOrderAdd.additional.name}} 添加了{{workOrderAdd.additionalTypeShow}}
+                  <span class="redtime">&nbsp;&nbsp;&nbsp;&nbsp;{{workOrderAdd.remindTimeShow}}</span>
+                </div>
+                <div class="col-sm-4 pull-right font-color">
+                  {{workOrderAdd.createTimeShow}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6 font-color line-height-label">
+                  {{workOrderAdd.content}}
+                </div>
+              </div>
+              <br>
+            {{/each}}
+          </div>
+          {{/if}}
+          {{#if workOrder.freezeReason}}
+          <div class="panel panel-default bottom-buffer-little rightmove">
+            <div class="panel-heading font15 weight-bold padding-bottom5">
+              冻结原因
+            </div>
+            <div class="panel-body">
+              {{workOrder.freezeReason}}
+            </div>
+          </div>
+          {{/if}}
+    </div>
+  </div>
+{{else}}
+<h1 class="center unTask">没有工单</h1>
+{{/if}}
+{{else}}
+<h1 class="center unTask">请选择当前任务</h1>
+{{/if}}
+
+</div>
+<!-- 追加弹层 -->
+{{#if showPopPasschangeModal}}
+ {{#bs-modal body=false footer=false header=false submitAction=(action "followOrder")
+    closedAction=(action "cancelPassSubmit")}}
+  {{#bs-modal-header}}
+     <h4 class="modal-title">追加内容：</h4>
+   {{/bs-modal-header}}
+  {{#bs-modal-body}}
+    {{input type="text" value=content class="form-control" placeholder="请输入内容"}}
+  {{/bs-modal-body}}
+  {{bs-modal-footer closeTitle="取消" submitTitle="追加"}}
+   {{/bs-modal}}
+{{/if}}
+<!-- 新建工单弹层 -->
+{{#if showPopPassworkorderModal}}
+{{log 'inshowPopPassworkorderModal'}}
+ {{#bs-modal body=false footer=false header=false submitAction=(action "saveWorkorder")
+    closedAction=(action "cancelPassworkorderSubmit")}}
+  {{#bs-modal-header}}
+     <h4 class="modal-title">新建工单：</h4>
+   {{/bs-modal-header}}
+   <div class="layer-lable-style">主题：<span class="text-danger">*</span></div>
+  {{#bs-modal-body}}
+    {{input type="text" value=theme class="form-control" placeholder="请输入主题"}}
+  {{/bs-modal-body}}
+   <div class="layer-lable-style">描述：</div>
+ {{#bs-modal-body}}
+   {{input type="text" value=description class="form-control" placeholder="请输入描述"}}
+ {{/bs-modal-body}}
+ <div class="layer-lable-style">选择客户：<span class="text-danger">*</span></div>
+ <div class="layer-lable-style">
+ {{#power-select placeholder="选择客户" options=customers selected=customerSel
+   allowClear=true onchange=(action "cusSelect") as |customer|}}
+   {{log 'customersget in hbs' customer}}
+   {{customer.customer.name}}
+ {{/power-select}}
+ </div>
+ <div class="text-danger top10 bottom10">*为必填内容且必须为数字</div>
+  {{#bs-modal-footer as |footer|}}
+    {{#bs-button action=(action "cancelPassworkorderSubmit") type="default"}}取消{{/bs-button}}
+    {{#bs-button action=(action "saveWorkorder") type="default" disabled=applyDisabled}}创建{{/bs-button}}
+  {{/bs-modal-footer}}
+  {{/bs-modal}}
+{{/if}}
+
+<!-- 确认弹层 -->
+{{#if alertmodal}}
+ {{#bs-modal body=false footer=false header=false submitAction=(action "confirm")
+    closedAction=(action "cancelSubmit")}}
+  {{#bs-modal-header}}
+     <div class="modal-confirm">确认成单？</div>
+   {{/bs-modal-header}}
+  {{#bs-modal-footer as |footer|}}
+    {{#bs-button action=(action "cancelSubmit") type="default"}}取消{{/bs-button}}
+    {{#bs-button action=(action "confirm") type="default"}}确定{{/bs-button}}
+  {{/bs-modal-footer}}
+   {{/bs-modal}}
+{{/if}}

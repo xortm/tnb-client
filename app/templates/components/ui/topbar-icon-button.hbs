@@ -1,0 +1,13 @@
+<a href="#" data-toggle="dropdown">
+  {{#if isShine}}
+    <i class="{{iconClass}} icon-glow">
+    </i>
+    {{else}}
+    <i class="{{iconClass}}">
+    </i>
+  {{/if}}
+  {{#if tipNumberShow}}
+    <span class="badge badge-purple">{{tipNumber}}</span>
+  {{/if}}
+</a>
+<ul class="dropdown-menu messages overflowAuto" id="showMe">{{yield}}</ul>

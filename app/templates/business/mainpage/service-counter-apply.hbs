@@ -1,0 +1,14 @@
+<div id="serviceCounterApplyContainer" class="mainContent">
+  <div class="wrapperInner">
+    <div class="counterDetail">
+      {{textarea cols=30 rows=5 placeholder="请输入服务详情内容" value=detailContent}}
+      <div class="btnBox clearfix">
+        {{#ui/mobile/gestures-container}}
+        <div class="pull-left short-button" {{action "backMain" on="tap"}}>取消</div>
+        <div class="pull-left left16 long-button" {{action "saveCountApply" on="tap"}}>确定</div>
+        {{/ui/mobile/gestures-container}}
+      </div>
+    </div>
+  </div>
+</div>
+{{ui/container/infinite-scroll moniteData="serviceList" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

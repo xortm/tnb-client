@@ -1,0 +1,17 @@
+{{yield privilege}}
+{{#if privilege.children.length}}
+<div class="tree-folder">
+{{ui/tree-item itemData=privilege hasChildren=true privilegeCheck=(action "privilegeCheck" privilege) detailEdit=detailEdit}}
+<div class="tree-folder-content {{if privilege.expanded '' 'hidden'}}">
+  {{#each privilege.children as |child| }}
+  {{ log 'child in hbs:' child }}
+  {{#callbusi/privilege-tree detailEdit=detailEdit privilegeCheck="privilegeCheck" privilege=child as |childs| }}
+  {{ log 'childs inner:' childs }}
+  {{yield childs}}
+  {{/callbusi/privilege-tree}}
+  {{/each}}
+</div>
+</div>
+{{else}}
+{{ui/tree-item itemData=privilege privilegeCheck=(action "privilegeCheck" privilege) detailEdit=detailEdit}}
+{{/if}}

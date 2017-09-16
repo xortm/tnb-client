@@ -1,0 +1,27 @@
+{{#if check}}
+  <div class=" carousel color666 border-top-1 border-bottom-1" style="height:44px;">
+      <span class="profile-span">
+        {{#if item.field.name}}
+          {{item.field.name}}
+        {{/if}}
+        {{#if item.name}}
+          {{item.name}}
+        {{/if}}
+      </span>
+      <div style="position:relative;top:12px;right:10px;" class="fontLogo pull-right choose-inline-block choose-box {{if item.hasSelcted 'fa-check' ''}}" {{action 'chooseItem' item on="tap"}}></div>
+  </div>
+{{else}}
+  <div class=" carousel color666 border-top-1 border-bottom-1" style="height:44px;" {{action "toNextPage" item on="tap"}}>
+      <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+      <span class="profile-span">
+        {{#if item.field.name}}
+        {{item.field.name}}
+        {{/if}}
+        {{#if item.name}}
+        {{item.name}}
+        {{/if}}
+      </span>
+      <span class="pull-right"  style="line-height: 42px;margin-right: 20px;">{{item.value}}</span>
+      <i class="fa-angle-right font20 my-right color-ccc"></i>
+  </div>
+{{/if}}

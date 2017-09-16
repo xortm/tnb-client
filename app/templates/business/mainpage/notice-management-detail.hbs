@@ -1,0 +1,96 @@
+<div class="col-md-12">
+    <div class="box margin-middle max-width">
+        <!-- BOX-BODY -->
+        <div class="box-body">
+            {{#bs-form formLayout=formLayout model=messageModel action=(action "saveMessage") invalid=(action "invalid")}}
+                <!-- 列表编辑-->
+                <div class="row">
+                    <div class="col-xs-12">
+                        <p class="user-add-btn">
+                            {{#if detailEdit}}
+                            {{else}}
+                                {{#ui/form-function editNone=true removeAction="delById" delById="delById" }}
+                                {{/ui/form-function}}
+                            {{/if}}
+                        </p>
+                    </div>
+                    <div class="col-xs-12 nopadding-horizontal mt20">
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-input-group">
+                                <span class="input-group-addon">会员姓名：</span>
+                                {{#if detailEdit}}
+                                {{#bs-form-element class="inline-block form-input-group" controlType="customer"  property="customer" }}
+                                {{#power-select class="inline-block input-group-content" placeholder="必选项" options=customerList selected=messageModel.customer searchField="namePinyin" noMatchesMessage="没有相关会员信息"
+                                allowClear=false onchange=(action "selectCustomer" ) as |customer|}}
+                                {{customer.name}}
+                                {{/power-select}}
+                                {{/bs-form-element}}
+                                {{else}}
+                                    <div class="input-group-content">{{message.toUser.name}}</div>
+                                {{/if}}
+                            </div>
+                        </div>
+
+                        {{#if detailEdit}}
+                        {{else}}
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-input-group">
+                                <!-- <span class="input-group-addon">通知时间：</span>
+                                {{#bs-form-element class="inline-block form-input-group" controlType="createTime"  property="createTime" }}
+                                   {{ui/addon/bs-datetimepicker date=messageModel.createTimeDate placeholder=""
+                                   locale="zh-CN" iconClasses="fa fa-calendar"
+                                   show="dpShowAction" change="changeCreateTimeAction" }}
+                                {{/bs-form-element}} -->
+                                    <span class="input-group-addon">通知时间：</span>
+                                    <div class="input-group-content">{{message.createTimeStr}}</div>
+                            </div>
+                        </div>
+                        {{/if}}
+
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-input-group">
+                                <span class="input-group-addon">通知类型：</span>
+                                {{#if detailEdit}}
+                                {{#bs-form-element class="inline-block form-input-group" controlType="businessType" property="businessType" }}
+                  									{{callbusi/dict-selector curDict=messageModel.businessType  groupCode=constants.messageBusinessType showName="必选项" dictSelect="businessTypeSelect" value=messageModel.businessType  preselected=false}}
+                  							{{/bs-form-element}}
+                                {{else}}
+                                    <div class="input-group-content">{{message.businessType.typename}}</div>
+                                {{/if}}
+                            </div>
+                        </div>
+
+                        {{#if detailEdit}}
+                        <div class="col-xs-12 col-sm-12">
+                            <div class="form-input-group">
+                                <span class="input-group-addon">通知内容：</span>
+          											{{textarea type="text" class="full-width inline-block form-input-group label-normal form-control" value=messageModel.content placeholder="请填写通知消息内容（必填项）"}}
+                            </div>
+                        </div>
+                        {{else}}
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-input-group">
+                                <span class="input-group-addon">通知内容：</span>
+                                <div class="input-group-content">{{message.content}}</div>
+                            </div>
+                        </div>
+                        {{/if}}
+
+                    </div>
+                </div>
+                <!-- 列表编辑 -->
+                <div class="padding-top30 center">
+                    <p class="text-center user-add-btn margin0auto inlineBlock">
+                        {{#if detailEdit}}
+                            {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check" text='发送' }}
+                            {{/ui/mix-button}}
+                            {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply" text='取消' clickAction="detailCancel" detailCancel="detailCancel" }}
+                            {{/ui/mix-button}}
+                        {{/if}}
+                    </p>
+                </div>
+            {{/bs-form}}
+        </div>
+        <!-- /BOX-BODY -->
+    </div>
+</div>

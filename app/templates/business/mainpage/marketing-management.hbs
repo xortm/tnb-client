@@ -1,0 +1,43 @@
+<div class="col-sm-12">
+  <!-- <div class="box col-sm-6" style="margin-bottom:0px;">
+    <div class="box-body">
+      {{callbusi/time-interval class="inline-block" text='选择统计区间' chooseDate=chooseDate dateShow=dateShow submmit="submmit" }}
+    </div>
+  </div> -->
+  <div class="box panel-default col-sm-12" style="padding-top:0px;">
+    <div class="box-body">
+      <div class="col-sm-12 nopadding-left"style="margin:20px 0px;">
+        <div class="col-sm-6 nopadding-left">
+        {{callbusi/time-interval class="inline-block" text='选择统计区间' chooseDate=chooseDate dateShow=dateShow submmit="submmit" }}
+        </div>
+        <div class="col-sm-6">
+          <div class="pull-right">
+            {{#ui/icon-button iconClass="fa-expand"
+            data-toggle="tooltip"  title="放大"  data-placement="top" data-original-title="放大"
+            clickAction="bigClick" bigClick="bigClick"}}
+            {{/ui/icon-button}}
+          </div>
+        </div>
+      </div>
+      <div class="tabbable">
+        <ul class="nav nav-tabs">
+          <li class="active" {{action "consultClick" "consult" on="click"}}><a href="#tab_3_1" data-toggle="tab">咨询分析</a></li>
+          <li class="" {{action "checkInClick" "checkIn" on="click"}}><a href="#tab_3_2" data-toggle="tab">入住分析</a></li>
+          <!-- <li class=""{{action "advanceClick" "advance" on="click"}} ><a href="#tab_3_3" data-toggle="tab">预定分析</a></li> -->
+          <li class="" {{action "stayBackClick" "stayBack" on="click"}}><a href="#tab_3_4" data-toggle="tab">退住分析</a></li>
+        </ul>
+        <div class="tab-content fade in col-md-12 nopadding-left nopadding-right">
+             <div id="marketing-charts" class="tab-pane fade in padding-top20 active">
+                {{callbusi/package-start-analytic sizeFlag=sizeFlag class="inline-block"
+                  durTypeFlag=durTypeFlag beginDate=beginDate endDate=endDate
+                  beginseaconDate=beginseaconDate endseaconDate=endseaconDate
+                  beginseaconFlag=beginseaconFlag endseaconFlag=endseaconFlag
+                  paramList=paramList paramShow=paramShow doQueryFlag=doQueryFlag
+                  querytypeList=querytypeList
+                  sizeChangeAct="sizeChangeAct"}}
+              </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

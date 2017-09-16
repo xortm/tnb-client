@@ -1,0 +1,17 @@
+<div itemId="{{item.id}}" name="listContainer" class="contentArea contentAreaList width100B">
+  <div class="col-xs-middle time-content nopadding-horizontal width100B clearfix position-relative" id="assessment_{{item.id}}" {{action "gotoDetail" on="tap"}}>
+    <div class="title pull-left" style="width:105px;">
+      <div class="time-label color2FA7FD font14">{{item.examiner.name}}</div>
+      <div class="task-title extend color333333 font14">{{item.examTimeString}}</div>
+    </div>
+    <div class="item-split"></div>
+    <div class="content clearfix padding-left-114 width100B position_absolute" style="float:none;">
+      {{#if item.point}}
+        <div class="detail extend color666666 font14 line-height-20 margin-top-8">总分数:{{item.point}}分</div>
+      {{else}}
+        <div class="detail extend color666666 font14 line-height-20 margin-top-8">总分数:暂未评分</div>
+      {{/if}}
+      <div class="detail extend color666666 font14 line-height-20">考核类型:{{item.type.typename}}</div>
+    </div>
+  </div>
+</div>

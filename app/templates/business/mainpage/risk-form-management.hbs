@@ -1,0 +1,45 @@
+{{#ui/mobile/gestures-container}}
+  <div id="resultFormManagementContainer" class="mainContent border-top-1 {{if global_pageConstructure.showLoader 'hide' ''}}" >
+  <div class="wrapperInner">
+    {{#if nocustomerId}}
+      <div class="center" style="margin-top:40px;">
+        请返回上一级选择老人
+      </div>
+    {{else}}
+      {{#if resultList}}
+        <div class="bgcolor-white">
+        {{#each resultList as |result|}}
+        <div class="line-item-task col-sm-6 col-xs-12 height-auto" {{action 'addNewRecord' result on='tap'}}>
+          <div name="listContainer" class="contentArea contentAreaList width100B">
+            <div class="col-xs-middle time-content nopadding-horizontal width100B clearfix position-relative" >
+              <div class="title pull-left" style="width:110px;">
+                <div class="time-label color2FA7FD" style="font-size:14px;">{{result.recordTimeStr}}</div>
+              </div>
+              <div class="item-split"></div>
+              <div class="content clearfix padding-left-114 width100B position_absolute" style="float:none;">
+                  <div class="detail extend color999999" style="margin-top:12px;">名称:{{result.model.name}}</div>
+                  <div class="detail extend color999999">记录人:{{result.user.name}}</div>
+                  <span style="font-size:14px;color:#03BADD;" id="{{concat 'risk-form-management-mobile-del-' result.id}}" {{action 'delById' result on='tap' bubbles=false}}>删除记录</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {{/each}}
+        </div>
+      {{else}}
+        <div class="nodate">暂无数据</div>
+      {{/if}}
+    {{/if}}
+  </div>
+  {{#if nocustomerId}}
+  {{else}}
+  <div class="detail-dynamicsbtn" id="add-form-record"  style="bottom:0px;" {{action 'addNewRecord' on="tap"}}>
+    <img class="bottom2" width='15' src="assets/images/mobile/add.png" alt="">
+    <span class="padding-left-10">新增记录</span>
+  </div>
+  {{/if}}
+</div>
+{{/ui/mobile/gestures-container}}
+{{ui/container/infinite-scroll moniteData="resultList"
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

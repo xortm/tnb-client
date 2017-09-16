@@ -1,0 +1,33 @@
+<div id="userBloodPressUploadContainer" class="mainContent">
+  <div class="wrapperInner jujia-Bd">
+{{#ui/mobile/gestures-container}}
+<div class="jujia-container check-upload">
+  <section class="msg-box">
+    <div class="time">
+      <span class="time-pre">请输入最高血压值：</span>
+      {{input value=highValue class="time-input"}}
+      <span class="time-next">mmHg</span>
+    </div>
+    <div class="time">
+      <span class="time-pre">请输入最低血压值：</span>
+      {{input value=lowValue class="time-input"}}
+      <span class="time-next">mmHg</span>
+    </div>
+    <div class="matter">
+      <span class="matter-span">请选择您测量的日期：</span>
+      <div class="matter-date">
+        <!-- {{ui/addon/bs-datetimepicker date=null placeholder=""
+        locale="zh-CN" iconClasses="fa fa-calendar" maxDate=today
+        show="dpShowAction" change="changeDateAction" }} -->
+        {{input type="date" placeholder="测量日期" value=date}}
+      </div>
+    </div>
+    <button type="button" name="button" {{ action "saveItem"}}>确定上传</button>
+  </section>
+</div>
+
+
+{{/ui/mobile/gestures-container}}
+</div>
+</div>
+{{ui/container/infinite-scroll moniteData="userJujiaMy" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

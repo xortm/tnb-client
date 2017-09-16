@@ -1,0 +1,120 @@
+<div class="col-md-12">
+    <div class="box margin-middle max-width">
+        <!-- BOX-BODY -->
+        <div class="box-body">
+            {{#bs-form formLayout=formLayout model=reportModel action=(action "saveReport") invalid=(action "invalid")}}
+                <!-- 列表编辑-->
+                <div class="row">
+                    <div class="col-xs-12">
+                        <p class="user-add-btn">
+                            {{#if detailEdit}}
+                            {{else}}
+                                {{#ui/form-function editAction="detailEditClick" detailEditClick="detailEditClick" removeAction="delById" delById="delById" }}
+                                {{/ui/form-function}}
+                            {{/if}}
+                        </p>
+                    </div>
+                    <div class="col-xs-12 nopadding-horizontal mt20">
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-input-group">
+                                <span class="input-group-addon">老人姓名：</span>
+                                {{#if detailEdit}}
+                                {{#bs-form-element class="inline-block form-input-group" controlType="customer"  property="customer" }}
+                                {{#power-select class="inline-block input-group-content" placeholder="必选项" options=customerList selected=reportModel.customer searchField="namePinyin" noMatchesMessage="没有相关老人信息"
+                                allowClear=false onchange=(action "selectCustomer" ) as |customer|}}
+                                {{customer.name}}
+                                {{/power-select}}
+                                {{/bs-form-element}}
+                                {{else}}
+                                    <div class="input-group-content">{{report.customer.name}}</div>
+                                {{/if}}
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-input-group">
+                                <span class="input-group-addon">创建时间：</span>
+                                {{#if detailEdit}}
+                                {{#bs-form-element class="inline-block form-input-group" controlType="createTime"  property="createTime" }}
+                                {{ui/addon/bs-datetimepicker date=reportModel.createTimeDate placeholder="必选项" format='YYYY-MM-DD'
+                                  locale="zh-CN" iconClasses="fa fa-calendar" maxDate=today
+                                   show="dpShowAction" change="changeCreateTimeAction" }}
+                                   {{/bs-form-element}}
+                                {{else}}
+                                    <div class="input-group-content">{{report.createTimeString}}</div>
+                                {{/if}}
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-input-group">
+                                <span class="input-group-addon">签到分数：</span>
+                                {{#if detailEdit}}
+                                {{bs-form-element property="checkScore" class="inline-block form-input-group" controlType="checkScore" placeholder="必填项"}}
+                                {{else}}
+                                    <div class="input-group-content">{{report.checkScore}}</div>
+                                {{/if}}
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-input-group">
+                                <span class="input-group-addon">膳食分数：</span>
+                                {{#if detailEdit}}
+                                {{bs-form-element property="mealScore" class="inline-block form-input-group" controlType="mealScore" placeholder="必填项"}}
+                                {{else}}
+                                    <div class="input-group-content">{{report.mealScore}}</div>
+                                {{/if}}
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-input-group">
+                                <span class="input-group-addon">运动分数：</span>
+                                {{#if detailEdit}}
+                                {{bs-form-element property="sportScore" class="inline-block form-input-group" controlType="sportScore" placeholder="必填项"}}
+                                {{else}}
+                                    <div class="input-group-content">{{report.sportScore}}</div>
+                                {{/if}}
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-input-group">
+                                <span class="input-group-addon">用药分数：</span>
+                                {{#if detailEdit}}
+                                {{bs-form-element property="medicationScore" class="inline-block form-input-group" controlType="medicationScore" placeholder="必填项"}}
+                                {{else}}
+                                    <div class="input-group-content">{{report.medicationScore}}</div>
+                                {{/if}}
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-input-group">
+                                <span class="input-group-addon">康复分数：</span>
+                                {{#if detailEdit}}
+                                {{bs-form-element property="recoveryScore" class="inline-block form-input-group" controlType="recoveryScore" placeholder="必填项"}}
+                                {{else}}
+                                    <div class="input-group-content">{{report.recoveryScore}}</div>
+                                {{/if}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 列表编辑 -->
+                <div class="padding-top30 center">
+                    <p class="text-center user-add-btn margin0auto inlineBlock">
+                        {{#if detailEdit}}
+                            {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check" text='保存' }}
+                            {{/ui/mix-button}}
+                            {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply" text='取消' clickAction="detailCancel" detailCancel="detailCancel" }}
+                            {{/ui/mix-button}}
+                        {{/if}}
+                    </p>
+                </div>
+            {{/bs-form}}
+        </div>
+        <!-- /BOX-BODY -->
+    </div>
+</div>

@@ -1,0 +1,57 @@
+{{#ui/mobile/inner-tabbar menus=tabFuncs switchTab="switchTab" serviceListFlag=serviceListFlag clickActFlag=clickActFlag itemXs="col-xs-6" positionClass="abs-top-44 service-care" theme="block-mode" showLoadingImgIn=showLoadingImgIn}}
+{{/ui/mobile/inner-tabbar}}
+{{#ui/mobile/gestures-container}}
+  <div class="center {{if showLoadingImgIn '' 'hide'}}" style="margin-top:90px;">
+    <img class="width33" src="assets/images/logo/loading.gif" alt="">
+  </div>
+
+  {{#if (eq curTabCode 'sendTab')}}
+  <div id="{{infiniteContainerName}}" class="mainContent {{if showLoadingImgIn 'hide'}}">
+    <div class="wrapperInner padding-bottom50" style="padding-top:50px;background:#ffffff;">
+        <div id="scrollFlagId" style="height:1px; width:100%;"></div>
+        {{#if serviceList}}
+          {{#each serviceList  as |dataDetail|}}
+          {{#callbusi/mobile/workdelivery-self-send item=dataDetail outerClass="col-sm-6 col-xs-12 height-auto"}}
+          {{/callbusi/mobile/workdelivery-self-send}}
+          {{/each}}
+        {{else}}
+          {{#if nocustomerId}}
+            <div class="center" style="margin-top:90px;">
+              请选择老人，或点击全部老人按钮查看全部
+            </div>
+          {{else}}
+            <div class="nodate">暂无数据</div>
+          {{/if}}
+        {{/if}}
+
+    </div>
+    <div class="detail-dynamicsbtn bottom40" id="" {{action 'addWorkdelivery' on="tap"}}>
+      <img class="bottom2" width='15' src="assets/images/mobile/add.png" alt="">
+      <span class="padding-left-10">添加工作交接信息</span>
+    </div>
+  </div>
+  {{ui/container/infinite-scroll moniteData=infiniteContentPropertyName didRenderAction="didRender" didInsertElementAction="didInsertElement"}}
+  {{else}}
+  <div id="{{infiniteContainerName}}" class="mainContent {{if showLoadingImgIn 'hide'}}">
+    <div class="wrapperInner" style="padding-top:50px;">
+      {{#if countList}}
+        <div class="timesCount">
+          {{log "countList in hbs:" countList}}
+          {{#each countList  as |customer|}}
+
+          {{/each}}
+        </div>
+      {{else}}
+        {{#if nocustomerId}}
+          <div class="center" style="margin-top:90px;">
+            请选择老人，或点击全部按钮查看全部
+          </div>
+        {{else}}
+          <div class="nodate">暂无数据</div>
+        {{/if}}
+      {{/if}}
+      </div>
+      </div>
+      {{ui/container/infinite-scroll moniteData=infiniteContentPropertyName didRenderAction="didRender" didInsertElementAction="didInsertElement"}}
+    {{/if}}
+{{/ui/mobile/gestures-container}}

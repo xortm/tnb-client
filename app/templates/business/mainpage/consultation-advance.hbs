@@ -1,0 +1,330 @@
+
+
+<div class="box panel-default col-sm-12 nopadding-bottom">
+  <div class="box-body">
+    <div class="tabbable">
+      <div class="tab-content fade in col-md-12 nopadding-left nopadding-right">
+        <div class="tab-pane fade in  active">
+          <div class="busi-info">
+              {{#bs-form formLayout=formLayout model=customerbusinessflowModel }}
+                  <div class="col-sm-12 nopadding-left bott cccc padding-bottom30">
+                      <div class="col-sm-6 nopadding-horizontal pull-left">
+                          {{#ui/img-intergration name="headImg" hasUploader=true imgSrc=customerbusinessflowModel.avatarUrl height=100 width=100 margin-left=0 uploadUrl=uploadUrl uploadSucc="uploadSucc" uploadFail="uploadFailImg" businessType=constants.uploadBusinessType_headimg as |component|}}
+
+                              <div class="pull-left photo-title {{if detailEdit '' 'hidden'}}">
+                                  <div class="tip photo-title-color">
+                                      请上传入住老人的一张近照！
+                                  </div>
+                                  <div class="photo-footer">
+                                      <div class="button pull-left photo-footer-color" {{action 'avatarUpload' target=component on="click"}}>
+                                          上传图片
+                                      </div>
+                                  </div>
+                              </div>
+                          {{/ui/img-intergration}}
+                      </div>
+                      {{#if isWeixin}}
+                      <div class="col-sm-6 nopadding-horizontal pull-left">
+                          <img src="{{customerbusinessflowModel.realUrl}}" alt="" style="width:110px;height:110px;margin-left: 20px !important;float:left;">
+                          <div class="pull-left photo-title ">
+                              <div class="tip photo-title-color">
+                                  可以使用天年宝微信公众号登录扫描二维码！
+                              </div>
+                          </div>
+                      </div>
+                      {{/if}}
+                  </div>
+                  <div class="divide-10" style="clear:both" />
+                  <!--个人资料-->
+                  <div class="bottom12 col-sm-12 nopadding-left border-bottom">
+                      <strong class="font16 font-black">个人信息</strong>
+                  </div>
+                  <div class="divide-10" style="clear:both" />
+                  <div class="line ">
+                      <div class="col-xs-12 col-sm-6 nopadding-left">
+                          <div class="form-input-group label-normal">
+                              <span class="input-group-addon">老人姓名：</span>
+                              {{bs-form-element property="customerName" class="inline-block form-input-group" controlType="customerName" placeholder="必填项"}}
+                          </div>
+                      </div>
+                      <div class="col-xs-12 col-sm-6">
+                          <div class="form-input-group label-normal">
+                              <span class="input-group-addon">联系电话：</span>
+                              {{bs-form-element property="customerTel" class="inline-block form-input-group" controlType="customerTel" placeholder="必填项"}}
+                          </div>
+                      </div>
+                  </div>
+                  <div class="line">
+                    <div class="col-xs-12 col-sm-8 nopadding-left">
+                        <div class="form-input-group label-normal">
+                            <span class="input-group-addon">所在地区：</span>
+                            {{#if detailEdit}}
+                                {{#bs-form-element class="inline-block form-input-group" controlType="town"  property="town" }}
+                                  {{callbusi/address-choose class="inline-block form-input-group" selectTown='selectTown' modelInfo=customerbusinessflowModel}}
+                                {{/bs-form-element}}
+                            {{else}}
+                                <div class="font-light input-group-content">{{customerbusinessflowModel.allTownName}}</div>
+                            {{/if}}
+                        </div>
+                    </div>
+
+                  </div>
+                  <div class="line">
+                    <div class="col-xs-12 col-sm-6 nopadding-left">
+                      <div class="form-input-group label-normal">
+                          <span class="input-group-addon">详细地址：</span>
+                          {{bs-form-element property="customerAddr" class="inline-block form-input-group" controlType="customerAddr" placeholder=""}}
+                      </div>
+
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                      <div class="form-input-group label-normal ">
+                          <span class="input-group-addon">身份证号：</span>
+                            {{bs-form-element property="customerCardCode" class="inline-block form-input-group label-normal"
+                            controlType="customerCardCode" placeholder='' focus-out='computedCardCode' computedCardCode='computedCardCode'}}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="line">
+                    <div class="col-xs-12 col-sm-6 nopadding-left">
+                        <div class="form-input-group label-normal">
+                            <span class="input-group-addon">老人性别：</span>
+                            {{#if detailEdit}}
+                            {{#bs-form-element class="inline-block form-input-group" controlType="customerGender" property="customerGender" }}
+                                {{callbusi/dict-selector curDict=customerbusinessflowModel.customerGender groupCode=constants.sexType
+                                 dictSelect="sexSelect" value=customerbusinessflowModel.customerGender preselected=false}}
+                            {{/bs-form-element}}
+                            {{else}}
+                              <div class="font-light input-group-content">{{customerbusinessflowModel.customerGender.typename}}</div>
+                            {{/if}}
+                        </div>
+                    </div>
+                      <div class="col-xs-12 col-sm-6">
+                          <div class="form-input-group label-normal">
+                              <span class="input-group-addon">自理能力：</span>
+                              {{#bs-form-element class="inline-block form-input-group" controlType="customerSelfCareAbility" property="customerSelfCareAbility" }}
+                                {{callbusi/dict-selector curDict=customerbusinessflowModel.customerSelfCareAbility groupCode=constants.selfCareLevel
+                                  showName="必填项" dictSelect="abilitySelect" value=customerbusinessflowModel.customerSelfCareAbility preselected=false}}
+                              {{/bs-form-element}}
+                          </div>
+                      </div>
+                  </div>
+                  <div class="line">
+                    <div class="col-xs-12 col-sm-6 nopadding-left">
+                        <div class="form-input-group label-normal">
+                            <span class="input-group-addon">出生日期：</span>
+                            <div class="inline-block form-input-group">
+                              {{ui/addon/bs-datetimepicker date=customerbusinessflowModel.birthTime placeholder=""
+                              locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'
+                              show="dpShowAction" change="changeBirthdayAction" }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-input-group label-normal">
+                            <span class="input-group-addon">老人年龄：</span>
+                            <div class="font-light input-group-content">{{customerbusinessflowModel.customerAge}}</div>
+                        </div>
+                    </div>
+                  </div>
+                  <div class="line">
+                    <div class="col-xs-12 col-sm-6 nopadding-left">
+                        <div class="form-input-group label-normal">
+                            <span class="input-group-addon">文化程度：</span>
+                            {{#if detailEdit}}
+                              {{#bs-form-element class="inline-block form-input-group" controlType="customerEducation" property="customerEducation" }}
+                                  {{callbusi/dict-selector curDict=customerbusinessflowModel.customerEducation groupCode=constants.educationLevel showName="" dictSelect="educationSelect" value=customerbusinessflowModel.customerEducation preselected=false}}
+                              {{/bs-form-element}}
+                            {{else}}
+                                <div class="font-light input-group-content">{{customerbusinessflowModel.customerEducation.typename}}</div>
+                            {{/if}}
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-input-group label-normal">
+                            <span class="input-group-addon">身体情况：</span>
+                            {{#if detailEdit}}
+                            {{bs-form-element property="customerPS" class="inline-block form-input-group" controlType="customerPS" placeholder=""}}
+                            {{else}}
+                            <div class="font-light input-group-content">{{customerbusinessflowModel.customerPS}}</div>
+                            {{/if}}
+                        </div>
+                    </div>
+                  </div>
+                  <div class="line">
+                    <div class="col-xs-12 col-sm-6 nopadding-left">
+                        <div class="form-input-group label-normal">
+                            <span class="input-group-addon">老人类型：</span>
+                            {{#if detailEdit}}
+                              {{#bs-form-element class="inline-block form-input-group" controlType="customerOldManType" property="customerOldManType" }}
+                                  {{callbusi/dict-selector class="inline-block" curDict=customerbusinessflowModel.customerOldManType groupCode=constants.oldManType showName="" chooseMany=true
+                              dictSelect="oldManTypeSelect" value=customerbusinessflowModel.customerOldManType preselected=false}}
+                              {{/bs-form-element}}
+                            {{else}}
+                                <div class="font-light input-group-content">{{customerbusinessflowModel.customerOldManTypeName}}</div>
+                            {{/if}}
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-input-group label-normal">
+                            <span class="input-group-addon">医保类别：</span>
+                            {{#if detailEdit}}
+                              {{#bs-form-element class="inline-block form-input-group" controlType="customerMedicalInsuranceCategory" property="customerMedicalInsuranceCategory" }}
+                                  {{callbusi/dict-selector curDict=customerbusinessflowModel.customerMedicalInsuranceCategory groupCode=constants.medicalInsuranceType showName=""
+                                  dictSelect="medicalInsuranceSelect" value=customerbusinessflowModel.customerMedicalInsuranceCategory preselected=false}}
+                              {{/bs-form-element}}
+                            {{else}}
+                              <div class="font-light input-group-content">{{customerbusinessflowModel.customerMedicalInsuranceCategory.typename}}</div>
+                            {{/if}}
+                        </div>
+                    </div>
+                  </div>
+                  <div class="divide-40" style="clear:both" />
+                  <!--联系人信息-->
+                  <div class="bottom12 col-sm-12 nopadding-left border-bottom">
+                      <strong class="font16 font-black">联系人信息</strong>
+                  </div>
+                  <div class="divide-10" style="clear:both" />
+                  <div class="line">
+                      <div class="col-xs-12 col-sm-6 nopadding-left">
+                          <div class="form-input-group label-normal">
+                              <span class="input-group-addon">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</span>
+                              {{bs-form-element property="guardianFirstName" class="inline-block form-input-group" controlType="guardianFirstName" placeholder="必填项"}}
+                          </div>
+                      </div>
+                      <div class="col-xs-12 col-sm-6">
+                          <div class="form-input-group label-normal">
+                              <span class="input-group-addon">身份证号：</span>
+                              {{bs-form-element property="guardianFirstCardCode" class="inline-block form-input-group"
+                              controlType="guardianFirstCardCode" placeholder="" focus-out='computedFirstCardCode' computedFirstCardCode='computedFirstCardCode'}}
+                          </div>
+                      </div>
+                  </div>
+                  <div class="line">
+                    <div class="col-xs-12 col-sm-6 nopadding-left">
+                        <div class="form-input-group label-normal">
+                            <span class="input-group-addon">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：</span>
+                            {{#if detailEdit}}
+                              {{#bs-form-element class="inline-block form-input-group" controlType="guardianFirstGener" property="guardianFirstGener" }}
+                                  {{callbusi/dict-selector curDict=customerbusinessflowModel.guardianFirstGener groupCode=constants.sexType
+                                   dictSelect="sexSelectFirst" value=customerbusinessflowModel.guardianFirstGener preselected=false}}
+                              {{/bs-form-element}}
+                            {{else}}
+                              <div class="font-light input-group-content">{{customerbusinessflowModel.guardianFirstGener.typename}}</div>
+                            {{/if}}
+                        </div>
+                    </div>
+                      <div class="col-xs-12 col-sm-6">
+                          <div class="form-input-group label-normal">
+                              <span class="input-group-addon">联系方式：</span>
+                              {{bs-form-element property="guardianFirstContact" class="inline-block form-input-group" controlType="guardianFirstContact" placeholder="必填项"}}
+                          </div>
+                      </div>
+                  </div>
+                  <div class="line">
+                      <div class="col-xs-12 col-sm-6 nopadding-left">
+                          <div class="form-input-group label-normal">
+                              <span class="input-group-addon">与老人关系：</span>
+                              {{#bs-form-element class="inline-block form-input-group" controlType="firstRelation" property="firstRelation" }}
+                                  {{callbusi/dict-selector curDict=customerbusinessflowModel.firstRelation groupCode=constants.relationType dictSelect="relationSelect" value=customerbusinessflowModel.firstRelation preselected=false}}
+                              {{/bs-form-element}}
+                          </div>
+                      </div>
+                      <div class="col-xs-12 col-sm-6">
+                          <div class="form-input-group label-normal">
+                              <span class="input-group-addon">工作单位：</span>
+                              {{bs-form-element property="guardianFirstWork" class="inline-block form-input-group" controlType="guardianFirstWork" placeholder=""}}
+                          </div>
+                      </div>
+                  </div>
+                  <div class="line">
+                      <div class="col-xs-12 col-sm-6 nopadding-left">
+                          <div class="form-input-group label-normal">
+                              <span class="input-group-addon">常住地址：</span>
+                              {{bs-form-element property="guardianFirstAddress" class="inline-block form-input-group" controlType="guardianFirstAddress" placeholder=""}}
+                          </div>
+                      </div>
+                  </div>
+                  <div class="divide-40" style="clear:both" />
+                  <!--入住信息-->
+                  <!--预定页面-->
+                  <div class="bottom12 col-sm-12 nopadding-left border-bottom">
+                      <strong class="font16 font-black">入住信息</strong>
+                  </div>
+                  <div class="divide-10" style="clear:both" />
+                  <div class="line">
+                      <div class="col-xs-12 col-sm-6 nopadding-left">
+                          <div class="form-input-group label-normal">
+                              <span class="input-group-addon">入院日期：</span>
+                              {{#bs-form-element class="inline-block form-input-group" controlType="orderInTime"  property="orderInTime" }}
+                                {{ui/addon/bs-datetimepicker date=customerbusinessflowInfo.orderTime placeholder="必填"
+                                locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'
+                                value=customerbusinessflowInfo.orderInTime show="dpShowAction" change="changeOrderInTimeAction" }}
+                              {{/bs-form-element }}
+                          </div>
+                      </div>
+                      <div class="col-xs-12 col-sm-6">
+                          <div class="form-input-group label-normal">
+                              <span class="input-group-addon">办理日期：</span>
+                                {{#bs-form-element class="inline-block form-input-group" controlType="orderDate"  property="orderDate" }}
+                                  {{ui/addon/bs-datetimepicker date=customerbusinessflowInfo.orderDateTime placeholder="必填" maxDate=today
+                                  locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD' value=customerbusinessflowInfo.orderDate
+                                  show="dpShowAction" change="changeOrderDateAction" }}
+                                {{/bs-form-element }}
+                          </div>
+                      </div>
+                  </div>
+                  <div class="line">
+                      <div class="col-xs-12 col-sm-6 nopadding-left">
+                          <div class="form-input-group label-normal">
+                              <span class="input-group-addon">经办人：</span>
+                                {{#bs-form-element class="inline-block form-input-group" controlType="orderStaff"  property="orderStaff" }}
+                                  {{#power-select class="input-group-content" placeholder='经办人姓名(必填)' options=staffList  selected=customerbusinessflowModel.orderStaff searchField="name"
+                                  noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "selectStaff" ) as |staff|}}
+                                    {{staff.name}}
+                                  {{/power-select}}
+                                {{/bs-form-element}}
+                          </div>
+                      </div>
+                      <div class="col-xs-12 col-sm-4">
+                          <div class="form-input-group label-normal">
+                              <span class="input-group-addon">预定床位：</span>
+                                {{#bs-form-element class="inline-block form-input-group" controlType="orderBed"  property="orderBed" }}
+                                  {{callbusi/bed-choose class="inline-block form-input-group" bedShow=bedShow defaultBed=customerbusinessflowModel.orderBed
+                                  submmit="submmit" selectBed="selectBed" selectBuild="selectBuild" bedList=bedList }}
+                                {{/bs-form-element}}
+                          </div>
+                      </div>
+                  </div>
+                  <div class="line">
+                      <div class="col-xs-12 col-sm-6  nopadding-left">
+                          <div class="form-input-group label-normal">
+                              <span class="input-group-addon">保证金(元)：</span>
+                              {{bs-form-element property="orderMoney" class="inline-block form-input-group label-normal" controlType="orderMoney" placeholder='必填'}}
+                          </div>
+                      </div>
+                      <div class="col-xs-12 col-sm-6">
+                          <div class="form-input-group label-normal">
+                              <span class="input-group-addon">备注：</span>
+                              {{bs-form-element property="remark" class="inline-block form-input-group label-normal" controlType="remark" placeholder=''}}
+                          </div>
+                      </div>
+                  </div>
+                    <div class="col-sm-12">
+                        <div class="text-center padding-top30 padding-bottom100">
+                            <p class="text-center user-add-btn" style="display:inline-block;margin:0 auto!important ">
+                                {{#ui/mix-button class=" user-btn edit-btn " iconClass="fa-check" clickAction="saveScheduled" saveScheduled="saveScheduled" text='保存' }}
+                                {{/ui/mix-button}}
+                                {{#ui/mix-button class=" user-btn times-btn " iconClass="fa fa-mail-reply" text='取消' clickAction="cancelClick" cancelClick="cancelClick" }}
+                                {{/ui/mix-button}}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="divide-40" style="clear:both" />
+              {{/bs-form}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,113 @@
+<div class="col-sm-12">
+  <!-- BOX -->
+  <div class="box">
+    <div class="box-body">
+      <div id="datatable1_wrapper" class="dataTables_wrapper form-inline " role="grid">
+      	<div class="row">
+          <div class="col-sm-10 nopadding-right">
+        	  <!--搜索-->
+            <div class="col-sm-3 nopadding-left">
+        	    <div class="input-group full-width">
+                {{#power-select class="input-group-content full-width" placeholder='老人姓名' options=customerList selected=customer searchField="sortName"
+                noMatchesMessage="没有相关内容"	allowClear=true	onchange=(action "selectCustomer" ) as |customer|}}
+                  {{customer.name}}
+                {{/power-select}}
+        	    </div>
+        	  </div>
+            <div class="col-sm-3 nopadding-left">
+        	    <div class="input-group full-width">
+                {{#power-select class="input-group-content full-width" placeholder='执行人' options=staffList  selected=staff searchField="sortName"
+                noMatchesMessage="没有相关内容"	allowClear=true	onchange=(action "selectStaff" ) as |staff|}}
+                  {{staff.name}}
+                {{/power-select}}
+        	    </div>
+        	  </div>
+            <div class="col-sm-6 nopadding-left pull-left nopadding-right">
+               {{callbusi/time-search class="inline-block" text='执行时间' dateShow=dateShow chooseDate=chooseDate search="search"
+               submmit="submmit" emptied='emptied' changeBeginDateAction='changeBeginDateAction' changeEndDateAction='changeEndDateAction'}}
+            </div>
+        	  <!--搜索-->
+          </div>
+
+      	  <!-- <div class="user-add-btn col-sm-2 nopadding-left nopadding-right">
+            {{#ui/mix-button class="user-btn pull-right" iconClass="fa-plus"  text='新增护理记录'  clickAction="toDetailPage" toDetailPage="toDetailPage"}}
+            {{/ui/mix-button}}
+      	  </div> -->
+      	</div>
+        <table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="table-fixed atatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+          <thead>
+            <tr role="row">
+              <th rowspan="1" colspan="1" width="">老人姓名</th>
+              <th rowspan="1" colspan="1" width="">执行人</th>
+              <th rowspan="1" colspan="1" width="">项目名称</th>
+              <th rowspan="1" colspan="1" width="">开始时间</th>
+              <th rowspan="1" colspan="1" width="">完成情况</th>
+              <th rowspan="1" colspan="1" width="20%">备注</th>
+            </tr>
+          </thead>
+          {{#if planExeList}}
+          <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+            {{#each planExeList as |plan|}}
+            <tr {{action "toDetailPage" plan on="click"}}>
+              {{#if plan.itemProject}}
+                <td class="ellipsis" >{{plan.itemProject.project.customer.name}}</td>
+              {{else}}
+                <td class="ellipsis" >{{plan.detail.customer.name}}</td>
+              {{/if}}
+              <td class="ellipsis" >{{plan.exeStaff.name}}</td>
+              {{#if plan.itemProject}}
+                <td class="ellipsis" >{{plan.itemProject.item.name}}</td>
+              {{else}}
+                <td class="ellipsis" >{{plan.detail.item.item.name}}</td>
+              {{/if}}
+              <td class="ellipsis">{{plan.planStartTimeString}}</td>
+              <td class="ellipsis nowrap">{{plan.finishLevel.name}}</td>
+              <td class="ellipsis nowrap">{{plan.remarkStr}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+          {{else}}
+          <div class="nodate">暂无数据</div>
+          {{/if}}
+        </table>
+        {{#if planExeList}}
+            {{page-numbers content=planExeList showFL=true numPagesToShow=5 exportAllExcel="exportToAllExcel" exportAll=exportAll}}
+        {{else}}
+                <h1 class="col-sm-12 center unTask"></h1>
+        {{/if}}
+      </div>
+      <table id="datatable1" cellpadding="0" cellspacing="0" border="0" style='visibility: collapse;position: absolute;z-index: -999;' class="export-block table-fixed atatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+        <thead>
+          <tr role="row">
+            <th rowspan="1" colspan="1" width="">老人姓名</th>
+            <th rowspan="1" colspan="1" width="">执行人</th>
+            <th rowspan="1" colspan="1" width="">项目名称</th>
+            <th rowspan="1" colspan="1" width="">开始时间</th>
+            <th rowspan="1" colspan="1" width="20%">备注</th>
+          </tr>
+        </thead>
+        <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+          {{#each exportList as |plan|}}
+          <tr>
+            {{#if plan.itemProject}}
+              <td class="ellipsis" >{{plan.itemProject.project.customer.name}}</td>
+            {{else}}
+              <td class="ellipsis" >{{plan.detail.customer.name}}</td>
+            {{/if}}
+            <td class="ellipsis" >{{plan.exeStaff.name}}</td>
+            {{#if plan.itemProject}}
+              <td class="ellipsis" >{{plan.itemProject.item.name}}</td>
+            {{else}}
+              <td class="ellipsis" >{{plan.detail.item.item.name}}</td>
+            {{/if}}
+            <td class="ellipsis">{{plan.planStartTimeString}}</td>
+            <td class="ellipsis nowrap">{{plan.remarkStr}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- /BOX -->
+</div>

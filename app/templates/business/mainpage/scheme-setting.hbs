@@ -1,0 +1,33 @@
+<div class="col-sm-12">
+  <div class="box clearfix">
+    <div class="bottom12">
+        <ul class="nopadding-left border-bottom">
+            <li class="pull-left margin-right30 {{if dietParams 'jujia-select-bottom-border' ''}}" {{action "dietClick" "dietParams" on="click"}}><a href="#tab_1_1" data-toggle="tab" class="{{if dietParams 'jujia-select-title' 'noselect-title'}} the-a">膳食方案</a></li>
+            <li class="pull-left margin-right30 {{if sportsParams 'jujia-select-bottom-border' ''}}" {{action "sportsClick" "sportsParams" on="click"}}><a href="#tab_1_2" data-toggle="tab" class="{{if sportsParams 'jujia-select-title' 'noselect-title'}} the-a">运动方案</a></li>
+            <li class="pull-left margin-right30 {{if medicineParams 'jujia-select-bottom-border' ''}}" {{action "medicineClick" "medicineParams" on="click"}}><a href="#tab_1_3" data-toggle="tab" class="{{if medicineParams 'jujia-select-title' 'noselect-title'}} the-a">中医方案</a></li>
+        </ul>
+        <div class="clear"></div>
+    </div>
+    <div class="tab-content fade in nopadding-left nopadding-right col-sm-12">
+      {{#if dietParams}}
+        <div class="tab-pane fade in  active" id="tab_1_1">
+            {{#callbusi/scheme-diet-list dietList=dietList dietDetail="dietDetail"}}
+            {{/callbusi/scheme-diet-list}}
+        </div>
+      {{/if}}
+      {{#if sportsParams}}
+        <div class="tab-pane fade in active" id="tab_1_2">
+            {{#callbusi/scheme-sports-list sportsList=sportsList sportsDetail="sportsDetail"}}
+            {{/callbusi/scheme-sports-list}}
+        </div>
+      {{/if}}
+      {{#if medicineParams}}
+        <div class="tab-pane fade in active" id="tab_1_3">
+            {{#callbusi/scheme-medicine-list medicineList=medicineList medicineDetail="medicineDetail"}}
+            {{/callbusi/scheme-medicine-list}}
+        </div>
+        {{/if}}
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,218 @@
+<div class="col-sm-12">
+  <!-- BOX -->
+  <div class="box">
+    <div class="box-body">
+      <div class="row bottom-border-plan2">
+        <div class="pull-left font20 bottom-border-template  padding-bottom10 margin-bottom-f2">
+          年度设置
+        </div>
+        <div class="pointer pull-left left26 font20" {{action 'toPlan' on="click"}}>
+          单周设置
+        </div>
+        <div class="pull-right  nopadding-right nopadding-left bottom5">
+          {{#ui/mix-button class="user-btn pull-left font16" iconClass="fa-users" paddingBorder="padding4 border-1-plantem" text='其他老人'  clickAction="editCustomer" editCustomer="editCustomer"}}
+          {{/ui/mix-button}}
+        </div>
+      </div>
+
+        <div class="clear">
+          <div class="pull-left top20 padding-bottom30 color999999 font14">
+            请设置计划模板(此模板会作为后续所有周计划的参考)
+          </div>
+          {{#if curCustomer}}
+          <div class="pull-right top20 line-height-30 nopadding-left font-black font16">
+              <span class="right10 font20">{{curCustomer.name}}</span><span class="fontColor">{{curBed.room.floor.building.name}}{{curBed.room.floor.name}}:{{curBed.room.name}}-{{curBed.name}}</span>
+          </div>
+
+          <!-- <div class="pull-right" style="line-height:43px;">
+            {{#unless detailEdit}}
+            <p class="user-add-btn">
+                {{#ui/form-function editAction="detailEdit" detailEdit="detailEdit"
+                 deleteNone=true}}
+                {{/ui/form-function}}
+            </p>
+            {{/unless}}
+          </div> -->
+          {{/if}}
+        </div>
+
+
+        {{#if showLoadingImg}}
+          <div class="center top20">
+            <img class="" src="assets/images/logo/loading.gif" style="width:40px" alt="">
+          </div>
+        {{else}}
+
+
+        {{#if curCustomer}}
+          {{#if rightBtn}}
+            <span class="font18 font-black pull-left position_absolute" >日项目：</span>
+            <div class="position_absolute pointer hover font20 border-radius5 dayColor" style="right:50px;padding:0 5px;z-index:99;" {{action 'toRight' 'day' on='click'}}>
+              <i class="fa-angle-double-right"></i>
+            </div>
+            {{else}}
+            <span class="font18 font-black pull-left position_absolute">日项目：</span>
+            <div class="position_absolute hover font20 border-radius5 opacityD3 topF2" style="right:50px;padding:0 5px;z-index:99;">
+              <i class="fa-angle-double-right"></i>
+            </div>
+          {{/if}}
+
+          {{#if leftBtn}}
+            <div class="position_absolute pointer hover font20 border-radius5 dayColor" style="left:140px;padding:0 5px;z-index:99;" {{action 'toLeft' 'day' on='click'}}>
+              <i class="fa-angle-double-left"></i>
+            </div>
+          {{else}}
+            <div class="position_absolute hover font20 border-radius5 opacityD3 topF2" style="left:140px;padding:0 5px;z-index:99;">
+              <i class="fa-angle-double-left"></i>
+            </div>
+          {{/if}}
+
+        <div class="position_relativePlan height30 line-height-25 overflow-hidden " id="daySelect">
+
+            {{#if dayServiceList}}
+              <div class="position_absolute" id="position_absolute">
+                {{#each dayServiceList as |service|}}
+                  <div class="white_space dayHover pull-left font16 left8 pointer padding-0-5 border-radius5 {{if service.selected 'dayColor' ''}}" {{action 'setService' service 'day' on="click"}}>
+                    <span>{{service.name}}</span><span>({{service.hasFrequency}}/{{service.frequency}})</span>
+                  </div>
+                {{/each}}
+              </div>
+            {{else}}
+              <div class="pull-left font16 left8">
+                无
+              </div>
+            {{/if}}
+
+        </div>
+
+        {{#if weekrightBtn}}
+            <span class="font18 font-black pull-left position_absolute top10">周项目：</span>
+            <div class="position_absolute pointer hover font20 border-radius5 top10 weekColor" style="right:50px;padding:0 5px;z-index:99;" {{action 'toRight' 'week' on='click'}}>
+              <i class="fa-angle-double-right"></i>
+            </div>
+          {{else}}
+            <div class="position_absolute hover font20 border-radius5 top8 opacityD3" style="right:50px;padding:0 5px;z-index:99;">
+              <i class="fa-angle-double-right"></i>
+            </div>
+            <span class="font18 font-black pull-left position_absolute top10">周项目：</span>
+        {{/if}}
+
+        {{#if weekleftBtn}}
+          <div class="position_absolute pointer hover font20 border-radius5 top10 weekColor" style="left:140px;padding:0 5px;z-index:99;" {{action 'toLeft' 'week' on='click'}}>
+            <i class="fa-angle-double-left"></i>
+          </div>
+        {{else}}
+          <div class="position_absolute hover font20 border-radius5 top8 opacityD3" style="left:140px;padding:0 5px;z-index:99;">
+            <i class="fa-angle-double-left"></i>
+          </div>
+        {{/if}}
+        <div class="position_relativePlan top10 height30 line-height-25 overflow-hidden" id="weekSelect">
+            {{#if weekServiceList}}
+            <div class="position_absolute" id="position_absoluteWeek">
+            {{#each weekServiceList as |service|}}
+              <div class="white_space weekHover pull-left font16 left8 pointer padding-0-5 border-radius5 {{if service.selected 'weekColor' ''}}" {{action 'setService' service 'week' on="click"}}>
+                <span>{{service.name}}</span><span>({{service.hasFrequency}}/{{service.frequency}})</span>
+              </div>
+            {{/each}}
+          </div>
+            {{else}}
+              <div class="pull-left font16 left8">
+                无
+              </div>
+            {{/if}}
+        </div>
+
+          {{#if detailEdit}}
+          {{#if curService}}
+            <div class="col-sm-12 nopadding-left top10">
+            {{#if curService.dayList}}
+              <!--周项目-->
+              <div class="col-sm-1 nopadding-left width120">
+                {{#each curService.dayList as |date|}}
+                  <div class="pointer week-tab" >
+                    <div class="bottom10 border-1-solid padding4 center {{if date.selected 'weekColor' ''}}" {{action "chooseWeek" date on="click"}}>
+                      <span>{{date.week}}</span>
+                      {{#if date.choosed}}
+                        <span class="hasError">已选</span>
+                      {{/if}}
+                    </div>
+                  </div>
+                {{/each}}
+              </div>
+
+              {{#if curdate}}
+              <div class="icon-tab col-sm-10">
+                {{#each curdate.serviceList as |date|}}
+                  <div class="col-sm-2 nopadding-right pointer " >
+                    <div class="bottom10 border-1-solid padding4 center {{if date.selected 'weekColor' ''}}" {{action "chooseTime" date on="click"}}>
+                      <img src={{date.icon}} style="height:20px" />
+                      <span>{{date.name}}</span>
+                      <!-- {{#if date.selected}}
+                      <span>已选</span>
+                      {{/if}} -->
+                    </div>
+                  </div>
+                {{/each}}
+              </div>
+              {{/if}}
+            {{else}}
+              <!--日项目-->
+              {{#each curService.dateList as |date|}}
+                <div class="col-sm-2 nopadding-right pointer">
+                  <div class="bottom10 border-1-solid padding4 center {{if date.selected 'dayColor' ''}}" {{action "chooseTime" date on="click"}}>
+                    <img src={{date.icon}} style="height:20px" />
+                    <span>{{date.name}}</span>
+                  </div>
+                </div>
+              {{/each}}
+            {{/if}}
+            </div>
+            <p class="user-add-btn">
+              <div class="text-center padding-top30">
+                  <p class="text-center user-add-btn padding-top10" style="display:inline-block;margin:0 auto!important ">
+                  {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check" disabled=isSubmit text='保存' clickAction="save" save="save"}}
+                  {{/ui/mix-button}}
+                  {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply" disabled=isSubmit  text='重置'  clickAction="detailCancel" detailCancel="detailCancel" }}
+                  {{/ui/mix-button}}
+                  </p>
+                  <p class="center top10">
+                    重置按钮说明：只重置当次更改内容(未保存项)
+                  </p>
+              </div>
+            </p>
+        {{/if}}
+        {{/if}}
+
+      {{/if}}
+
+
+      {{/if}}<!-- loadImg闭合if -->
+
+    </div>
+  </div>
+  <!-- /BOX -->
+</div>
+<!--选择老人-->
+{{#if editcustomer}}
+{{#bs-modal body=false footer=false header=false closedAction=(action "exitCustomer")}}
+
+{{#bs-modal-body}}
+  <div class="col-sm-12">
+    <div class="col-sm-12">
+      <div class="col-sm-6 nopadding-left nopadding-right" style="line-height:30px;font-size:13px;">
+        {{#power-select class="input-group-content" placeholder='姓名' options=customerList  selected=customer searchField="namePinyin"
+        noMatchesMessage="没有相关内容"	allowClear=false onchange=(action "chooseCustomer" ) as |customer|}}
+          {{customer.name}}
+        {{/power-select}}
+      </div>
+    </div>
+  </div>
+{{/bs-modal-body}}
+{{#bs-modal-footer class="user-add-btn"}}
+{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="confirm" confirm="confirm" }}
+{{/ui/mix-button}}
+{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消' clickAction="exitCustomer" exitCustomer="exitCustomer"}}
+{{/ui/mix-button}}
+{{/bs-modal-footer}}
+{{/bs-modal}}
+{{/if}}

@@ -1,0 +1,180 @@
+{{#ui/mobile/gestures-container}}
+    <ul class="profile">
+        {{#if (eq type "receive" )}}
+            {{#if (eq workdeliveryData.status.typecode "workDeliveryStatus3" )}}
+                <!-- <li {{action 'statusFun' on="tap"}} class=" carousel color666 border-top-1 border-bottom-1 margin-top-10" id="advName"> -->
+                <li  class=" carousel color666 border-top-1 border-bottom-1 margin-top-10" id="advName">
+                    <!-- <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i> -->
+                    <span class="profile-span-15">状态 </span>
+                    <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{workdeliveryData.status.typename}}</span>
+                    <!-- <i class="fa-angle-right font20 my-right color-ccc"></i> -->
+                </li>
+            {{else}}
+                <li class=" carousel color666 border-top-1 border-bottom-1 margin-top-10" id="advName">
+
+                    <span class="profile-span-15">状态 </span>
+                    <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{workdeliveryData.status.typename}}</span>
+
+                </li>
+            {{/if}}
+        {{/if}}
+        {{#if (eq type "send" )}}
+            {{#if (eq workdeliveryData.status.typecode "workDeliveryStatus1" )}}
+                <!-- <li {{action 'statusFun' on="tap"}} class=" carousel color666 border-top-1 border-bottom-1 margin-top-10" id="advName"> -->
+                <li class=" carousel color666 border-top-1 border-bottom-1 margin-top-10" id="advName">
+                    <!-- <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i> -->
+                    <span class="profile-span-15">状态 </span>
+                    <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{workdeliveryData.status.typename}}</span>
+                    <!-- <i class="fa-angle-right font20 my-right color-ccc"></i> -->
+                </li>
+            {{else}}
+                <li class=" carousel color666 border-top-1 border-bottom-1 margin-top-10" id="advName">
+
+                    <span class="profile-span-15">状态 </span>
+                    <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{workdeliveryData.status.typename}}</span>
+
+                </li>
+            {{/if}}
+        {{/if}}
+        {{#if (eq type "view" )}}
+            <li class=" carousel color666 border-top-1 border-bottom-1 margin-top-10" id="advName">
+
+                <span class="profile-span-15">状态 </span>
+                <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{workdeliveryData.status.typename}}</span>
+
+            </li>
+        {{/if}}
+        <li class=" carousel color666 border-top-1 border-bottom-1" id="occupancyIntent">
+
+            <span class="profile-span-15">交班人 </span>
+            <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{workdeliveryData.sender.name}}</span>
+
+        </li>
+        <li class=" carousel color666 border-top-1 border-bottom-1" id="advGender">
+
+            <span class="profile-span-15">交班时间 </span>
+            <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{workdeliveryData.createDateString}}</span>
+
+        </li>
+        {{#if (eq type "send" )}}
+            {{#if (eq workdeliveryData.status.typecode "workDeliveryStatus1" )}}
+                <li class=" carousel color666 border-top-1 border-bottom-1" id="receiver" {{action 'toSelfChoose' 'receiver' 'receiver' on="tap"}}>
+                    <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                    <span class="profile-span">接班人 <font color="red">{{reasonRece}}</font></span>
+                    <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{workdeliveryData.receiver.name}}</span>
+                    <i class="fa-angle-right font20 my-right color-ccc"></i>
+                </li>
+            {{else}}
+                <li class=" carousel color666 border-top-1 border-bottom-1" id="occupancyIntent">
+
+                    <span class="profile-span-15">接班人 </span>
+                    <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{workdeliveryData.receiver.name}}</span>
+
+                </li>
+            {{/if}}
+        {{/if}}
+        {{#if (eq type "receive" )}}
+            <li class=" carousel color666 border-top-1 border-bottom-1" id="occupancyIntent">
+
+                <span class="profile-span-15" >接班人 </span>
+                <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{workdeliveryData.receiver.name}}</span>
+
+            </li>
+        {{/if}}
+        {{#if (eq type "view" )}}
+            <li class=" carousel color666 border-top-1 border-bottom-1" id="occupancyIntent">
+
+                <span class="profile-span-15" >接班人 </span>
+                <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{workdeliveryData.receiver.name}}</span>
+
+            </li>
+        {{/if}}
+        {{#if workdeliveryData.receiveDateString }}
+            <li class=" carousel color666 border-top-1 border-bottom-1" id="advGender">
+
+                <span class="profile-span-15" >接班时间 </span>
+                <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{workdeliveryData.receiveDateString}}</span>
+
+            </li>
+        {{/if}}
+        {{#if (eq type "send" )}}
+            {{#if (eq workdeliveryData.status.typecode "workDeliveryStatus1" )}}
+                <li class=" carousel color666 border-top-1 border-bottom-1" id="remark" {{action 'modification' 'remark' 'remark' on="tap"}}>
+                    <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                    <span class="profile-span">交接内容 <font color="red">{{reasonRe}}</font></span>
+                    <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{workdeliveryData.remarkString}}</span>
+                    <i class="fa-angle-right font20 my-right color-ccc"></i>
+                </li>
+            {{else}}
+                <li class=" carousel color666 border-top-1 border-bottom-1 height-auto" id="remark" >
+                    <p class="width100B font14 line-height-20 padding-top12 padding-left15;"><b>交接内容</b></p>
+                    <!-- <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{workdeliveryData.remarkString}}</span> -->
+                    <p class="width100B font14 line-height-16 padding-left15;">{{workdeliveryData.remark}}</p>
+                </li>
+            {{/if}}
+        {{/if}}
+        {{#if (eq type "receive" )}}
+            <li class=" carousel color666 border-top-1 border-bottom-1 height-auto" id="remark" >
+                <p class="width100B font14 line-height-20 padding-top12 padding-left15;"><b>交接内容</b></p>
+                <!-- <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{workdeliveryData.remarkString}}</span> -->
+                <p class="width100B font14 line-height-16 padding-left15;">{{workdeliveryData.remark}}</p>
+            </li>
+        {{/if}}
+        {{#if (eq type "view" )}}
+            <li class=" carousel color666 border-top-1 border-bottom-1 height-auto" id="remark" >
+                <p class="width100B font14 line-height-20 padding-top12 padding-left15;"><b>交接内容</b></p>
+                <!-- <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{workdeliveryData.remarkString}}</span> -->
+                <p class="width100B font14 line-height-16 padding-left15;">{{workdeliveryData.remark}}</p>
+            </li>
+        {{/if}}
+    </ul>
+{{#if (eq type "receive" )}}
+    {{#if (eq workdeliveryData.status.typecode "workDeliveryStatus3" )}}
+        {{ui/mobile/task-detail-button needDoubleClickPrevent=true touchStartAction="save" save="receiveDone" butContent="确认接班" outerClass="top40"}}
+    {{/if}}
+{{/if}}
+{{#if (eq type "send" )}}
+    {{#if (eq workdeliveryData.status.typecode "workDeliveryStatus1" )}}
+        {{ui/mobile/task-detail-button needDoubleClickPrevent=true touchStartAction="save" save="sendDone" butContent="确认交班" outerClass="top40"}}
+    {{/if}}
+{{/if}}
+    {{ui/container/infinite-scroll moniteData=infiniteContentPropertyName didRenderAction="didRender" didInsertElementAction="didInsertElement"}}
+{{/ui/mobile/gestures-container}}
+
+
+<!-- 修改性别弹窗-->
+{{#if changeSexModel}}
+    <div class="change-sex" id="changeSexModel">
+        <ul class="self-sex nopadding-left">
+            {{#ui/mobile/gestures-container}}
+                {{#if (eq type "receive" )}}
+                    <li class="white-background-color border-radius5 font16">
+                        <span class="theLi btnApp" {{action 'statusFun1' on="tap"}}>接班</span>
+                    </li>
+                {{/if}}
+                {{#if (eq type "send" )}}
+                    <li class="white-background-color border-radius5 font16">
+                        <span class="theLi btnApp" {{action 'statusFun2' on="tap"}}>完成</span>
+                    </li>
+                {{/if}}
+                <li class="theLi top10 border-radius5 font16 btnApp" {{action 'closeFun' on='tap'}}>取消</li>
+            {{/ui/mobile/gestures-container}}
+        </ul>
+    </div>
+{{/if}}
+
+{{#if changeRemarkModel}}
+    <div class="change-sex" id="changeSexModel">
+        <ul class="self-sex nopadding-left">
+            {{#ui/mobile/gestures-container}}
+                <!-- <li class="white-background-color border-radius5 font16">
+                    <span class="theLi btnApp" >{{workdeliveryData.remark}}</span>
+                </li> -->
+                <div class="width100B">
+                    {{textarea type="text" value=workdeliveryData.remark class="width100B border-radius5 padding10 border-1solid-ccc font14 line-height-20 color333333" cols="20" rows="3" readonly="readonly" }}
+                </div>
+                <li class="theLi top10 border-radius5 font16 btnApp" {{action 'closeRemarkFun' on='tap'}}>关闭</li>
+            {{/ui/mobile/gestures-container}}
+        </ul>
+    </div>
+{{/if}}

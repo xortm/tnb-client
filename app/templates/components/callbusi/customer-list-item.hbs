@@ -1,0 +1,61 @@
+<div class="col-sm-4">
+    <div class="panel panel-default nopadding-left customer-list-box">
+        <div class="clearfix" style="cursor: pointer" {{action "goDetail" customer on="click"}}>
+            <div class="customer-list-top clearfix">
+                <div class="customer-image text-center">
+                    {{ui/img-intergration name="avatarImg" imgSrc=customer.avatarUrl}}
+                </div>
+                <div class="text-center mt20 left16" style="margin-right:16px;">
+                    <p class="font-size-16">{{customer.name}} | {{customer.sex.typename}} | {{customer.age}}岁</p>
+                    <!-- <p class="key-point-color">家属联系方式：{{customer.guardianFirstName}}</p>
+          <p class="key-point-color">电话：{{customer.guardianFirstContact}}</p> -->
+                    {{#if global_curStatus.isJujia}}
+                        <p class="key-point-color">联系电话：{{customer.phone}}</p>
+                    {{else}}
+                        <p class="key-point-color">{{customer.realBed.allBedName}}</p>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="customer-list-bom clearfix list-overflow">
+                <!-- <div class="col-sm-6 col-lg-4 text-center pt10 padding-bottom10">
+          <p class="text-nowrap">{{customer.realBed.roomBedName}}</p>
+          <p class="top0">房间/床位</p>
+        </div> -->
+                <div class="col-sm-6 col-lg-6 text-center pt10 padding-bottom10">
+                    {{#if global_curStatus.isJujia}}
+                        {{#if customer.customerVipInfo}}
+                            <p class="extend">{{customer.customerVipInfo.level.typename}}</p>
+                        {{else}}
+                            <p class="extend">未分配会员等级</p>
+                        {{/if}}
+                        {{#if sportScheme}}
+                        <p class="extend" style="font-size:15px; margin-top:0;">{{sportScheme.scheme.title}}</p>
+                        {{else}}
+                            <p class="extend" style="font-size:15px; margin-top:0;">未分配运动方案</p>
+                        {{/if}}
+                    {{else}}
+                        <p class="extend">{{customer.groupsName}}</p>
+                        <p class="top0">护理组</p>
+                    {{/if}}
+                </div>
+                <div class="col-sm-6 col-lg-6 text-center pt10 padding-bottom10">
+                    {{#if global_curStatus.isJujia}}
+                        {{#if dictScheme}}
+                        <p class="extend">{{dictScheme.scheme.title}}</p>
+                        {{else}}
+                            <p class="extend">未分配膳食方案</p>
+                        {{/if}}
+                        {{#if medicineScheme}}
+                        <p class="extend" style="font-size:15px; margin-top:0;">{{medicineScheme.scheme.title}}</p>
+                        {{else}}
+                            <p class="extend" style="font-size:15px; margin-top:0;">未分配中医方案</p>
+                        {{/if}}
+                    {{else}}
+                        <p class="text-nowrap">{{customer.nursinglevelName}}</p>
+                        <p class="top0">护理级别</p>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,63 @@
+<div id="{{if item.initial (concat infiniteContainerName item.initial) ""}}" itemId="{{item.itemId}}" name="listContainer" class="contentArea contentAreaList" style=" margin-left:-87px;">
+  {{#if item.hasApply}}
+  <div class="finish-tag">{{item.finishTime}}</div>
+  <div class="finish-notfinish clearfix col-xs-left pull-left">
+    已执行
+  </div>
+  {{else}}
+    {{ui/mobile/finish-button needDoubleClickPrevent=true touchStartAction="finish" finish="finish"}}
+  <!-- <div class="finish-notfinish clearfix col-xs-left pull-left" {{action "finish" on="tap"}}>
+    执行
+  </div> -->
+  {{/if}}
+  <div class="col-xs-middle-task time-content nopadding-horizontal pull-left" id="item_{{item.busiId}}_{{item.itemId}}" {{action "tapAct" on="tap"}}>
+    <div class="title clearfix">
+      <div class="time-label  color2FA7FD">{{item.timeStr}}</div>
+      <div class="task-title extend font12">{{item.title}}</div>
+    </div>
+    <div class="item-split"></div>
+    {{#if item.medicineDesc}}
+    <div class="content clearfix padding-top3 position-relative">
+      <div class="user-info top8 font16">{{item.customerName}} <span class="font12 color999999">{{item.customerBed}}</span></div>
+      {{#if (gte item.littleDrugDetail 0)}}
+        <div class="detail color999999">药品:{{item.medicineName}}
+          <span class="little">药品可用{{item.littleDrugDetail}}天</span>
+        </div>
+      {{else}}
+        <div class="detail color999999">药品:{{item.medicineName}}</div>
+      {{/if}}
+      <div class="detail color999999">详情:{{item.medicineDesc}}</div>
+      <!-- {{#if item.littleDrugDetail}}
+        <div class="detail color999999">缺药提醒：剩余药量{{item.allDrugNum}}{{item.drugTypename}},不能够支持{{item.littleDrugDetail}}天使用</div>
+      {{/if}} -->
+      <!-- {{#if item.medicineAvatarUrl}}
+        {{#if item.hasApply}}
+        {{else}}
+        <div style="position:absolute;top:3px;right:3px;width:40px;height:40px;">
+          {{#ui/img-intergration name="drugImgOne" circleMode=false
+          hasUploader=false
+          imgSrc=item.medicineAvatarUrl height=40 width=40
+          }}
+          {{/ui/img-intergration}}
+        </div>
+        {{/if}}
+      {{/if}} -->
+    </div>
+    {{else}}
+    <div class="content clearfix">
+      <div class="user-info font16">{{item.customerName}} <span class="font12 color999999">{{item.customerBed}}</span></div>
+      <div class="detail extend color999999">详情:{{item.desc}}</div>
+    </div>
+    {{/if}}
+  </div>
+  {{#if item.hasApply}}
+  <div class="finish-notfinish clearfix col-xs-left pull-left">
+    已执行
+  </div>
+  {{else}}
+    {{ui/mobile/finish-button needDoubleClickPrevent=true touchStartAction="finish" finish="finish"}}
+  <!-- <div class="finish-notfinish clearfix col-xs-left pull-left" {{action "finish" on="tap"}}>
+    执行
+  </div> -->
+  {{/if}}
+</div>

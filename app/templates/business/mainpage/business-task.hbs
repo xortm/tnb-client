@@ -1,0 +1,25 @@
+{{log 'taskList' taskList}}
+<div class="page-content">
+  <div class="row">
+    <div class="col-lg-3 col-md-3 col-sm-4">
+      {{#power-select placeholder="任务状态" options=taskStatus selected=taskStatusSel
+      allowClear=true onchange=(action "staSelect") as |status|}}
+      {{status.typename}}
+      {{/power-select}}
+    </div>
+    <!-- <div class="top5 col-sm-8 nopadding-horizontal">如要发布任务请联系运营人员：4000-911-777，任务通过审核后，可通过上方的任务切换按钮切换任务，以及为相应的任务邀请客服</div> -->
+  </div>
+  {{#if taskList}}
+  {{#each taskList as |task|}}
+  <div class="col-sm-12 top15 bgcolor-w cs-list">
+    {{#callbusi/business-task-item
+      editCustomer = 'editCustomer'
+      busiTask = task
+    }}
+    {{/callbusi/business-task-item}}
+  </div>
+  {{/each}}
+  {{else}}
+  <h1 class="col-sm-12 center unTask">您还没有发布任务</h1>
+  {{/if}}
+</div>

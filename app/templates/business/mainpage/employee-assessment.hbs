@@ -1,0 +1,37 @@
+{{#ui/mobile/gestures-container}}
+<div id="employeeAssessmentContainer" class="mainContent border-top-1 {{if global_pageConstructure.showLoader 'hide' ''}}">
+  <div class="wrapperInner">
+  {{#if assessmentList}}
+    <div class="bgcolor-white">
+    {{log "assessmentList hbs" assessmentList}}
+    {{#each assessmentList as |assessment|}}
+      {{#callbusi/mobile/employee-assessment-list item=assessment outerClass="col-sm-6 col-xs-12 height-auto"}}
+      {{/callbusi/mobile/employee-assessment-list}}
+    {{/each}}
+    </div>
+  {{else}}
+    {{#if noEmployeeId}}
+      <div class="center" style="margin-top:40px;">
+        请在上方选择员工
+      </div>
+    {{else}}
+      <div class="nodate">暂无数据</div>
+    {{/if}}
+  {{/if}}
+
+
+
+  </div>
+
+</div>
+{{/ui/mobile/gestures-container}}
+
+{{#ui/mobile/gestures-container}}
+<div class="detail-dynamicsbtn" id="employee-assessment" {{action 'addAssessment' on="tap"}} style="bottom:40px;">
+  <img class="bottom2" width='15' src="assets/images/mobile/add.png" alt="">
+  <span class="padding-left-10">添加考核</span>
+</div>
+{{/ui/mobile/gestures-container}}
+
+{{ui/container/infinite-scroll moniteData="assessmentList"
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

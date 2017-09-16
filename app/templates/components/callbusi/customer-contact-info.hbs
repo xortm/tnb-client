@@ -1,0 +1,341 @@
+<div class="busi-info">
+    {{#bs-form formLayout=formLayout model=customerModel action=(action "detailSaveClick") invalid=(action "invalid")}}
+        <div style="clear:both" />
+        {{#if showCustomer}}
+        {{else}}
+        <div class="col-xs-12 pull-right  user-add-btn nopadding-horizontal top8">
+            {{#if shortSave}}
+            {{else}}
+            {{#if addMode}}
+                {{#if detailModify}}
+                {{else}}
+                    <!-- {{#ui/mix-button class=" user-btn edit-btn" iconClass="fa fa-edit" text='编辑' clickAction="detailModifyClick" detailModifyClick="detailModifyClick" }}
+                    {{/ui/mix-button}} -->
+                {{/if}}
+            {{else}}
+                {{#if detailModify}}
+                {{else}}
+                    <!-- {{#ui/icon-button iconClass="fa-trash-o pull-right incon-button-font"
+                    data-toggle="tooltip"  title="删除"  data-placement="top" data-original-title="删除"
+                    clickAction="delById" clickActParams=customerInfo delById="delById"}}
+                    {{/ui/icon-button}} -->
+                    {{#ui/icon-button iconClass="fa-edit pull-right incon-button-font"
+                    data-toggle="tooltip"  title="编辑"  data-placement="top" data-original-title="编辑"
+                    clickAction="detailModifyClick" detailModifyClick="detailModifyClick"}}
+                    {{/ui/icon-button}}
+                    <!-- {{#ui/form-function editAction="detailModifyClick" detailModifyClick="detailModifyClick"
+      							removeAction="delById" delById="delById" }}
+      							{{/ui/form-function}} -->
+                {{/if}}
+            {{/if}}
+            {{/if}}
+        </div>
+        {{/if}}
+        <div class="bottom12 top12 col-sm-12 nopadding-left">
+            <strong class="font16 font-black">监护人</strong>
+        </div>
+        <div class="line">
+            <div class="col-xs-12 col-sm-6 nopadding-left">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</span>
+                    {{#if detailModify}}
+                        <!-- {{input class="input-group-content" value=customerInfo.guardianFirstName type="text"}} -->
+                        {{bs-form-element property="guardianFirstName" class="inline-block form-input-group" controlType="guardianFirstName" placeholder="必填项"}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.guardianFirstName}}</div>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">身份证号：</span>
+                    {{#if detailModify}}
+                        <!-- {{input class="input-group-content" value=customerInfo.guardianFirstCardCode type="text"}} -->
+                        {{bs-form-element property="guardianFirstCardCode" class="inline-block form-input-group" controlType="guardianFirstCardCode" placeholder="必填项" focus-out='computedFirstCardCode' computedFirstCardCode='computedFirstCardCode'}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.guardianFirstCardCode}}</div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+        <div class="line">
+            <div class="col-xs-12 col-sm-6 nopadding-left">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：</span>
+                    {{#if detailModify}}
+                        <!-- {{callbusi/dict-selector class="inline-block " curDict=customerInfo.guardianFirstGener groupCode=constants.sexType showName="必填项" dictSelect="GenerSelect"}} -->
+                        {{#bs-form-element class="inline-block form-input-group" controlType="guardianFirstGener" property="guardianFirstGener" }}
+                            {{callbusi/dict-selector curDict=customerModel.guardianFirstGener dictChange=customerModel.guardianSexChange groupCode=constants.sexType showName="必填项" dictSelect="GenerSelect" value=customerModel.guardianFirstGener preselected=false}}
+                        {{/bs-form-element}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.guardianFirstGener.typename}}</div>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">联系方式：</span>
+                    {{#if detailModify}}
+                        <!-- {{input class="input-group-content" value=customerInfo.guardianFirstContact type="text"}} -->
+                        {{bs-form-element property="guardianFirstContact" class="inline-block form-input-group" controlType="guardianFirstContact" placeholder="必填项"}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.guardianFirstContact}}</div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+        <div class="line">
+            <div class="col-xs-12 col-sm-6 nopadding-left">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">与老人关系：</span>
+                    {{#if detailModify}}
+                        <!-- {{callbusi/dict-selector class="inline-block " curDict=customerInfo.firstRelation groupCode=constants.relationType showName="必填项" dictSelect="relationSelect"}} -->
+                        {{#bs-form-element class="inline-block form-input-group" controlType="firstRelation" property="firstRelation" }}
+                            {{callbusi/dict-selector curDict=customerModel.firstRelation groupCode=constants.relationType showName="必填项" dictSelect="relationSelect" value=customerModel.firstRelation preselected=false}}
+                        {{/bs-form-element}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.firstRelation.typename}}</div>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">工作单位：</span>
+                    {{#if detailModify}}
+                        <!-- {{input class="input-group-content" value=customerInfo.guardianFirstWork type="text"}} -->
+                        {{bs-form-element property="guardianFirstWork" class="inline-block form-input-group" controlType="guardianFirstWork" placeholder=""}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.guardianFirstWork}}</div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+        <div class="line">
+            <div class="col-xs-12 col-sm-6 nopadding-left">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">常住地址：</span>
+                    {{#if detailModify}}
+                        <!-- {{input class="input-group-content" value=customerInfo.guardianFirstAddress type="text"}} -->
+                        {{bs-form-element property="guardianFirstAddress" class="inline-block form-input-group" controlType="guardianFirstAddress" placeholder=""}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.guardianFirstAddress}}</div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+        <div style="clear:both" />
+        <div class="bottom12 top12 col-sm-12 nopadding-left">
+            <strong class="font16 font-black">第二联系人</strong>
+        </div>
+        <div class="line">
+            <div class="col-xs-12 col-sm-6 nopadding-left">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</span>
+                    {{#if detailModify}}
+                        {{bs-form-element property="guardianSecondName" class="inline-block form-input-group" controlType="guardianSecondName" placeholder=""}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.guardianSecondName}}</div>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">身份证号：</span>
+                    {{#if detailModify}}
+                        {{bs-form-element property="guardianSecondCardCode" class="inline-block form-input-group" controlType="guardianSecondCardCode" placeholder="" focus-out='computedSecondCardCode' computedSecondCardCode='computedSecondCardCode'}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.guardianSecondCardCode}}</div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+        <div class="line">
+            <div class="col-xs-12 col-sm-6 nopadding-left">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：</span>
+                    {{#if detailModify}}
+                        <!-- {{callbusi/dict-selector class="inline-block " curDict=customerInfo.guardianFirstGener groupCode=constants.sexType showName="必填项" dictSelect="GenerSelect"}} -->
+                        {{#bs-form-element class="inline-block form-input-group" controlType="guardianSecondGener" property="guardianSecondGener" }}
+                            {{callbusi/dict-selector curDict=customerModel.guardianSecondGener dictChange=customerModel.guardianSecondChange groupCode=constants.sexType showName="" dictSelect="secondGenerSelect" value=customerModel.guardianSecondGener preselected=false}}
+                        {{/bs-form-element}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.guardianSecondGener.typename}}</div>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">联系方式：</span>
+                    {{#if detailModify}}
+                        <!-- {{input class="input-group-content" value=customerInfo.guardianFirstContact type="text"}} -->
+                        {{bs-form-element property="guardianSecondContact" class="inline-block form-input-group" controlType="guardianSecondContact" placeholder=""}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.guardianSecondContact}}</div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+        <div class="line">
+            <div class="col-xs-12 col-sm-6 nopadding-left">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">与老人关系：</span>
+                    {{#if detailModify}}
+                        <!-- {{callbusi/dict-selector class="inline-block " curDict=customerInfo.firstRelation groupCode=constants.relationType showName="" dictSelect="relationSelect"}} -->
+                        {{#bs-form-element class="inline-block form-input-group" controlType="secondRelation" property="secondRelation" }}
+                            {{callbusi/dict-selector curDict=customerModel.secondRelation groupCode=constants.relationType showName="" dictSelect="secondRelationSelect" value=customerModel.secondRelation preselected=false}}
+                        {{/bs-form-element}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.secondRelation.typename}}</div>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">工作单位：</span>
+                    {{#if detailModify}}
+                        <!-- {{input class="input-group-content" value=customerInfo.guardianFirstWork type="text"}} -->
+                        {{bs-form-element property="guardianSecondWork" class="inline-block form-input-group" controlType="guardianSecondWork" placeholder=""}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.guardianSecondWork}}</div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+        <div class="line">
+            <div class="col-xs-12 col-sm-6 nopadding-left">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">常住地址：</span>
+                    {{#if detailModify}}
+                        {{bs-form-element property="guardianSecondAddress" class="inline-block form-input-group" controlType="guardianSecondAddress" placeholder=""}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.guardianSecondAddress}}</div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+        <div style="clear:both" />
+        <div class="bottom12 top12 col-sm-12 nopadding-left">
+            <strong class="font16 font-black">第三联系人</strong>
+        </div>
+        <div class="line">
+            <div class="col-xs-12 col-sm-6 nopadding-left">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</span>
+                    {{#if detailModify}}
+                        {{bs-form-element property="guardianThirdName" class="inline-block form-input-group" controlType="guardianThirdName" placeholder=""}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.guardianThirdName}}</div>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">身份证号：</span>
+                    {{#if detailModify}}
+                        {{bs-form-element property="guardianThirdCardCode" class="inline-block form-input-group" controlType="guardianThirdCardCode" placeholder="" focus-out='computedThirdCardCode' computedThirdCardCode='computedThirdCardCode'}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.guardianThirdCardCode}}</div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+        <div class="line">
+            <div class="col-xs-12 col-sm-6 nopadding-left">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：</span>
+                    {{#if detailModify}}
+                        {{#bs-form-element class="inline-block form-input-group" controlType="guardianThirdGener" property="guardianThirdGener" }}
+                            {{callbusi/dict-selector curDict=customerModel.guardianThirdGener dictChange=customerModel.guardianThirdChange groupCode=constants.sexType showName="" dictSelect="thirdGenerSelect" value=customerModel.guardianThirdGener preselected=false}}
+                        {{/bs-form-element}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.guardianThirdGener.typename}}</div>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">联系方式：</span>
+                    {{#if detailModify}}
+                        <!-- {{input class="input-group-content" value=customerInfo.guardianFirstContact type="text"}} -->
+                        {{bs-form-element property="guardianThirdContact" class="inline-block form-input-group" controlType="guardianThirdContact" placeholder=""}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.guardianThirdContact}}</div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+        <div class="line">
+            <div class="col-xs-12 col-sm-6 nopadding-left">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">与老人关系：</span>
+                    {{#if detailModify}}
+                        <!-- {{callbusi/dict-selector class="inline-block " curDict=customerInfo.firstRelation groupCode=constants.relationType showName="" dictSelect="relationSelect"}} -->
+                        {{#bs-form-element class="inline-block form-input-group" controlType="thirdRelation" property="thirdRelation" }}
+                            {{callbusi/dict-selector curDict=customerModel.thirdRelation groupCode=constants.relationType showName="" dictSelect="thirdRelationSelect" value=customerModel.thirdRelation preselected=false}}
+                        {{/bs-form-element}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.thirdRelation.typename}}</div>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">工作单位：</span>
+                    {{#if detailModify}}
+                        <!-- {{input class="input-group-content" value=customerInfo.guardianFirstWork type="text"}} -->
+                        {{bs-form-element property="guardianThirdWork" class="inline-block form-input-group" controlType="guardianThirdWork" placeholder=""}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.guardianThirdWork}}</div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+        <div class="line">
+            <div class="col-xs-12 col-sm-6 nopadding-left">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">常住地址：</span>
+                    {{#if detailModify}}
+                        {{bs-form-element property="guardianThirdAddress" class="inline-block form-input-group" controlType="guardianThirdAddress" placeholder=""}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.guardianThirdAddress}}</div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+      {{#if showCustomer}}
+      {{else}}
+      <div class="col-sm-12">
+        <div class="text-center padding-top30 padding-bottom100">
+            <p class="text-center user-add-btn" style="display:inline-block;margin:0 auto!important ">
+              {{#if shortSave}}
+              {{#ui/mix-button class=" user-btn edit-btn " iconClass="fa-save" text='暂存' clickAction="shortSaveInfo" shortSaveInfo="shortSaveInfo" }}
+              {{/ui/mix-button}}
+              {{#ui/mix-button class=" user-btn edit-btn " iconClass="fa-check" text='下一步' clickAction="next" next="next" }}
+              {{/ui/mix-button}}
+              {{#ui/mix-button class=" user-btn times-btn " iconClass="fa fa-mail-reply" text='取消' clickAction="remove" remove="remove" }}
+              {{/ui/mix-button}}
+              {{else}}
+                {{#if addMode}}
+                    {{#if detailModify}}
+                        {{#ui/mix-button class=" user-btn edit-btn " iconClass="fa-check" text='保存' }}
+                        {{/ui/mix-button}}
+                        {{#ui/mix-button class=" user-btn times-btn " iconClass="fa fa-mail-reply" text='取消' clickAction="cancelClick" cancelClick="cancelClick" }}
+                        {{/ui/mix-button}}
+                    {{else}}
+                    {{/if}}
+                {{else}}
+                    {{#if detailModify}}
+                        {{#ui/mix-button class=" user-btn edit-btn " iconClass="fa-check" text='保存' }}
+                        {{/ui/mix-button}}
+                        {{#ui/mix-button class=" user-btn times-btn " iconClass="fa fa-mail-reply" text='取消' clickAction="cancelClick" cancelClick="cancelClick" }}
+                        {{/ui/mix-button}}
+                    {{else}}
+                    {{/if}}
+                {{/if}}
+                {{/if}}
+            </p>
+        </div>
+        </div>
+      {{/if}}
+    {{/bs-form}}
+</div>

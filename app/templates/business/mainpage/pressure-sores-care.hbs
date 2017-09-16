@@ -1,0 +1,28 @@
+
+{{#ui/mobile/gestures-container}}
+<div id="pressureCareContainer" class="mainContent border-top-1 {{if global_pageConstructure.showLoader 'hide' ''}} ">
+<ul class="profile top20">
+    <!-- <li class="carousel color666 border-bottom-1" id="service-care" >
+      <i class="profile-i"><img class="a-img" src="assets/images/mobile/nursingIcon.png"/></i>
+      <span class="profile-span">压疮等级 </span>
+      <i class="fa-angle-right font20 my-right color-ccc"></i>
+    </li> -->
+
+    <li class="carousel color666 border-bottom-1" id="evaluate-check" {{action 'toEvaluation' on="tap"}}>
+      <i class="profile-i"><img class="a-img" src="assets/images/mobile/managerIcon.png"/></i>
+      <span class="profile-span">压疮评估 </span>
+      <i class="fa-angle-right font20 my-right color-ccc"></i>
+    </li>
+
+    {{#each riskList as |risk index|}}
+      <li class="carousel color666 border-bottom-1" id="{{concat 'consultation-management-mobile-' risk.id}}" {{action 'toRiskForm' risk risk.id on="tap"}}>
+        <i class="profile-i"><img class="a-img" src="assets/images/mobile/leaderIcon.png"/></i>
+        <span class="profile-span">{{risk.name}} </span>
+        <i class="fa-angle-right font20 my-right color-ccc"></i>
+      </li>
+    {{/each}}
+</ul>
+</div>
+{{/ui/mobile/gestures-container}}
+{{ui/container/infinite-scroll scrollPrevent=true
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

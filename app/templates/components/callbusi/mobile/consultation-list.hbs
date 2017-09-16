@@ -1,0 +1,23 @@
+<div itemId="{{item.id}}" name="listContainer" class="contentArea contentAreaList width100B">
+
+    {{#if (eq item.backvistNum 0)}}
+        <div class="detail extend color999999"></div>
+    {{else}}
+        <div class="finish-tag" style="right:-62px;font-size:12px;">跟进次数:{{item.backvistNum}}</div>
+    {{/if}}
+
+    <!-- <div class="col-xs-middle time-content nopadding-horizontal width100B clearfix position-relative" id="item_{{item.id}}" > -->
+    <div class="col-xs-middle time-content nopadding-horizontal width100B clearfix position-relative" id="item_{{item.id}}" {{action "gotoDetail" on="tap"}}>
+        <div class="title pull-left" style="width:110px;">
+            <div class="time-label color2FA7FD" style="font-size:14px;">{{item.advDateShortString}}</div>
+            <!-- <div class="task-title extend font12">{{item.reason}}</div> -->
+        </div>
+        <div class="item-split" style="margin: 16px 0; height: 46px;"></div>
+        <div class="content clearfix padding-left-114 width100B position_absolute" style="float:none;">
+
+            <div class="user-info font16" style="margin-top:0;"> <span class="font12 color999999">咨询人：</span>{{item.advName}}</div>
+            <div class="user-info font16" style="margin-top:0;"> <span class="font12 color999999">咨询电话：</span>{{item.advTel}}</div>
+            <div class="detail extend color999999">接待人：{{item.receiveStaff.name}}</div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,34 @@
+<div class="col-md-12">
+    <!-- BOX -->
+    <div class="box">
+        <div class="box-body">
+            <div class="dataTables_wrapper form-inline " role="grid">
+                <div class="row">
+                    <div class="col-md-9">
+
+                        <form class="form-horizontal reduce-spacing" role="form">
+                            <div class="top30 text height45 border-radius input-border-color">
+                                <i class="el-lock input-icon"></i> {{input class="form-control" enter='recharge' value=money type="text" placeholder="金额"}}
+                            </div>
+
+                            {{#if success}}
+                                <div class="text-color-success left4 top15">{{responseInfo}}</div>
+                            {{else}}
+                                <div class="text-color-danger left4 top15">{{responseInfo}}</div>
+                            {{/if}}
+                            <div class="top60">
+                                <input type="button" class="btn send-bgcolor border-radius btn-block height45 font-em15" {{action "recharge"}} disabled= {{deterSDisabled}} value="充值">
+                            </div>
+                        </form>
+
+
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- /BOX -->
+</div>

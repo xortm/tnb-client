@@ -1,0 +1,101 @@
+<div class="col-sm-12">
+	<div class="box margin-middle max-width">
+		<!-- BOX-BODY -->
+		<div class="box-body">
+      {{#bs-form formLayout=formLayout model=reportModel invalid=(action "invalid")}}
+			<div class="row">
+				<div class="col-xs-12">
+					<p class="user-add-btn">
+						{{#if detailEdit}}
+						{{else}}
+							{{#ui/form-function editAction="editAction" editAction="editAction" removeAction="deleteAction" deleteAction="deleteAction" }}
+							{{/ui/form-function}}
+						{{/if}}
+					</p>
+				</div>
+				<!-- 列表详细介绍 -->
+				<div class="col-xs-12 nopadding-left">
+					<div class="col-xs-12 nopadding-horizontal mt20">
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+							<span class="input-group-addon">会员姓名：</span>
+								{{#if detailEdit}}
+									{{#bs-form-element class="inline-block form-input-group" controlType="customer" property="customer" }}
+									{{#power-select class="input-group-content" placeholder='必选项' options=customerList  selected=reportModel.customer searchField="name"
+										noMatchesMessage="没有相关会员信息"	allowClear=false	onchange=(action "customerSelect" ) as |customer|}}
+										{{customer.name}}
+									{{/power-select}}
+									{{/bs-form-element}}
+								{{else}}
+									<div class="input-group-content">{{reportModel.customer.name}}</div>
+								{{/if}}
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">体检时间：</span>
+								{{#if detailEdit}}
+								{{#bs-form-element class="inline-block form-input-group" controlType="createTime" property="createTime" }}
+										{{ui/addon/bs-datetimepicker date=reportModel.createTimeDate placeholder="必填项"
+											locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'
+												show="doNothing" change="changeCreateTime" }}
+								{{/bs-form-element}}
+								{{else}}
+									<div class="input-group-content">{{reportModel.createTimeStr}}</div>
+								{{/if}}
+									<!-- <input type="date" class="input-group-content" placeholder=""/> -->
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+							<span class="input-group-addon">体检项目：</span>
+								{{#if detailEdit}}
+									{{bs-form-element property="title" class="inline-block form-input-group label-normal" controlType="title" placeholder='必填项'}}
+								{{else}}
+									<div class="input-group-content">{{reportModel.title}}</div>
+								{{/if}}
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-12">
+							<div class="form-input-group">
+								<span class="input-group-addon">体检说明：</span>
+								{{#if detailEdit}}
+									{{textarea type="text" class="full-width inline-block form-input-group label-normal form-control" value=report.contents}}
+								{{else}}
+									<div class="input-group-content">{{report.contents}}</div>
+								{{/if}}
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-12 margin-top-10">
+							<div class="form-input-group">
+								<span class="input-group-addon">上传报告：</span>
+								{{#if detailEdit}}
+								{{#bs-form-element class="inline-block form-input-group" controlType="picPath" property="picPath" }}
+									{{#ui/img-intergration-simple name="reportImg" hasUploader=true imgSrc=reportModel.picPathUrl height=300 width=300 margin-left=0 uploadUrl=uploadUrl uploadSucc="uploadSucc" uploadFail="uploadFailImg" businessType=constants.uploadBusinessType_jujia as |component|}}
+						      {{/ui/img-intergration-simple}}
+								{{/bs-form-element}}
+								{{else}}
+									<div class="input-group-content height-auto"><img class="width300 height-auto" src="{{reportModel.picPathUrl}}" alt="{{reportModel.title}}"></div>
+								{{/if}}
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<div class="center">
+					<p class="text-center user-add-btn padding-top30 inlineBlock margin0auto">
+						{{#if detailEdit}}
+							{{#ui/mix-button class="user-btn edit-btn body-text-color" iconClass="fa fa-check"  text='保存' clickAction="saveAction" saveAction="saveAction"  clickActParams=reportModel}}
+							{{/ui/mix-button}}
+							{{#ui/mix-button class="user-btn times-btn body-text-color" iconClass="fa fa-mail-reply"  text='取消'  clickAction="detailCancel" detailCancel="detailCancel" }}
+							{{/ui/mix-button}}
+						{{/if}}
+					</p>
+				</div>
+				<!-- 列表详细介绍 -->
+			</div>
+      {{/bs-form}}
+		</div>
+		<!-- /BOX-BODY -->
+	</div>
+</div>

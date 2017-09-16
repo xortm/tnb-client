@@ -1,0 +1,194 @@
+<div class="panel panel-default col-sm-12">
+  <div class="panel-heading">
+    <h3 class="panel-title top2"><strong>{{busiTask.title}}</strong></h3>
+    <div class="pull-right">
+      {{#if busiTask.submit}}
+      <span class="label-color">审核中</span>
+      {{/if}}
+      {{#if busiTask.passed}}
+      <span class="label-color">审核通过，任务将在 {{days}} 后开始</span>
+      {{/if}}
+      {{#if busiTask.end}}
+      <span class="label-color">任务已结束
+        {{#if busiTask.extendIfo.money}}
+        ，共花费 ￥{{busiTask.extendIfo.money}}
+        {{/if}}
+      </span>
+      {{/if}}
+      {{#if busiTask.saved}}
+      <div class="panel-options pull-right">
+        {{#ui/icon-button iconClass="fa-pencil-square-o icon-larger"
+        data-toggle="tooltip"  title="编辑"  data-placement="top" data-original-title="编辑"
+        clickAction="editCustomer" editCustomer="editCustomer" }}
+        {{/ui/icon-button}}
+      </div>
+      <span class="label-color pull-right right20">草稿</span>
+      {{/if}}
+      {{#if busiTask.noPass}}
+      <span class="csu-color">审核未通过</span>
+      {{/if}}
+      {{#if busiTask.begin}}
+      <span class="label-color">已开始</span>
+      {{/if}}
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="col-sm-12 top10">
+      <!-- <div class="col-sm-6"><strong>任务编号: </strong><span>{{busiTask.code}}</span></div> -->
+      <div class="col-sm-6">
+        <strong>任务类型: </strong>
+        {{#if busiTask.calltypeStr}}
+        <span>{{busiTask.calltypeStr}}型</span>
+        {{/if}}
+      </div>
+    </div>
+    <div class="col-sm-12 top10">
+      <div class="col-lg-4 col-sm-6 overhidden" title={{taskPeriod}}>
+        <strong>任务周期: </strong>
+        <span class=" worktimeprint hovertype">{{busiTask.beginDateComp}} ~ {{busiTask.endDateComp}}</span>
+      </div>
+      <div class="col-lg-4 col-sm-6 overhidden" title={{taskTypes}}>
+        <strong>任务标签:</strong>
+        {{log 'taskTypes' taskTypes}}
+        <span class="hovertype">
+          {{#each busiTask.taskTypes as |taskType|}}
+          <span class="right4 worktimeprint">{{taskType.typename}}</span>
+          {{/each}}
+        </span>
+      </div>
+    </div>
+    <div class="col-sm-12 top10">
+      <div class="col-sm-12">
+        <strong>任务描述: </strong>
+      </div>
+      <div class="col-sm-12 top10 indent24 line2">{{busiTask.desc}}</div>
+    </div>
+    <div class="col-sm-12 top10 overhidden" title={{busiTask.worktimeString}}>
+      <div class="col-sm-12">
+        <strong>任务时段: </strong>
+        <span class="worktimeprint hovertype">
+          {{busiTask.worktimeString}}
+        </span>
+
+      </div>
+    </div>
+    <div class="col-sm-12">
+      {{#if busiTask.onlinePay}}
+      <div class="col-lg-4 col-sm-6 top10">
+        <strong>在线时长报酬: {{busiTask.onlinePay}}元/小时</strong>
+      </div>
+      {{/if}}
+      {{#if busiTask.callinPay}}
+      <div class="col-lg-4 col-sm-6 top10">
+        <strong>接听报酬: {{busiTask.callinPay}}元/通</strong>
+      </div>
+      {{/if}}
+      {{#if busiTask.calloutPay}}
+      <div class="col-lg-4 col-sm-6 top10">
+        <strong>外呼报酬: {{busiTask.calloutPay}}元/通</strong>
+      </div>
+      {{/if}}
+      {{#if busiTask.poPay}}
+      <div class="col-lg-4 col-sm-6 top10">
+        <strong>成单佣金: {{busiTask.poPay}}元/单</strong>
+      </div>
+      {{/if}}
+    </div>
+    {{#if busiTask.noPass}}
+    <div class="col-sm-8 top8 border-top padding-top10 csu-color">
+      <div class="col-sm-12">
+        <strong>审核失败的原因: </strong>
+      </div>
+      <div class="col-sm-12 top10 indent24 line2">{{busiTask.verifyFailReason}}</div>
+    </div>
+    <div class="col-sm-4 top8 border-top padding-top40">
+      {{#ui/mix-button iconClass="fa-pencil-square-o"
+      clickAction="editCustomer" editCustomer="editCustomer" text="再次编辑"}}
+      {{/ui/mix-button}}
+    </div>
+    {{/if}}
+    {{#if busiTask.person}}
+    <div class="col-sm-12 top8 border-top padding-top10">
+      <div class="col-sm-12">
+        <strong>人员配置: </strong>
+      </div>
+    </div>
+    <div class="col-sm-12 top5">
+      <!-- 正在审核 -->
+      {{#if busiTask.submit}}
+      {{#if busiTask.extendIfo.csNeed}}
+      <div class="col-sm-3 top8">需要: {{busiTask.extendIfo.csNeed}} 名</div>
+      {{else}}
+      <div class="col-sm-3 top8">需要: 0 名</div>
+      {{/if}}
+      {{/if}}
+
+      <!-- 正在审核 -->
+      {{#if busiTask.saved}}
+      {{#if busiTask.extendIfo.csNeed}}
+      <div class="col-sm-3 top8">需要: {{busiTask.extendIfo.csNeed}} 名</div>
+      {{else}}
+      <div class="col-sm-3 top8">需要: 0 名</div>
+      {{/if}}
+      {{/if}}
+
+      <!-- 审核通过未开始 、已开始-->
+      {{#if busiTask.isPassed}}
+      {{#if busiTask.extendIfo.csNeed}}
+      <div class="col-sm-3 top8">需要: {{busiTask.extendIfo.csNeed}} 名</div>
+      {{else}}
+      <div class="col-sm-3 top8">需要: 0 名</div>
+      {{/if}}
+      {{#if busiTask.extendIfo.csHave}}
+      <div class="col-sm-3 top8">已招: {{busiTask.extendIfo.csHave}} 名</div>
+      {{else}}
+      <div class="col-sm-3 top8">已招: 0 名</div>
+      {{/if}}
+      {{/if}}
+
+      <!-- 已结束 -->
+      {{#if busiTask.end}}
+      {{#if busiTask.extendIfo.csHave}}
+      <div class="col-sm-12 top8">共: {{busiTask.extendIfo.csHave}} 名</div>
+      {{else}}
+      <div class="col-sm-12 top8">共: 0 名</div>
+      {{/if}}
+      {{#if callOut}}
+      {{#if busiTask.extendIfo.calloutNum}}
+      <div class="col-sm-6 top8">全部呼出数量: {{busiTask.extendIfo.calloutNum}} 通</div>
+      {{else}}
+      <div class="col-sm-6 top8">全部呼出数量: 0 通</div>
+      {{/if}}
+      {{#if busiTask.extendIfo.calloutAveDuration}}
+      <div class="col-sm-6 top8">呼出平均时长: {{busiTask.extendIfo.calloutAveDuration}} '</div>
+      {{else}}
+      <div class="col-sm-6 top8">呼出平均时长: 0 '</div>
+      {{/if}}
+      {{else}}
+      {{#if busiTask.extendIfo.calloutNum}}
+      <div class="col-sm-6 top8">全部呼出数量: {{busiTask.extendIfo.calloutNum}} 通</div>
+      {{else}}
+      <div class="col-sm-6 top8">全部呼出数量: 0 通</div>
+      {{/if}}
+      {{#if busiTask.extendIfo.callinNum}}
+      <div class="col-sm-6 top8">全部呼入数量: {{busiTask.extendIfo.callinNum}} 通</div>
+      {{else}}
+      <div class="col-sm-6 top8">全部呼入数量: 0 通</div>
+      {{/if}}
+      {{#if busiTask.extendIfo.calloutAveDuration}}
+      <div class="col-sm-6 top8">呼出平均时长: {{busiTask.extendIfo.calloutAveDuration}} '</div>
+      {{else}}
+      <div class="col-sm-6 top8">呼出平均时长: 0 '</div>
+      {{/if}}
+      {{#if busiTask.extendIfo.callinAveDuration}}
+      <div class="col-sm-6 top8">呼入平均时长: {{busiTask.extendIfo.callinAveDuration}} '</div>
+      {{else}}
+      <div class="col-sm-6 top8">呼入平均时长: 0 '</div>
+      {{/if}}
+      {{/if}}
+      {{/if}}
+    </div>
+    {{/if}}
+  </div>
+
+</div>

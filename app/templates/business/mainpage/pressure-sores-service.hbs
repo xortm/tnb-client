@@ -1,0 +1,87 @@
+<div class="col-sm-12 nopadding-left nopadding-right padding-bottom100 bk-color-white" id="house-chart">
+  <!-- BOX -->
+  <div class="box nopadding-left nopadding-right">
+    <div class="box-body nopadding-left nopadding-right" >
+      <div class="col-sm-12 ">
+        <div class="bottom12">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#box_tab1" data-toggle="tab" {{action 'chooseTab' "evaShow"}}>
+               <span class="hidden-inline-mobile">压疮评估</span></a>
+            </li>
+            <!-- <li class=""><a href="#box_tab2" data-toggle="tab" {{action 'chooseTab' "chargeTab"}} >
+             <span class="hidden-inline-mobile">危险因素等级表</span></a>
+            </li> -->
+          </ul>
+            <div class="clear"></div>
+        </div>
+      </div>
+      {{#if evaShow}}
+        <div class="col-sm-12">
+            <div class="box">
+                <!-- BOX-BODY -->
+                <div class="box-body">
+                    <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+                        <div class="row ">
+                            <div class="col-sm-9">
+                                <div class="col-sm-5 nopadding-left">
+                                    <div class="pull-left">
+                                        <div class="input-group bottom8">
+                                            {{input class="form-control" type="text" placeholder="搜索姓名/房间号" value=queryCondition enter="search"}}
+                                            <span class="input-group-btn">
+                          <button class="btn btn-primary btn-reduce" type="button" style="touch-action: manipulation; -ms-touch-action: manipulation;" {{action "search" on="click"}}>
+                            <i class="fa fa-search"></i>
+                          </button>
+                        </span>
+                                        </div>
+                                    </div>
+                                    <!--搜索-->
+                                </div>
+                                <div class="col-sm-7 nopadding-right nopadding-left">
+                                    {{callbusi/time-search class="inline-block" text='按评估日期搜索' dateShow=dateShow chooseDate=chooseDate search="search" submmit="submmit" emptied='emptied' changeBeginDateAction='changeBeginDateAction' changeEndDateAction='changeEndDateAction'}}
+                                </div>
+                            </div>
+                        </div>
+                        <table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable mt15" aria-describedby="datatable1_info">
+                            <thead>
+                                <tr role="row">
+                                    <th rowspan="1" colspan="1" width="">老人姓名</th>
+                                    <th rowspan="1" colspan="1" width="">身份证号</th>
+                                    <th rowspan="1" colspan="1" width="">房间及床位</th>
+                                    <th rowspan="1" colspan="1" class="" width="">得分</th>
+                                    <th rowspan="1" colspan="1" class="" width="">评估人</th>
+                                    <th rowspan="1" colspan="1" class="" width="">评估日期</th>
+                                </tr>
+                            </thead>
+                            {{#if evaluateList}}
+                                <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+                                    {{#each evaluateList as |evaluate|}}
+                                        <tr class="gradeA odd" {{action "goDetail" evaluate on="click"}}>
+                                            <td class=" ellipsis sorting_1">{{evaluate.customer.name}}</td>
+                                            <td class=" ellipsis ">{{evaluate.customer.cardCode}}</td>
+                                            <td class=" ellipsis ">{{evaluate.customer.bed.roomBedName}}</td>
+                                            <td class=" ellipsis ">{{evaluate.score}}</td>
+                                            <td class=" ellipsis ">
+                                                <span class="ellipsis floatLeft width90">{{evaluate.user.name}}</span>
+                                            </td>
+                                            <td class="">{{evaluate.createDateTimeString}}</td>
+                                        </tr>
+                                    {{/each}}
+                                </tbody>
+                            {{else}}
+                                <div class="nodate">暂无数据</div>
+                            {{/if}}
+                        </table>
+                        {{#if evaluateList }}
+                            {{page-numbers content=evaluateList showFL=true numPagesToShow=3}}
+                        {{else}}
+                            <h1 class="col-sm-12 center unTask"></h1>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+        </div>
+      {{/if}}
+    </div>
+  </div>
+  <!-- /BOX -->
+</div>

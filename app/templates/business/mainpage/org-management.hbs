@@ -1,0 +1,367 @@
+<div class="box margin-middle max-width">
+	<!-- BOX-BODY -->
+	<div class="box-body">
+		<!-- 列表编辑-->
+		{{#bs-form formLayout=formLayout model=orgModel action=(action "saveClick") invalid=(action "invalid")}}
+			<div class='row'>
+				<div style="clear:both" />
+				<div class="sign col-md-12 top10">
+					<div class="col-sm-6 pull-right margin-top-title user-add-btn">
+						{{#if editModel}}
+							<!-- {{#ui/mix-button class="user-btn times-btn body-text-color  pull-right" iconClass="fa fa-mail-reply" text='取消' clickAction="cancelEdit" cancelEdit="cancelEdit" clickActParams=testParams}}
+							{{/ui/mix-button}}
+							{{#ui/mix-button class="user-btn edit-btn body-text-color  pull-right" iconClass="fa-check" text='保存' }}
+							{{/ui/mix-button}} -->
+						{{else}}
+							{{#ui/icon-button  class="user-btn edit-btn pull-right incon-button-font" iconClass="fa fa-edit" text='编辑' clickAction="editModelModify" editModelModify="editModelModify" clickActParams=testParams}}
+							{{/ui/icon-button }}
+						{{/if}}
+					</div>
+				</div>
+				<div class="sign col-sm-12">
+						<strong class="font16 font-black">机构信息	</strong>
+				</div>
+				<div class="line">
+					<div class="col-xs-12 nopadding-horizontal mt20">
+						<div class="col-xs-12 col-sm-6 nopadding-left ">
+							<div class="form-input-group label-normal">
+								<span class="input-group-addon">&emsp;机构名称：</span>
+								<div class="font-light input-group-content">{{orgModel.orgName}}</div>
+							</div>
+
+						</div>
+						<div class="col-xs-12 col-sm-6 nopadding-left ">
+							<div class="form-input-group label-normal">
+								<span class="input-group-addon">&emsp;机构简称：</span>
+								{{#if editModel}}
+									{{input class="inline-block input-group-content" value=orgModel.orgShortName type="text" placeholder="机构简称"}}
+								{{else}}
+									<div class="font-light input-group-content">{{orgModel.orgShortName}}</div>
+								{{/if}}
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<div class="line">
+					<div class="col-xs-12 col-sm-6 nopadding-left ">
+						<div class="form-input-group label-normal">
+							<span class="input-group-addon">&emsp;机构地址：</span>
+							{{#if editModel}}
+								{{bs-form-element property="address" class="inline-block form-input-group label-normal" controlType="address" placeholder="机构地址"}}
+							{{else}}
+								<div class="font-light input-group-content">{{orgModel.address}}</div>
+							{{/if}}
+						</div>
+
+					</div>
+					<div class="col-xs-12 col-sm-6 nopadding-left ">
+						<div class="form-input-group label-normal">
+							<span class="input-group-addon">&emsp;机构电话：</span>
+							<div class="font-light input-group-content">{{orgModel.orgTel}}</div>
+						</div>
+
+					</div>
+				</div>
+				<div class="line">
+					<div class="col-xs-12 col-sm-6 nopadding-left ">
+						<div class="form-input-group label-normal">
+							<span class="input-group-addon">&emsp;法人姓名：</span>
+							<div class="font-light input-group-content">{{orgModel.legalPerson}}</div>
+						</div>
+
+					</div>
+					<div class="col-xs-12 col-sm-6 nopadding-left ">
+						<div class="form-input-group label-normal">
+							<span class="input-group-addon">&emsp;营业执照：</span>
+							<div class="col-md-2  bott cccc margin-top-20">
+								<div class="intergration_normal " style=" height:110px !important">
+									<img style="width:110px;height:110px;margin-top: -10px;margin-left:-14px" src= {{orgModel.avatarUrl}} />
+								</div>
+								<!-- <span >上传头像{{fileSize}}</span>
+						      <br> avatarUrl
+						      {{#if color}}
+						      <span class={{if color 'trueColor' 'falseColor'}}>{{errorText}}</span>
+						      {{/if}} -->
+								<!--
+									{{#ui/img-intergration name="licenseImg" hasUploader=true imgSrc=orgModel.avatarUrl height=110 width=110 margin-left=0 uploadUrl=uploadUrl uploadSucc="uploadSucc" uploadFail="uploadFailImg" businessType=constants.uploadBusinessType_headimg }}
+									{{/ui/img-intergration}}
+																	-->
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<div class="line">
+
+				</div>
+				<div class="line">
+					<div class="col-xs-12  nopadding-left ">
+						<div class="form-input-group label-normal">
+							<span class="input-group-addon">&emsp;机构简介：</span>
+							{{#if editModel}}
+								{{textarea rows="3" type="text" maxlength='300' class="full-width inline-block form-input-group label-normal form-control" value=orgModel.remark placeholder='备注(最多输入300字)'}}
+								<!--	{{bs-form-element property="remark" class="inline-block form-input-group label-normal" controlType="remark" placeholder="机构简称"}}
+							 {{textarea type="text" rows=5 class="inline-block input-group-content" value=orgModel.remark placeholder="机构简介"}} -->
+							{{else}}
+								<div class="font-light input-group-content-remark">
+									{{orgModel.remark}}
+								</div>
+							{{/if}}
+						</div>
+
+					</div>
+				</div>
+				<div style="clear:both" />
+				<div class="sign col-sm-12 top30">
+						<strong class="font16 font-black">联系人信息</strong>
+				</div>
+				<div class="line">
+					<div class="col-xs-12 nopadding-horizontal mt20">
+						<div class="col-xs-12 col-sm-6 nopadding-left ">
+							<div class="form-input-group label-normal">
+								<span class="input-group-addon">&emsp;姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</span>
+								{{#if editModel}}
+									{{bs-form-element property="linkMan" class="inline-block form-input-group label-normal" controlType="linkMan" placeholder="姓名"}}
+								{{else}}
+									<div class="font-light input-group-content">{{orgModel.linkMan}}</div>
+								{{/if}}
+							</div>
+
+						</div>
+						<div class="col-xs-12 col-sm-6 nopadding-left ">
+							<div class="form-input-group label-normal">
+								<span class="input-group-addon">&emsp;手机号码：</span>
+								{{#if editModel}}
+									{{bs-form-element property="linkManTel" class="inline-block form-input-group label-normal" controlType="linkManTel" placeholder="手机号码"}}
+								{{else}}
+									<div class="font-light input-group-content">{{orgModel.linkManTel}}</div>
+								{{/if}}
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+				<div class="line">
+					<div class="col-xs-12 col-sm-6 nopadding-left ">
+						<div class="form-input-group label-normal">
+							<span class="input-group-addon">&emsp;Q&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Q：&nbsp;</span>
+							{{#if editModel}}
+								{{input class="inline-block input-group-content" value=orgModel.linkManQQ type="text" placeholder="QQ账号"}}
+							{{else}}
+								<div class="font-light input-group-content">{{orgModel.linkManQQ}}</div>
+							{{/if}}
+						</div>
+
+					</div>
+					<div class="col-xs-12 col-sm-6 nopadding-left ">
+						<div class="form-input-group label-normal">
+							<span class="input-group-addon">&emsp;邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱：</span>
+							{{#if editModel}}
+								{{input class="inline-block input-group-content" value=orgModel.linkManMail type="text" placeholder="您的电子邮箱"}}
+							{{else}}
+								<div class="font-light input-group-content">{{orgModel.linkManMail}}</div>
+							{{/if}}
+						</div>
+
+					</div>
+				</div>
+
+
+			</div>
+			<!--<div class="line">
+                    <div class="col-xs-12 col-sm-6 nopadding-left ">
+                        <div class="form-input-group label-normal">
+                            <span class="input-group-addon">&emsp;所属机构：</span>
+                            {{#if (eq operateFlag 'edit')}}
+                                <div class="font-light input-group-content">{{orgModel.org.name}}</div>
+                            {{/if}}
+                        </div>
+
+                    </div>
+                </div>-->
+			<!-- 系统密码与app密码待补充 -->
+
+		<!-- 列表编辑 -->
+
+		<!---->
+
+		<div class="center">
+			<p class="text-center user-add-btn padding-top30 inlineBlock margin0auto">
+				{{#if editModel}}
+					{{#ui/mix-button class="user-btn times-btn body-text-color  pull-right" iconClass="fa fa-mail-reply" text='取消' clickAction="cancelEdit" cancelEdit="cancelEdit" clickActParams=testParams}}
+					{{/ui/mix-button}}
+					{{#ui/mix-button class="user-btn edit-btn body-text-color  pull-right" iconClass="fa-check" text='保存' }}
+					{{/ui/mix-button}}
+				{{/if}}
+			</p>
+		</div>
+	{{/bs-form}}
+	</div>
+	<!-- /BOX-BODY -->
+</div>
+
+<div class='box max-width row' style="margin: 20px auto;">
+	<div style="clear:both" />
+	<div class="sign col-sm-12 top30 nopadding-left">
+			<strong class="font16 font-black">管理员账户信息</strong>
+	</div>
+	<div class="line row">
+		<div class="col-xs-12 nopadding-horizontal mt20">
+			{{#if showNewLoginName}}
+				<div class="col-xs-12 col-sm-6 nopadding-left">
+					<div class="form-input-group label-normal">
+						<span class="input-group-addon">&emsp;请输入新的管理员账号：</span>
+						{{input type="text" key-down="checkMobile" class="font-light input-group-content" maxlength="11" value=newLoginName placeholder="请输入管理员账号"}}
+					</div>
+				</div>
+				{{#if newLoginNameMessage}}
+					<span class="line-height-35 color999999">{{newLoginNameMessage}}</span>
+				{{/if}}
+				<div class="col-xs-12 center">
+					<p class="text-center user-add-btn padding-top30 inlineBlock margin0auto">
+						{{#ui/mix-button class="user-btn times-btn body-text-color  pull-right" iconClass="fa fa-mail-reply" text='取消' clickAction="cancelLogin" cancelLogin="cancelLogin"}}
+						{{/ui/mix-button}}
+						{{#ui/mix-button class="user-btn edit-btn body-text-color  pull-right" iconClass="fa-check" text='保存'  clickAction="saveLoginName" saveLoginName="saveLoginName"}}
+						{{/ui/mix-button}}
+					</p>
+				</div>
+			{{else}}
+				<div class="col-xs-12 col-sm-6 nopadding-left ">
+					<div class="form-input-group label-normal">
+						<span class="input-group-addon">&emsp;管理员账号(手机号码)：</span>
+						<div class="font-light input-group-content">{{orgModel.admin.loginName}}</div>
+							{{log "orgModel.admin.loginName" orgModel.admin.loginName}}
+							{{log "orgModel.admin" orgModel.admin}}
+					</div>
+				</div>
+
+				<div class="user-add-btn padding-top10 font18 pointer text-underline color-like-a" {{action 'checkOldPhone' on='click'}}>
+						修改手机号
+				</div>
+			{{/if}}
+
+		</div>
+	</div>
+</div>
+
+<!-- 获取以前手机验证码弹层 -->
+{{#if checkOldPhoneModel}}
+{{#bs-modal body=false footer=false header=false closedAction=(action "cancelPassSubmit")}}
+{{#bs-modal-header}}
+<h4 class="modal-title">验证原手机账号</h4>
+{{/bs-modal-header}}
+{{#bs-modal-body}}
+  <div class="clearfix">
+    <div class="col-sm-12 font14">
+			<div class="pull-left">
+				请先通过验证码验证管理员原手机账号:
+			</div>
+			<div class="pull-left padding-left5">
+        {{orgModel.admin.loginName}}
+      </div>
+    </div>
+		<div class="col-sm-12 top15">
+			<div class="pull-left">
+				<div class="form-input-group label-normal">
+					{{#if isSSend}}
+						<div class="user-add-btn font14 line-height-30">
+							{{secondS}}秒后重试
+						</div>
+					{{else}}
+						{{#if theTextModel}}
+							<div class="user-add-btn padding-top5 font14 pointer text-underline color-like-a" {{action 'editAdminLoginName' on='click'}}>
+									重新获取验证码
+							</div>
+						{{else}}
+							<div class="user-add-btn padding-top5 font14 pointer text-underline color-like-a" {{action 'editAdminLoginName' on='click'}}>
+									获取验证码
+							</div>
+						{{/if}}
+					{{/if}}
+				</div>
+			</div>
+			<div class="padding-left-15 pull-left">
+        {{input type="text" key-down="checkMobile" class="form-control" maxlength="6" value=oldAuthCode placeholder="请输入验证码"}}
+				 <!-- {{callbusi/busi-form-element class="full-width" placeholder="验证码(必填)" model=adminInfo property="authCode"}} -->
+			</div>
+			<div class="padding-left-15 pull-left font14" style="line-height:30px;">
+				{{theText}}
+			</div>
+			<div class="padding-left-15 pull-left font14" style="line-height:30px;">
+				{{#if showOldMessage}}
+					{{oldMessage}}
+				{{/if}}
+			</div>
+    </div>
+  </div>
+  {{/bs-modal-body}}
+{{#bs-modal-footer class="user-add-btn"}}
+  {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="changeLoginName" changeLoginName="changeLoginName" }}
+  {{/ui/mix-button}}
+  {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="cancelPassSubmit" cancelPassSubmit="cancelPassSubmit" }}
+  {{/ui/mix-button}}
+{{/bs-modal-footer}}
+{{/bs-modal}}
+{{/if}}
+
+<!-- 获取要绑定手机验证码弹层 -->
+{{#if changeLoginNameModel}}
+{{#bs-modal body=false footer=false header=false closedAction=(action "cancelPassSubmit")}}
+{{#bs-modal-header}}
+<h4 class="modal-title">验证管理员新账号</h4>
+{{/bs-modal-header}}
+{{#bs-modal-body}}
+  <div class="clearfix">
+    <div class="col-sm-12 font14">
+			<div class="pull-left">
+				新的管理员账号为:
+			</div>
+			<div class="pull-left">
+        {{newLoginName}},需进行验证
+      </div>
+    </div>
+		<div class="col-sm-12 top15">
+			<div class="pull-left">
+				<div class="form-input-group label-normal">
+					{{#if isSSend}}
+						<div class="user-add-btn font14 line-height-30">
+							{{secondS}}秒后重试
+						</div>
+					{{else}}
+						{{#if theTextModel}}
+							<div class="user-add-btn padding-top5 font14 pointer text-underline color-like-a" {{action 'editAdminLoginName' 'newLoginName' on='click'}}>
+									重新获取验证码
+							</div>
+						{{else}}
+							<div class="user-add-btn padding-top5 font14 pointer text-underline color-like-a" {{action 'editAdminLoginName' 'newLoginName' on='click'}}>
+									获取验证码
+							</div>
+						{{/if}}
+					{{/if}}
+				</div>
+			</div>
+			<div class="padding-left-15 pull-left">
+        {{input type="text" key-down="checkMobile" class="form-control" maxlength="6" value=newAuthCode placeholder="请输入验证码"}}
+				 <!-- {{callbusi/busi-form-element class="full-width" placeholder="验证码(必填)" model=adminInfo property="authCode"}} -->
+			</div>
+			<div class="padding-left-15 pull-left font14" style="line-height:30px;">
+				{{theText}}
+			</div>
+			<div class="padding-left-15 pull-left font14" style="line-height:30px;">
+				{{#if showNewMessage}}
+					{{newMessage}}
+				{{/if}}
+			</div>
+    </div>
+  </div>
+  {{/bs-modal-body}}
+{{#bs-modal-footer class="user-add-btn"}}
+  {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="saveAdminClick" saveAdminClick="saveAdminClick" }}
+  {{/ui/mix-button}}
+  {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="cancelPassSubmit" cancelPassSubmit="cancelPassSubmit" }}
+  {{/ui/mix-button}}
+{{/bs-modal-footer}}
+{{/bs-modal}}
+{{/if}}

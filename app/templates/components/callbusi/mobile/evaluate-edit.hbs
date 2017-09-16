@@ -1,0 +1,43 @@
+<div id="consultEditContainer" class="mainContent">
+    <div class="wrapperInner">
+        <div>
+            {{#if (eq editType 'staff')}}
+                <div class="padding-left-10 padding-right-10 height40 line-height-40 bottom10 bgcolor-white">
+                    {{theChoose.name}}
+                    {{#if theChoose.name}}
+                        <span class="pull-right">已选中</span>
+                    {{else}}
+                        <span class="pull-right">请在下方选择</span>
+                    {{/if}}
+                </div>
+                    {{#each employeeList as |data|}}
+                        <div class="padding-left-10 padding-right-10 height40 line-height-40 bgcolor-white" id="choose_staff_{{data.id}}"
+                        {{action 'chooseStaff' data on="tap"}}>
+                            {{data.name}}
+                            {{#if (eq theChoose.name data.name)}}
+                                <span class="pull-right">已选中</span>
+                            {{/if}}
+                        </div>
+                        <div class="border-bottom-1 margin-leftright10"></div>
+                    {{/each}}
+            {{/if}}
+            {{#if (eq editType 'date')}}
+                <div id="selectDate" style="width:100%" class="font20 top30 text height45 border-radius input-border-color padding-top4">
+                    <div class="margin-0-10px">
+                        <input type="datetime-local" placeholder="请输入日期" id="FromDate" value= {{nowDate}} name="FromDate" formart="yyyy-mm-dd hh:mm"
+                        onfocus="Constants.LOF_inputDateFocus(this);" class="date iosinput height30 line-height-25 padding-left-5 width100B" style="{{if global_curStatus.isIphone '-webkit-appearance: none;'}}"
+                            onchange="Constants.LOF_inputDateChange(this);" />
+                    </div>
+                </div>
+                <!-- {{ui/mobile/task-detail-button needDoubleClickPrevent=true touchStartAction="save" save="save" butContent="保存" outerClass="top40"}} -->
+            {{/if}}
+            <center class="center-edit3">
+                <p >{{succeed}}</p>
+            </center>
+        </div>
+
+    </div>
+      <div class="detail-dynamicsbtn" id="save-date-staff"  style="bottom:0px;margin-left:10px;width:95%;" {{action 'save'  on="tap"}}>
+        <span class="padding-left-10">保存</span>
+      </div>
+</div>

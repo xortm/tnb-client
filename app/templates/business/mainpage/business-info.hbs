@@ -1,0 +1,244 @@
+<div class="panel panel-default panel-border panel-shadow ">
+  <div class="panel-heading">
+    <div class= "pull-left">
+      <strong class="top11">{{model.curUser.entName}}&nbsp;&nbsp;</strong>
+      {{#if (eq showButton 1)}}
+      <div class={{if color 'hiddenFail' 'showFail'}} {{action "VerifyFail" on="click"}}>
+        {{status}}&nbsp;&nbsp;&nbsp;&nbsp;<span>{{audit}}</span><span >{{model.curUser.verifyFailReason}}</span>
+      </div>
+      {{#if certificationAgain}}
+      <div class="pull-left">
+        {{#ui/mix-button iconClass="fa-check"  text='再次认证'  clickAction="statusFun" statusFun="statusFun" clickActParams=testParams}}
+        {{/ui/mix-button}}
+      </div>
+      {{/if}}
+      {{/if}}
+      {{#if (eq showButton 2)}}
+      {{#ui/mix-button iconClass="fa-check"  text='申请认证'  clickAction="statusFun" statusFun="statusFun" clickActParams=testParams}}
+      {{/ui/mix-button}}
+      {{/if}}
+    </div>
+    <div class="panel-options">
+      {{#if editEnd}}
+      <span  onclick="location.reload();">
+        {{#ui/mix-button iconClass="fa-remove" text="取消"  clickAction="editCancel" editCancel="editCancel" clickActParams=testParams}}
+        {{/ui/mix-button}}
+      </span>
+      {{#ui/mix-button iconClass="fa-save"  text="保存"  clickAction="saveInfo" saveInfo="saveInfo" clickActParams=testParams}}
+      {{/ui/mix-button}}
+      {{else}}
+      {{#if hideButton}}
+      {{#ui/mix-button iconClass="fa-pencil-square-o"  text="修改"  clickAction="editInfo" editInfo="editInfo" clickActParams=testParams}}
+      {{/ui/mix-button}}
+      {{/if}}
+      {{/if}}
+    </div>
+  </div>
+  <div class=" busi-info line-height color_333">
+    <div class="col-md-2 col-sm-3 bott cccc ">
+      <div class="intergration_normal " style=" height:110px">
+        {{#ui/img-intergration name="headImg"
+        hasUploader=trueOrFalse
+        imgSrc=model.curUser.avatarUrl height=110
+        uploadUrl=uploadUrl
+        uploadSucc="uploadSucc"
+        uploadFail="uploadFailImg"
+        businessType=constants.uploadBusinessType_headimg
+      }}
+      {{/ui/img-intergration}}
+    </div>
+    <span>上传头像{{fileSize}}</span><br>
+    {{#if colorFailImg}}  <span class='trueColor' >{{errorText1}}</span>  {{/if}}
+  </div>
+  <div class="col-sm-10 input_size paddingleft4">
+    <div class="  col-sm-12  ">
+      <label class="col-lg-3 col-md-4 col-sm-6 control-label"><strong>&nbsp;&nbsp;</strong>登录名：</label>
+      <div class="">{{input type="text" disabled=true value=model.curUser.loginName}}</div>
+    </div>
+    <div class="  col-sm-12  ">
+      <label class="col-lg-3 col-md-4 col-sm-6 control-label" >
+        <!-- {{#if MustBeItem}}<strong class=" t">*</strong>{{else}}<strong>&nbsp;&nbsp;</strong>{{/if}} -->
+        {{#if AuthenticationSuccess}}<strong>&nbsp;&nbsp;</strong>{{else}} <strong class=" t">*</strong>{{/if}}负责人姓名：</label>
+        <div class="">{{input type="text" class='width179' placeholder="请输入负责人姓名" disabled=isDisabled value=name}}
+          {{#if modification7}}<i class="fa-remove t"></i>{{/if}}{{#if MustBeItem}}<span class=" t">必填</span>{{/if}}</div>
+        </div>
+        <div class=" col-sm-12 ">
+          <label class="col-lg-3 col-md-4 col-sm-6 control-label">
+            <!-- {{#if MustBeItem}}<strong class=" t">*</strong>{{else}}<strong>&nbsp;&nbsp;</strong>{{/if}} -->
+            {{#if AuthenticationSuccess}}<strong>&nbsp;&nbsp;</strong>{{else}} <strong class=" t">*</strong>{{/if}}手机号码：</label>
+            <div class="">{{input maxlength="11" class='width179' placeholder="请输入手机号码" type="tel" disabled=isDisabled value=phone}}
+              {{#if modification}}<i class=" t fa-remove"></i>{{/if}}{{#if MustBeItem1}}<span class=" t">必填</span>{{/if}}</div>
+            </div>
+            <div class=" col-sm-12">
+              <label class="col-lg-3 col-md-4 col-sm-6 control-label"><strong class=" t">&nbsp;&nbsp;</strong>微信：</label>
+              <div class="">{{input class='width179' type="text"  placeholder="请输入微信号码" disabled=isDisabled value=weixin}}{{#if modification2}}<i class="t fa-remove"></i>{{/if}}</div>
+            </div>
+            <div class=" col-sm-12">
+              <label class="col-lg-3 col-md-4 col-sm-6 control-label"><strong class=" t">&nbsp;&nbsp;</strong>证件类型：</label>
+              <div class="">{{input  type="email" class='input_width' disabled=true value="身份证"}}</div>
+            </div>
+            <div class=" col-sm-12">
+              <label class="col-lg-3 col-md-4 col-sm-6 control-label">
+                <!-- {{#if MustBeItem}}<strong class=" t">*</strong>{{else}}<strong>&nbsp;&nbsp;</strong>{{/if}} -->
+                {{#if AuthenticationSuccess}}<strong>&nbsp;&nbsp;</strong>{{else}} <strong class=" t">*</strong>{{/if}}证件编码：</label>
+                <div class=""> {{input class='width179' maxlength="18" disabled=isDisabled  type="text" placeholder="请输入证件编码" value=idcardNum}}
+                  {{#if modification3}}<i class="fa-remove t"></i>{{/if}}{{#if MustBeItem2}}<span class=" t">必填</span>{{/if}}</div>
+                </div>
+              </div>
+              <div class="col-sm-12 paddingleft4">
+                <div class="title bottom10 sign col-sm-12 ">  <strong >公司信息</strong>  </div>
+                <div class="col-md-6 ">
+                  <div class="  col-sm-12  ">
+                    <label class=" col-md-6 col-sm-7 control-label" for="leaglname">
+                      {{#if AuthenticationSuccess}}<strong>&nbsp;&nbsp;</strong>{{else}} <strong class=" t">*</strong>{{/if}}企业名称：</label>
+                      <div class="">  {{input  type="text" class='input_width' disabled=isDisabled placeholder="请输入企业名称" value=entName}}
+                        {{#if modification4}}<i class="fa-remove t"></i>{{/if}}{{#if MustBeItem3}}<span class=" t">必填</span>{{/if}}</div>
+                      </div>
+                      <div class=" col-sm-12">
+                        <label class=" col-md-6 col-sm-7 control-label" for="mail">
+                          {{#if AuthenticationSuccess}}<strong>&nbsp;&nbsp;</strong>{{else}} <strong class=" t">*</strong>{{/if}}营业执照号码：</label>
+                          <div class="">{{input  type="email" class='input_width' maxlength="20" disabled=isDisabled placeholder="请输入单位证件号" value=entIdNumber}}
+                            {{#if modification5}}<i class="fa-remove t"></i>{{/if}}
+                            {{#if MustBeItem5}}<span class=" t">必填</span>{{/if}}</div>
+                          </div>
+
+                        </div>
+                        <div class="col-md-6 ">
+                          <div class="  col-sm-12  ">
+                            <label class=" col-md-6 col-sm-7 control-label" for="leaglname">
+                              {{#if AuthenticationSuccess}}<strong>&nbsp;&nbsp;</strong>{{else}} <strong class=" t">*</strong>{{/if}}法人姓名：</label>
+                              <div class=" ">{{input  type="text" class='input_width' disabled=isDisabled  placeholder="请输入法人姓名" value=legalname}}
+                                {{#if modification6}}<i class="fa-remove t"></i>{{/if}}{{#if MustBeItem4}}<span class=" t">必填</span>{{/if}}</div>
+                              </div>
+                              <div class=" col-sm-12">
+                                <label class=" col-md-6 col-sm-7 control-label" for="mail">
+                                  {{#if AuthenticationSuccess}}<strong>&nbsp;&nbsp;</strong>{{else}} <strong class=" t">*</strong>{{/if}}办公室电话：</label>
+                                  <div class=" ">{{input type="tel" class='input_width' disabled=isDisabled placeholder="请输入办公室电话"  maxlength="16" value=legalTel}}
+                                    {{#if modification8}}<i class="fa-remove t"></i>{{/if}}{{#if MustBeItem6}}<span class=" t">必填</span>{{/if}}</div>  </div>
+                                  </div>
+                                  <div class="  col-sm-12">
+                                    <div class="col-md-12 ">
+                                      <label class=" col-md-3 col-sm-3 control-label" for="phone">
+                                        {{#if AuthenticationSuccess}}<strong>&nbsp;&nbsp;</strong>{{else}} <strong class=" t">*</strong>{{/if}}单位证件住所：</label>
+                                        <div class="lllll  col-md-9">{{input  type="tel" class=' form-control' maxlength="25" disabled=isDisabled placeholder="请输入单位证件住所" value=entIdAddress}}{{#if MustBeItem7}}<span class=" t">必填</span>{{/if}}</div>  </div>
+                                        <div class="  col-sm-12">
+                                          <label class=" col-md-3 col-sm-3 control-label" for="phone">
+                                     {{#if AuthenticationSuccess}}<strong>&nbsp;&nbsp;</strong>{{else}} <strong class=" t">*</strong>{{/if}}单位通信地址：</label>
+                                            <div class="lllll  col-md-9">
+                                              {{input type="tel" class='  form-control' maxlength="25" disabled=isDisabled placeholder="请输入单位通信地址" value=address}}{{#if MustBeItem8}}<span class=" t">必填</span>{{/if}}</div>
+                                            </div>
+                                          </div>
+                                          <style media="screen">
+                                            .lllll input{
+                                               margin-left: -4.7%;
+                                                border: #ccc 1px solid;
+                                                margin-bottom: 4px;
+                                                height: 27px;}
+                                          </style>
+                                            <div class="col-md-6 ">
+                                              <div class="col-md-12 ">
+                                                <label class=" col-md-6 col-sm-7 control-label" for="balance"><strong class="t">&nbsp;&nbsp;</strong>余额：</label>
+                                                <div class="">{{input type="text" disabled=true value=model.accountUser.balance}}</div>
+                                              </div></div>
+                                              <div class="col-md-6 ">
+                                                <div class="col-md-12  ">
+                                                  <label class="col-md-6 col-sm-7 control-label" for="expense"><strong class="t">&nbsp;&nbsp;</strong>支出：</label>
+                                                  <div class="">{{input  type="text" disabled=true   value=model.accountUser.spending}}</div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div class=" col-sm-12">
+                                              <div class="sign title bottom10 col-sm-12 "><strong >公司介绍</strong></div>
+                                              <div class=" col-sm-12 textarea">
+                                                <div class=" col-sm-12 ">
+                                                  <div class="col-md-12">
+                                                    {{#if isDisabled}}
+                                                    <p class=" color_333">
+                                                      {{introduce}}
+                                                    </p>
+                                                    {{else}}
+                                                    {{textarea maxlength='250' placeholder="请输入简介内容" value=introduce }}
+                                                    {{/if}} </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              <div class="col-sm-12">
+                                                <div class="title bottom10 sign col-sm-12 ">  <strong>证件图片</strong></div>
+                                                <div class=" img_normal ">
+                                                  <div class="intergration_normal " style="width:180px;height:110px">
+                                                    {{#ui/img-intergration name="idcardImg"
+                                                    hasUploader=trueOrFalse
+                                                    imgSrc=model.curUser.edinfo.idPhotoUrl  height=110
+                                                    uploadUrl=uploadUrl
+                                                    uploadSucc="uploadidcardImg"
+                                                    uploadFail="uploadFailIdCardImg"
+                                                    businessType=constants.uploadBusinessType_idcard
+                                                  }}
+                                                  {{/ui/img-intergration}}
+                                                </div>
+                                                <span>  {{#if AuthenticationSuccess}}<strong>&nbsp;&nbsp;</strong>{{else}} <strong class=" t">*</strong>{{/if}}法人证件照正面{{fileSize}}</span><br>
+                                                <!-- <span>  <strong class=" t">{{#if MustBeItem}}*{{/if}}  </strong>法人证件照正面{{fileSize}}</span><br> -->
+                                                {{#if colorIdCardImg}}<span class='trueColor'>{{errorText2}}</span>  {{/if}}
+                                              </div>
+                                              <div class="img_normal ">
+                                                <div class="intergration_normal " style="width:180px;height:110px">
+                                                  {{#ui/img-intergration name="idcardImg2"
+                                                  hasUploader=trueOrFalse
+                                                  imgSrc=model.curUser.edinfo.idPhotoReverseUrl  height=110
+                                                  uploadUrl=uploadUrl
+                                                  uploadSucc="uploadidcardImgReverse"
+                                                  uploadFail="uploadFailImgReverse"
+                                                  businessType=constants.uploadBusinessType_idcard
+                                                }}
+                                                {{/ui/img-intergration}}
+                                              </div>
+                                              <span> {{#if AuthenticationSuccess}}<strong>&nbsp;&nbsp;</strong>{{else}} <strong class=" t">*</strong>{{/if}}法人证件照反面(&lt;1M)</span><br>
+                                              {{#if color2}}<span class='trueColor'>{{errorText3}}</span>  {{/if}}
+                                            </div>
+                                            <div class="img_normal ttttt ">
+                                              <div class="intergration_normal " style="width:110px;height:110px">
+                                                {{#ui/img-intergration name="qualificationImg1"
+                                                hasUploader=trueOrFalse
+                                                imgSrc=model.curUser.edinfo.businessLicenseUrl  height=110
+                                                uploadUrl=uploadUrl
+                                                uploadSucc="uploadLicense"
+                                                uploadFail="uploadFailLicense"
+                                                businessType=constants.uploadBusinessType_qualificationImg
+                                              }}
+                                              {{/ui/img-intergration}}
+                                            </div>
+                                            <span> {{#if AuthenticationSuccess}}<strong>&nbsp;&nbsp;</strong>{{else}} <strong class=" t">*</strong>{{/if}}营业执照(&#60;1M)</span><br>
+                                            {{#if color4}}  <span class='trueColor'>{{errorText4}}</span>  {{/if}}
+                                          </div>
+                                          <div class="img_normal ttttt">
+                                            <div class=" intergration_normal " style="width:110px;height:110px">
+                                              {{#ui/img-intergration name="qualificationImg"
+                                              hasUploader=trueOrFalse
+                                              imgSrc=model.curUser.edinfo.companyPhotosUrl  height=110
+                                              uploadUrl=uploadUrl
+                                              uploadSucc="uploadidcompany"
+                                              uploadFail="uploadFailcompany"
+                                              businessType=constants.uploadBusinessType_qualificationImg
+                                            }}
+                                            {{/ui/img-intergration}}
+                                          </div>
+                                          <span><strong>&nbsp;&nbsp;</strong>企业logo(&#60;1M)</span><br>
+                                          {{#if color3}}  <span class='trueColor'>{{errorText}}</span>  {{/if}}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  {{#if showAddContents}}
+                                  {{#bs-modal body=false footer=false header=false submitAction=(action "changePassSubmit")
+                                  closedAction=(action "cancelPassSubmit")}}
+                                  {{#bs-modal-header}}
+                                  {{/bs-modal-header}}
+                                  {{#bs-modal-body}}
+                                  <strong class=" t">*</strong>{{succeed}}！
+                                  {{/bs-modal-body}}
+                                  {{#bs-modal-footer as |footer|}}
+                                  {{#bs-button action=(action "cancelPassSubmit" ) type="default"}}取消{{/bs-button}}
+                                  {{#bs-button action=(action "changePassSubmit" ) type="default"}}确定{{/bs-button}}
+                                  {{/bs-modal-footer}}
+                                  {{/bs-modal}}
+                                  {{/if}}

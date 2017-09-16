@@ -1,0 +1,10 @@
+{{#ui/mobile/gestures-container}}
+{{#each defData as |item|}}
+  <!-- <div class="hor-switcher-item {{if item.selected 'selected'}}" {{action "choice" item on="tap"}}>
+    {{item.text}}
+  </div> -->
+  <div class="pull-left font16 color999999 {{widthClass}} {{if item.selected 'selected'}} {{if showLoadingImg 'disabled'}}" {{action "choice" item on="tap"}}>
+    <span class="spanTap">{{item.text}}</span>
+  </div>
+{{/each}}
+{{/ui/mobile/gestures-container}}

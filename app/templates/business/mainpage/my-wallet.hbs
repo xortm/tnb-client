@@ -1,0 +1,145 @@
+<div id="myWalletContainer" class="mainContent">
+  <div class="wrapperInner">
+    <div class="dropdown moneyBackground">
+      <ul class="theMoney">
+        <li class="font24 colorWhite">{{myBalance}}元
+          <!-- <span class="pull-right moneyWithdraw" {{action 'withdraw' on='tap'}}>提现</span> -->
+          {{#ui/the-button  theClass="pull-right moneyWithdraw"
+          clickAction="withdraw" withdraw="withdraw" text="提现"}}
+          {{/ui/the-button}}
+        </li>
+      </ul>
+    </div>
+    <div class="">
+      {{#callbusi/mobile/inner-navigation
+        conditionLeft = "收入"
+        conditionRight = "支出"
+        funcLeft = 'income'
+        funcRight = 'expenditure'
+        positionStyle= 'my-wallet-position'
+      }}
+      {{/callbusi/mobile/inner-navigation }}
+        {{log 'tradingRecord in my-wallet' tradingRecord}}
+      {{#if tradingRecord}}
+        {{log 'tradingRecord in my-wallet' tradingRecord}}
+        {{#each tradingRecord as |task|}}
+          <ul class="record clearfix">
+            <li class="pull-left">
+              {{#if (eq task.payee.id curuserId)}}
+                {{#if task.task}}
+                  <h4 class="">完成{{task.task.title}}</h4>
+                {{else}}
+                  <h4 class="">{{task.businessType.typename}}</h4>
+                {{/if}}
+              {{/if}}
+              {{#if (eq task.payer.id curuserId)}}
+              <h4 class="">{{task.businessType.typename}}</h4>
+              {{/if}}
+              <div class="icon-init">{{task.tradeTimeStr}}</div>
+            </li>
+           <li class="pull-right likeOrange media theFont">￥{{task.amount}}</li>
+          </ul>
+        {{/each}}
+      {{else}}
+        <h1 class="center unTask">没有交易记录</h1>
+      {{/if}}
+
+    </div>
+
+    <!-- 提现弹层 -->
+    {{#if showModal}}
+     {{#bs-modal body=false footer=false header=false submitAction=(action "applycash")
+        closedAction=(action "cancelSubmit")}}
+      {{#bs-modal-header}}
+      {{log 'proportion.value get ' proportion}}
+         <h4 class="modal-title inline-block">提现：</h4>&nbsp;<span class="platformProportion">当前提佣比例:{{provalue}}%</span>
+       {{/bs-modal-header}}
+       <div class="layer-lable-style">提现金额：<span class="text-danger">*</span></div>
+          {{#bs-modal-body}}
+            {{input type="text" value=content class="form-control" placeholder="请输入金额"}}
+          {{/bs-modal-body}}
+      <!-- <div class="layer-lable-style">备注：</div>
+         {{#bs-modal-body}}
+           {{input type="text" value=remark class="form-control" placeholder="请输入备注"}}
+         {{/bs-modal-body}} -->
+      <div class="text-danger top10 bottom10">*为必填内容且必须为数字；提现金额不得少于2元</div>
+      {{#bs-modal-footer as |footer|}}
+        {{#bs-button action=(action "cancelSubmit") type="default"}}取消{{/bs-button}}
+        {{#bs-button action=(action "applycash") type="default"}}提现{{/bs-button}}
+      {{/bs-modal-footer}}
+       {{/bs-modal}}
+    {{/if}}
+    <!-- 跳转确认弹层 -->
+    {{#if alertmodal}}
+     {{#bs-modal body=false footer=false header=false submitAction=(action "transationTo")
+        closedAction=(action "cancelpassSubmit")}}
+      {{#bs-modal-header}}
+         <div class="modal-confirm">用户未认证，请先完成客服认证</div>
+       {{/bs-modal-header}}
+      {{#bs-modal-footer as |footer|}}
+        {{#bs-button action=(action "cancelpassSubmit") type="default"}}取消{{/bs-button}}
+        {{#bs-button action=(action "transationTo") type="default"}}确定{{/bs-button}}
+      {{/bs-modal-footer}}
+       {{/bs-modal}}
+    {{/if}}
+    <!-- 绑定微信弹层 -->
+    {{#if wechatModal}}
+      {{#bs-modal body=false footer=false header=false
+      closedAction=(action "cancelwechat")}}
+        {{#bs-modal-header}}<!-- LOGO收银台 -->
+          <img src="assets/images/logo3.png" width="120" alt="">
+          <span style="font-size:20px;font-family:'微软雅黑';">微信绑定</span>
+        {{/bs-modal-header}}
+        {{#bs-modal-body}}
+        <div class="row">
+          <div class="col-sm-8 pull-right"><img src="{{QrUrl}}" width="180"/></div>
+        </div>
+        <div class="col-sm-8 pull-right text-danger bottom10 padding-left40">{{binderror}}</div>
+        {{/bs-modal-body}}
+        {{#bs-modal-footer as |footer|}}
+          {{#bs-button action=(action "cancelwechat") type="default"}}取消{{/bs-button}}
+          {{#bs-button action=(action "confirmbind") type="default"}}确认已绑定{{/bs-button}}
+        {{/bs-modal-footer}}
+      {{/bs-modal}}
+    {{/if}}
+    <!-- 绑定成功弹层 -->
+    <!-- {{#if bindwechatSucModal}}
+      {{#bs-modal body=false footer=false header=false submitAction=(action "cancelwechatBindSuc")
+      closedAction=(action "cancelwechatBindSuc")}}
+        {{#bs-modal-header}}
+          <img src="assets/images/logo3.png" width="120" alt="">
+          <span style="font-size:20px;font-family:'微软雅黑';">微信绑定</span>
+        {{/bs-modal-header}}
+        {{#bs-modal-body}}
+        <div class="text-align-type">
+          <div><img src="assets/images/bind-suc.png" width="120"/></div>
+        </div>
+        <div class="text-align-type">
+          <div class="weight-bold font18">绑定成功!</div>
+        </div>
+        {{/bs-modal-body}}
+        {{#bs-modal-footer as |footer|}}
+          {{#bs-button action=(action "cancelwechatBindSuc") type="default"}}取消{{/bs-button}}
+          {{#bs-button action=(action "cancelwechatBindSuc") type="default"}}确定{{/bs-button}}
+        {{/bs-modal-footer}}
+      {{/bs-modal}}
+    {{/if}} -->
+    <!-- 绑定微信失败弹层 -->
+    {{#if bindwechatFailModal}}
+    {{#bs-modal body=false footer=false header=false closedAction=(action "cancelwechatBindFail")}}
+    {{#bs-modal-header}}
+    <h4 class="modal-title">绑定失败</h4>
+    {{/bs-modal-header}}
+    {{#bs-modal-body}}
+    绑定失败，请稍后重试
+    {{/bs-modal-body}}
+    {{#bs-modal-footer as |footer|}}
+    {{#bs-button action=(action "cancelwechatBindFail") type="success"}}确定{{/bs-button}}
+    {{#bs-button action=(action "cancelwechatBindFail") type="warning"}}取消{{/bs-button}}
+    {{/bs-modal-footer}}
+    {{/bs-modal}}
+    {{/if}}
+  </div>
+</div>
+
+{{ui/container/infinite-scroll moniteData="tradingRecord" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

@@ -1,0 +1,190 @@
+<div class="col-sm-12">
+	<div class="box">
+		<!-- BOX-BODY -->
+		<div class="box-body">
+			<!-- 列表编辑-->
+				{{#bs-form formLayout=formLayout model=planModel invalid=(action "invalid")}}
+			<div class="row">
+
+				<div class="col-xs-12">
+					<p class="user-add-btn">
+
+						{{#if detailEdit}}
+						{{else}}
+							{{#ui/form-function editAction="detailEditClick" detailEditClick="detailEditClick"
+							removeAction="delById" delById="delById" clickActParams=planInfo}}
+							{{/ui/form-function}}
+						{{/if}}
+					</p>
+				</div>
+					<div class="col-xs-12 nopadding-horizontal mt20">
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</span>
+									<div class="input-group-content">{{planInfo.customer.name}}</div>
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">开始时间：</span>
+								{{#if detailEdit}}
+										{{ui/addon/bs-datetimepicker date=planModel.planStartDateTime placeholder="开始时间"
+											locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'
+											value=planModel.planStartDate show="dpShowAction" change="changePlanStartDateAction" }}
+								{{else}}
+									<div class="input-group-content">{{planInfo.planStartDateString}}</div>
+								{{/if}}
+							</div>
+						</div>
+
+
+            <div class="col-xs-12 col-sm-12">
+              <div class="form-input-group">
+                <span class="input-group-addon">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：</span>
+                {{#if detailEdit}}
+                    {{bs-form-element property="remark" class="inline-block form-input-group label-normal" placeholder='备注(必填)'}}
+                {{else}}
+                  <div class="input-group-content">{{planInfo.remark}}</div>
+                {{/if}}
+              </div>
+
+            </div>
+
+
+            <!-- <div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">结束时间：</span>
+								{{#if detailEdit}}
+									{{ui/addon/bs-datetimepicker date=planModel.planEndDateTime placeholder="结束时间"
+										locale="zh-CN" iconClasses="fa fa-calendar"
+										value=planModel.planEndDateTime show="dpShowAction" change="changePlanEndDateAction" }}
+								{{else}}
+									<div class="input-group-content">{{planInfo.planEndDateString}}</div>
+								{{/if}}
+							</div>
+						</div> -->
+
+					</div>
+			</div>
+			{{/bs-form}}
+				<div class="row mt20">
+				<!-- 日历部分 -->
+					<div class="panel panel-primary">
+						<div class="panel-body">
+
+								<div class="col-sm-3 mt20 ">
+								<div class="top10"></div>
+								<div id='external-events'>
+									<h4>可选服务项目</h4>
+									<div id="event-box">
+										{{#each serviceList as |service|}}
+												<div class="external-event {{if service.color 'badge-green' ''}}" code='{{service.code}}'>{{service.text}}({{service.number}})
+													{{#unless service.color}}
+													<span class="pull-right pointer" {{action "unis" service on="click"}}>
+														<i class="fa fa-trash-o">
+														</i>
+														{{bs-tooltip title="重置" class="light-tooltip"}}
+													</span>
+													{{/unless}}
+
+												</div>
+										{{/each}}
+									</div>
+									<div id="calendarTrash" class="calendar-trash" style="height:30px;width:100%;background-color:grey;margin-bottom:10px;line-height: 30px;border-radius: 3px;color:#fff;">
+										<i class="fa fa-trash-o"></i>删除的服务项目拖放到这里
+									</div>
+									<div>
+										<span class="pull-left ">
+											<i class="dayplan"></i>日计划
+										</span>
+										<span class="pull-right ">
+											<i class="weekplan"></i>周计划
+										</span>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-sm-9">
+								{{#if detailEdit}}
+								{{full-calendar id="scheCalendar" viewName=excutionName allDaySlot=false timeFormat=fullCalendarConfig.timeFormat buttonText=fullCalendarConfig.buttonText
+								header=fullCalendarConfig.header monthNames=fullCalendarConfig.monthNames slotLabelFormat=fullCalendarConfig.slotLabelFormat
+								monthNamesShort=fullCalendarConfig.monthNamesShort dayNamesShort=fullCalendarConfig.dayNamesShort
+								dayNames=fullCalendarConfig.dayNames selectable=true selectHelper=true editable=true
+								select=(action 'calSelect') viewRender=(action 'viewRender') disableResizing=true
+								weekNumberCalculation="ISO"
+								droppable=true drop=(action 'dropAction') eventDrop =(action 'eventDropAction')
+								eventDragStart =(action 'dragStartAction') 	eventDragStop =(action 'dragStopAction')
+								events=curApplySectionData eventClick=(action 'eventClick')
+								}}
+								{{else}}
+								{{full-calendar id="scheCalendar" viewName=excutionName allDaySlot=false allDay=false timeFormat=fullCalendarConfig.timeFormat buttonText=fullCalendarConfig.buttonText
+								header=fullCalendarConfig.header monthNames=fullCalendarConfig.monthNames slotLabelFormat=fullCalendarConfig.slotLabelFormat
+								monthNamesShort=fullCalendarConfig.monthNamesShort dayNamesShort=fullCalendarConfig.dayNamesShort
+								dayNames=fullCalendarConfig.dayNames selectable=false selectHelper=true editable=false
+								select=(action 'calSelect') viewRender=(action 'viewRender') disableResizing=true
+								weekNumberCalculation="ISO" events=curApplySectionData
+								}}
+								{{/if}}
+							</div>
+
+
+					</div>
+				</div>
+				<div class="col-sm-12">
+					<div class="text-center padding-top30">
+							<p class="text-center user-add-btn" style="display:inline-block;margin:0 auto!important ">
+							{{#if detailEdit}}
+							{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check"  text='保存' clickAction="detailSaveClick" detailSaveClick="detailSaveClick" clickActParams=planModel}}
+							{{/ui/mix-button}}
+							{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply"  text='取消'  clickAction="detailCancel" detailCancel="detailCancel" }}
+							{{/ui/mix-button}}
+							{{else}}
+							{{/if}}
+							</p>
+					</div>
+				</div>
+		</div>
+
+
+	</div>
+		<!-- /BOX-BODY -->
+	</div>
+</div>
+
+
+{{#if showpopInvitePassModal}}
+	{{#bs-modal body=false footer=false header=false}}
+		{{#bs-modal-header}}
+			<h3 class="modal-title">删除提示</h3>
+		{{/bs-modal-header}}
+		{{#bs-modal-body}}
+			<h4 class="modal-title">是否删除该条记录？</h4>
+		{{/bs-modal-body}}
+		{{#bs-modal-footer as |footer|}}
+			{{#bs-button action=(action "cancelPassSubmit" planInfo) type="primary" disabled=prepaidDisabled}}确定{{/bs-button}}
+			{{#bs-button action=(action "invitation") type="default"}}取消{{/bs-button}}
+		{{/bs-modal-footer}}
+	{{/bs-modal}}
+{{/if}}
+
+
+{{#if showPopPasschangeModal}}
+ {{#bs-modal body=false footer=false header=false
+   submitAction=(action "changeServiceItem")
+    closedAction=(action "hideItemSelectModal")}}
+  {{#bs-modal-header}}
+     <h4 class="modal-title">{{serviceDateStr}}</h4>
+   {{/bs-modal-header}}
+  {{#bs-modal-body}}
+    {{callbusi/service-item-selection serviceList=curApplyData}}
+  {{/bs-modal-body}}
+	{{#bs-modal-footer as class="user-add-btn"}}
+		{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="changeServiceItem" changeServiceItem="changeServiceItem"}}
+		{{/ui/mix-button}}
+		{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="hideItemSelectModal" hideItemSelectModal="hideItemSelectModal"}}
+		{{/ui/mix-button}}
+	{{/bs-modal-footer}}
+   {{/bs-modal}}
+{{/if}}

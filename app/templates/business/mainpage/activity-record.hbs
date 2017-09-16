@@ -1,0 +1,22 @@
+<div id="activityRecordContainer" class="mainContent">
+  <div class="wrapperInner jujia-Bd">
+{{#ui/mobile/gestures-container}}
+<div class="jujia-container activity-record">
+  <section class="jujia-catalog">
+    <ul>
+      {{#each activityArray as |activity|}}
+      <li class="account" id="activity_{{activity.id}}" {{action "goDetail" activity on="tap"}}>
+        <i class="fa fa-file-text-o prev"></i>
+        <span class="">{{activity.title}}</span>
+        <i class="fa fa-angle-right next"></i>
+      </li>
+      {{/each}}
+    </ul>
+  </section>
+</div>
+
+
+{{/ui/mobile/gestures-container}}
+</div>
+</div>
+{{ui/container/infinite-scroll moniteData="activityOrderList" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

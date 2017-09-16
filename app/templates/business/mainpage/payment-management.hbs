@@ -1,0 +1,70 @@
+<div class="col-sm-12">
+  <!-- BOX -->
+  <div class="box">
+    <div class="box-body">
+      <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+      	<div class="row">
+          <div class="col-sm-9">
+        	  <!--搜索-->
+            <div class="col-sm-5 nopadding-left">
+        	    <div class="input-group">
+            		{{input class="form-control" type="text" placeholder="老人姓名" value=searchInput enter="search"}}
+      	        <span class="input-group-btn">
+        		      <button class="btn btn-primary btn-reduce" type="button" style="touch-action: manipulation; -ms-touch-action: manipulation;" {{action "search" on="click"}}>
+                    <i class="fa fa-search"></i>
+                  </button>
+      	        </span>
+        	    </div>
+        	  </div>
+            <div class="col-sm-6 nopadding-left pull-left nopadding-right">
+               {{callbusi/time-search class="inline-block" text='付款时间' dateShow=dateShow chooseDate=chooseDate search="search"
+               submmit="submmit" emptied='emptied' changeBeginDateAction='changeBeginDateAction' changeEndDateAction='changeEndDateAction'}}
+            </div>
+        	  <!--搜索-->
+          </div>
+      	  <div class="user-add-btn col-sm-3 nopadding-right">
+            {{#ui/mix-button class="user-btn pull-right" iconClass="fa-plus"  text='新增扣费记录'  clickAction="toDetailPage" toDetailPage="toDetailPage"}}
+            {{/ui/mix-button}}
+      	  </div>
+      	</div>
+        <table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable" aria-descritradeby="datatable1_info">
+          <thead>
+            <tr role="row">
+              <th rowspan="1" colspan="1" width="">付款人</th>
+              <th rowspan="1" colspan="1" width="">付款账户(类型)</th>
+              <th rowspan="1" colspan="1" width="">付款金额(元)</th>
+              <th rowspan="1" colspan="1" width="">消费类型</th>
+              <th rowspan="1" colspan="1" width="">付款时间</th>
+              <th rowspan="1" colspan="1" width="">账户余额(元)</th>
+              <th rowspan="1" colspan="1" width="">保证金账户余额(元)</th>
+            </tr>
+          </thead>
+          {{#if tradeList}}
+          <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+            {{#each tradeList as |trade|}}
+            <tr {{action "toDetailPage" trade on="click"}}>
+              <td class="ellipsis" >{{trade.payAccount.customer.name}}</td>
+              <td class="ellipsis" >{{trade.payAccount.type.typename}}</td>
+              <td class="ellipsis" >{{trade.money}}</td>
+              <td class="ellipsis" >{{trade.type.typename}}</td>
+              <td class="ellipsis" >{{trade.createTime}}</td>
+              <td class="ellipsis" >{{trade.balance}}</td>
+              <td class="ellipsis" >{{trade.enSurebalance}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+          {{else}}
+          <div class="nodate">暂无数据</div>
+          {{/if}}
+        </table>
+        {{#if tradeList }}
+            {{page-numbers content=tradeList showFL=true numPagesToShow=5}}
+        {{else}}
+                <h1 class="col-sm-12 center unTask"></h1>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+
+  <!-- /BOX -->
+</div>

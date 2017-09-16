@@ -1,0 +1,30 @@
+/*调整表单项的间隔*/
+.form-horizontal.reduce-spacing{
+   margin-bottom: 4px;
+ }
+.form-horizontal.reduce-spacing .control-label{
+  text-align:left;
+  margin-top:8px;
+}
+.form-horizontal.reduce-spacing.form-control-static .control-label{
+  margin-top:0px;
+}
+@media (min-width:768px) {
+  .reduce-spacing .row {
+    margin-left: -1px;
+    margin-right: -1px;
+  }
+  .reduce-spacing [class*="col-"] {
+    padding: 0 2px
+  }
+}
+/*表单输入项留白*/
+input.form-fixer {
+  padding: 2px 4px;
+  font-size: 13px;
+}
+/*表单输入项取消外框*/
+.form-control .no-border{
+  border: 0;
+  box-shadow: none;
+}

@@ -1,0 +1,30 @@
+{{#ui/mobile/gestures-container}}
+<div id="attendanceCheckContainer" class="mainContent border-top-1 {{if global_pageConstructure.showLoader 'hide' ''}}">
+  <div class="wrapperInner">
+  {{#if staffattendanceList}}
+    <div class="bgcolor-white">
+    {{log "staffattendanceList hbs" staffattendanceList}}
+    {{#each staffattendanceList as |staffattendance|}}
+      {{#callbusi/mobile/attendance-check-list item=staffattendance outerClass="col-sm-6 col-xs-12 height-auto"}}
+      {{/callbusi/mobile/attendance-check-list}}
+    {{/each}}
+    </div>
+  {{else}}
+    {{#if noEmployeeId}}
+      <div class="center" style="margin-top:40px;">
+        请在上方选择员工
+      </div>
+    {{else}}
+      <div class="nodate">暂无数据</div>
+    {{/if}}
+  {{/if}}
+
+
+
+  </div>
+
+</div>
+{{/ui/mobile/gestures-container}}
+
+{{ui/container/infinite-scroll moniteData="staffattendanceList"
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

@@ -1,0 +1,48 @@
+<div id="customerDetailInformationContainer" class="mainContent top40">
+  <div class="wrapperInner font13half">
+    <div class="height30 border-top-bottom-1 line-height-30">
+      <span class="task-detail-split"></span>
+      <span class="fc-close">老人个人信息</span>
+    </div>
+    <ul class="padding-left-20 padding-right-18 padding-top8 bgcolor-white padding-bottom17">
+      <li class="business-mine-img padding4 center">
+        <img class="height70 width70" src={{customer.avatarUrl}}/>
+      </li>
+      <li class="clear min-height-16 top8">
+        <span class="pull-left width50B">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名:{{customer.name}}</span>
+        <span class="pull-right width50B">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别:{{customer.sex.typename}}</span>
+      </li>
+      <li class="clear min-height-16 top8">
+        <span class="pull-left width50B">年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;龄:{{customer.age}}</span>
+        <span class="pull-right width50B">房间床位:{{customer.bed.roomBedName}}</span>
+      </li>
+      <li class="clear min-height-16 top8">
+        <!-- <span class="pull-left width50B">护理等级:{{customer.nursingGrade.typename}}</span> -->
+        <span class="pull-left width50B">护理等级:{{customer.projectLevelName}}</span>
+        <span class="pull-right width50B">自理能力级别:{{customer.selfCareAbility.typename}}</span>
+      </li>
+    </ul>
+    <div class="height30 border-top-bottom-1 line-height-30">
+      <span class="task-detail-split"></span>
+      <span class="fc-close">联系人信息</span>
+    </div>
+    <ul class="padding-left-20 padding-right-18 bgcolor-white padding-bottom10 padding-top16">
+      <li class="clear min-height-16">
+        <span class="pull-left width50B">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名:{{customer.guardianFirstName}}</span>
+        <span class="pull-right width50B">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别:{{customer.guardianFirstGener.typename}}</span>
+      </li>
+      <li class="clear min-height-16 top8">
+        <span class="pull-left width50B">电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话:{{customer.guardianFirstContact}}</span>
+        <span class="pull-right width50B">从属关系:{{customer.firstRelation.typename}}</span>
+      </li>
+      <li class="clear min-height-16 top8">
+        家庭住址:{{customer.guardianFirstAddress}}
+      </li>
+    </ul>
+    <!-- <div class="center" style="color:#fff;height:30px;line-height:30px;width:34%;margin-left:33%;background-color:#365472;border-radius:20px;margin-top:11px;">
+      <i class="fa-phone color-white"></i>&nbsp;&nbsp;呼叫联系人
+    </div> -->
+  </div>
+</div>
+{{ui/container/infinite-scroll moniteData="customerDetailInformationList"
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

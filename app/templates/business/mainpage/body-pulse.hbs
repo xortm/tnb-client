@@ -1,0 +1,27 @@
+<div id="userBodyPulseContainer" class="mainContent">
+  <div class="wrapperInner healthy-fileBd">
+{{#ui/mobile/gestures-container}}
+<div class="jujia-container healthy-check">
+  <section class="check">
+    <div id="bodyPulse" style="height:260px;" class="text-center"></div>
+    <p>您最近一次测量的脉搏值为：{{firstHeart.result}}times/min</p>
+    <p>{{contentsEmpty}}</p>
+  </section>
+
+  <section class="jujia-catalog">
+    <ul>
+      <li class="body-pulse-upload" id="body-pulse-upload" {{action 'switchPage' 'body-pulse-upload' 'body-pulse-upload' on="tap"}}>
+        <i class="fa fa-upload prev"></i>
+        <span class="">手动上传</span>
+        <i class="fa fa-angle-right next"></i>
+      </li>
+    </ul>
+  </section>
+
+</div>
+
+
+{{/ui/mobile/gestures-container}}
+</div>
+</div>
+{{ui/container/infinite-scroll moniteData="" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

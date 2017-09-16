@@ -1,0 +1,117 @@
+<div class="col-md-12">
+	<div class="box margin-middle max-width">
+		<!-- BOX-BODY -->
+		<div class="box-body">
+			{{#bs-form formLayout=formLayout model=riskModel}}
+			<div class="row">
+				<div class="col-xs-12">
+					<p class="user-add-btn">
+						{{#if detailEdit}}
+						{{else}}
+							{{#ui/form-function editAction="detailEditClick" detailEditClick="detailEditClick"
+							removeAction="delById" delById="delById" clickActParams=riskInfo}}
+							{{/ui/form-function}}
+						{{/if}}
+					</p>
+				</div>
+				<!-- 列表详细介绍 -->
+				<div class="col-xs-12">
+					<div class="col-xs-12 nopadding-horizontal mt20">
+            <div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">名称：</span>
+								{{#if detailEdit}}
+									{{bs-form-element property="name" class="inline-block form-input-group label-normal" placeholder='必填'}}
+								{{else}}
+									<div class="input-group-content">{{riskInfo.name}}</div>
+								{{/if}}
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">序号：</span>
+								{{#if detailEdit}}
+									{{bs-form-element property="sort" class="inline-block form-input-group label-normal" placeholder='必填'}}
+								{{else}}
+									<div class="input-group-content">{{riskInfo.sort}}</div>
+								{{/if}}
+							</div>
+						</div>
+            <div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">上级内容项：</span>
+								{{#if detailEdit}}
+									{{#bs-form-element class="inline-block form-input-group" controlType="parent"  property="parent" }}
+										{{#power-select class="input-group-content" options=parentList  selected=riskModel.parent searchField="namePinyin"
+										noMatchesMessage="没有相关内容"	allowClear=false onchange=(action "selectParent" ) as |parent|}}
+											{{parent.name}}
+										{{/power-select}}
+									{{/bs-form-element}}
+								{{else}}
+									<div class="input-group-content">{{riskInfo.parent.name}}</div>
+								{{/if}}
+							</div>
+						</div>
+            <div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">数据类型：</span>
+								{{#if detailEdit}}
+									{{#bs-form-element class="inline-block form-input-group" controlType="valueType"  property="valueType" }}
+										{{callbusi/dict-selector groupCode=constants.fieldType curDict=riskModel.valueType
+											showName='必填' dictSelect="valueTypeSelect" preselected=false value=riskModel.valueType}}
+									{{/bs-form-element}}
+								{{else}}
+									<div class="input-group-content">{{riskInfo.valueType.typename}}</div>
+								{{/if}}
+							</div>
+						</div>
+
+            <!-- <div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">最小值：</span>
+								{{#if detailEdit}}
+									{{bs-form-element property="min" class="inline-block form-input-group label-normal" placeholder='必填'}}
+								{{else}}
+									<div class="input-group-content">{{riskInfo.minScore}}分</div>
+								{{/if}}
+							</div>
+						</div>
+            <div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">最大值：</span>
+								{{#if detailEdit}}
+									{{bs-form-element property="max" class="inline-block form-input-group label-normal" placeholder='必填'}}
+								{{else}}
+									<div class="input-group-content">{{riskInfo.maxScore}}分</div>
+								{{/if}}
+							</div>
+						</div> -->
+						<div class="col-xs-12 col-sm-12">
+							<div class="form-input-group">
+								<span class="input-group-addon">描述：</span>
+								{{#if detailEdit}}
+									{{textarea type="text" class="full-width inline-block form-input-group label-normal form-control" value=riskInfo.remark placeholder=''}}
+								{{else}}
+									<div class="input-group-content">{{riskInfo.remark}}</div>
+								{{/if}}
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 列表详细介绍 -->
+			</div>
+			<div class="padding-top30 center">
+				<p class="text-center user-add-btn margin0auto inlineBlock">
+					{{#if detailEdit}}
+					{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check"  text='保存' clickAction="saveRiskLevel" saveRiskLevel="saveRiskLevel"}}
+					{{/ui/mix-button}}
+					{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply"  text='取消'  clickAction="detailCancel" detailCancel="detailCancel" }}
+					{{/ui/mix-button}}
+					{{/if}}
+				</p>
+			</div>
+			{{/bs-form}}
+		</div>
+		<!-- /BOX-BODY -->
+	</div>
+</div>

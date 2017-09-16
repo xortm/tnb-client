@@ -1,0 +1,19 @@
+{{#if lastLevel}}
+
+  {{#if fieldInfo.stringType}}
+    {{callbusi/mobile/text-input type='text' fieldInfo=fieldInfo saveValue="saveValue"}}
+  {{/if}}
+  {{#if fieldInfo.numType}}
+    {{callbusi/mobile/text-input type='number' fieldInfo=fieldInfo saveValue="saveValue"}}
+  {{/if}}
+{{else}}
+  <div class="bgcolor-white">
+    {{#each fieldInfo.childFields as |parent|}}
+      {{#if parent.booleanType}}
+        {{callbusi/mobile/text-list item=parent check=true chooseItem="chooseItem"}}
+      {{else}}
+        {{callbusi/mobile/text-list item=parent toNextPage="toNextPage"}}
+      {{/if}}
+    {{/each}}
+  </div>
+{{/if}}

@@ -1,0 +1,68 @@
+<div class="col-sm-12">
+  <!-- BOX -->
+  <div class="box">
+    <div class="box-body">
+      <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+      	<div class="row  ">
+          <div class="col-sm-9">
+        	  <!--搜索-->
+            <div class="col-sm-5 nopadding-left">
+        	    <div class="input-group">
+            		{{input class="form-control" type="text" placeholder="搜索物品名称" value=queryCondition enter="search"}}
+      	        <span class="input-group-btn">
+        		      <button class="btn btn-primary btn-reduce" type="button" style="touch-action: manipulation; -ms-touch-action: manipulation;" {{action "search" on="click"}}>
+                    <i class="fa fa-search"></i>
+                  </button>
+      	        </span>
+        	    </div>
+        	  </div>
+        	  <!--搜索-->
+          </div>
+      	  <div class="user-add-btn col-sm-3 nopadding-right pull-right">
+            {{#ui/mix-button class="user-btn pull-right " iconClass="fa-plus"  text='新增物品' clickAction="toMerchDetailPage" toMerchDetailPage="toMerchDetailPage" }}
+            {{/ui/mix-button}}
+      	  </div>
+      	</div>
+        <table id="datatable1" cellpadding="0" cellspacing="0" border="0" style="table-layout:fixed;" class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+          <thead>
+            <tr role="row">
+              <th rowspan="1" colspan="1" width="">物品名称</th>
+              <th rowspan="1" colspan="1" width="">物品编号</th>
+              <th rowspan="1" colspan="1" width="">物品分类</th>
+              <th rowspan="1" colspan="1" width="">物品价格(元)</th>
+            </tr>
+          </thead>
+          {{#if merchList}}
+          <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+            {{#if merchList}}
+            {{#each merchList as |merch|}}
+            <tr {{action "toMerchDetailPage" merch on="click"}}>
+              <td class="ellipsis" >{{merch.name}}</td>
+              <td >{{merch.code}}</td>
+              <td >{{merch.type.typename}}</td>
+              <td >{{merch.price}}</td>
+            </tr>
+            {{/each}}
+            {{else}}
+            <div class="center">
+              暂无数据
+            </div>
+            {{/if}}
+          </tbody>
+          {{else}}
+          <div class="nodate">暂无数据</div>
+          {{/if}}
+        </table>
+        {{#if merchList }}
+            {{page-numbers content=merchList showFL=true numPagesToShow=5
+            exportAllExcel="exportAllExcel" exportAll=exportAll}}
+            {{else}}
+                <h1 class="col-sm-12 center unTask"></h1>
+        {{/if}}
+
+      </div>
+    </div>
+  </div>
+
+  <!-- /BOX -->
+</div>

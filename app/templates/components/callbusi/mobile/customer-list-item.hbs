@@ -1,0 +1,26 @@
+{{#ui/mobile/gestures-container}}
+<div class="line-item-customer user-list clear" {{action "goDetail" customer on="tap"}}>
+  <div class="pull-left business-mine-img padding4 top14">
+    <img class="height44 width44" src={{customer.avatarUrl}}/>
+  </div>
+  <ul class="pull-left padding-left-10 top14 width82B">
+    <li class="height22 font16 item-text-color">
+      <span>{{customer.name}}</span>
+      <span>{{customer.bed.roomBedName}}</span>
+    </li>
+    <li class="font-small">
+      <span>入住时间：</span>
+      <span>{{customer.checkInDateString}}</span>
+    </li>
+    <li class="font-small">
+      <span>近期身体状况：</span>
+      <span>{{customer.customerPS}}</span>
+    </li>
+  </ul>
+  <!-- <div class="pull-right theLabel 五角星">
+    {{#if}}
+    {{/if}}
+    <div id="star2" class="left5 top15"></div>
+  </div> -->
+</div>
+{{/ui/mobile/gestures-container}}

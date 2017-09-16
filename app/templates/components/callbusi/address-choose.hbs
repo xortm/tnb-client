@@ -1,0 +1,52 @@
+<span class="date-range pull-left col-sm-12 nopadding-left" style="padding-top:4px;">
+ <div class="btn-group">
+   <a class="js_update btn btn-default" href="#" {{action "showAddress" on="click"}}>{{chooseAddress}}&nbsp;<i class="fa fa-chevron-down"></i></a>
+ </div>
+  {{#if isShow}}
+    <div class="date-box form-input-group col-sm-12 nopadding-right" style='position:absolute;min-width:700px;z-index:5;left:-120px;padding-top:0;'>
+      {{#ui/mix-button class="close-btn pull-right" iconClass="fa fa-times" clickAction="hideAddress" hideAddress="hideAddress"}}
+      {{/ui/mix-button}}
+      <div class="col-sm-12 nopadding-right">
+        <div class="col-sm-4 form-input-group nopadding-right">
+          <span class="input-group-addon">省份：</span>
+          {{#power-select class="form-input-group" placeholder='必填' options=provinceList  selected=selectProvince searchField="provincePinyin"
+          noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "selectProvince" ) as |province|}}
+            {{province.name}}
+          {{/power-select}}
+        </div>
+        {{#if cityShow}}
+        <div class="col-sm-4 form-input-group">
+          <span class="input-group-addon">城市：</span>
+          {{#power-select class="form-input-group" placeholder='必填' options=cityList  selected=selectCity searchField="cityPinyin"
+          noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "selectCity" ) as |city|}}
+            {{city.name}}
+          {{/power-select}}
+        </div>
+        {{else}}
+        {{/if}}
+        <div class="col-sm-4 form-input-group">
+          <span class="input-group-addon">区/县：</span>
+          {{#power-select class="form-input-group" placeholder='必填' options=countyList  selected=selectCountry searchField="countyPinyin"
+          noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "selectCountry" ) as |county|}}
+            {{county.name}}
+          {{/power-select}}
+        </div>
+        {{#if cityShow}}
+        {{else}}
+        <div class="col-sm-4 form-input-group">
+          <span class="input-group-addon">乡镇/街道：</span>
+          {{#power-select class="form-input-group" placeholder='必填' options=townList  selected=selectTown searchField="townPinyin"
+          noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "selectTown" ) as |town|}}
+            {{town.name}}
+          {{/power-select}}
+        </div>
+        {{/if}}
+      </div>
+      <div class="btn-row text-center">
+        <div  style="height:50px;"></div>
+        <button class="btn btn-primary" {{action "submmit"  on="click"}}><i class="fa fa-check icon-white"></i>&ensp;确定</button>
+      </div>
+    </div>
+  {{else}}
+  {{/if}}
+ </span>

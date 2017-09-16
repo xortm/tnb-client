@@ -1,0 +1,47 @@
+{{#ui/mobile/gestures-container}}
+  <div id="resultResultRecordContainer" class="mainContent border-top-1 {{if global_pageConstructure.showLoader 'hide' ''}}">
+  <div class="wrapperInner">
+      {{#if template}}
+        <div class="bgcolor-white">
+          <ul class="profile">
+            <li class=" carousel color666 border-top-1 border-bottom-1" id="chooseUser" {{action 'toChoose' 'user' "chooseUser" on="tap"}}>
+                <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                <span class="profile-span">记录人 </span>
+                <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{user.name}}</span>
+                <i class="fa-angle-right font20 my-right color-ccc"></i>
+            </li>
+            <li class=" carousel color666 border-top-1 border-bottom-1" id="chooseDate" {{action 'toChoose' 'date' "chooseDate" on="tap"}}>
+                <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                <span class="profile-span">记录日期 </span>
+                <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{dateStr}}</span>
+                <i class="fa-angle-right font20 my-right color-ccc"></i>
+            </li>
+            {{#each template.parentFieldList as |parent|}}
+              {{#if parent.booleanType}}
+                {{callbusi/mobile/text-list item=parent check=true chooseItem="chooseParent"}}
+              {{else}}
+                {{#if parent.hasChild}}
+                  <div class=" carousel color666 border-top-1 border-bottom-1" id={{concat 'risk-result-record-' parent.field.id}} style="height:44px;" {{action "toRecordDetailChild" parent on="tap"}}>
+                      <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                      <span class="profile-span">{{parent.field.name}}</span>
+                      <span class="pull-right"  style="line-height: 42px;margin-right: 10px;"></span>
+                      <i class="fa-angle-right font20 my-right color-ccc"></i>
+                  </div>
+                {{else}}
+                  {{callbusi/mobile/text-list item=parent toNextPage='toNextPage' }}
+                {{/if}}
+              {{/if}}
+            {{/each}}
+          </ul>
+        </div>
+      {{else}}
+        <div class="nodate">暂无数据</div>
+      {{/if}}
+  </div>
+  <div class="detail-dynamicsbtn" id="save-result-record"  style="bottom:0px;margin-left:10px;width:95%;" {{action 'saveRecord' on="tap"}}>
+    <span class="padding-left-10">保存</span>
+  </div>
+</div>
+{{/ui/mobile/gestures-container}}
+{{ui/container/infinite-scroll moniteData="template"
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

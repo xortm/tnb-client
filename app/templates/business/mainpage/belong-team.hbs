@@ -1,0 +1,72 @@
+<div id="employeenursinggroupContainer" class="mainContent">
+  <div class="wrapperInner">
+    {{#if showLoadingImg}}
+      <div class="center top20">
+        <img class="width33" src="assets/images/logo/loading.gif" alt="">
+      </div>
+    {{else}}
+    <div class="padding10 bgcolor-white border-bottom-1 padding-top20">
+      <div class="center business-mine-img">
+        <img class="" src="assets/images/mobile/team.png" width=70 alt="">
+      </div>
+      <div class="center weight-bold font16 top10">
+        {{groupName}}
+      </div>
+    </div>
+
+    <div class="padding-0-10">
+      <ul class="nopadding-left left14 border-left1">
+        <li class="padding-top40 clear padding-left-24 position-relative">
+          <i class="position_absolute bk-color-white border-1solid business-mine-img padding4" style="top:35px;left:-14px;border-radius: 50%;">
+            <img class="" src="assets/images/mobile/groupleader.png" width="18"/>
+          </i>
+          <div class="font-black font14 padding-bottom5">
+            组长：
+          </div>
+          <div class="">
+            {{group.leader.name}}
+          </div>
+        </li>
+
+        <li class="padding-top40 clear padding-left-24 position-relative">
+          <i class="position_absolute bk-color-white border-1solid business-mine-img padding4" style="top:35px;left:-14px;border-radius: 50%;">
+            <img class="" src="assets/images/mobile/member.png" width="18"/>
+          </i>
+          <div class="font-black font14 padding-bottom5">
+            组员：
+          </div>
+          <div class="">
+            {{employeesName}}
+          </div>
+        </li>
+
+        <li class="padding-top40 clear padding-left-24 position-relative padding-bottom10">
+          <i class="position_absolute bk-color-white border-1solid business-mine-img padding4" style="top:35px;left:-14px;border-radius: 50%;">
+            <img class="" src="assets/images/mobile/oldmancustomer.png" width="18"/>
+          </i>
+          <div class="font-black font14 padding-bottom5">
+            负责老人：
+          </div>
+          <div class="">
+            {{customersName}}
+          </div>
+        </li>
+
+      </ul>
+    </div>
+    <div class="position-relative">
+      {{#ui/mobile/gestures-container}}
+      <div class="center pointer top20 position_absolute" style="width:130px;height30;line-height:30px;
+      background-color:#2FA7FD;color:#fff;border-radius:5px;left:50%;margin-left:-65px;"
+      id="toSquare"
+      {{action 'toTask' on='tap'}}>
+        查看任务
+      </div>
+      {{/ui/mobile/gestures-container}}
+    </div>
+
+    {{/if}}
+  </div>
+</div>
+{{ui/container/infinite-scroll moniteData="employeenursinggroupList" didRenderAction="didRender"
+didInsertElementAction="didInsertElement"}}

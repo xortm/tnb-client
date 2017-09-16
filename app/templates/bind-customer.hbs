@@ -1,0 +1,51 @@
+<div class="bk-color-2FA7FD">
+  <h4 class="nomargin-vertical height44 line-height-44 center color-white font18"></h4>
+</div>
+<div class="bk-color-2FA7FD padding-top46 height236">
+  <div class="center">
+    <img class="bingImg" src="assets/images/logo/logo.png" alt="天年宝logo">
+  </div>
+</div>
+<div class="col-md-12">
+  <div class="topF118 bk-color-white height215">
+    <div class="center font16 padding-top10">
+      随时随地 关注老人
+    </div>
+    <div class="padding-right-40 padding-left30">
+      <div class="body-oldman-color font12 padding-top18">
+        请通过下面的内容绑定您关注的老人
+      </div>
+      <div class="font20 top10 text height45 border-radius input-border-color position-relative" style="width:100%">
+        <i class="fa-user input-icon iconLogin"></i>
+        {{input class="form-control height44 padding-left40" enter='bindCustomer' value=oldName type="text" placeholder="老人的名字"}}
+      </div>
+
+      <div id="bindCustomer" style="width:100%" class="font20 top10 text height45 border-radius input-border-color padding-top4 position-relative">
+        <i class="fa-birthday-cake input-icon iconLogin"></i>
+        <input type="date" placeholder="请输入老人生日" id="FromDate" value="1935-06-06"
+        name="FromDate" formart="yyyy-mm-dd" onfocus="Constants.LOF_inputDateFocus(this);"
+        class="date iosinput" style="{{if global_curStatus.isIphone '-webkit-appearance: none;'}}"  onchange="Constants.LOF_inputDateChange(this);"/>
+      </div>
+      {{#if success}}
+      <div class="center text-color-success min-height-18 left4 top15">
+        {{#if theTextOfModel}}
+        {{responseInfo}}
+        {{/if}}
+      </div>
+      {{else}}
+      <div class="center text-color-danger min-height-18 left4 top15">
+        {{#if theTextOfModel}}
+        {{responseInfo}}
+        {{/if}}
+      </div>
+      {{/if}}
+    </div>
+  </div>
+
+</div>
+
+{{#ui/mobile/gestures-container}}
+<div id="bind-customer-btn" class="top40 bindBtn center" {{action "bindCustomer" on="tap"}} >
+  绑定
+</div>
+{{/ui/mobile/gestures-container}}

@@ -1,0 +1,19 @@
+<div class="col-xs-12 col-sm-12 col-md-12">
+  <div class="dropdown width48">
+  <i class="inlineBlock floatLeft borderRadius">
+    {{#ui/img-intergration name="headImg"
+    imgSrc=message.fromUser.avatarUrl width=48 height=48
+    businessType=constants.uploadBusinessType_headimg
+  }}
+  {{/ui/img-intergration}}
+  {{#if message.num}}
+  <span class="positionAbs">{{message.num}}</span>b
+  {{/if}}
+  </i>
+  </div>
+  <ul class="inlineBlock width82">
+    <li class="weightbold">{{message.fromUser.name}} <span class="pull-right fontWeight  icon-init">
+      {{message.definiteTime}}</span></li>
+    <li class="extend">{{message.contentShow}}</li>
+  </ul>
+</div>

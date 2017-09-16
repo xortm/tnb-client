@@ -1,0 +1,22 @@
+{{#ui/mobile/gestures-container}}
+    <div id="consultationContainer" class="mainContent border-top-1 {{if global_pageConstructure.showLoader 'hide' ''}}">
+        <div class="wrapperInner">
+            {{#if consultationList}}
+                <div class="bgcolor-white">
+                    {{log "consultationList hbs" consultationList}}
+                    {{#each consultationList as |dataDetail|}}
+                        {{#callbusi/mobile/consultation-list item=dataDetail outerClass="col-sm-6 col-xs-12 height-auto" }}
+                        {{/callbusi/mobile/consultation-list}}
+                    {{/each}}
+                </div>
+            {{else}}
+                <div class="nodate">暂无数据</div>
+            {{/if}}
+        </div>
+        <div class="detail-dynamicsbtn bottom40" id="addConsultInfo" {{action 'addConsultInfo' on="tap"}}>
+            <img class="bottom2" width='15' src="assets/images/mobile/add.png" alt="">
+            <span class="padding-left-10">添加咨询信息</span>
+        </div>
+    </div>
+{{/ui/mobile/gestures-container}}
+{{ui/container/infinite-scroll moniteData="consultationList" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

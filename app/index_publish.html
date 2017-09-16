@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> -->
+    <title>天年宝-机构养老管理系统</title>
+    <meta name="keywords" content="天年宝, 机构养老管理系统, 养老院管理系统, 敬老院管理系统, 老年公寓管理系统, 云宝" />
+    <meta name="description" content="云宝科技推出的天年宝机构养老管理系统能够帮助养老院等各类集中式养老机构提升标准化、精细化、流程化管理能力和服务水平，提高机构的盈利能力。">
+    <meta name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    {{content-for "head"}}
+    <style id="progressBarAreaStyle">
+      #progressBarArea{
+        position: absolute;
+        height:100%;
+        width:100%;
+        background: #f8f8f8;
+      }
+      #progressBarArea .title{
+        margin-top:100px;
+        position: relative;
+        font-size:24px;
+        text-align: center;
+        color:#333;
+      }
+      #progressBarArea .title span{
+        font-size:24px;
+        margin-top:4px;
+        text-align: center;
+        color:#333;
+      }
+      #progressBarArea .tip{
+        position: relative;
+        margin-top:20px;
+        font-size:14px;
+        text-align: center;
+        color:#333;
+      }
+      #progressBar {
+        position: relative;
+        margin-top:50px;margin-left:25%;width:50%;
+        padding: 3px;
+        background-image:-moz-linear-gradient(53% 13% -90deg,rgb(58,64,80) 0%,rgb(58,64,80) 47%,rgb(46,50,62) 48%,rgb(46,50,62) 100%);
+        background-image:-webkit-gradient(linear,53% 13%,53% 79%,color-stop(0, rgb(58,64,80)),color-stop(0.47, rgb(58,64,80)),color-stop(0.48, rgb(46,50,62)),color-stop(1, rgb(46,50,62)));
+        background-image:-webkit-linear-gradient(-90deg,rgb(58,64,80) 0%,rgb(58,64,80) 47%,rgb(46,50,62) 48%,rgb(46,50,62) 100%);
+        background-image:linear-gradient(-180deg,rgb(58,64,80) 0%,rgb(58,64,80) 47%,rgb(46,50,62) 48%,rgb(46,50,62) 100%);
+        -moz-border-radius: 10px; /* Firefox */
+        -webkit-border-radius: 10px; /* Webkit */
+        border-radius: 10px;
+      }
+      #progressBar div {
+        font-family: arial;
+        font-size: 3px;
+        color: white;
+        text-align: right;
+        text-shadow: 0px 0px 2px #000;
+        text-indent: 9999px;
+        overflow: hidden;
+        background-image:-webkit-gradient(linear,71% 25%,71% 69%,color-stop(0, rgb(118,177,1)),color-stop(0.47, rgb(118,177,1)),color-stop(0.48, rgb(102,153,0)),color-stop(1, rgb(102,153,0)));
+        background-image:-webkit-linear-gradient(-90deg,rgb(118,177,1) 0%,rgb(118,177,1) 47%,rgb(102,153,0) 48%,rgb(102,153,0) 100%);
+        background-image:-moz-linear-gradient(71% 25% -180deg,rgb(118,177,1) 0%,rgb(118,177,1) 47%,rgb(102,153,0) 48%,rgb(102,153,0) 100%);
+        background-image:linear-gradient(-180deg,rgb(118,177,1) 0%,rgb(118,177,1) 47%,rgb(102,153,0) 48%,rgb(102,153,0) 100%);
+        -moz-border-radius: 10px; /* Firefox */
+        -webkit-border-radius: 10px; /* Webkit */
+        border-radius: 10px;
+      }
+
+      .black_overlay{
+         display: none;
+         position: absolute;
+         top: 0%;
+         left: 0%;
+         width: 100%;
+         height: 100%;
+         background-color: black;
+         z-index:1001;
+         -moz-opacity: 0.8;
+         opacity:.80;
+         filter: alpha(opacity=80);  }
+       .white_content {  display: none;
+          position: absolute;
+          top: 25%;
+          left: 25%;
+          width: 50%;
+          height: 50%;
+          padding: 16px;
+          //border: 16px solid orange;
+          border-radius: 8px;
+          background-color: white;
+          z-index:1002;
+          overflow: auto;  }
+
+          #light span{
+            display: block;
+            padding: 20px 0;
+            cursor: pointer;
+            color: #666;
+            font-size: 17px;
+          }
+          #light span:hover{
+            color: #000;
+          }
+          #light h4{
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 25px;
+            padding-top: 15px;
+          }
+          .bowerBorder{
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 20px;
+          }
+          .bowerBorder div{
+            padding-bottom: 10px;
+            padding-top: 20px;
+          }
+          .bower{
+            margin-left: 15px;
+            display: inline-block;
+            color: #666;
+          }
+          .bower img{
+            padding-top: 10px;
+            padding-bottom: 10px;
+          }
+          .ke-icon-save {
+            background-image: url(save.png) !important;
+            width: 16px;
+            height: 16px;
+          }
+    </style>
+  </head>
+  <body class="page-body">
+    <!-- <script src="thirdLib/maps.js"></script>
+    <script src="thirdLib/addToolbar.js"></script> -->
+    <script src="load_verdor.js"></script>
+		<script src="load.js?1"></script>
+    <div id="light" class="white_content">
+        <h4>很抱歉,您正在使用的浏览器无法完全支持我们的页面。</h4>
+        <div class="bowerBorder">
+          <div>建议您使用以下浏览器的最新版本：</div>
+          <a class="bower icon1" href="http://rj.baidu.com/soft/detail/14744.html?ald" target="_blank" title="谷歌Chrome浏览器">
+            <img src="../assets/images/goole.jpg" alt="" /> <br>谷歌浏览器
+          </a>
+          <a class="bower icon2" href="http://browser.qq.com/?adtag=SEM1" target="_blank" title="腾讯QQ浏览器">
+          <img src="../assets/images/qqbower.jpg" alt="" /> <br>QQ浏览器
+        </a>
+        </div>
+        <span> 知道了，但请继续打开页面</span>
+      </div>
+    <div id="fade" class="black_overlay"></div>
+    <div id="progressBarArea" version="650">
+      <div class="title"><img src="../assets/images/logo/cloud.png" width="25" height="25"></img>&nbsp;<span id="loadTitle">天年宝</span></div>
+      <div id="progressBar"><div></div></div>
+      <div class="tip">正在加载页面文件,请稍候</div>
+    </div>
+    <div id="ember-basic-dropdown-wormhole"></div>
+  </body>
+  <script type="text/javascript">
+    var map;
+
+  </script>
+</html>

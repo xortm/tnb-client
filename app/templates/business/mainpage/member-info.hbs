@@ -1,0 +1,108 @@
+
+    <!--pc端-->
+    <div class="col-sm-12">
+        <div class="box img-top-padding50 ">
+            <div class="padding-bottom50 ">
+                <a href="#" class="pull-left the-a" {{action "information" "informationParams" on="click"}}>
+                    <img src="{{if informationParams '/assets/images/icon/个人信息-居家.png' '/assets/images/icon/个人信息-未选中.png'}}" alt="" class="margin-right90 img-height" id="information">
+                    <div class="{{if informationParams 'jujia-select-color' 'noselect-color '}} top6">个人信息</div>
+                </a>
+                <a href="#" class="pull-left the-a" {{action "health" "healthParams" on="click"}}>
+                    <img src="{{if healthParams '/assets/images/icon/健康监测-居家.png' '/assets/images/icon/健康监测-未选中.png'}}" alt="" class="margin-right90 img-height" id="health">
+                    <div class="{{if healthParams 'jujia-select-color' 'noselect-color '}} top6">健康监测</div>
+                </a>
+                <a href="#" class="pull-left the-a" {{action "service" "serviceParams" on="click"}}>
+                    <img src="{{if serviceParams '/assets/images/icon/服务信息-居家.png' '/assets/images/icon/服务信息-未选中.png'}}" alt="" class="margin-right90 img-height" id="service">
+                    <div class="{{if serviceParams 'jujia-select-color' 'noselect-color '}} top6">会员信息</div>
+                </a>
+                <a href="#" class="pull-left the-a" {{action "record" "recordParams" on="click"}}>
+                    <img src="{{if recordParams '/assets/images/icon/服务记录-居家.png' '/assets/images/icon/服务记录-未选中.png'}}" alt="" class="margin-right90 img-height" id="record">
+                    <div class="{{if recordParams 'jujia-select-color' 'noselect-color '}} top6">消费记录</div>
+                </a>
+                <div class="clear"></div>
+            </div>
+            {{#if informationParams}}
+                <div class="bottom12">
+                    <ul class="nopadding-left border-bottom">
+                        <li class="pull-left margin-right30 {{if infoParams 'jujia-select-bottom-border' ''}}" {{action "infoClick" "infoParams" on="click"}}><a href="#tab_1_1" data-toggle="tab" class="{{if infoParams 'jujia-select-title' 'noselect-title'}} the-a">基本信息</a></li>
+                        <li class="pull-left margin-right30 {{if pointParams 'jujia-select-bottom-border' ''}}" {{action "pointClick" "pointParams" on="click"}}><a href="#tab_1_3" data-toggle="tab" class="{{if pointParams 'jujia-select-title' 'noselect-title'}} the-a">个人特点</a></li>
+                        <li class="pull-left margin-right30 {{if contactParams 'jujia-select-bottom-border' ''}}" {{action "contactClick" "contactParams" on="click"}}><a href="#tab_1_4" data-toggle="tab" class="{{if contactParams 'jujia-select-title' 'noselect-title'}} the-a">联系人信息</a></li>
+                        <li class="pull-left margin-right30 {{if systemParams 'jujia-select-bottom-border' ''}}" {{action "systemClick" "systemParams" on="click"}}><a href="#tab_1_6" data-toggle="tab" class="{{if systemParams 'jujia-select-title' 'noselect-title'}} the-a">系统信息</a></li>
+                    </ul>
+                    <div class="clear"></div>
+                </div>
+                <div class="tab-content fade in nopadding-left nopadding-right">
+                    <div class="tab-pane fade in  active" id="tab_1_1">
+                        {{#callbusi/customer-info customerInfo=customerInfo saveCustomer="saveCustomer" shortSave=shortSave showCustomer=showCustomer jujia=true}}
+                        {{/callbusi/customer-info}}
+                    </div>
+                    <div class="tab-pane fade in " id="tab_1_3">
+                        {{#callbusi/customer-point-jujia customerInComp=customer shortSave=shortSave showCustomer=showCustomer}}
+                        {{/callbusi/customer-point-jujia}}
+                    </div>
+                    <div class="tab-pane fade in " id="tab_1_4">
+                        {{#callbusi/customer-contact-info customerInfo=customerInfo shortSave=shortSave showCustomer=showCustomer}}
+                        {{/callbusi/customer-contact-info}}
+                    </div>
+                    <div class="tab-pane fade in " id="tab_1_6">
+                        {{#callbusi/system-info customerInfo=customerInfo shortSave=shortSave showCustomer=showCustomer systemFlag=systemFlag}}
+                        {{/callbusi/system-info}}
+                    </div>
+                </div>
+            {{else}}
+                {{#if healthParams}}
+                    <div class="tab-pane  padding-bottom100">
+                        {{callbusi/customer-health-data customerInComp=customer jujia=true}}
+                    </div>
+                {{else}}
+                    {{#if serviceParams}}
+                        <!-- <div class="tab-pane  padding-bottom100">
+                            {{#callbusi/vip-info customerInComp=customer actualDepositInfo=actualDepositInfo balanceInfo=balanceInfo accountFlag=accountFlag}}
+                            {{/callbusi/vip-info}}
+                        </div> -->
+                        <div class="bottom12">
+                            <ul class="nopadding-left border-bottom">
+                                <li class="pull-left margin-right30 {{if infoParams 'jujia-select-bottom-border' ''}}" {{action "infoClick" "infoParams" on="click"}}><a href="#tab_1_1" data-toggle="tab" class="{{if infoParams 'jujia-select-title' 'noselect-title'}} the-a">会员信息</a></li>
+                                <li class="pull-left margin-right30 {{if pointParams 'jujia-select-bottom-border' ''}}" {{action "pointClick" "pointParams" on="click"}}><a href="#tab_1_3" data-toggle="tab" class="{{if pointParams 'jujia-select-title' 'noselect-title'}} the-a">膳食方案</a></li>
+                                <li class="pull-left margin-right30 {{if contactParams 'jujia-select-bottom-border' ''}}" {{action "contactClick" "contactParams" on="click"}}><a href="#tab_1_4" data-toggle="tab" class="{{if contactParams 'jujia-select-title' 'noselect-title'}} the-a">运动方案</a></li>
+                                <li class="pull-left margin-right30 {{if systemParams 'jujia-select-bottom-border' ''}}" {{action "systemClick" "systemParams" on="click"}}><a href="#tab_1_6" data-toggle="tab" class="{{if systemParams 'jujia-select-title' 'noselect-title'}} the-a">用药方案</a></li>
+                                <li class="pull-left margin-right30 {{if medicineParams 'jujia-select-bottom-border' ''}}" {{action "medicineClick" "medicineParams" on="click"}}><a href="#tab_1_7" data-toggle="tab" class="{{if medicineParams 'jujia-select-title' 'noselect-title'}} the-a">中医方案</a></li>
+                            </ul>
+                            <div class="clear"></div>
+                        </div>
+                        <div class="tab-content fade in nopadding-left nopadding-right">
+                            <div class="tab-pane fade in  active" id="tab_1_1">
+                              {{#callbusi/vip-info customerInComp=customer actualDepositInfo=actualDepositInfo balanceInfo=balanceInfo accountFlag=accountFlag}}
+                              {{/callbusi/vip-info}}
+                            </div>
+                            <div class="tab-pane fade in " id="tab_1_3">
+                                {{#callbusi/customer-diet-scheme customerInComp=customer shortSave=shortSave showCustomer=showCustomer accountFlag=accountFlag}}
+                                {{/callbusi/customer-diet-scheme}}
+                            </div>
+                            <div class="tab-pane fade in " id="tab_1_4">
+                                {{#callbusi/customer-sport-scheme customerInComp=customer shortSave=shortSave showCustomer=showCustomer accountFlag=accountFlag}}
+                                {{/callbusi/customer-sport-scheme}}
+                            </div>
+                            <div class="tab-pane fade in " id="tab_1_6">
+                                {{#callbusi/customer-drug-scheme customerInComp=customer shortSave=shortSave showCustomer=showCustomer accountFlag=accountFlag}}
+                                {{/callbusi/customer-drug-scheme}}
+                            </div>
+                            <div class="tab-pane fade in " id="tab_1_7">
+                                {{#callbusi/customer-medicine-scheme customerInComp=customer shortSave=shortSave showCustomer=showCustomer accountFlag=accountFlag}}
+                                {{/callbusi/customer-medicine-scheme}}
+                            </div>
+                        </div>
+                    {{else}}
+                        {{#if recordParams}}
+                            <div class="tab-pane  padding-bottom100" id="datatable1_wrapper">
+                                {{#callbusi/customer-service-record customerInComp=customer planProjectList=planProjectList}}
+                                {{/callbusi/customer-service-record}}
+                            </div>
+                        {{else}}
+
+                        {{/if}}
+                    {{/if}}
+                {{/if}}
+            {{/if}}
+        </div>
+    </div>

@@ -1,0 +1,13 @@
+{{#ui/mobile/gestures-container}}
+  <div id="resultDetailChildContainer" class="mainContent border-top-1 {{if global_pageConstructure.showLoader 'hide' ''}}">
+    <div class=" carousel color666 border-top-1 border-bottom-1" style="height:44px;">
+        <span class="profile-span">{{fieldInfo.name}}</span>
+        <div class="wrapperInner" style="margin-top:40px;">
+            {{callbusi/mobile/record-detail fieldInfo=fieldInfo lastLevel=lastLevel toNextPage="toNextPage" chooseItem="chooseParent"}}
+        </div>
+    </div>
+
+</div>
+{{/ui/mobile/gestures-container}}
+{{ui/container/infinite-scroll moniteData="template"
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

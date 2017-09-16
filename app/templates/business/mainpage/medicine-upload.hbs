@@ -1,0 +1,21 @@
+<div id="userMedicineUploadContainer" class="mainContent">
+  <div class="wrapperInner jujia-Bd">
+{{#ui/mobile/gestures-container}}
+<div class="jujia-container diet-upload">
+  <section class="msg-box">
+    <div class="in-box">
+    <!-- <img class="lecture1" src="{{model.picPath}}" alt=""> -->
+      {{#ui/img-intergration-simple name="dietImg" hasUploader=true imgSrc=defaultImgSrc height=280 width=280 margin-left=0 uploadUrl=uploadUrl uploadSucc="uploadSucc" uploadFail="uploadFailImg" businessType=constants.uploadBusinessType_jujia as |component|
+          }}
+      {{/ui/img-intergration-simple}}
+    </div>
+
+    <!-- <button type="button" name="button" {{ action "saveItem"}}>确定上传</button> -->
+  </section>
+</div>
+
+
+{{/ui/mobile/gestures-container}}
+</div>
+</div>
+{{ui/container/infinite-scroll moniteData="userJujiaMy" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

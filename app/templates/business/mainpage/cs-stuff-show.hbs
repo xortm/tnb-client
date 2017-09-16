@@ -1,0 +1,84 @@
+<div class="page-content">
+  <div class="col-sm-12 nopadding-horizontal">
+    <div class="btn-group top8 right4 pull-left" data-toggle="buttons">
+      {{#if (eq sortType 'workHour')}}
+      <label class="btn btn-active bottom0" {{action 'experienceSort'}}>
+        <input type="radio" name="sortList">经验丰富
+      </label>
+      {{else}}
+      <label class="btn btn-not-active border1 bottom0" {{action 'experienceSort'}}>
+        <input type="radio" name="sortList">经验丰富
+      </label>
+      {{/if}}
+      {{#if (eq sortType 'createTime')}}
+      <label class="btn btn-active bottom0" {{action 'createTimeSort'}}>
+        <input type="radio" name="sortList">注册时间
+      </label>
+      {{else}}
+      <label class="btn btn-not-active border1 bottom0" {{action 'createTimeSort'}}>
+        <input type="radio" name="sortList">注册时间
+      </label>
+      {{/if}}
+    </div>
+    <div class="col-sm-3 nopadding-horizontal left14 top8">
+      {{input type="search" class="form-control" name="search" value=csname enter='searchCs' placeholder="搜索客服"}}
+    </div>
+    <!-- <span>{{userSex}}</span>
+    <span class="left14">{{userLanguages}}</span>
+    <span class="left14">{{userFields}}</span> -->
+    <div class="pull-right">
+
+    <div class="pull-right top8">
+      {{#ui/multi-select
+        titleText = titleText.[2]
+        fieldsArray = fieldsArray
+        selectContext=selectContext.field
+        isSelected = "isSelected"
+      }}
+      {{/ui/multi-select}}
+    </div>
+    <div class="pull-right top8">
+      {{#ui/multi-select
+        titleText = titleText.[1]
+        selectContext=selectContext.language
+        isSelected = "isSelected"
+      }}
+      {{/ui/multi-select}}
+    </div>
+    <div class="pull-right top8">
+      {{#ui/multi-select
+        titleText = titleText.[0]
+        selectContext=selectContext.sex
+        isSelected = "isSelected"
+      }}
+      {{/ui/multi-select}}
+    </div>
+  </div>
+</div>
+<div class="col-sm-12 nopadding-horizontal height0 bottom8">
+  <span class={{if userSex 'right10'}}>{{userSex}}</span>
+  <span class={{if userSex 'right10'}}>{{userLanguages}}</span>
+  <span class={{if userSex 'right10'}}>{{userFields}}</span>
+</div>
+{{#if csList}}
+{{#each csList as |cs|}}
+{{ log 'cs in hbs:' cs }}
+<div class="col-sm-12 padding20 top15 bgcolor-w hovertype" {{action 'enterDetail' cs}}>
+  {{#callbusi/cs-item
+    csuser = cs
+    curTask = curTask
+    curUser = curUser
+    invitation = 'invitation'
+  }}
+  {{/callbusi/cs-item }}
+</div>
+{{/each}}
+<div class="col-sm-5 top8 nopadding-horizontal">
+  <div class="tight-row bk-color-white padding5">
+    {{page-numbers content=csList showFL=true numPagesToShow=3}}
+  </div>
+</div>
+{{else}}
+<h1 class="col-sm-12 center unTask">没有满足条件的客服~</h1>
+{{/if}}
+</div>

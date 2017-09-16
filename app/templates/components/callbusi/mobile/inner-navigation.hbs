@@ -1,0 +1,12 @@
+{{yield}}
+<div class="row border-bottom-black {{positionStyle}}">
+  <div class="col-xs-6  nopadding-horizontal {{if borderBorromLeft 'border-bottom-style' ''}} padding-vertical7 border-right-black" {{action "changeConditionLeft" on="tap"}}>
+    <span class="margin-vertical5">{{conditionLeft}}</span>
+    <!-- 进行中 -->
+  </div>
+  <!-- <div class="col-xs-2 line-style padding-vertical7 nopadding-horizontal">|</div> -->
+  <div class="col-xs-6  nopadding-horizontal {{if borderBorromRight 'border-bottom-style' ''}} padding-vertical7" {{action "changeConditionRight" on="tap"}}>
+    <span class="margin-vertical5">{{conditionRight}}</span>
+    <!-- 已完成 -->
+  </div>
+</div>

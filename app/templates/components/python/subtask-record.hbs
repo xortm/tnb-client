@@ -1,0 +1,14 @@
+<div class="list-group-item">
+        <div class="row">
+          <div class="col-sm-4">
+            <!-- <span class="fa-phone"></span> -->
+            <strong>{{record.name}}</strong>
+          </div>
+          <div class="col-sm-4"><strong>{{record.phone}}</strong></div>
+          <div class="col-sm-4">
+            {{#ui/mix-button iconClass="fa-phone" text="拨打电话"
+                clickAction="makeCall" makeCall="makeCall" clickActParams=record.phone}}
+            {{/ui/mix-button}}
+          </div>
+        </div>
+</div>

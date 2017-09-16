@@ -1,0 +1,120 @@
+{{#if curTask}}
+<div class="row">
+  <div class="col-sm-2 nopadding-left">
+      {{#power-select placeholder="通话类型" options=directions selected=directionSel
+        allowClear=true onchange=(action "dirSelect") as |direction|}}
+        {{direction.text}}
+      {{/power-select}}
+  </div>
+  <div class="col-sm-6">
+    创建日期：
+      {{input type="date" value=chooseDateFrom class='choosedatetype' focus-out="choosetime"}}~
+      {{input type="date" value=chooseDateTo class='choosedatetype' focus-out="choosetime"}}
+  </div>
+  <div class="col-sm-3 pull-right">
+    <div class="input-group">
+        {{input type="search" class="form-control" name="search" value=callname enter='searchcall' placeholder="搜索（手机号/客户名/客服）"}}
+        <span class="input-group-addon">
+          <span class="linecons-search" id="linecons-search" {{action 'searchcall'}}></span>
+        </span>
+    </div>
+  </div>
+</div>
+{{#if callList}}
+<div class="row top8">
+  <div class="col-sm-4 nopadding-horizontal">
+  {{#each callList as |call|}}
+    {{ log 'call in hbs:' call }}
+    {{callbusi/call-item origin="1" call=call selectAction="changeCallItem" hasSelected=call.hasSelected
+    changeCallItem=(action "changeCallItem" call)}}
+  {{/each}}
+  <!-- 分页导航 -->
+    <div class="tight-row bk-color-white">
+      {{page-numbers content=callList showFL=true numPagesToShow=3}}
+    </div>
+  </div>
+  {{log 'call get int hbs' call}}
+  <div class="col-sm-8 nopadding-right">
+      <div class="panel bottom0">
+        <div class="panel-heading">
+          通话客户:{{call.customer.enterprise}} {{call.customer.name}}
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-4">
+              电话：{{call.customer.phone}}
+            </div>
+            <div class="col-sm-4">
+              微信：{{call.customer.weixin}}
+            </div>
+            <div class="col-sm-4">
+              邮箱：{{call.customer.email}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              地址：{{call.customer.address}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel bottom0 top4">
+        <div class="panel-heading">
+          通话详情
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-sm-4">
+              呼叫类型：{{call.directionStr}}
+            </div>
+            <div class="col-sm-4">
+              主叫：{{call.callingNumber}}
+            </div>
+            <div class="col-sm-4">
+              被叫：{{call.calledNumber}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4">
+              呼叫时间：{{call.beginTimeStr}}
+            </div>
+            <div class="col-sm-4">
+              摘机时间：{{call.endTimeStr}}
+            </div>
+            <div class="col-sm-4">
+              通话时长：{{call.durationDisplay}}
+            </div>
+          </div>
+          <!-- 新添加 -->
+          <div class="row">
+            <div class="col-sm-4">
+              处理坐席：{{call.agent.name}}
+            </div>
+            <div class="col-sm-4">
+              处理状态：{{call.status.typename}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <!-- {{call.endTimeStr}} -->
+              通话录音：
+              {{#if call.voiceRecording}}
+              <audio src="{{call.audioUrl}}" controls="controls" class="margin-bottomfu6">
+                您的浏览器无法播放音频，请点击下载。
+              </audio>
+                <a href="{{call.audioUrl}}">下载录音</a>
+              {{else}}
+                没有录音
+              {{/if}}
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>
+{{else}}
+<h1 class="center unTask">没有通话记录</h1>
+{{/if}}
+{{else}}
+<h1 class="center unTask">请选择当前任务</h1>
+{{/if}}

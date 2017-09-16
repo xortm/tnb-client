@@ -1,0 +1,119 @@
+{{#if curTask}}
+<div class="col-sm-12">
+  <div class="row">
+    <div class="col-sm-4 nopadding-horizontal">
+      {{#bs-button-group value=csStatus  type="radio"}}
+      {{#bs-button value=0 action=(action "switchMode" 0)}}待拨打{{/bs-button}}
+      {{#bs-button value=1 action=(action "switchMode" 1)}}已完成{{/bs-button}}
+      {{/bs-button-group}}
+    </div>
+    <div class="col-sm-4 pull-right nopadding-horizontal">
+      <div class="input-group">
+        {{input type="search" class="form-control" name="search" value=searchValue enter='searchCustomer' placeholder="搜索 客户姓名/手机号"}}
+        <span class="input-group-addon hovertype" {{action 'searchCustomer'}}>
+          <span class="linecons-search" id="linecons-search"></span>
+        </span>
+      </div>
+    </div>
+
+  </div>
+  {{#if customerList}}
+  <div class="row bk-color-white top8">
+    <table class="table responsive">
+      <thead>
+        <tr>
+          <th>姓名</th>
+          <th>电话</th>
+          <th>单位</th>
+          <th>职位</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each customerList as |csCustomer|}}
+        {{ log 'customer in hbs:' csCustomer }}
+        <tr>
+          <td class="hovertype" {{action 'checkCustomer' csCustomer.customer}}><a href="javascript:void(0)" class="no-decoration">{{csCustomer.customer.name}}</a></td>
+          <td class="hovertype" {{action 'checkCustomer' csCustomer.customer}}>{{csCustomer.customer.phoneHidden}}</td>
+          <td class="hovertype" {{action 'checkCustomer' csCustomer.customer}}>{{csCustomer.customer.enterprise}}</td>
+          <td class="hovertype" {{action 'checkCustomer' csCustomer.customer}}>{{csCustomer.customer.position}}</td>
+          <td>
+            <span class="right20">
+              {{#if (eq curUserTask.runStatus 1)}}
+              {{#ui/icon-button iconClass=csCustomer.customer.callStatus
+              data-toggle="tooltip"  title="拨号"  data-placement="top" data-original-title="拨号"
+              clickAction="makeCall" clickActParams=csCustomer.customer makeCall="makeCall"}}
+              {{/ui/icon-button}}
+              <!-- {{#ui/icon-button iconClass="fa-phone"
+              data-toggle="tooltip"  title="拨号"  data-placement="top" data-original-title="拨号"
+              clickAction="makeCall" clickActParams=csCustomer.customer makeCall="makeCall"}}
+              {{/ui/icon-button}} -->
+              {{else}}
+              <i class="fa-phone icon-gray" data-toggle="tooltip"  title="拨号"  data-placement="top" data-original-title="拨号"></i>
+              {{/if}}
+            </span>
+            {{#if csStatus}}
+            {{else}}
+            <span>
+              {{#ui/icon-button iconClass="fa-check"
+              data-toggle="tooltip"  title="完成"  data-placement="top" data-original-title="完成"
+              clickAction="isFinished" clickActParams=csCustomer.id isFinished="isFinished" }}
+              {{/ui/icon-button}}
+            </span>
+            {{/if}}
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+  <div class="row top8 col-sm-5 nopadding-horizontal">
+    <div class="tight-row bk-color-white padding5">
+      {{page-numbers content=customerList showFL=true numPagesToShow=3}}
+    </div>
+  </div>
+  {{else}}
+  <h1 class="col-sm-12 center unTask">不存在此类客户</h1>
+  {{/if}}
+</div>
+{{else}}
+<h1 class="center unTask">没有选择任务</h1>
+{{/if}}
+
+{{#if showModal}}
+{{#bs-modal body=false footer=false header=false closedAction=(action "toggle")}}
+{{#bs-modal-header}}
+<h4 class="modal-title">电话状态</h4>
+{{/bs-modal-header}}
+{{#bs-modal-body}}
+{{responseInfo}}
+{{/bs-modal-body}}
+{{#bs-modal-footer as |footer|}}
+{{#bs-button action=(action "toggle") type="success"}}关闭{{/bs-button}}
+{{/bs-modal-footer}}
+{{/bs-modal}}
+{{/if}}
+
+{{#if confirmIdModal}}
+{{#bs-modal body=false footer=false header=false closedAction=(action "closeConfirm")}}
+{{#bs-modal-header}}
+<h4 class="modal-title">确认</h4>
+{{/bs-modal-header}}
+{{#bs-modal-body}}
+是否确认已完成？
+{{/bs-modal-body}}
+{{#bs-modal-footer as |footer|}}
+{{#bs-button action=(action "switchStatus" confirmIdModal) type="success"}}确定{{/bs-button}}
+{{#bs-button action=(action "closeConfirm") type="warning"}}取消{{/bs-button}}
+{{/bs-modal-footer}}
+{{/bs-modal}}
+{{/if}}
+
+{{#if showpopCustomerModal}}
+{{#callbusi/customer-modal
+  isDisabled = isDisabled
+  customer = curEditCustomer
+  cancelCustomerChange = 'cancelCustomerChange'
+}}
+{{/callbusi/customer-modal}}
+{{/if}}

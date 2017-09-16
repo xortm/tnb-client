@@ -1,0 +1,28 @@
+<div id="userMedicationUploadContainer" class="mainContent">
+  <div class="wrapperInner jujia-Bd">
+{{#ui/mobile/gestures-container}}
+<div class="jujia-container medication-upload">
+  <section class="msg-box">
+    <div class="matter">
+      <span class="">今天是否记得吃药？</span>
+      <select id="isTaken" name="isTaken">
+        <option value="1">记得</option>
+        <option value="0">忘了</option>
+      </select>
+    </div>
+    <div class="matter">
+      <span class="">是否按时吃药？</span>
+      <select id="isInTime" name="isInTime">
+        <option value="1">按时</option>
+        <option value="0">没按时</option>
+      </select>
+    </div>
+    <button type="button" name="button" {{ action "saveItem"}}>确定上传</button>
+  </section>
+</div>
+
+
+{{/ui/mobile/gestures-container}}
+</div>
+</div>
+{{ui/container/infinite-scroll moniteData="userJujiaMy" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

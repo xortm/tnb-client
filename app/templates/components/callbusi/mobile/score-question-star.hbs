@@ -1,0 +1,35 @@
+<div class="line padding-left-5">
+  <span>{{appraiseResultItem.name}}：</span>
+  <ul class="width-auto">
+    {{#each appraiseResultItem.maxScoreArr as |maxScore index| }}
+      {{#if (lt index appraiseResultItem.score)}}
+        {{#if hasReadyFlag}}
+          <li><i class="fa fa-star"></i></li>
+        {{else}}
+          <li {{action 'tapItem' index appraiseResultItem.item.id on="tap"}}><i class="fa fa-star"></i></li>
+        {{/if}}
+      {{else}}
+        {{#if hasReadyFlag}}
+          <li><i class="fa fa-star-o"></i></li>
+        {{else}}
+          <li {{action 'tapItem' index appraiseResultItem.item.id on="tap"}}><i class="fa fa-star-o"></i></li>
+        {{/if}}
+      {{/if}}
+    {{/each}}
+  </ul>
+  {{log "appraiseResultItem.score" appraiseResultItem.score}}
+  {{#if (eq appraiseResultItem.score 1)}}
+    <span>非常差</span>
+  {{else if (eq appraiseResultItem.score 2)}}
+    <span>差</span>
+  {{else if (eq appraiseResultItem.score 3)}}
+    <span>一般</span>
+  {{else if (eq appraiseResultItem.score 4)}}
+    <span>好</span>
+  {{else if (eq appraiseResultItem.score 5)}}
+    <span>非常好</span>
+  {{/if}}
+  <!-- {{#if appraiseResultItem.score}}
+    <span>{{appraiseResultItem.score}}分</span>
+  {{/if}} -->
+</div>

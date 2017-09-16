@@ -1,0 +1,25 @@
+<div id="userMemberFeedbackContainer" class="mainContent">
+  <div class="wrapperInner jujia-Bd">
+{{#ui/mobile/gestures-container}}
+<div class="jujia-container member-feedback">
+  <section class="msg-box">
+    <div class="matter">
+      <span class="matter-span">反馈事项：</span>
+      <div class="matter-select">
+        {{callbusi/dict-selector curDict=feedbackType groupCode=constants.feedbackType showName="反馈事项" dictSelect="feedbackTypeSelect" value=feedbackType preselected=false}}
+      </div>
+    </div>
+    <div class="time">
+      <p class="time-pre">反馈内容：（请限制在800字以内）</p>
+      {{textarea type="text" value=feedbackContents class="textarea_class" cols="80" rows="6"}}
+    </div>
+    <button type="button" name="button" {{ action "saveItem"}}>确认提交</button>
+    <div class='tip'>{{tipInfo}}</div>
+  </section>
+</div>
+
+
+{{/ui/mobile/gestures-container}}
+</div>
+</div>
+{{ui/container/infinite-scroll moniteData="userJujiaMy" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

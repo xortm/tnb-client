@@ -1,0 +1,78 @@
+<div class="img-container position-relative">
+
+{{#if errorThrown}}
+  <div class="lazy-image-error-message">{{defaultErrorText}}</div>
+{{else}}
+  <div class="lazy-image-placeholder">{{yield}}</div>
+{{/if}}
+<!-- <div class="cccc"> -->
+  <!-- <div class="intergration_normal " style="height:{{height}}px; width:{{width}}px"> -->
+  {{#if useDimensionsAttrs}}
+      <img class="{{unbound class}} imgSrcClass" src={{imgSrc}} alt="{{unbound alt}}"
+        height={{height}} width={{width}}/>
+      <img class="imgOutClass" src={{imgSrc}}/>
+  {{else}}
+      <img class="{{unbound class}}" src={{imgSrc}} alt="{{unbound alt}}"/>
+  {{/if}}
+ <!-- </div> -->
+<!-- </div>{{action "uploadClick" on="tap"}} {{action "uploadImage" this on="change"}} -->
+{{#if hasUploader}}
+
+  {{#if isMobile}}
+    <!-- 点击显示大图,然后有一个上传按钮 -->
+    {{#if (eq businessFlag "clickShowBigImgUpload")}}
+      <div class="position_absolute {{unless upBarShow "hide"}}  clickClass"
+      style="width:{{width}}px; height:{{width}}px; top:0; left:0; cursor:pointer;" {{action "showBigImgAction"}}></div>
+      <!-- 点击直接上传图片 -->
+    {{else if (eq businessFlag "clickImgUpload")}}
+      <!-- <label class="position_absolute {{unless upBarShow "hide"}}"
+      style="display:block; width:{{width}}px; height:{{width}}px; top:0; left:0; cursor:pointer; margin-bottom:0;" {{action "tapUpload" on="tap"}}></label> -->
+      <label class="position_absolute {{unless upBarShow "hide"}}"
+      style="display:block; width:{{width}}px; height:{{width}}px; top:0; left:0; cursor:pointer; margin-bottom:0;" for="{{concat 'uploader-' name}}"></label>
+    {{else}}
+    <!-- 在图片下边有一个上传按钮 -->
+      <label class="barInBottom  {{unless upBarShow "hide"}}"
+      style="display:block; width:{{width}}px; cursor:pointer" for="{{concat 'uploader-' name}}">点击上传图片&nbsp;</label>
+    {{/if}}
+    <!-- <input id="{{concat 'uploader-' name}}" class="hide" type="file" accept="image/*" capture="camera"/> -->
+    <input id="{{concat 'uploader-' name}}" class="hide" type="file" accept="image/*"/>
+  {{else}}
+  <!-- PC端上传 -->
+     <div id="{{concat 'uploader-' name}}"  class="barInBottom  {{unless upBarShow "hide"}}"
+     style="width:{{width}}px; cursor:pointer" for="xFile">点击上传图片&nbsp;</div>
+    {{#pl-uploader name=(concat 'pluploader-' name) extensions="jpg jpeg png gif" for=(concat 'uploader-' name) for-dropzone=(concat 'uploader-' name)
+      onInitOfUploader="onInitOfUploader"
+      onfileadd="uploadImage" as |queue features|}}
+    {{/pl-uploader}}
+  {{/if}}
+{{/if}}
+{{#if showProgress}}
+{{bs-progress-bar value=progressValue minValue=0 maxValue=100 showLabel=true
+  roundDigits=0 type='info' striped=false animate=false}}
+{{/if}}
+</div>
+
+<!--  点击是否显示大图  -->
+{{#if showBigImageModal}}
+    {{#bs-modal body=false footer=false header=false closedAction=(action "invitation") openedAction=(action "imageOpened")}}
+        {{#bs-modal-header}}
+            <h4 class="modal-title">大图显示</h4>
+        {{/bs-modal-header}}
+        {{#bs-modal-body}}
+            <div class="drug-img" class="modal-body clearfix">
+                <div class="width100B imgWrapperInner" style="text-align: center; margin:0 auto;">
+                  <img class="bigImgSrcClass" src="{{imgSrc}}" alt="{{unbound alt}}">
+                  <label class="uploadBut" for="{{concat 'uploader-' name}}">点击上传图片</label>
+                </div>
+            </div>
+        {{/bs-modal-body}}
+    {{/bs-modal}}
+{{/if}}
+<style>
+.imgOutClass{width: 50px; height:auto; opacity: 0; position: absolute; left: 1000px;}
+.modal-header{height: 40px;}
+.modal-header .close{margin-top: -10px;}
+.modal-header .modal-title{margin-top: -10px; font-size: 16px; line-height: 20px; height: 20px;}
+.modal-body{padding:5px 5px;}
+.uploadBut{display:block; height:50px; color:#333333; font-size:16px; line-height:50px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; background-color: #999999; text-align: center; margin:0 auto;}
+</style>

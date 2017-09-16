@@ -1,0 +1,189 @@
+<div class="col-sm-12">
+  <div class="box margin-middle max-width ">
+    <!-- BOX-BODY -->
+    <h3 class="col-sm-12 base-imformation">
+        <p class="user-add-btn inline-block">
+          {{#if detailEdit}}
+          {{else}}
+            {{#ui/icon-button iconClass="fa-trash-o pull-right incon-button-font"
+            data-toggle="tooltip"  title="删除"  data-placement="top" data-original-title="删除"
+            clickAction="delById" delById="delById"}}
+            {{/ui/icon-button}}
+            {{#ui/icon-button iconClass="fa-edit pull-right incon-button-font"
+            data-toggle="tooltip"  title="编辑"  data-placement="top" data-original-title="编辑"
+            clickAction="detailEditClick" detailEditClick="detailEditClick" clickActParams=department}}
+            {{/ui/icon-button}}
+          {{/if}}
+        </p>
+      </h3>
+    <div class="panel-body nopadding-vertical">
+        <!-- 列表编辑-->
+        {{#bs-form formLayout=formLayout model=departmentModel invalid=(action "invalid")}}
+            <div class="row clear">
+                <div class="col-xs-12 nopadding-horizontal">
+                    <!-- //部门名称 -->
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-input-group">
+                            <span class="input-group-addon">部门名称：</span>
+                            {{#if detailEdit}}
+
+                                {{bs-form-element property="name" class="inline-block form-input-group label-normal" placeholder='部门名称'}}
+
+                            {{else}}
+                                <div class="input-group-content">{{department.name}}</div>
+                            {{/if}}
+                        </div>
+                    </div>
+
+                    <!-- //部门编号 -->
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-input-group">
+                            <span class="input-group-addon">部门编号：</span>
+                            {{#if detailEdit}}
+
+                                {{bs-form-element property="code" class="inline-block form-input-group label-normal" placeholder='部门编号'}}
+
+                            {{else}}
+                                <div class="input-group-content">{{department.code}}</div>
+                            {{/if}}
+                        </div>
+                    </div>
+                    <!-- //上级部门 -->
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-input-group">
+                            <span class="input-group-addon">上级部门：</span>
+                            {{#if detailEdit}}
+
+                                {{#power-select class="input-group-content" placeholder="上级部门" options=parList selected=defaultParent searchField="parentPinyin" noMatchesMessage="没有相关内容" allowClear=true onchange=(action "selectParent" ) as |parentT|}}
+                                    {{parentT.name}}
+                                {{/power-select}}
+
+                            {{else}}
+                                <div class="input-group-content">{{department.parent.name}}</div>
+                            {{/if}}
+
+                        </div>
+                    </div>
+                    <!-- 部门领导 -->
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-input-group">
+                            <span class="input-group-addon">部门领导：</span>
+                            {{#if detailEdit}}
+                                {{#if flagEdit}}
+                                    <div class="input-group-content">{{leadersName}}</div>
+                                {{else}}
+                                    <div class="input-group-content">请在员工管理设置该部门领导</div>
+                                {{/if}}
+                            {{else}}
+                                <div class="input-group-content">{{leadersName}}</div>
+                            {{/if}}
+                        </div>
+                    </div>
+
+                    <!-- <div class="col-xs-12 col-sm-6">
+                        <div class="form-input-group">
+                            <span class="input-group-addon">部门领导：</span>
+                            {{#if detailEdit}}
+                                {{#if flagEdit}}
+                                    <div class="input-group-content">{{department.leaderUser.name}}</div>
+                                {{else}}
+                                    {{#bs-form-element class="inline-block form-input-group" controlType="leaderUser" property="leaderUser" }}
+                                        {{#power-select class="inline-block input-group-content" placeholder="领导" options=employeeList selected=defaultEmployee searchField="namePinyin" noMatchesMessage="没有相关内容" allowClear=false onchange=(action "selectDepartment" ) as |name|}}
+                                            {{name.name}}
+                                        {{/power-select}}
+                                    {{/bs-form-element}}
+                                {{/if}}
+                            {{else}}
+                                <div class="input-group-content">{{department.leaderUser.name}}</div>
+                            {{/if}}
+                        </div>
+                    </div> -->
+                    <!-- {{#if deparDate}} -->
+                    <!-- 创建时间 -->
+                    <!-- <div class="col-xs-12 col-sm-6">
+                        <div class="form-input-group">
+                            <span class="input-group-addon">创建时间：</span>
+                            {{#if detailEdit}}
+                                <div class="input-group-content">{{department.createDateString}}</div>
+                                {{else}}
+                                {{ui/addon/bs-datetimepicker date=departmentModel.createTimeDate placeholder="创建时间" locale="zh-CN" iconClasses="fa fa-calendar" value=departmentModel.createTimeDate show="dpShowAction" change="changeCreateTimeDateAction" }}
+                            {{/if}}
+                        </div>
+                    </div> -->
+
+                    <!-- 更新时间 -->
+                    <!-- <div class="col-xs-12 col-sm-6">
+                        <div class="form-input-group">
+                            <span class="input-group-addon">更新时间：</span>
+                            {{#if detailEdit}}
+                                <div class="input-group-content">{{department.lastUpdateDateTime}}</div>
+                            {{/if}}
+                        </div>
+                    </div>
+                    {{/if}} -->
+                    <!-- 简称 -->
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-input-group">
+                            <span class="input-group-addon">部门简称：</span>
+                            {{#if detailEdit}}
+
+                                {{bs-form-element property="shortName" class="inline-block form-input-group label-normal" placeholder='部门简称'}}
+
+                            {{else}}
+                                <div class="input-group-content">{{department.shortName}}</div>
+                            {{/if}}
+                        </div>
+                    </div>
+
+                    <!--  备注 -->
+                    <div class="col-xs-12 col-sm-12 ">
+                        <div class="form-input-group">
+                            <span class="input-group-addon">备&emsp;&emsp;注：</span>
+                            {{#if detailEdit}}
+
+                                {{textarea type="text" maxlength='50' class="full-width inline-block form-input-group label-normal form-control" value=department.remark placeholder='备注(最多输入50字)'}}
+
+                            {{else}}
+                                <div class="input-group-content">{{department.remark}}</div>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- 列表编辑 -->
+            <div class="col-sm-12">
+                <div class="text-center padding-top30">
+                    <p class="text-center user-add-btn" style="display:inline-block;margin:0 auto!important ">
+                        {{#if detailEdit}}
+                            {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check" text='保存' clickAction="detailSaveClick" detailSaveClick="detailSaveClick" clickActParams=departmentModel}}
+                            {{/ui/mix-button}}
+                            {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply" text='取消' clickAction="detailCancel" detailCancel="detailCancel" }}
+                            {{/ui/mix-button}}
+                        {{else}}
+                        {{/if}}
+                    </p>
+                </div>
+            </div>
+        {{/bs-form}}
+
+    </div>
+
+</div>
+</div>
+
+
+{{#if showpopInvitePassModal}}
+    {{#bs-modal body=false footer=false header=false}}
+        {{#bs-modal-header}}
+            <h3 class="modal-title">删除提示</h3>
+        {{/bs-modal-header}}
+        {{#bs-modal-body}}
+            <h4 class="modal-title">是否删除该条记录？</h4>
+        {{/bs-modal-body}}
+        {{#bs-modal-footer as |footer|}}
+            {{#bs-button action=(action "cancelPassSubmit" serviceLevelInfo) type="primary" disabled=prepaidDisabled}}确定{{/bs-button}}
+            {{#bs-button action=(action "invitation") type="default" }}取消{{/bs-button}}
+        {{/bs-modal-footer}}
+    {{/bs-modal}}
+{{/if}}

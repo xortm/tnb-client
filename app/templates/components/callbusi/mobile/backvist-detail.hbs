@@ -1,0 +1,54 @@
+{{#ui/mobile/gestures-container}}
+    <ul class="profile">
+        <li class=" carousel color666 border-top-1 border-bottom-1 margin-top-10" id="accessType" {{action 'toSelfChoose' 'accessType' 'accessType' on="tap"}}>
+            <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+            <span class="profile-span">跟进类型 </span>
+            <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{backvistData.accessType.typename}}</span>
+            <i class="fa-angle-right font20 my-right color-ccc"></i>
+        </li>
+        <li class=" carousel color666 border-top-1 border-bottom-1" id="liveIntent" {{action 'toSelfChoose' 'liveIntent' 'liveIntent' on="tap"}}>
+            <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+            <span class="profile-span">咨询意向 </span>
+            <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{backvistData.liveIntent.typename}}</span>
+            <i class="fa-angle-right font20 my-right color-ccc"></i>
+        </li>
+
+        <li class=" carousel color666 border-top-1 border-bottom-1" id="customerName" {{action 'modification' 'customerName' 'customerName' on="tap"}}>
+            <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+            <span class="profile-span">客户姓名 </span>
+            <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{backvistData.customerName}}</span>
+            <i class="fa-angle-right font20 my-right color-ccc"></i>
+        </li>
+        <!-- <li class=" carousel color666 border-top-1 border-bottom-1" id="customerTel" {{action 'modification' 'customerTel' 'customerTel' on="tap"}}>
+            <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+            <span class="profile-span">客户电话 </span>
+            <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{backvistData.customerTel}}</span>
+            <i class="fa-angle-right font20 my-right color-ccc"></i>
+        </li> -->
+        <li class=" carousel color666 border-top-1 border-bottom-1" id="vistUser" {{action 'toSelfChoose' 'vistUser' 'vistUser' on="tap"}}>
+            <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+            <span class="profile-span">跟进人 </span>
+            <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{backvistData.vistUser.name}}</span>
+            <i class="fa-angle-right font20 my-right color-ccc"></i>
+        </li>
+
+        <li class=" carousel color666 border-top-1 border-bottom-1" id="createDateTime" {{action 'toSelfChoose' 'createDateTime' 'createDateTime' on="tap"}}>
+            <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+            <span class="profile-span">跟进时间 </span>
+            <span class="pull-right" style="line-height: 42px;margin-right: 10px;">
+              {{#if backvistData.createDateTime}}
+                  {{backvistData.createDateTimeString}}
+              {{/if}}
+            </span>
+            <i class="fa-angle-right font20 my-right color-ccc"></i>
+        </li>
+
+        <li class=" carousel color666 border-top-1 border-bottom-1" id="remark" {{action 'modification' 'remark' 'remark' on="tap"}}>
+            <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+            <span class="profile-span">跟进内容</span>
+            <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{backvistData.remarkString}}</span>
+            <i class="fa-angle-right font20 my-right color-ccc"></i>
+        </li>
+    </ul>
+    {{ui/container/infinite-scroll moniteData=infiniteContentPropertyName didRenderAction="didRender" didInsertElementAction="didInsertElement"}}
+{{/ui/mobile/gestures-container}}

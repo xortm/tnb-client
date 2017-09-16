@@ -1,0 +1,18 @@
+<div id="userMemberPhotoContainer" class="mainContent">
+  <div class="wrapperInner Member-photoBd">
+
+<div class="jujia-container diet-upload">
+  <section class="msg-box">
+    <div class="in-box">
+      {{#ui/img-intergration-simple name="headerImg" isMobile=true hasUploader=true isResizeImage=true imgSrc=curCustomer.avatarUrl height=280 width=280 margin-left=0 uploadUrl=uploadUrl uploadSucc="uploadSucc" uploadFail="uploadFail" businessType=constants.uploadBusinessType_headimg as |component|
+          }}
+      {{/ui/img-intergration-simple}}
+    </div>
+
+  </section>
+
+</div>
+
+</div>
+</div>
+{{ui/container/infinite-scroll moniteData="userJujiaMy" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

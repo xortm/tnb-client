@@ -1,0 +1,45 @@
+<div class="col-sm-12">
+  <!-- BOX -->
+  <div class="box">
+    <div class="box-body">
+      <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+      	<div class="row  ">
+      	  <div class="user-add-btn col-sm-3 nopadding-right pull-right">
+            {{#ui/mix-button class="user-btn pull-right " iconClass="fa-plus"  text='新增班次'  clickAction="toWorkTimeSettingDetailPage" toWorkTimeSettingDetailPage="toWorkTimeSettingDetailPage"}}
+            {{/ui/mix-button}}
+      	  </div>
+      	</div>
+        <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+          <thead>
+            <tr role="row">
+              <th rowspan="1" colspan="1" width="">班次名称</th>
+              <th rowspan="1" colspan="1" width="">开始时间</th>
+              <th rowspan="1" colspan="1" width="">结束时间</th>
+              <th rowspan="1" colspan="1" width="">班次颜色</th>
+              <th rowspan="1" colspan="1" width="">备注</th>
+            </tr>
+          </thead>
+          <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+            {{#each worktimesettingList as |worktimesetting|}}
+            <tr {{action "toWorkTimeSettingDetailPage" worktimesetting on="click"}}>
+              <td class="ellipsis" >{{worktimesetting.name}}</td>
+              <td >{{worktimesetting.startTime}}</td>
+              <td >{{worktimesetting.endTime}}</td>
+              <td ><div class="{{worktimesetting.colorName}} work-color"></div></td>
+              <td >{{worktimesetting.remark}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        {{#if worktimesettingList }}
+            {{page-numbers content=worktimesettingList showFL=true numPagesToShow=5}}
+            {{else}}
+                <h1 class="col-sm-12 center unTask"></h1>
+        {{/if}}
+
+      </div>
+    </div>
+  </div>
+
+  <!-- /BOX -->
+</div>

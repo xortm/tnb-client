@@ -1,0 +1,24 @@
+{{#ui/mobile/gestures-container}}
+<div id="viewScoreContainer" class="mainContent {{if global_pageConstructure.showLoader 'hide' ''}}">
+  <div class="wrapperInner">
+    {{#if appraiseList}}
+      <div class="bgcolor-white">
+      {{log "appraiseList hbs" appraiseList}}
+      {{#each appraiseList as |appraise|}}
+        {{#callbusi/mobile/view-score-item item=appraise outerClass="col-sm-6 col-xs-12 height-auto"}}
+        {{/callbusi/mobile/view-score-item}}
+      {{/each}}
+      </div>
+    {{else}}
+      <div class="nodate">暂无数据</div>
+    {{/if}}
+
+
+
+  </div>
+
+</div>
+{{/ui/mobile/gestures-container}}
+
+{{ui/container/infinite-scroll moniteData="appraiseList"
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

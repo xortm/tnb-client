@@ -1,0 +1,47 @@
+<span class="date-range pull-left col-sm-12" >
+ <div class="btn-group">
+   <span class="pull-left" style="line-height:30px">{{text}}：</span>
+   <a class="js_update btn btn-default" href="#" {{action "showDate" on="click"}}>{{chooseDate}}&nbsp;<i class="fa fa-chevron-down"></i></a>
+ </div>
+
+  {{#if dateShow}}
+  <!-- 日期选择弹窗 -->
+    <div class="date-box form-input-group col-sm-12 nopadding-right" style='position:absolute;min-width:550px;z-index:5;padding-top:0'>
+      <!-- <i class="fa fa-times pointer" style="position:absolute;right:5px;top:5px;" {{action "hideDate" on="click"}}></i> -->
+      {{#ui/mix-button class="close-btn pull-right" iconClass="fa fa-times" clickAction="hideDate" hideDate="hideDate"}}
+      {{/ui/mix-button}}
+      <div class="row col-sm-12 nopadding-right">
+        <div class="btn-group col-sm-12 nopadding-right">
+          <a class="js_update btn btn-default col-sm-3" href="#" {{action "search" "today" on="click"}}>今天</a>
+          <a class="js_update btn btn-default col-sm-3" href="#" {{action "search" "seven" on="click"}}>最近7天</a>
+          <a class="js_update btn btn-default col-sm-3" href="#" {{action "search" "thirty" on="click"}}>最近一个月</a>
+          <a class="js_update btn btn-default col-sm-3 hidden-xs" href="#"{{action "emptied" on="click"}}>查看全部</a>
+        </div>
+      </div>
+      <div class="row col-sm-12 nopadding-right">
+        <div class="col-xs-3 col-sm-3 nopadding-right nopadding-left" style="line-height:40px;text-align:center;font-size:15px;">自定义日期：</div>
+        <div class="col-xs-9 nopadding-right nopadding-left">
+          <div class="form-input-group">
+            <div class="">
+              {{ui/addon/bs-datetimepicker date=null placeholder="开始时间" locale="zh-CN" format='YYYY-MM-DD'
+              iconClasses="fa fa-calendar" show="dpShowAction" change="changeBeginDateAction"}}
+
+            </div>
+            <span class="input-group-addon">&nbsp;~</span>
+            <div class="">
+              {{ui/addon/bs-datetimepicker date=null placeholder="结束时间" locale="zh-CN" format='YYYY-MM-DD'
+              iconClasses="fa fa-calendar" show="dpShowAction" change="changeEndDateAction"}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-row text-center">
+        <div  style="height:100px;"></div>
+        <button class="btn btn-primary" {{action "submmit"  on="click"}}><i class="fa fa-check icon-white"></i>&ensp;确定</button>
+      </div>
+    </div>
+  <!-- End 日期选择弹窗 -->
+  {{else}}
+  {{/if}}
+ </span>

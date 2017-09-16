@@ -1,0 +1,22 @@
+{{#if hasChildren}}
+  {{#if detailEdit}}
+  <i class="fa {{if itemData.expanded 'fa-minus' 'fa-plus-square'}} "></i>
+  <i class="fa {{if itemData.hasSelected 'fa-check' 'fa-square-o'}} " {{action "checkClick" on="click"}}></i>
+  {{else}}
+  <i class="fa {{if itemData.expanded 'fa-minus' 'fa-plus-square'}} "></i>
+  {{/if}}
+  {{#if isMobel}}
+    <div class="tree-folder-name">{{itemData.showName}}&nbsp;<i class="linecons-mobile mobel"></i></div>
+  {{else}}
+    <div class="tree-folder-name">{{itemData.showName}}</div>
+  {{/if}}
+{{else}}
+  {{#if detailEdit}}
+  <i class="fa {{if itemData.hasSelected 'fa-check' 'fa-square-o'}}" {{action "checkClick" on="click"}}></i>
+  {{/if}}
+  {{#if isMobel}}
+    <div class="tree-folder-name">{{itemData.showName}}&nbsp;<i class="linecons-mobile mobel"></i></div>
+  {{else}}
+    <div class="tree-folder-name">{{itemData.showName}}</div>
+  {{/if}}
+{{/if}}

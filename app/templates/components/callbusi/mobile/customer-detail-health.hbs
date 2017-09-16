@@ -1,0 +1,139 @@
+{{#ui/mobile/gestures-container}}
+<ul class="clearfix health-ul position-relative">
+  <li {{action "queryAllOrOther" on="tap"}}>
+    健康项目
+    <span class="font12">{{healthMessage}}</span>
+    {{#if otherChoose}}
+      <i class="fa-angle-up"></i>
+    {{else}}
+      <i class="fa-angle-down"></i>
+    {{/if}}
+  </li>
+  <li>健康数据</li>
+  <li>测量时间</li>
+  {{#if otherChoose}}
+    <div class="position_absolute" style="background: #ECF4FB;top: 43px;width: 33.33%;border-bottom-right-radius: 5px;">
+      <div class="" {{action 'queryHealth' 'all' on="tap"}}>健康项目<span class="font12">(全部)</span></div>
+      <div class="" {{action 'queryHealth' 'dayAlways' on="tap"}}>健康项目<span class="font12">(日四)</span></div>
+    </div>
+  {{/if}}
+</ul>
+<div id="healthInfoContainerDetail" class="mainContent border-top-1" style="margin-top:94px;">
+  <div id="health-area" class="wrapperInner" {{action 'closeAllOrOther' on="tap"}}>
+    {{#if showLoadingImg}}
+      <div class="customer-detail-healthposi top20">
+        <img class="width33" src="assets/images/logo/loading.gif" alt="">
+      </div>
+    {{else}}
+      {{#if healthInfoList}}
+        <div class="">
+          {{#each healthInfoList as |healthInfo|}}
+          <div class="center health-each-div">
+            <!-- <div class="extend">{{healthInfo.itemtype.typename}} ({{healthInfo.hbsTypeUnit}})</div> -->
+            <div class="extend">{{healthInfo.itemtype.typename}}</div>
+            {{#if (eq healthInfo.resHbsType 1)}}
+                <div class="extend" {{action "showText" healthInfo.resultType healthInfo.id on="tap"}}>{{healthInfo.resultType}}</div>
+            {{else}}
+              <div class="">{{healthInfo.resultType}}</div>
+            {{/if}}
+            <div>{{healthInfo.examDateDayHourS}}</div>
+          </div>
+          {{/each}}
+        </div>
+      {{else}}
+        <div class="nodate">暂无数据</div>
+      {{/if}}
+    {{/if}}
+
+
+    <!-- <div class=" float-chart-box pb20 pull-left top10">
+        <div id="myChartBlood" style="height:300px;" class="text-center"></div>
+        <div class="alert alert-block alert-warning fade in width-100 top10">
+            <p>最近一次血压值(mmHg)：{{firstBlood.result}}/{{firstBlood.resultAddtion}}</p>
+            <p>您的血压值正常</p>
+        </div>
+    </div>
+    <div class=" float-chart-box pb20 pull-left">
+        <div id="myChartOxygen" style="height:300px;" class="text-center"></div>
+        <div class="alert alert-block alert-warning fade in width-100 top10">
+            <p>最近一次血氧值(毫升%)：{{firstOxygen.result}}</p>
+            <p>您的血氧值正常</p>
+        </div>
+    </div>
+
+    <div class="float-chart-box pb20 pull-left">
+        <div id="myChartBreath" style="height:300px;" class="text-center"></div>
+        <div class="alert alert-block alert-warning fade in width-100 top10">
+            <p>最近一次呼吸频率值(次/分)：{{firstBreath.result}}</p>
+            <p>您的呼吸频率值正常</p>
+        </div>
+    </div>
+    <div class="float-chart-box pb20 pull-left">
+        <div id="myChartWeight" style="height:300px;" class="text-center"></div>
+        <div class="alert alert-block alert-warning fade in width-100 top10">
+            <p>最近一次体重值(kg)：{{firstWeight.result}}</p>
+            <p>您的体重值正常</p>
+        </div>
+    </div>
+
+    <div class="float-chart-box pb20 pull-left">
+        <div id="myChartEmpty" style="height:300px;" class="text-center"></div>
+        <div class="alert alert-block alert-warning fade in width-100 top10">
+            <p>最近一次空腹血糖值(mmol/L)：{{firstEmpty.result}}</p>
+            <p>您的空腹血糖值正常</p>
+        </div>
+    </div>
+    <div class="float-chart-box pb20 pull-left">
+        <div id="myChartBefore" style="height:300px;" class="text-center"></div>
+        <div class="alert alert-block alert-warning fade in width-100 top10">
+            <p>最近一次餐前血糖值(mmol/L)：{{firstBefore.result}}</p>
+            <p>您的餐前血糖值正常</p>
+        </div>
+    </div>
+
+    <div class="float-chart-box pb20 pull-left">
+        <div id="myChartAfter" style="height:300px;" class="text-center"></div>
+        <div class="alert alert-block alert-warning fade in width-100 top10">
+            <p>最近一次餐后血糖值(mmol/L)：{{firstAfter.result}}</p>
+            <p>您的餐后血糖值正常</p>
+        </div>
+    </div>
+    <div class="float-chart-box pb20 pull-left">
+        <div id="myChartFat" style="height:300px;" class="text-center"></div>
+        <div class="alert alert-block alert-warning fade in width-100 top10">
+            <p>最近一次脂肪数据(g/100g)：{{firstFat.result}}</p>
+            <p>您的脂肪数据正常</p>
+        </div>
+    </div>
+
+    <div class="float-chart-box pb20 pull-left">
+        <div id="myChartHeart" style="height:300px;" class="text-center"></div>
+        <div class="alert alert-block alert-warning fade in width-100 top10">
+            <p>最近一次心率值(times/min)：{{firstHeart.result}}</p>
+            <p>您的心率值正常</p>
+        </div>
+    </div>
+    <div class="float-chart-box pb20 pull-left">
+        <div id="myChartTemperature" style="height:300px;" class="text-center"></div>
+        <div class="alert alert-block alert-warning fade in width-100 top10">
+            <p>最近一次体温值(℃)：{{firstTemperature.result}}</p>
+            <p>您的体温值正常</p>
+        </div>
+    </div> -->
+
+  </div>
+</div>
+{{#if showModel}}
+  <div class="change-sex center" style="padding: 70% 5%;color: #fff;" {{action "closeText" on="tap"}}>
+    {{showContent}}
+  </div>
+{{/if}}
+{{#ui/mobile/gestures-container}}
+<div class="detail-dynamicsbtn" id="customer_detail_healthbtn" {{action 'addHealth' on="tap"}}>
+  <img class="bottom2" width='15' src="assets/images/mobile/add.png" alt="">
+  <span class="padding-left-10">添加健康数据</span>
+</div>
+{{/ui/mobile/gestures-container}}
+{{/ui/mobile/gestures-container}}
+{{ui/container/infinite-scroll moniteData="healthInfoList"
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

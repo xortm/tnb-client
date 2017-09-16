@@ -1,0 +1,128 @@
+<div class="col-sm-12">
+  <div class="box position-relative overflow-hidden">
+    <div id="datatable1_wrapper" class="dataTables_wrapper form-inline bottom20" role="grid">
+      <div class="row clear font14">
+        <div  class="col-sm-6 ">
+              <div class="input-group">
+                  {{input class="form-control" type="text" placeholder="搜索 员工姓名" value=queryCondition enter="come"}}
+                  <span class="input-group-btn">
+                    <button class="btn btn-primary btn-reduce" type="button" style="touch-action: manipulation; -ms-touch-action: manipulation;" {{action "searchStaff" on="click"}}>
+                      <i class="fa fa-search"></i>
+                    </button>
+                  </span>
+              </div>
+
+          <!-- <div class="col-sm-6 date-range nopadding-horizonta">
+              <div class="input-group line-height-30">
+                <a class="js_update btn btn-default" {{action 'elderSeach' on='click'}}>
+                  员工检索&nbsp;<i class="fa fa-chevron-down"></i>
+                </a>
+                <a class="padding-left-15 pointer" {{action 'queryAll' on='click'}}>
+                  查看全部老人
+                </a>
+              </div>
+              <div class="input-group line-height-30">
+                <a class="js_update btn btn-default" {{action 'changeDown' on='click'}}>
+                  test 测试位置变动动画
+                </a>
+              </div>
+              <div class="input-group line-height-30">
+                <a class="js_update btn btn-default" {{action 'move' on='click'}}>
+                  位移动画
+                </a>
+              </div>
+            {{#if seachCriteria}}
+            {{callbusi/build-searchemployee customClass="positionLeft15" theCustomerList=theEmployeeList
+            searchHide="searchHide" queryAll="queryAll" come="come"}}
+            {{/if}}
+          </div> -->
+          <!-- <div class="col-sm-6 nopadding-horizonta line-height-30">
+            <div class="nopadding-left nopadding-right pull-right">
+              <span>&nbsp;只显示预警老人</span></i>
+              {{#if queryScheduled}}
+                <div class="pull-right color-white select-warning" {{action 'queryScheduled' on='click'}}>
+                  <div class="pull-left padding-left-5">是</div>
+                  <div class=" pull-left select-backg-true left10" style=""></div>
+                </div>
+              {{else}}
+                <div class="pull-right color-white select-warning bk-color-ccc" {{action 'queryScheduled' on='click'}}>
+                  <div class=" pull-left select-backg-true right5 left5 right10" style=""></div>
+                  <div class="pull-left">否</div>
+                </div>
+              {{/if}}
+            </div>
+          </div> -->
+        </div>
+      </div>
+
+      <div class="top20">
+        {{#if buildingList}}
+        <div class="clear border-bottom-1">
+          {{#each buildingList as |building|}}
+            <div class="pull-left font18 left15 padding4 width10B pointer center {{if building.hasChoosed 'border-bottom2'}}" {{action 'selectBuild' building on="click"}}>
+              {{building.name}}
+            </div>
+          {{/each}}
+        </div>
+        {{/if}}
+      </div>
+
+      <div id="" class="top15 dataTables_wrapper form-inline building-floor-list">
+        <!--当前楼层列表-->
+        <div class="col-sm-12 nopadding-left nopadding-right bottom20">
+            {{#each curbuilding.curfloors as |floor|}}
+              <div class="col-sm-12 floor nopadding-left nopadding-right" style="border-bottom: 1px solid #fff;">
+                <div class="padding-left-15 bk-color-32b7e8 font16 min-height-40 color-white" id="floor_{{floor.id}}">
+                  <div class="pull-left padding-top10">
+                    {{floor.name}}走廊
+                  </div>
+
+                  <!-- {{#if (eq room.id employeePositionObjType2.floorId)}}
+                  {{/if}}
+                  <div class="pull-left padding-left-10">
+                    <div class="height20 center">
+                      <img class="height16 width13" src="assets/images/icon/download.png" alt="">
+                    </div>
+                    <div class="color-white">
+                      名字
+                    </div>
+                  </div> -->
+
+                </div>
+
+                  {{#if floor.rooms}}
+                  <div class="room-list bottom10 top10 position-relative">
+                  {{#each floor.rooms as |room|}}
+                      {{#if room.isPbulic}}
+                      <div class="width100 room pointer min-height-90 {{if room.hasSelected 'room-selected' ''}}" {{action 'selectRoom' room on="click"}} id="room_{{room.id}}">
+                        <div class="nowrap room-info top10"><img class="public-img" src="assets/images/icon/public.png">{{room.name}}</div>
+                        <!-- <div class="nowrap public room-info top10" >{{room.publicType.typename}}</div>
+                        <div class="nowrap bed-num room-info">活动区</div> -->
+                      </div>
+                      {{else}}
+                      <div class="width100 room pointer min-height-90 {{if room.roomIn '' 'noroom'}} {{if room.hasSelected 'room-selected' ''}}" {{action 'selectRoom' room on="click"}} id="room_{{room.id}}">
+                        <div class="nowrap room-info top10">{{room.name}}</div>
+                        <!-- <div class="nowrap room-info top10">{{room.roomType.typename}}</div>
+                        <div class="nowrap bed-num room-info">({{room.bedInNum}}/{{room.beds.length}})</div> -->
+                      </div>
+                      {{/if}}
+                  {{/each}}
+                  </div>
+                  {{else}}
+                  {{/if}}
+
+              </div>
+            {{/each}}
+        </div>
+      </div>
+
+    </div>
+
+    {{#if buildingList }}
+        {{page-numbers content=buildingList showFL=true numPagesToShow=3 export=true}}
+    {{else}}
+        <h1 class="col-sm-12 center unTask"></h1>
+    {{/if}}
+
+  </div>
+</div>

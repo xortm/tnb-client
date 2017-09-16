@@ -1,0 +1,22 @@
+{{#ui/mobile/inner-tabbar menus=tabFuncs switchTab="switchTab" serviceListFlag=serviceListFlag clickActFlag=clickActFlag itemXs="col-xs-6" positionClass="abs-top-44 service-care" theme="block-mode"}}
+{{/ui/mobile/inner-tabbar}}
+{{#ui/mobile/gestures-container}}
+  <div class="center {{if showLoadingImgIn '' 'hide'}}" style="margin-top:90px;">
+    <img class="width33" src="assets/images/logo/loading.gif" alt="">
+  </div>
+
+  <div class="{{if showLoadingImgIn 'hide' ''}}">
+    <!-- 定时任务组件 -->
+    <div class="{{if (eq curTabCode 'todayTask') '' 'hide'}}">
+      {{#callbusi/mobile/timed-task serviceList=serviceList nocustomerId=nocustomerId infiniteName=infiniteName finish="finish" showRightFlag=showRightFlag selectStartTimeFlag=selectStartTimeFlag selectStartTime=selectStartTime selectEndTime=selectEndTime showLoadingImgInClose="showLoadingImgInClose" queryFlagInAction="queryFlagInAction" scollFlag=scollFlag}}
+        {{/callbusi/mobile/timed-task}}
+    </div>
+    <!-- 不定时任务组件 -->
+    <div class="{{if (eq curTabCode 'finished') '' 'hide'}}">
+      {{#callbusi/mobile/any-timed-task countList=countList nocustomerId=nocustomerId infiniteName=infiniteName saveNursingLog="saveNursingLog" finishSave="finishSave" countItemExpand="countItemExpand" itemExpand="itemExpand" showRightFlag=showRightFlag showLoadingImgInClose="showLoadingImgInClose" queryFlagInAction="queryFlagInAction" scollFlag=scollFlag}}
+        {{/callbusi/mobile/any-timed-task}}
+    </div>
+  </div>
+
+
+{{/ui/mobile/gestures-container}}

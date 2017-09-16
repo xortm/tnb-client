@@ -1,0 +1,174 @@
+<div id="taskDetailContainer" class="mainContent">
+  <div class="wrapperInner">
+    {{#ui/mobile/gestures-container}}
+    {{#bs-form formLayout=formLayout model=taskDetailModel invalid=(action "invalid")}}
+    <div class="finished-detail">
+      <div class="title clearfix">
+        <div class="content">{{serviceItem.customerName}}
+          <span class="color666666 padding-left-10">
+            {{serviceItem.customerBed}}
+          </span>
+        </div>
+        <div class="time">
+          <img width='28' src="assets/images/mobile/clock.png"/>
+          {{serviceItem.timeStr}}
+        </div>
+      </div>
+      {{#if serviceItem.hasApply}}
+        <div class="border-top-bottom-1 height35">
+          <span class="task-detail-split"></span>
+          <span class="font14">任务信息(已执行)</span>
+        </div>
+        {{#if serviceItem.medicineDesc}}
+          <div class="bk-color-white padding-left-10 height80 position-relative">
+            <div class="padding-top10 font16 font-black">用药计划</div>
+            <div class="color999999 padding-top5">药品名称：{{serviceItem.medicineName}}</div>
+            <div class="color999999 padding-top5 font12">用药方法：{{serviceItem.medicineDrugWay}},{{serviceItem.medicineNumSpec}}</div>
+            {{log "littleDrugDetail in hbs:" serviceItem.littleDrugDetail}}
+            {{#if (gte serviceItem.littleDrugDetail 0)}}
+              <div class="color999999 padding-top5 font12">缺药提醒：剩余药量{{serviceItem.allDrugNum}}{{serviceItem.drugTypename}},可供{{serviceItem.littleDrugDetail}}天使用</div>
+            {{/if}}
+            {{#if serviceItem.medicineAvatarUrl}}
+              <div class="position_absolute abs-top-8 abs-right-8 width60 height60">
+                {{#ui/img-intergration-simple name="drugImg" isMobile=true businessFlag="clickShowBigImgUpload" showBigImageModal=showBigImageModal hasUploader=true isResizeImage=true imgSrc=serviceItem.medicineAvatarUrl height=60 width=60 margin-left=0 uploadUrl=uploadUrl uploadSucc="uploadSucc" uploadFail="uploadFail" businessType=constants.uploadBusinessType_headimg as |component|
+                }}
+                {{/ui/img-intergration-simple}}
+              </div>
+            {{/if}}
+          </div>
+        {{else}}
+        <div class="bk-color-white padding-left-10 height80">
+          <div class="padding-top15 font16 font-black">{{serviceItem.title}}</div>
+          <div class="color999999 padding-top15 font12">详情：{{serviceItem.desc}}</div>
+        </div>
+        {{/if}}
+
+        <div class="border-top-bottom-1 height35">
+          <span class="task-detail-split"></span>
+          <span class="font14">完成情况</span>
+        </div>
+        <ul class="padding-0-10 bottom4 bk-color-white">
+          <li class="border-bottom-1F0F0F0 height44 line-height-44">
+            <span class="font14 font-black">{{serviceItem.title}}</span>
+            <span class="padding-left-15 font12 color999999">实际执行时间：{{serviceItem.finishTime}}</span>
+          </li>
+          {{#if serviceItem.medicineDesc}}
+            <li class="font12 padding-top10">
+              <span class="color666666">实际用药量：</span>
+              <span class="">{{serviceItem.trueDrugNum}}{{serviceItem.drugTypename}}</span>
+            </li>
+          {{/if}}
+          <li class="font12 padding-top5">
+            <span class="color666666">服务人员：</span>
+            <span class="">{{serviceItem.personName}}</span>
+          </li>
+          <li class="font12 padding-top5">
+            <span class="color666666">完成情况：</span>
+            <span class="">{{serviceItem.finishLevelName}}</span>
+          </li>
+          <li class="font12 padding-top5 padding-bottom15">
+            <span class="color666666">备注：</span>
+            <span class="">{{serviceItem.finishRemark}}</span>
+          </li>
+        </ul>
+      {{else}}
+      <div class="border-top-bottom-1 height35">
+        <span class="task-detail-split"></span>
+        <span class="font14">任务信息</span>
+      </div>
+      {{#if serviceItem.medicineDesc}}
+        <div class="bk-color-white padding-left-10 height80 position-relative">
+          <div class="padding-top10 font16 font-black">用药计划</div>
+          <div class="color999999 padding-top5">药品名称：{{serviceItem.medicineName}}</div>
+          <div class="color999999 padding-top5 font12">用药方法：{{serviceItem.medicineDrugWay}},{{serviceItem.medicineNumSpec}}</div>
+          {{log "littleDrugDetail in hbs:" serviceItem.littleDrugDetail}}
+          {{#if (gte serviceItem.littleDrugDetail 0)}}
+            <div class="color999999 padding-top5 font12">缺药提醒：剩余药量{{serviceItem.allDrugNum}}{{serviceItem.drugTypename}},可供{{serviceItem.littleDrugDetail}}天使用</div>
+          {{/if}}
+          {{#if serviceItem.medicineAvatarUrl}}
+            <div class="position_absolute abs-top-8 abs-right-8 width60 height60">
+              {{#ui/img-intergration-simple name="drugImg" isMobile=true businessFlag="clickShowBigImgUpload" showBigImageModal=showBigImageModal hasUploader=true isResizeImage=true imgSrc=serviceItem.medicineAvatarUrl height=60 width=60 margin-left=0 uploadUrl=uploadUrl uploadSucc="uploadSucc" uploadFail="uploadFail" businessType=constants.uploadBusinessType_headimg as |component|}}
+              {{/ui/img-intergration-simple}}
+            </div>
+          {{/if}}
+        </div>
+      {{else}}
+      <div class="bk-color-white padding-left-10 height80">
+        <div class="padding-top15 font16 font-black">{{serviceItem.title}}</div>
+        <div class="color999999 padding-top15 font12">详情：{{serviceItem.desc}}</div>
+      </div>
+      {{/if}}
+
+      <div class="border-top-bottom-1 height35">
+        <span class="task-detail-split"></span>
+        <span class="font14">完成情况</span>
+      </div>
+
+      {{#ui/mobile/gestures-container}}
+      <div class="clearfix">
+        <div class="finish-tag  padding-left-10 bk-color-white padding-right-10 padding-bottom15">
+          {{#if serviceItem.medicineDesc}}
+            <div class="padding-top10 detail-input">
+              <span class="pull-left font12 padding-top5 font-black">实际用药剂量({{serviceItem.drugTypename}})：</span>
+              {{#bs-form-element property="trueDrugNum" class="border-radius5 bottom0 position-relative" controlType="trueDrugNum" placeholder="剂量(必填)"}}
+                {{input type="number" class=" btn-none border-bottom-1 padding-left-5 left5 height30" focus-in="valueInfo" focus-out="valueOut" value=trueDrugNum placeholder="请输入用药剂量(必填)"}}
+                {{#if drugNameModel}}
+                  <div class="position_absolute font-black" style="right:50px;top:6px;">
+                    {{serviceItem.drugTypename}}
+                  </div>
+                {{/if}}
+              {{/bs-form-element}}
+
+            </div>
+            <!-- <div class="clearfix">
+              {{#each tagItems  as |item|}}
+                {{#if (eq item.typecode 'exeStatus1')}}
+                  <div class="tag width120 exeStatus1 {{if item.hasSelect 'selected' ''}}" {{action "tagChoice" item.typecode on="tap"}}>{{item.typename}}</div>
+                {{else if (eq item.typecode 'exeStatus2')}}
+                  <div class="tag width120 exeStatus2 {{if item.hasSelect 'selected' ''}}" {{action "tagChoice" item.typecode on="tap"}}>{{item.typename}}</div>
+                {{else if (eq item.typecode 'exeStatus3')}}
+                  <div class="tag width120 exeStatus3 {{if item.hasSelect 'selected' ''}}" {{action "tagChoice" item.typecode on="tap"}}>{{item.typename}}</div>
+                {{else if (eq item.typecode 'useDrugResult1')}}
+                  <div class="tag width120 exeStatus1 {{if item.hasSelect 'selected' ''}}" {{action "tagChoice" item.typecode on="tap"}}>{{item.typename}}</div>
+                {{else if (eq item.typecode 'useDrugResult2')}}
+                  <div class="tag width120 exeStatus2 {{if item.hasSelect 'selected' ''}}" {{action "tagChoice" item.typecode on="tap"}}>{{item.typename}}</div>
+                {{else if (eq item.typecode 'useDrugResult3')}}
+                  <div class="tag width120 exeStatus3 {{if item.hasSelect 'selected' ''}}" {{action "tagChoice" item.typecode on="tap"}}>{{item.typename}}</div>
+                {{/if}}
+              {{/each}}
+            </div>
+          {{else}}
+            <div class="clearfix">
+              {{#each resultList  as |item|}}
+                <div class="tag width120 exeStatus2 {{if item.exehasSelect 'selected' ''}}" {{action "tagExeChoice" item.id item.name on="tap"}}>{{item.name}}</div>
+              {{/each}}
+            </div> -->
+          {{/if}}
+          <div class="clearfix">
+            {{#each resultList  as |item|}}
+              <div class="tag width120 exeStatus2 {{if item.exehasSelect 'selected' ''}}" {{action "tagExeChoice" item.id item.name item on="tap"}}>{{item.name}}</div>
+            {{/each}}
+          </div>
+          <div class="">
+            {{textarea class="" placeholder="请输入备注信息" value=serviceItem.serviceDesc}}
+          </div>
+        </div>
+        {{ui/mobile/task-detail-button needDoubleClickPrevent=true touchStartAction="saveDetail" saveDetail="saveDetail" butContent="确定" outerClass="taskDetailBut"}}
+
+        <!-- <div class="clearfix detail-tosure"  id="detail_tosure" {{action "saveDetail" on="tap"}}>
+          确定
+        </div> -->
+      </div>
+      {{/ui/mobile/gestures-container}}
+      <!-- <div class="btnBox clearfix">
+        <div class="pull-left short-button" {{action "backMain" on="click"}}>取消</div>
+        <div class="pull-left left16 long-button" {{action "saveDetail" on="click"}}>确定</div>
+      </div> -->
+    {{/if}}
+  </div>
+  {{/bs-form}}
+  {{/ui/mobile/gestures-container}}
+  </div>
+</div>
+{{ui/container/infinite-scroll moniteData=""
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

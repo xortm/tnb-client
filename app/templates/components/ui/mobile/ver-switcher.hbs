@@ -1,0 +1,5 @@
+{{#each defData as |item|}}
+  <div class="font-larger {{if item.selected 'selected'}}" {{action "choice" item on="click"}}>
+    <i class="{{item.icon}}"></i>
+  </div>
+{{/each}}

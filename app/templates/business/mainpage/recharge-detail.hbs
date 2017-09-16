@@ -1,0 +1,111 @@
+<div class="col-md-12">
+    <div class="box margin-middle max-width">
+        <!-- BOX-BODY -->
+        <div class="box-body">
+            {{#bs-form formLayout=formLayout model=rechargeModel action=(action "saveRecharge") invalid=(action "invalid")}}
+                <!-- 列表编辑-->
+                <div class="row">
+                    <div class="col-xs-12">
+                        <p class="user-add-btn">
+                            <!-- <button class="btn btn-primary" type="button"><i class="fa fa-check icon-white"></i>&ensp;保存</button>
+						<button class="btn btn-light-grey"><i class="fa fa-times"></i>&ensp;取消</button> -->
+                            <!-- {{#if detailEdit}}
+                                {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save" text='保存' clickActParams=recharge}}
+                                {{/ui/mix-button}}
+                                {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo" text='取消' clickAction="detailCancel" detailCancel="detailCancel" }}
+                                {{/ui/mix-button}}
+                            {{else}}
+                                {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-edit" text='编辑' clickAction="detailEditClick" detailEditClick="detailEditClick" clickActParams=recharge}}
+                                {{/ui/mix-button}}
+                                {{#ui/mix-button class="user-btn trash-btn" iconClass="fa fa-trash-o" text='删除' clickAction="delById" delById="delById" clickActParams=recharge}}
+                                {{/ui/mix-button}}
+                            {{/if}} -->
+                        </p>
+                    </div>
+                    <div class="col-xs-12 nopadding-horizontal mt20">
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-input-group">
+                                <span class="input-group-addon">充值账户：</span>
+                                {{#if detailEdit}}
+                                        {{#bs-form-element class="inline-block form-input-group" controlType="rechargeAccount" property="rechargeAccount" }}
+                                            {{#power-select class="inline-block input-group-content" placeholder="必填项" options=customerList selected=rechargeModel.rechargeCustomer
+                                            searchField="accountPinyin" noMatchesMessage="没有相关内容" allowClear=false onchange=(action "selectCustomer" ) as |customer|}}
+                                                {{customer.name}}
+                                            {{/power-select}}
+                                        {{/bs-form-element}}
+                                {{else}}
+                                    <div class="input-group-content">{{rechargeModel.rechargeAccount.customer.name}}</div>
+                                {{/if}}
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-input-group">
+                                <span class="input-group-addon">账户类型：</span>
+                                {{#if detailEdit}}
+                                {{#bs-form-element class="inline-block form-input-group" controlType="rechargeAccount"  property="rechargeAccount" }}
+                                  {{callbusi/dict-selector curDict=rechargeModel.rechargeAccount groupCode=constants.accountType
+                                    showName="" dictSelect="accountTypeSelect" value=rechargeModel.rechargeAccount preselected=false}}
+                                  {{/bs-form-element}}
+                                {{else}}
+                                    <div class="input-group-content">{{rechargeModel.rechargeAccount.type.typename}}</div>
+                                {{/if}}
+                            </div>
+
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-input-group">
+                                <span class="input-group-addon">充值金额(元)：</span>
+                                {{#if detailEdit}}
+                                  {{bs-form-element property="money" class="inline-block form-input-group" controlType="money" placeholder=""}}
+                                {{else}}
+                                    <div class="input-group-content">{{rechargeModel.money}}</div>
+                                {{/if}}
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-input-group">
+                                <span class="input-group-addon">充值时间：</span>
+                                {{#if detailEdit}}
+                                {{ui/addon/bs-datetimepicker date=rechargeModel.createDate placeholder=""
+                                  locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'
+                                   show="dpShowAction" change="changeCreateDateAction" }}
+                                  {{else}}
+                                    <div class="input-group-content">{{rechargeModel.createDateString}}</div>
+                                {{/if}}
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="form-input-group">
+                                <span class="input-group-addon">充值方式：</span>
+                                {{#if detailEdit}}
+                                {{#bs-form-element class="inline-block form-input-group" controlType="channel"  property="channel" }}
+                                  {{callbusi/dict-selector curDict=rechargeModel.channel groupCode=constants.rechargeChannel
+                                    showName="" dictSelect="channelSelect" value=rechargeModel.channel preselected=false}}
+                                  {{/bs-form-element}}
+                                {{else}}
+                                    <div class="font-light input-group-content">{{rechargeModel.channel.typename}}</div>
+                                {{/if}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 列表编辑 -->
+                <div class="box">
+                <div class="text-center padding-top20">
+                    <p class="text-center user-add-btn" style="display:inline-block;margin:0 auto!important ">
+                    {{#if detailEdit}}
+                    {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check"  text='保存'}}
+                    {{/ui/mix-button}}
+                    {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply"  text='取消'  clickAction="detailCancel" detailCancel="detailCancel" }}
+                    {{/ui/mix-button}}
+                    {{else}}
+                    {{/if}}
+                    </p>
+                </div>
+                </div>
+            {{/bs-form}}
+        </div>
+        <!-- /BOX-BODY -->
+    </div>
+</div>

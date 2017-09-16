@@ -1,0 +1,236 @@
+<div class="col-sm-12">
+  <!-- BOX -->
+  <div class="box">
+    <div class="box-body">
+      <div class="row bottom-border-plan2">
+        <div class="pointer pull-left font20" {{action 'toTemplate' on="click"}}>
+          年度设置
+        </div>
+        <div class="pull-left left26 font20 bottom-border-template  padding-bottom10 margin-bottom-f2">
+          单周设置
+        </div>
+        <div class="pull-right  nopadding-right nopadding-left bottom5">
+          {{#ui/mix-button class="user-btn pull-left font16" iconClass="fa-users" paddingBorder="padding4 border-1-plantem" text='其他老人'  clickAction="editCustomer" editCustomer="editCustomer"}}
+          {{/ui/mix-button}}
+        </div>
+      </div>
+      <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+
+      	<div class="row">
+          <div class="col-sm-11" style="font-size:16px;">
+        	  <!--搜索-->
+            <div class="col-sm-5 nopadding-left">
+              {{#if theWeek}}
+              <span> 本周</span>
+              {{else}}
+              <span> 第{{curWeek}}周</span>
+              {{/if}}
+              <div id="monitor" style="display:inline-block;line-height:43px;">
+                  (<span></span>-
+                  <span></span>)
+              </div>
+            </div>
+            <div class="col-sm-6" style="line-height:43px;">
+              <span style="display:inline-block;" {{action 'prevWeek' on="click"}}>
+                {{bs-tooltip title="上一周" class="light-tooltip"}}
+                <i class="fa fa-chevron-left pointer"></i>&nbsp;
+              </span>
+              <span style="display:inline-block;" {{action 'detailWeek' on="click"}}>
+                {{bs-tooltip title="周列表" class="light-tooltip"}}
+                <i class="fa fa-calendar pointer"></i>&nbsp;
+              </span>
+              <span style="display:inline-block;" {{action "nextWeek" on="click"}}>
+                {{bs-tooltip title="下一周" class="light-tooltip"}}
+                <i class="fa fa-chevron-right pointer"></i>
+              </span>
+              {{#if editWeek}}
+              <div class="col-sm-12" style="position:absolute;background-color:#fff;padding:15px;line-height:35px;z-index:5;">
+                {{#each chooseWeek as |week|}}
+                  <div class="col-sm-1 pointer center {{if week.hasSelected 'badge-orange' ''}} {{if week.hasChoosed 'color' ''}}" style="border:1px solid #eee;padding:0;width:40px;" {{action 'changeWeek' week on="click"}}>{{week.num}}</div>
+                {{/each}}
+              </div>
+              {{/if}}
+            </div>
+          </div>
+      	</div>
+        {{#if detailEdit}}
+          <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered dataTable" aria-describedby="datatable1_info">
+            <thead >
+              <tr role="row">
+                <th class="center listcolor" rowspan="1" colspan="1" width="12.5%"></th>
+                {{#each dayList as |day|}}
+                <th class="center listcolor {{if day.today 'today-color' ''}}" rowspan="1" colspan="1" width="12.5%">{{day.day}}</th>
+                {{/each}}
+              </tr>
+              <tr role="row">
+                <th class=" listcolor" rowspan="1" colspan="1" width="12.5%">姓名</th>
+                {{#each weekList as |week|}}
+                <th class="center listcolor {{if week.today 'today-color' ''}}" rowspan="1" colspan="1" width="12.5%">{{week.week}}</th>
+                {{/each}}
+              </tr>
+            </thead>
+            <!-- {{#if customerPlanList}}
+              <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+                {{#each customerPlanList as |customer|}}
+                  <tr>
+                    <td class="ellipsis" >
+                      <span class='staff'>
+                        {{ui/img-intergration name="avatarImg" imgSrc='assets/images/icon/personstaff.png'}}
+                      </span>
+                      <span>{{customer.name}}</span>
+                    </td>
+                    {{#each customer.dateList as |date|}}
+                      {{#if date.noplan}}
+                        <td class="ellipsis center work-date {{if date.hasChoosed 'weak-color' ''}}" style="padding:0;" {{action 'detaiDate' date customer on="click"}}>
+                          <div style="display:inline-block;font-size:14px;line-height:35px;">未安排</div>
+                        </td>
+                      {{else}}
+                        <td class="ellipsis center work-date {{if date.hasChoosed 'weak-color' ''}}" style="padding:0;" >
+                          <div style="display:flex;width:100%;">
+                            <div style="display:inline-block;background-color:#00c1de;font-size:14px;line-height:35px;flex-grow:1;" {{action 'detaiDate' date customer 'day' on="click"}}>{{date.dayNum}}</div>
+                            <div style="display:inline-block;background-color:#ff9900;font-size:14px;line-height:35px;flex-grow:1;" {{action 'detaiDate' date customer 'week' on="click"}}>{{date.weekNum}}</div>
+                          </div>
+                        </td>
+                      {{/if}}
+                    {{/each}}
+                  </tr>
+                {{/each}}
+              </tbody>
+            {{/if}} -->
+          </table>
+        {{else}}
+        <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered dataTable" aria-describedby="datatable1_info">
+          <thead >
+            <tr role="row">
+              <th class="center listcolor" rowspan="1" colspan="1" width="12.5%"></th>
+              {{#each dayList as |day|}}
+              <th class="center listcolor {{if day.today 'today-color' ''}}" rowspan="1" colspan="1" width="12.5%">{{day.day}}</th>
+              {{/each}}
+            </tr>
+            <tr role="row">
+              <th class=" listcolor" rowspan="1" colspan="1" width="12.5%">姓名</th>
+              {{#each weekList as |week|}}
+              <th class="center listcolor {{if week.today 'today-color' ''}}" rowspan="1" colspan="1" width="12.5%">{{week.week}}</th>
+              {{/each}}
+            </tr>
+          </thead>
+          {{#if newCustomerPlanList}}
+            <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+                <tr>
+                  <td class="ellipsis" >
+                    <span class='staff'>
+                      {{ui/img-intergration name="avatarImg" imgSrc='assets/images/icon/personstaff.png'}}
+                    </span>
+                    <span>{{customer.name}}</span>
+                  </td>
+                  {{#each newCustomerPlanList as |date|}}
+                      <td class="ellipsis center work-date {{if date.hasChoosed 'weak-color' ''}}" style="padding:0;">
+                        <div style="display:flex;width:100%;">
+                        <div style="display:inline-block;background-color:#00c1de;font-size:14px;line-height:35px;flex-grow:1;" {{action 'detaiServiceDate' date 'day' on="click"}}>
+                          {{date.dayPlanNum}}
+                        </div>
+                        <div style="display:inline-block;background-color:#ff9900;font-size:14px;line-height:35px;flex-grow:1;" {{action 'detaiServiceDate' date 'week' on="click"}}>
+                          {{date.weekPlanNum}}
+                        </div>
+                      </div>
+                      </td>
+                  {{/each}}
+                </tr>
+
+            </tbody>
+          {{/if}}
+        </table>
+        {{/if}}
+        <div class="col-sm-2 pull-right" style="font-size:14px;">
+          <span><span style="width:14px;height:14px;display:inline-block;background-color:#00c1de;"></span>日项目</span>
+          <span><span style="width:14px;height:14px;display:inline-block;background-color:#ff9900;"></span>周项目</span>
+        </div>
+        {{#if detailEdit}}
+        <!-- <div class="text-center padding-top30">
+            <p class="text-center user-add-btn" style="display:inline-block;margin:0 auto!important ">
+            {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check"  text='保存' disabled=isSubmit clickAction="save" save="save"}}
+            {{/ui/mix-button}}
+            {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply"  text='重置'  clickAction="detailCancel" detailCancel="detailCancel" }}
+            {{/ui/mix-button}}
+            </p>
+        </div> -->
+        {{/if}}
+      </div>
+    </div>
+  </div>
+  <!-- /BOX -->
+</div>
+<!--选择老人-->
+{{#if editCustomer}}
+{{#bs-modal body=false footer=false header=false closedAction=(action "exitCustomer")}}
+
+{{#bs-modal-body}}
+  <div class="col-sm-12">
+    <div class="col-sm-12">
+      <div class="col-sm-6 nopadding-left nopadding-right" style="line-height:30px;font-size:13px;">
+        {{#power-select class="input-group-content" placeholder='姓名' options=customerList  selected=theCustomer searchField="name"
+        noMatchesMessage="没有相关内容"	allowClear=false onchange=(action "selectCustomer" )  as |customer|}}
+          {{customer.name}}
+        {{/power-select}}
+      </div>
+    </div>
+  </div>
+{{/bs-modal-body}}
+{{#bs-modal-footer class="user-add-btn"}}
+{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="come" come="come" }}
+{{/ui/mix-button}}
+{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消' clickAction="exitCustomer" exitCustomer="exitCustomer"}}
+{{/ui/mix-button}}
+{{/bs-modal-footer}}
+{{/bs-modal}}
+{{/if}}
+
+<!--编辑护理项目-->
+{{#if detailService}}
+{{#bs-modal body=false footer=false header=false closedAction=(action "exitServices")}}
+{{#bs-modal-body}}
+  <div class="col-sm-12 plan-services">
+    <div class="col-sm-12">
+      <div style="font-size:14px;line-height:25px;margin-bottom:10px;">老人：{{customer.name}}</div>
+    </div>
+    <div class=" col-sm-12">
+      <div class="bottom12">
+          <ul class=" nopadding-left">
+            {{#each serviceDetailDate.serviceList as |service|}}
+            <div class="{{if service.weekPlan 'week-service' 'day-service'}}">
+              <li class="pull-left  {{if service.active 'day-active' }}" style="font-size:14px;line-height:25px;margin-right:10px;" {{action 'chooseTab' service on="click"}}>
+                <a href="#tab_1_1" data-toggle="tab" >{{service.item.item.name}}({{service.chooseFrequency}}/{{service.item.frequency}})</a>
+              </li>
+            </div>
+            {{/each}}
+          </ul>
+          <div class="clear"></div>
+          {{#if chooseService.active}}
+          <div class="col-sm-12 nopadding-left" style="min-height:170px;">
+            <div class="form-input-group">
+              <span class="input-group-addon col-sm-2">执行时间：</span>
+              <div class="input-group-content col-sm-10">
+                {{#each chooseService.dateList as |service|}}
+                <div class="col-sm-2 nopadding-right pointer" >
+                  <div class="{{if service.selected 'drug-time-color' ''}}" style="border:1px solid #ddd;margin-bottom:5px;" {{action "clickService" service on="click"}}>
+                    <img src={{service.icon}} style="height:20px" />
+                    <span>{{service.name}}</span>
+                  </div>
+                </div>
+                {{/each}}
+              </div>
+            </div>
+          </div>
+          {{/if}}
+      </div>
+    </div>
+  </div>
+{{/bs-modal-body}}
+{{#bs-modal-footer class="user-add-btn"}}
+{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="savenewServices" savenewServices="savenewServices" }}
+{{/ui/mix-button}}
+{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消' clickAction="exitServices" exitServices="exitServices"}}
+{{/ui/mix-button}}
+{{/bs-modal-footer}}
+{{/bs-modal}}
+{{/if}}

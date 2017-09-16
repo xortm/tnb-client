@@ -1,0 +1,159 @@
+<div class="col-sm-12">
+    <div class="box panel-default col-sm-12 nomargin-bottom">
+        <div class="box-body">
+            <div class="busi-info top25">
+                {{#bs-form formLayout=formLayout model=evaModel action=(action "detailSaveClick") invalid=(action "invalid")}}
+                    <div class="col-xs-12 nopadding-left">
+                        <div class="user-add-btn">
+                            {{#if addMode}}
+                                {{#if detailModify}}
+                                {{else}}
+                                {{/if}}
+                            {{else}}
+                                {{#if detailModify}}
+                                {{else}}
+                                {{#ui/form-function editAction="detailModifyClick" detailModifyClick="detailModifyClick"
+                  							removeAction="delById" delById="delById" }}
+                  							{{/ui/form-function}}
+                                {{/if}}
+                            {{/if}}
+                        </div>
+                    </div>
+                    <div class="line">
+                        <div class="col-xs-12 col-sm-4 nopadding-left">
+                            <div class="form-input-group label-normal">
+                                <span class="input-group-addon">被评估人 ：</span>
+                                {{#if addMode}}
+                                <div class="font-light input-group-content">{{customerObj.name}}</div>
+                                {{else}}
+                                    <div class="font-light input-group-content">{{evaluate.customer.name}}</div>
+                                {{/if}}
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-4">
+                            <div class="form-input-group label-normal">
+                                <span class="input-group-addon">评估人：</span>
+                                {{#if detailModify}}
+                                    {{#if addMode}}
+                                    {{#bs-form-element class="inline-block form-input-group" controlType="user" property="user" }}
+                                        {{#power-select class="inline-block input-group-content" placeholder="" options=userList selected=parent searchField="name" noMatchesMessage="没有相关内容" allowClear=false onchange=(action "selectParent" ) as |user|}}
+                                            {{user.name}}
+                                        {{/power-select}}
+                                    {{/bs-form-element}}
+                                    {{else}}
+                                    {{#bs-form-element class="inline-block form-input-group" controlType="user" property="user" }}
+                                        {{#power-select class="inline-block input-group-content" placeholder=evaModel.user.name options=userList selected=parent searchField="name" noMatchesMessage="没有相关内容" allowClear=false onchange=(action "selectParent" ) as |user|}}
+                                            {{user.name}}
+                                        {{/power-select}}
+                                    {{/bs-form-element}}
+                                    {{/if}}
+                                {{else}}
+                                    <div class="font-light input-group-content">{{evaModel.user.name}}</div>
+                                {{/if}}
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 nopadding-left">
+                            <div class="form-input-group label-normal">
+                                <span class="input-group-addon">评估日期：</span>
+                                {{#if detailModify}}
+                                    <div class="inline-block form-input-group">
+                                      {{#bs-form-element class="inline-block form-input-group" controlType="createDateTime" property="createDateTime" }}
+                                        {{ui/addon/bs-datetimepicker date=evaModel.createDate placeholder="必填项" locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'  maxDate=today show="dpShowAction" change="changeCreateDateAction" }}
+                                        {{/bs-form-element}}
+                                    </div>
+                                {{else}}
+                                    <div class="font-light input-group-content">{{evaModel.createDateTimeString}}</div>
+                                {{/if}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="line">
+                        <div class="col-xs-12 col-sm-6 nopadding-left">
+                            <div class="form-input-group label-normal">
+                                <span class="input-group-addon">问卷备注：</span>
+                                {{#if detailModify}}
+                                    {{bs-form-element property="remark" class="inline-block form-input-group" controlType="remark" placeholder=""}}
+                                {{else}}
+                                    <div class="font-light input-group-content">{{evaModel.remark}}</div>
+                                {{/if}}
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="line">
+                        <div class="font-big color5 col-sm-2 top18 nopadding-left">问卷答题:</div>
+                        <div class="col-sm-10 changeTable">
+                            <table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered  dataTable mt15" aria-describedby="datatable1_info">
+                                <thead>
+                                    <tr role="row">
+                                        <th class="center list-style" rowspan="1" colspan="1" width="">模板名称</th>
+                                        <th class="center list-style" rowspan="1" colspan="1" width="">问卷得分</th>
+                                        <th class="center list-style" rowspan="1" colspan="1" width="">对应等级</th>
+                                        <th class="center list-style" rowspan="1" colspan="1" width="">模板备注</th>
+                                        <th class="center list-style" rowspan="1" colspan="1" width="">问卷选择</th>
+                                    </tr>
+                                </thead>
+                                <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+                                    {{#each useModelList as |useModel|}}
+                                        <tr class="gradeA odd {{if useModel.hasShow 'backColor' ''}}" {{action "selectModel" useModel on="click"}}>
+                                            <td class="center list-style ellipsis sorting_1 {{if useModel.errorClass 'hasError' ''}}">{{useModel.title}}</td>
+                                            <td class="center list-style ellipsis {{if useModel.errorClass 'hasError' ''}}">{{useModel.scores}}</td>
+                                            <td class="center list-style ellipsis {{if useModel.errorClass 'hasError' ''}}">{{useModel.level}}</td>
+                                            <td class="center list-style ellipsis {{if useModel.errorClass 'hasError' ''}}">{{useModel.remark}}</td>
+                                            <td class="center ellipsis {{if useModel.errorClass 'hasError' ''}}"><i class="fontLogo {{if useModel.hasShow 'fa-circle' ''}}"></i></td>
+                                        </tr>
+                                        {{#if useModel.hasShow}}
+                                        <tr style="cursor:default;">
+                                          <td colspan="5">
+                                        <div class="col-sm-12">
+                                            <!-- BOX BORDER-->
+                                            <div class="padding-left40">
+                                                {{#each realQuestionList as |question index|}}
+                                                    <div class="padding-bottom-20 question-style {{if useModel.errorClass 'hasError' ''}}">{{question.realIndex}}.{{question.content.content}}?<div class="inlineBlock {{if useModel.errorClass 'hasError' 'hidden'}}">(请完成此题)</div></div>
+                                                    <div class="padding-bottom20">
+                                                        {{#each question.answerList as |answer|}}
+                                                            {{#if (eq answer.answerIndex 'B')}}
+                                                            <div class="choose-inline-block pointer" {{action "chooseAnswer" answer question on="click"}}>
+                                                                <div class="fontLogo choose-inline-block {{if detailModify 'choose-box' ''}} {{if answer.hasSelcted 'fa-check' ''}}"></div>&nbsp;&nbsp;
+                                                                <div class="choose-inline-block margin-right-40 answer-style">{{answer.answerIndex}}.{{answer.content}}</div>
+                                                            </div>
+                                                          <br />
+                                                          {{else}}
+                                                            <div class="choose-inline-block pointer" {{action "chooseAnswer" answer question on="click"}}>
+                                                                <div class="fontLogo choose-inline-block {{if detailModify 'choose-box' ''}} {{if answer.hasSelcted 'fa-check' ''}}"></div>&nbsp;&nbsp;
+                                                                <div class="choose-inline-block margin-right-40 answer-style">{{answer.answerIndex}}.{{answer.content}}</div>
+                                                            </div>
+                                                            {{/if}}
+                                                        {{/each}}
+                                                    </div>
+                                                {{/each}}
+                                            </div>
+                                            <!-- /BOX BORDER -->
+                                        </div>
+                                        </td>
+                                        </tr>
+                                        {{else}}
+                                        {{/if}}
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                    <div class="text-center padding-top20">
+                        <p class="text-center user-add-btn" style="display:inline-block;margin:0 auto!important ">
+                        {{#if detailModify}}
+                        {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check"  text='保存'}}
+                        {{/ui/mix-button}}
+                        {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply"  text='取消'  clickAction="cancelClick" cancelClick="cancelClick" }}
+                        {{/ui/mix-button}}
+                        {{else}}
+                        {{/if}}
+                        </p>
+                    </div>
+                    </div>
+                {{/bs-form}}
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,85 @@
+<div class="col-sm-12">
+  <div class="box">
+    <div class="box-body">
+    <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+    	<div class="row">
+        <!--搜索-->
+        <!-- 条件搜索 -->
+        <div class="col-sm-2 ">
+          <div class="pull-left">
+            <div class="input-group bottom8">
+              {{input class="form-control" type="text" placeholder="搜索姓名/电话" value=queryCondition enter="search"}}
+              <!-- <input class="form-control" type="text" placeholder="搜索姓名/房间号/护工姓名"> -->
+              <span class="input-group-btn">
+                <button class="btn btn-primary btn-reduce" type="button" style="touch-action: manipulation; -ms-touch-action: manipulation;" {{action "search" on="click"}}>
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+          </div>
+          <!--搜索-->
+        </div>
+        <div class="col-sm-8 ">
+          <div class="col-sm-5 date-range pull-left">
+            {{callbusi/time-search class="inline-block" text='按咨询日期搜索' dateShow=dateShow chooseDate=chooseDate search="search"
+            submmit="submmit" emptied='emptied' changeBeginDateAction='changeBeginDateAction' changeEndDateAction='changeEndDateAction'}}
+          </div>
+          <div class="col-sm-7 date-range pull-left">
+            {{callbusi/time-search class="inline-block" text='按预约日期搜索' dateShow=dateShowAp chooseDate=chooseDateAp search="searchAp"
+            submmit="submmitAp" emptied='emptiedAp' changeBeginDateAction='changeBeginDateActionAp' changeEndDateAction='changeEndDateActionAp'}}
+          </div>
+          </div>
+          <div class="user-add-btn col-sm-2 pull-right nopadding-right">
+            {{#ui/mix-button class=" user-btn pull-right" iconClass="fa-plus"  text='新增咨询信息'  clickAction="toDetailPage" toDetailPage="toDetailPage" style="padding-right:0px;margin-right:0px;"}}
+            {{/ui/mix-button}}
+      	  </div>
+
+    	  <!--搜索-->
+    	</div>
+      <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable mt15" aria-describedby="datatable1_info">
+        <thead>
+          <tr role="row">
+            <th rowspan="1" colspan="1" width="">咨询人姓名</th>
+            <th rowspan="1" colspan="1" width="">联系电话</th>
+            <th rowspan="1" colspan="1" class="" width="">咨询日期</th>
+            <th rowspan="1" colspan="1" width="">参观日期</th>
+            <th rowspan="1" colspan="1" width="">接待人</th>
+            <th rowspan="1" colspan="1" class="" width="">跟进次数</th>
+            <!-- <th rowspan="1" colspan="1" class="" width="">状态</th>
+        		<th class="center" rowspan="1" colspan="1" class="" width="">操作</th> -->
+          </tr>
+        </thead>
+        {{#if consultList}}
+      <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+          {{#each consultList as |consult|}}
+          <tr class="gradeA odd">
+            <td class=" ellipsis sorting_1" {{action "toDetailPage" consult on="click"}}>{{consult.advName}}</td>
+            <td class=" ellipsis " {{action "toDetailPage" consult on="click"}}>{{consult.advTel}}</td>
+            <td class="ellipsis" {{action "toDetailPage" consult on="click"}}>{{consult.advDateStringList}}</td>
+            <td class=" ellipsis " {{action "toDetailPage" consult on="click"}}>{{consult.appointmentDateString}}</td>
+            <td class=" ellipsis" {{action "toDetailPage" consult on="click"}}>{{consult.receiveStaff.name}}</td>
+            <td class="ellipsis" {{action "toDetailPage" consult on="click"}}>{{consult.backvistNum}}</td>
+            <!-- <td class="ellipsis" {{action "toDetailPage" consult on="click"}}>{{consult.consultStatus.typename}}</td>
+            {{#if consult.computedStatus}}
+            <td class=""></td>
+            {{else}}
+            <td class=""><a {{action "jumpAdvance" consult on="click"}}>咨询转预定</a></td>
+            {{/if}} -->
+      	  </tr>
+          {{/each}}
+       </tbody>
+       {{else}}
+       <div class="nodate">暂无数据</div>
+       {{/if}}
+        </table>
+        {{#if consultList }}
+            {{page-numbers content=consultList showFL=true numPagesToShow=5
+            exportAllExcel="exportAllExcel" exportAll=exportAll}}
+            {{else}}
+                <h1 class="col-sm-12 center unTask"></h1>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+  <!-- /BOX -->
+</div>

@@ -1,0 +1,63 @@
+<div class="col-sm-12">
+  <div class="box">
+    <div class="box-body">
+    <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+    	<div class="row">
+        <!--搜索-->
+        <div class="col-sm-2 ">
+        {{#power-select class="inline-block" placeholder="选择会员姓名" options=customerList selected=customer searchField="namePinyin" noMatchesMessage="没有相关会员信息"
+        allowClear=true onchange=(action "selectCustomer" ) as |customer|}}
+        {{customer.name}}
+        {{/power-select}}
+        </div>
+        <div class="col-sm-2 ">
+          {{callbusi/dict-selector groupCode=constants.healthExamType
+          showName="选择体检项目" dictSelect="healthTypeSelect" preselected=false allowClear=true}}
+        </div>
+        <!--搜索-->
+        <div class="col-sm-5 nopadding-left">
+            {{callbusi/time-search class="inline-block" text='按创建时间搜索' dateShow=dateShow chooseDate=chooseDate search="search"
+            submmit="submmit" emptied='emptied' changeBeginDateAction='changeBeginDateAction' changeEndDateAction='changeEndDateAction'}}
+          </div>
+          <div class="user-add-btn col-sm-3 pull-right nopadding-right">
+            {{#ui/mix-button class=" user-btn pull-right" iconClass="fa-plus"  text='新增健康建议'  clickAction="toDetailPage" toDetailPage="toDetailPage" style="padding-right:0px;margin-right:0px;"}}
+            {{/ui/mix-button}}
+      	  </div>
+    	  <!--搜索-->
+    	</div>
+      <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable mt15" aria-describedby="datatable1_info">
+        <thead>
+          <tr role="row">
+            <th rowspan="1" colspan="1" width="">老人姓名</th>
+            <th rowspan="1" colspan="1" width="">创建时间</th>
+        		<th rowspan="1" colspan="1" class="" width="">类型</th>
+            <th rowspan="1" colspan="1" width="">基本建议</th>
+            <th rowspan="1" colspan="1" width="">综合建议</th>
+          </tr>
+        </thead>
+        {{#if analysisList}}
+      <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+          {{#each analysisList as |analysis|}}
+          <tr class="gradeA odd" {{action "toDetailPage" analysis on="click"}}>
+            <td class=" ellipsis sorting_1">{{analysis.customer.name}}</td>
+            <td class=" ellipsis">{{analysis.createTimeString}}</td>
+            <td class=" ellipsis ">{{analysis.type.typename}}</td>
+            <td class=" ellipsis ">{{analysis.contents}}</td>
+            <td class=" ellipsis ">{{analysis.mul_contents}}</td>
+      	  </tr>
+          {{/each}}
+       </tbody>
+       {{else}}
+       <div class="nodate">暂无数据</div>
+       {{/if}}
+        </table>
+        {{#if analysisList }}
+            {{page-numbers content=analysisList showFL=true numPagesToShow=5}}
+            {{else}}
+                <h1 class="col-sm-12 center unTask"></h1>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+  <!-- /BOX -->
+</div>

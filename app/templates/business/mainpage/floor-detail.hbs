@@ -1,0 +1,102 @@
+<div class="col-md-12 ">
+	<div class="box margin-middle max-width">
+		<!-- BOX-BODY -->
+		<div class="box-body">
+			{{#bs-form formLayout=formLayout model=floorModel action=(action "saveFloor" floorInfo) invalid=(action "invalid")}}
+			<div class="row">
+				<div class="col-xs-12">
+					<p class="user-add-btn">
+						{{#if detailEdit}}
+							{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='保存'}}
+			        {{/ui/mix-button}}
+							{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="detailCancel" detailCancel="detailCancel" }}
+			        {{/ui/mix-button}}
+						{{else}}
+							{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-edit"  text='编辑'  clickAction="detailEditClick" detailEditClick="detailEditClick" clickActParams=floorInfo}}
+			        {{/ui/mix-button}}
+							{{#ui/mix-button class="user-btn trash-btn" iconClass="fa fa-trash-o"  text='删除'  clickAction="delById" delById="delById" }}
+			        {{/ui/mix-button}}
+						{{/if}}
+					</p>
+				</div>
+				<!-- 列表详细介绍 -->
+				<div class="col-xs-12 nopadding-left">
+					<div class="col-xs-12 nopadding-horizontal mt20">
+            <div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">楼层名称：</span>
+								{{#if detailEdit}}
+									{{bs-form-element controlType="name" property="name" class="inline-block form-input-group label-normal" placeholder=floorInfo.name}}
+								{{else}}
+									<div class="input-group-content">{{floorInfo.name}}</div>
+								{{/if}}
+							</div>
+							
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">楼层编号：</span>
+								{{#if detailEdit}}
+									{{bs-form-element controlType="seq" property="seq" class="inline-block form-input-group label-normal" placeholder=floorInfo.seq}}
+								{{else}}
+									<div class="input-group-content">{{floorInfo.seq}}</div>
+								{{/if}}
+							</div>
+							
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">所属楼宇：</span>
+
+								{{#if detailEdit}}
+								{{#bs-form-element class="inline-block form-input-group" controlType="building"  property="building" }}
+									{{#power-select class="input-group-content" placeholder='所属楼宇' options=buildingList  selected=defaultBuilding searchField="typename"
+									noMatchesMessage="没有相关内容"	allowClear=true onchange=(action "selectBuilding" ) as |building|}}
+										{{building.name}}
+									{{/power-select}}
+									{{/bs-form-element}}
+								{{else}}
+									<div class="input-group-content">{{floorInfo.building.name}}</div>
+								{{/if}}
+
+							</div>
+							
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">楼宇编号：</span>
+
+									<div class="input-group-content">{{defaultBuilding.seq}}</div>
+
+							</div>
+							
+						</div>
+					</div>
+				</div>
+				<!-- 列表详细介绍 -->
+			</div>
+				{{/bs-form}}
+		</div>
+		<!-- /BOX-BODY -->
+	</div>
+</div>
+
+{{#if showpopInvitePassModal}}
+	{{#bs-modal body=false footer=false header=false closedAction=(action "invitation")
+	submitAction=(action "cancelPassSubmit" floorInfo)}}
+		{{#bs-modal-header}}
+			<h3 class="modal-title">删除提示</h3>
+		{{/bs-modal-header}}
+		{{#bs-modal-body}}
+			<h4 class="modal-title">是否删除该条记录？</h4>
+		{{/bs-modal-body}}
+
+		{{#bs-modal-footer as |footer|}}
+			{{#bs-button action=(action "cancelPassSubmit" floorInfo) type="primary" disabled=prepaidDisabled}}确定{{/bs-button}}
+			{{#bs-button action=(action "invitation") type="default"}}取消{{/bs-button}}
+		{{/bs-modal-footer}}
+	{{/bs-modal}}
+{{/if}}

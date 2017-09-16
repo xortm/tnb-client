@@ -1,0 +1,25 @@
+<div class="score-star">
+  <section class="star">
+    {{log "scoreQusetionitem in hbs:" scoreQusetionitem}}
+    {{#if (eq scoreQusetionitem.employeeIdInloop "0")}}
+      {{#if hasReadyFlag}}
+        <div class="font18 top15 line-height-30 color666666 padding-left-15 center bottom10"><span class="color2FA7FD padding-0-5">养老院</span>各项评分结果</div>
+      {{else}}
+        <div class="font18 top15 line-height-30 color666666 padding-left-15 center bottom10">请对<span class="color2FA7FD padding-0-5">养老院</span>进行各项评分</div>
+      {{/if}}
+    {{else}}
+      {{#if hasReadyFlag}}
+        <div class="font18 top15 line-height-30 color666666 padding-left-15 center bottom10"><span class="color2FA7FD padding-0-5">{{scoreQusetionitem.employee.name}}</span>各项评分结果</div>
+      {{else}}
+        <div class="font18 top15 line-height-30 color666666 padding-left-15 center bottom10">请对<span class="color2FA7FD padding-0-5">{{scoreQusetionitem.employee.name}}</span>员工进行各项评分</div>
+      {{/if}}
+    {{/if}}
+    {{#each scoreQusetionitem.items as |appraiseResultItem|}}
+      {{#callbusi/mobile/score-question-star appraiseResultItem=appraiseResultItem hasReadyFlag=hasReadyFlag tapItem="tapItem"}}
+      {{/callbusi/mobile/score-question-star}}
+    {{/each}}
+    {{#unless hasReadyFlag}}
+      {{ui/mobile/task-detail-button needDoubleClickPrevent=true touchStartAction="saveAppraiseResult" saveAppraiseResult="saveAppraiseResult" butContent="提交" outerClass="saveBut"}}
+    {{/unless}}
+  </section>
+</div>

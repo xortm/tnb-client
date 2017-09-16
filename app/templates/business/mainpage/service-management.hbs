@@ -1,0 +1,19 @@
+<div class="col-sm-12">
+  <div class="box panel-default col-sm-12">
+    <div class="box-body">
+      <div class="tabbable">
+        <!--li的 active类名暂时去掉（页签切换） -->
+        <!-- <ul class="nav nav-tabs">
+
+          <li class="" {{action "chooseGroup" "diningStandard" on="click"}}><a href="#tab_3_1" data-toggle="tab">餐饮等级设置</a></li>
+        </ul> -->
+        <div class="tab-content fade in col-md-12 nopadding-left nopadding-right">
+          <div class="tab-pane fade in padding-top8 active" id="tab_3_1">
+            {{#callbusi/service-info informationList=informationList group=group refreshStaffList='refreshStaffList'}}
+            {{/callbusi/service-info}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

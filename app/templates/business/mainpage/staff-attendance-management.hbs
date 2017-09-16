@@ -1,0 +1,64 @@
+<div class="col-sm-12">
+  <div class="box">
+    <div class="box-body">
+    <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+    	<div class="clear">
+        <!--搜索-->
+        <div class="col-sm-3 nopadding-left">
+          <div class="input-group full-width">
+            {{#power-select class="input-group-content full-width" placeholder='员工姓名' options=employeeList selected=defaultEmployee searchField="sortName"
+            noMatchesMessage="没有相关内容"	allowClear=true	onchange=(action "selectEmployee" ) as |employee|}}
+              {{employee.name}}
+            {{/power-select}}
+          </div>
+        </div>
+
+        <!-- 按不同的时间进行查询 -->
+        <div class="col-sm-6 nopadding-left pull-left nopadding-right">
+           {{callbusi/time-search class="inline-block" text='执行时间' dateShow=dateShow chooseDate=chooseDate search="search"
+           submmit="submmit" emptied='emptied' changeBeginDateAction='changeBeginDateAction' changeEndDateAction='changeEndDateAction'}}
+        </div>
+      </div>
+
+          <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable mt15" aria-describedby="datatable1_info">
+            <thead>
+              <tr role="row">
+                <th rowspan="1" colspan="1" width="">员工姓名</th>
+                <th rowspan="1" colspan="1" width="">考勤时间</th>
+                <th rowspan="1" colspan="1" width="">班次开始时间</th>
+                <th rowspan="1" colspan="1" width="">班次结束时间</th>
+                <th rowspan="1" colspan="1" width="">开始签到时间</th>
+                <th rowspan="1" colspan="1" class="" width="">结束签到时间</th>
+                <th rowspan="1" colspan="1" class="" width="">是否请假</th>
+              </tr>
+            </thead>
+          <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+              {{#each staffattendanceList as |attend|}}
+              <tr class="gradeA odd" {{action "toDetailPage" attend on="click"}}>
+                <td class=" ellipsis sorting_1">{{attend.employee.name}}</td>
+                <td class=" ellipsis">{{attend.attendanceTimeStr}}</td>
+                <td class=" ellipsis ">{{attend.startTime}}</td>
+                <td class=" ellipsis " >{{attend.endTime}}</td>
+                <td class=" ellipsis">{{attend.startWorkTimeStr}}</td>
+                <td class=" ellipsis ">{{attend.endWorkTimeStr}}</td>
+                <td class=" ellipsis ">
+                  {{#if attend.remark}}
+                    请假中
+                  {{else}}
+                  {{/if}}
+                </td>
+          	  </tr>
+              {{/each}}
+           </tbody>
+            </table>
+            {{#if staffattendanceList }}
+                {{page-numbers content=staffattendanceList showFL=true numPagesToShow=5}}
+              {{else}}
+                <h1 class="col-sm-12 center unTask"></h1>
+            {{/if}}
+          </div>
+    	</div>
+
+    </div>
+  <!-- /BOX -->
+</div>

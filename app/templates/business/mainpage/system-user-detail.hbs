@@ -1,0 +1,157 @@
+<div class="box margin-middle max-width">
+	<div class="box-body">
+    <div class="busi-info">
+    {{#bs-form formLayout=formLayout model=userModel invalid=(action "invalid")}}
+        <!-- 列表编辑-->
+        <div class="row col-sm-12 font24 user-add-btn nopadding-horizontal">
+              {{#if editModel}}
+              {{else}}
+                {{#ui/form-function editAction="editModelModify" editModelModify="editModelModify"
+                removeAction="delById" delById="delById" editClickParams=user}}
+                {{/ui/form-function}}
+              {{/if}}
+        </div>
+        <div class="row col-sm-12  padding-bottom30">
+          <div class="nopadding-left bott cccc">
+            {{#ui/img-intergration name="avatar" hasUploader=true imgSrc=userModel.avatarUrl
+            height=100 width=100 margin-left=0 uploadUrl=uploadUrl uploadSucc="uploadSuccHead"
+            uploadFail="uploadFailImg" businessType=constants.uploadBusinessType_headimg as |component|}}
+						{{#if editModel}}
+            <div class="pull-left photo-title padding-top20">
+              <div class="tip photo-title-color">
+                请上传用户头像
+              </div>
+              <div class="photo-footer">
+              <div class="button pull-left photo-footer-color" {{action 'avatarUpload' target=component on="click"}}>
+                上传图片
+              </div>
+              </div>
+            </div>
+						{{/if}}
+            {{/ui/img-intergration}}
+
+          </div>
+
+        </div>
+
+            <div class="col-xs-12 col-sm-6 nopadding-left">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">用&nbsp;&nbsp;户&nbsp;名：</span>
+                    {{#if editModel}}
+                        {{bs-form-element property="name" class="inline-block form-input-group label-normal" controlType="name" placeholder="用户名(必填)"}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{user.name}}</div>
+                    {{/if}}
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-6 nopadding-left">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">系统角色：</span>
+                    {{#if editModel}}
+                        {{#bs-form-element property="role" class="inline-block form-input-group label-normal" controlType="role"}}
+                          {{#power-select placeholder='系统角色' options=roleList selected=user.role searchField="name"
+                          noMatchesMessage="没有相关内容" allowClear=allowClear onchange=(action "roleSelect" ) as |role|}}
+                              {{role.name}}
+                          {{/power-select}}
+                        {{/bs-form-element}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{user.role.name}}</div>
+                    {{/if}}
+                </div>
+            </div>
+
+            <div class="line top10">
+                <div class="col-xs-12 col-sm-6 nopadding-left">
+                    <div class="form-input-group label-normal">
+                        <span class="input-group-addon">登录账号：</span>
+                        {{#if editModel}}
+														<form style="display:none">
+															<input type="password"/>
+														</form>
+														<input type="password" style="width:0;height:0;float:left;visibility:hidden"/>
+                            {{bs-form-element autocomplete="off" property="loginName" class="inline-block form-input-group label-normal" controlType="loginName" placeholder="系统登录账号(必填)"}}
+                        {{else}}
+                            <div class="font-light input-group-content">{{user.loginName}}</div>
+                        {{/if}}
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-sm-6 nopadding-left">
+                    <div class="form-input-group label-normal">
+                        <span class="input-group-addon">登录密码：</span>
+                        {{#if editModel}}
+													<form style="display:none">
+														<input type="password"/>
+													</form>
+													<input type="password" style="width:0;height:0;float:left;visibility:hidden"/>
+                            <!-- {{input type="password" class="inline-block form-control padding0 normal-input" value=sysPassWord placeholder="系统登录密码" enter='validateMCode'}} -->
+                            {{bs-form-element property="passcode" class="inline-block form-input-group label-normal" controlType="password" placeholder="系统登录密码(必填)"}}
+
+                        {{else}}
+                            {{#if user.passcode}}
+                            <div class="font-light input-group-content">******</div>
+                            {{else}}
+                            {{/if}}
+                            <!-- {{input type="password" class="inline-block form-control padding0 normal-input" value=sysPassWord disabled=true}} -->
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+
+						<div class="line padding-top30">
+							<div class="col-xs-12 col-sm-6 nopadding-left">
+                  <div class="form-input-group label-normal">
+                      <span class="input-group-addon">对应员工：</span>
+                      {{#if editModel}}
+                      {{#bs-form-element property="employee" class="inline-block form-input-group label-normal" controlType="employee"}}
+                        {{#power-select placeholder='选择后,用户名和头像会替换为该员工的' options=employeeList selected=user.employee searchField="name"
+                        noMatchesMessage="没有相关内容" allowClear=allowClear onchange=(action "employeeSelect" ) as |employee|}}
+                            {{employee.name}}
+                        {{/power-select}}
+                      {{/bs-form-element}}
+                      {{else}}
+                          <div class="font-light input-group-content">{{user.employee.name}}</div>
+                      {{/if}}
+                  </div>
+              </div>
+							<div class="col-xs-12 col-sm-6 nopadding-left">
+                  <div class="form-input-group label-normal">
+                      <span class="input-group-addon">状&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;态：</span>
+                      {{#if editModel}}
+													{{#bs-form-element class="inline-block form-input-group label-normal" controlType="staffStatus" property="staffStatus" }}
+	                          {{callbusi/dict-selector class="inline-block " curDict=userModel.staffStatus
+	                           groupCode=constants.employeeStatus showName="状态" dictSelect="employeeStatusSelect" preselected=false}}
+													{{/bs-form-element}}
+                      {{else}}
+                          <div class="font-light input-group-content">{{user.staffStatus.typename}}</div>
+                      {{/if}}
+                  </div>
+              </div>
+							<!-- <div class="col-xs-12 col-sm-6 nopadding-left">
+                  <div class="form-input-group label-normal">
+                      <span class="input-group-addon padding-top10">员工头像：</span>
+											<div class="">
+												{{#ui/img-intergration name="avatar" hasUploader=true imgSrc=user.employee.avatarUrl
+													 height=48 width=48 margin-left=0}}
+												{{/ui/img-intergration}}
+											</div>
+                  </div>
+              </div> -->
+						</div>
+
+            <div class="text-center padding-top30 line">
+                <p class="text-center user-add-btn margin0auto inlineBlock">
+                        {{#if editModel}}
+                          {{#ui/mix-button class="user-btn times-btn body-text-color  pull-right" iconClass="fa fa-mail-reply" text='取消' clickAction="cancelEdit" cancelEdit="cancelEdit" clickActParams=testParams}}
+                          {{/ui/mix-button}}
+                          {{#ui/mix-button class="user-btn edit-btn body-text-color  pull-right" iconClass="fa-check" text='保存' clickAction="saveClick" saveClick="saveClick"}}
+                          {{/ui/mix-button}}
+                        {{/if}}
+                </p>
+            </div>
+        <!-- 列表编辑 -->
+        {{/bs-form}}
+    </div>
+  </div>
+</div>

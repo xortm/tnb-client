@@ -1,0 +1,18 @@
+<div id="userHealthyFileEvaluateContainer" class="mainContent">
+  <div class="wrapperInner jujia-Bd">
+{{#ui/mobile/gestures-container}}
+<div class="jujia-container healthy-file-evaluate">
+  {{#each evaluateResultList as |evaluateResult|}}
+  <section class="evaluate">
+    <i class="fa fa-file-text-o prev"></i>
+    <span class="">{{evaluateResult.name}}</span>
+    <p>{{evaluateResult.contents}}</p>
+  </section>
+  {{/each}}
+</div>
+
+
+{{/ui/mobile/gestures-container}}
+</div>
+</div>
+{{ui/container/infinite-scroll moniteData="evaluateResultList" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

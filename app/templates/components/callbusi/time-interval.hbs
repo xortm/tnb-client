@@ -1,0 +1,87 @@
+
+<span class="date-range pull-left col-sm-12 nopadding-left">
+ <div class="btn-group">
+   <span class="pull-left" style="line-height:30px">{{text}}：</span>
+   <a class="js_update btn btn-default" href="#" {{action "showDate" on="click"}}>{{chooseDate}}&nbsp;<i class="fa fa-chevron-down"></i></a>
+ </div>
+  {{#if dateShow}}
+  <!-- 日期选择弹窗 -->
+    <div class="date-box form-input-group col-sm-12 nopadding-right" style='position:absolute;min-width:550px;z-index:5;'>
+      <!-- <i class="fa fa-times pointer" style="position:absolute;right:5px;top:5px;" {{action "hideDate" on="click"}}></i> -->
+      {{#ui/icon-button iconClass="fa-times closeIcon"
+      data-toggle="tooltip"  title="关闭"  data-placement="top" data-original-title="关闭"
+      clickAction="hideDate" hideDate="hideDate"}}
+      {{/ui/icon-button}}
+      <div class="row col-sm-12 nopadding-right">
+        <div class="btn-group col-sm-12 nopadding-right">
+          <a class="js_update btn btn-default col-sm-3 {{if yearShow 'hoverClick' ''}}" href="#" {{action "yearClick" "year" on="click"}}>年</a>
+          <a class="js_update btn btn-default col-sm-3 {{if seasonShow 'hoverClick' ''}}" href="#" {{action "seasonClick" "season" on="click"}}>季</a>
+          <a class="js_update btn btn-default col-sm-3 {{if mouthShow 'hoverClick' ''}}" href="#" {{action "mouthClick" "mouth" on="click"}}>月</a>
+          <a class="js_update btn btn-default col-sm-3 hidden-xs {{if dayShow 'hoverClick' ''}}" href="#" {{action "dayClick" "day" on="click"}}>天</a>
+        </div>
+      </div>
+      <div class="row col-sm-12 nopadding-right">
+        <!-- <div class="col-xs-3 col-sm-3 nopadding-right" style="line-height:40px;text-align:center;font-size:15px;">自定义日期：</div> -->
+        <div class="col-xs-12 nopadding-right nopadding-left">
+          <div class="form-input-group padding-left-15">
+            <div class="{{if yearShow '' 'hidden'}}">
+              {{ui/addon/bs-datetimepicker date=null placeholder="起始年份" locale="zh-CN" format='YYYY'
+              iconClasses="fa fa-calendar" show="dpShowAction" change="changeBeginDateAction"}}
+            </div>
+            <div class="{{if seasonShow '' 'hidden'}}">
+              {{ui/addon/bs-datetimepicker date=null placeholder="季度起始年份" locale="zh-CN" format='YYYY'
+              iconClasses="fa fa-calendar" show="dpShowAction" change="changeBeginSeaconDateAction"}}
+            </div>
+            <div class="{{if mouthShow '' 'hidden'}}">
+              {{ui/addon/bs-datetimepicker date=null placeholder="起始月份" locale="zh-CN" format='MM'
+              iconClasses="fa fa-calendar" show="dpShowAction" change="changeBeginDateAction"}}
+            </div>
+            <div class="{{if dayShow '' 'hidden'}}">
+              {{ui/addon/bs-datetimepicker date=null placeholder="起始日期" locale="zh-CN" format='YYYY-MM-DD' maxDate=today
+              iconClasses="fa fa-calendar" show="dpShowAction" change="changeBeginDateAction"}}
+            </div>
+            <span class="input-group-addon {{if intervalShow '' 'hidden'}}">&nbsp;~</span>
+            <div class="{{if yearShow '' 'hidden'}}">
+              {{ui/addon/bs-datetimepicker date=null placeholder="结束年份" locale="zh-CN" format='YYYY'
+              iconClasses="fa fa-calendar" show="dpShowAction" change="changeEndDateAction"}}
+            </div>
+            <div class="{{if seasonShow '' 'hidden'}}">
+              {{ui/addon/bs-datetimepicker date=null placeholder="季度结束年份" locale="zh-CN" format='YYYY'
+              iconClasses="fa fa-calendar" show="dpShowAction" change="changeEndSeaconDateAction"}}
+            </div>
+            <div class="{{if mouthShow '' 'hidden'}}">
+              {{ui/addon/bs-datetimepicker date=null placeholder="结束月份" locale="zh-CN" format='MM'
+              iconClasses="fa fa-calendar" show="dpShowAction" change="changeEndDateAction"}}
+            </div>
+            <div class="{{if dayShow '' 'hidden'}}">
+              {{ui/addon/bs-datetimepicker date=null placeholder="结束日期" locale="zh-CN" format='YYYY-MM-DD' maxDate=today
+              iconClasses="fa fa-calendar" show="dpShowAction" change="changeEndDateAction"}}
+            </div>
+          </div>
+          <!-- 自定义季度 -->
+          <div class="row col-sm-12 nopadding-right {{if seasonShow '' 'hidden'}}">
+            <div class="btn-group col-sm-6 nopadding-right">
+              <a class="js_update btn btn-default col-sm-3 {{if (eq beginseaconFlag 'beginone') 'hoverClick' ''}}" href="#" {{action "oneSeacon" "beginone" on="click"}}>第一季度</a>
+              <a class="js_update btn btn-default col-sm-3 {{if (eq beginseaconFlag 'beginsecond') 'hoverClick' ''}}" href="#" {{action "secondSeacon" "beginsecond" on="click"}}>第二季度</a>
+              <a class="js_update btn btn-default col-sm-3 {{if (eq beginseaconFlag 'beginthird') 'hoverClick' ''}}" href="#" {{action "thirdSeacon" "beginthird" on="click"}}>第三季度</a>
+              <a class="js_update btn btn-default col-sm-3 hidden-xs {{if (eq beginseaconFlag 'beginfour') 'hoverClick' ''}}" href="#" {{action "fourSeacon" "beginfour" on="click"}}>第四季度</a>
+            </div>
+            <div class="btn-group col-sm-6 nopadding-right">
+              <a class="js_update btn btn-default col-sm-3" href="#" {{action "endoneSeacon" "endone" on="click"}}>第一季度</a>
+              <a class="js_update btn btn-default col-sm-3" href="#" {{action "endsecondSeacon" "endsecond" on="click"}}>第二季度</a>
+              <a class="js_update btn btn-default col-sm-3" href="#" {{action "endthirdSeacon" "endthird" on="click"}}>第三季度</a>
+              <a class="js_update btn btn-default col-sm-3 hidden-xs" href="#" {{action "endfourSeacon" "endfour" on="click"}}>第四季度</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-row text-center">
+        <div  style="height:100px;"></div>
+        <button class="btn btn-primary" {{action "submmit"  on="click"}}><i class="fa fa-check icon-white"></i>&ensp;确定</button>
+      </div>
+    </div>
+  <!-- End 日期选择弹窗 -->
+  {{else}}
+  {{/if}}
+ </span>

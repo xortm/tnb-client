@@ -1,0 +1,37 @@
+{{#ui/mobile/gestures-container}}
+<div id="customerPointContainer" class="mainContent border-top-1 {{if global_pageConstructure.showLoader 'hide' ''}}">
+  <div class="wrapperInner">
+  {{#if preferenceList}}
+    <div class="bgcolor-white">
+    {{log "preferenceList hbs" preferenceList}}
+    <ul class="bk-color-white padding-left-0">
+    {{#each preferenceList as |preference|}}
+      <li class="padding-15-18 bk-color-white">
+        <div class="width100B clearfix line-height-20 font-black font15">
+          <span class="pull-left width80B">{{preference.name}}:</span>
+          <span class="pull-right">{{preference.startStr}}</span>
+        </div>
+        <p class="color999999 font13 line-height-16 margin-top-10 bottom0">{{preference.remark}}</p>
+      </li>
+      <li class="border-bottom-1"></li>
+    {{/each}}
+    </ul>
+    </div>
+  {{else}}
+    {{#if nocustomerId}}
+      <div class="center" style="margin-top:40px;">
+        请在上方选择老人
+      </div>
+    {{else}}
+      <div class="nodate">暂无数据</div>
+    {{/if}}
+  {{/if}}
+
+
+
+  </div>
+
+</div>
+{{/ui/mobile/gestures-container}}
+{{ui/container/infinite-scroll moniteData=""
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

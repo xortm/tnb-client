@@ -1,0 +1,100 @@
+{{#if isMobile}}
+<div id="userBusinessMineContainer" class="mainContent {{if global_pageConstructure.showLoader 'hide' ''}}">
+  <div class="wrapperInner">
+    {{#ui/mobile/gestures-container}}
+    <ul class="self nopadding-left">
+      <li class="height50">  <strong>头像</strong>
+        <div class="pull-right business-mine-img">
+          {{#ui/img-intergration name="headImg"
+          imgSrc=model.curUser.avatarUrl height=46 width=46
+          businessType=constants.uploadBusinessType_headimg
+          }}
+          {{/ui/img-intergration}}
+        </div>
+      </li>
+      <li class="margin-leftright10 border-bottom-1"></li>
+      <!-- <li id="mine_name" {{action 'modification' 'name' 'mine_name' on="tap"}}>  -->
+      <li id="mine_name">   <strong>姓名  </strong>
+        <span class="pull-right">{{model.curUser.name}}</span>
+      </li>
+      <li class="margin-leftright10 border-bottom-1"></li>
+
+      <li {{action 'sexFun' on="tap"}}><strong>性别  </strong>
+        <!-- <span class="pull-right">{{model.curUser.staffSex.typename}}&nbsp;<i class="el-right-open"></i></span> -->
+        <span class="pull-right">{{model.curUser.staffSex.typename}}</span>
+       </li>
+      <li class="margin-leftright10 border-bottom-1"></li>
+
+      <li id="mine_age" {{action 'modification' 'age' 'mine_age' on="tap"}}>   <strong>年龄</strong>
+        <span class="pull-right">{{model.curUser.age}}</span>
+      </li>
+
+      <li id="mine_code" class="top10" {{action 'modification' 'staffCardCode' 'mine_code' on="tap"}}>
+        <strong>身份证号  </strong>
+        <span class="pull-right">{{model.curUser.staffCardCode}}</span>
+      </li>
+      <li class="margin-leftright10 border-bottom-1"></li>
+
+      <li id="mine_phone" {{action 'modification' 'staffTel' 'mine_phone' on="tap"}}>
+        <strong>手机号  </strong>
+        <span class="pull-right">{{model.curUser.staffTel}}</span>
+      </li>
+      <li class="margin-leftright10 border-bottom-1"></li>
+
+      <li id="mine_mail" {{action 'modification' 'staffMail' 'mine_mail' on="tap"}}>
+        <strong>邮箱  </strong>
+        <span class="pull-right">{{model.curUser.staffMail}}</span>
+      </li>
+      <li class="margin-leftright10 border-bottom-1"></li>
+
+      <li id="mine_address" {{action 'modification' 'curAddress' 'mine_address' on="tap"}}>
+        <strong>家庭住址</strong>
+        <span class="pull-right width80B extend text-right">{{model.curUser.curAddress}}</span>
+      </li>
+
+      <li id="mine_staffCensus" class="top10" {{action 'toSelfChoose' 'staffCensus' 'mine_staffCensus' on="tap"}}>
+        <strong>籍贯</strong>
+        <span class="pull-right">{{model.curUser.staffCensus.typename}}</span>
+      </li>
+      <li class="margin-leftright10 border-bottom-1"></li>
+
+      <li id="mine_staffNation" {{action 'toSelfChoose' 'staffNation' 'mine_staffNation' on="tap"}}>
+        <strong>民族</strong>
+        <span class="pull-right">{{model.curUser.staffNation.typename}}</span>
+      </li>
+    </ul>
+    {{/ui/mobile/gestures-container}}
+  </div>
+</div>
+
+{{ui/container/infinite-scroll moniteData="userBusinessMine" didRenderAction="didRender"
+didInsertElementAction="didInsertElement"}}
+
+{{else}}
+无
+{{/if}}
+
+<!-- {{#if showAddContents}}
+{{#bs-modal body=false footer=false header=false}}
+{{#bs-modal-body}}
+<label class='pull-right' {{action 'sexFun1'}}><input type="radio" name="sex" value="1" checked={{sex1}}>男</label>
+<label class='pull-left' {{action 'sexFun2'}}><input type="radio" name="sex" value="1" checked={{sex2}}>女</label>
+{{/bs-modal-body}}
+{{/bs-modal}}
+{{/if}} -->
+
+<!-- 修改性别弹窗-->
+{{#if changeSexModel}}
+<div class="change-sex" id="changeSexModel">
+  <ul class="self-sex nopadding-left">
+    {{#ui/mobile/gestures-container}}
+    <li class="white-background-color border-radius5 font16">
+      <span class="theLi btnApp" {{action 'sexFun1' on="tap"}}>男</span>
+      <div class="border-bottom-1"></div>
+      <span class="theLi btnApp" {{action 'sexFun2' on='tap'}}>女</span>
+    </li>
+    <li class="theLi top10 border-radius5 font16 btnApp" {{action 'closeFun' on='tap'}}>取消</li>
+    {{/ui/mobile/gestures-container}}
+  </ul>
+</div>
+{{/if}}

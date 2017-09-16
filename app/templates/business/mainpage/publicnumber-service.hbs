@@ -1,0 +1,93 @@
+<div id="nursingplanexeContainer" class="mainContent {{if global_pageConstructure.showLoader 'hide' ''}}">
+  <div class="wrapperInner">
+
+    {{#ui/mobile/gestures-container}}
+    {{#if list}}
+      {{#each list as |service|}}
+        {{#if (eq service.type 2)}}
+          <div class="padding-0-10 height35">
+            <span class="font16 font-black">{{service.dayStr}}</span>
+            <span class="color666666">{{service.dateTimeSeq}}</span>
+          </div>
+        {{else if (eq service.type 1)}}
+          <ul class="padding-0-10 bottom4 bk-color-white padding-bottom10">
+            <li class="border-bottom-1F0F0F0 height44 line-height-44">
+              {{#if (eq service.serviceTypeCode 'serviceType1')}}
+                <img class="topF2" src="assets/images/mobile/healthcare-icon.png" width="18"/>
+              {{else if (eq service.serviceTypeCode 'serviceType2')}}
+                <img class="topF2" src="assets/images/mobile/bed.png" width="18"/>
+              {{else if (eq service.serviceTypeCode 'serviceType3')}}
+                <img class="topF2" src="assets/images/mobile/images.png" width="18"/>
+              {{else}}
+                <img class="topF2" src="assets/images/mobile/medication.png" width="18"/>
+              {{/if}}
+              <span class="font14 font-black padding-left-5">{{service.title}}</span>
+              <span class="padding-left-15 font12 color999999">{{service.timeStr}}</span>
+            </li>
+            {{#if service.drugFlag}}
+              <li class="font12 padding-top10">
+                <span class="color666666">药品名:</span>
+                <span class="">
+                  {{service.customerDrugName}}
+                </span>
+              </li>
+              <li class="font12 padding-top5">
+                <!-- <span class="color666666">实际用药:</span>
+                <span class="">
+                  {{service.actualUse}} {{service.drugSpecName}}；
+                </span> -->
+                <span class="color666666">计划用药:</span>
+                <span class="">
+                  计划用药时间:{{service.useDrugDateString}}，计划用药数量:{{service.drugNumPlan}}{{service.drugSpecName}}。
+                </span>
+              </li>
+              <li class="font12 padding-top5">
+                <span class="color666666">实际用药:</span>
+                <span class="">
+                  <!-- 实际用药时间:{{service.exeDateString}}，实际用药数量:{{service.actualUse}}{{service.drugSpecName}}。 -->
+                  {{service.actualUse}}{{service.drugSpecName}}。
+                </span>
+              </li>
+            {{/if}}
+            <li class="font12 padding-top10">
+              <span class="color666666">完成情况:</span>
+              <span class="">
+                {{service.finishLevelName}}
+              </span>
+            </li>
+            {{#if service.remark}}
+              <li class="font12 padding-top5">
+                <span class="color666666">备注:</span>
+                <span class="">
+                  {{service.remark}}
+                </span>
+              </li>
+            {{/if}}
+            <li class="font12 padding-top5">
+              <span class="color666666">服务人员:</span>
+              <span class="">{{service.personName}}</span>
+            </li>
+            {{#if service.drugFlag}}
+              {{#if (gte service.littleDrugDetail 0)}}
+                <li class="font12 padding-top5">
+                  <span class="color666666">缺药提醒:</span>
+                  <span class="">
+                    剩余药量{{service.allDrugNum}}{{service.drugTypename}},可供{{service.littleDrugDetail}}天使用
+                  </span>
+                </li>
+              {{/if}}
+            {{/if}}
+          </ul>
+
+        {{/if}}
+
+      {{/each}}
+    {{else}}
+      <div class="nodate">暂无数据</div>
+    {{/if}}
+    {{/ui/mobile/gestures-container}}
+  </div>
+</div>
+
+{{ui/container/infinite-scroll moniteData="serviceWeekList" didRenderAction="didRender"
+didInsertElementAction="didInsertElement"}}

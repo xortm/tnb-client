@@ -1,0 +1,63 @@
+{{#ui/mobile/gestures-container}}
+<ul class="clearfix health-ul position-relative" style="margin-top:14px;">
+  <li {{action "queryAllOrOther" on="tap"}}>
+    健康项目
+    <span class="font12">{{healthMessage}}</span>
+    {{#if otherChoose}}
+      <i class="fa-angle-up"></i>
+    {{else}}
+      <i class="fa-angle-down"></i>
+    {{/if}}
+  </li>
+  <li>健康数据</li>
+  <li>测量时间</li>
+  {{#if otherChoose}}
+    <div class="position_absolute" style="background: #ECF4FB;top: 43px;width: 33.33%;border-bottom-right-radius: 5px;">
+      <div class="" {{action 'queryHealth' 'all' on="tap"}}>健康项目<span class="font12">(全部)</span></div>
+      <div class="" {{action 'queryHealth' 'dayAlways' on="tap"}}>健康项目<span class="font12">(日四)</span></div>
+    </div>
+  {{/if}}
+</ul>
+<div id="healthInfoContainerDetail" class="mainContent border-top-1 {{if global_pageConstructure.showLoader 'hide' ''}}">
+  <div id="health-area" class="wrapperInner" {{action 'closeAllOrOther' on="tap"}} style="padding-top:44px;">
+    {{#if healthInfoList}}
+    {{log "healthInfoList:" healthInfoList}}
+      <div class="">
+        {{#each healthInfoList as |healthInfo|}}
+        <div class="center health-each-div">
+          <div class="extend">{{healthInfo.itemtype.typename}}</div>
+          {{#if (eq healthInfo.resHbsType 1)}}
+              <div class="extend" {{action "showText" healthInfo.resultType healthInfo.id on="tap"}}>{{healthInfo.resultType}}</div>
+          {{else}}
+            <div class="">{{healthInfo.resultType}}</div>
+          {{/if}}
+          <div>{{healthInfo.examDateDayHourS}}</div>
+        </div>
+        {{/each}}
+      </div>
+    {{else}}
+      {{#if nocustomerId}}
+        <div class="center" style="margin-top:40px;">
+          请在上方选择老人
+        </div>
+      {{else}}
+        <div class="nodate">暂无数据</div>
+      {{/if}}
+    {{/if}}
+
+  </div>
+</div>
+{{#if showModel}}
+  <div class="change-sex center" style="padding: 70% 5%;color: #fff;" {{action "closeText" on="tap"}}>
+    {{showContent}}
+  </div>
+{{/if}}
+{{#ui/mobile/gestures-container}}
+<div class="detail-dynamicsbtn" id="detail_healthbtn" {{action 'addHealth' on="tap"}} style="bottom:0px;">
+  <img class="bottom2" width='15' src="assets/images/mobile/add.png" alt="">
+  <span class="padding-left-10">添加健康数据</span>
+</div>
+{{/ui/mobile/gestures-container}}
+{{/ui/mobile/gestures-container}}
+{{ui/container/infinite-scroll moniteData="healthInfoList"
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

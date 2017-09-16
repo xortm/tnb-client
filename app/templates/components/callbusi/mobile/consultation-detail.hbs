@@ -1,0 +1,225 @@
+<!-- <div id="consultDetailContainer" class="mainContent">
+    <div class="wrapperInner"> -->
+{{#ui/mobile/inner-tabbar menus=tabFuncs switchTab="switchTab" refreshFlag=refreshFlag serviceListFlag=serviceListFlag clickActFlag=clickActFlag itemXs="col-xs-4" positionClass="abs-top-44 service-care" theme="block-mode" }}
+{{/ui/mobile/inner-tabbar}}
+
+    {{#if (eq curTabCode 'tabInfo')}}
+    {{#ui/mobile/gestures-container}}
+        <div id="consultDetailContainer" class="mainContent {{if showLoadingImgIn 'hide'}}">
+            <div class="wrapperInner" style="padding-top:44px;">
+                <ul class="profile">
+                    <li class=" carousel color666 border-top-1 border-bottom-1" id="receiveStaff" {{action 'toSelfChoose' 'receiveStaff' 'receiveStaff' on="tap"}}>
+                        <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                        <span class="profile-span">接待人 </span>
+                        <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{consultinfoData.receiveStaff.name}}</span>
+                        <i class="fa-angle-right font20 my-right color-ccc"></i>
+                    </li>
+
+                    <li class=" carousel color666 border-top-1 border-bottom-1" id="advName" {{action 'modification' 'advName' 'advName' on="tap"}}>
+                        <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                        <span class="profile-span">咨询人姓名 </span>
+                        <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{consultinfoData.advName}}</span>
+                        <i class="fa-angle-right font20 my-right color-ccc"></i>
+                    </li>
+
+                    <li class=" carousel color666 border-top-1 border-bottom-1" id="liveIntent" {{action 'toSelfChoose' 'liveIntent' 'liveIntent' on="tap"}}>
+                        <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                        <span class="profile-span">咨询意向 </span>
+                        <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{consultinfoData.liveIntent.typename}}</span>
+                        <i class="fa-angle-right font20 my-right color-ccc"></i>
+                    </li>
+                    <!--
+                    <li class=" carousel color666 border-top-1 border-bottom-1" id="advGender" {{action 'toSelfChoose' 'advGender' 'advGender' on="tap"}}>
+                        <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                        <span class="profile-span">咨询人性别 </span>
+                        <span class="pull-right"  style="line-height: 42px;margin-right: 10px;">{{consultinfoData.advGender.typename}}</span>
+                        <i class="fa-angle-right font20 my-right color-ccc"></i>
+                    </li> -->
+                    <li class=" carousel color666 border-top-1 border-bottom-1" id="consultChannel" {{action 'toSelfChoose' 'consultChannel' 'consultChannel' on="tap"}}>
+                        <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                        <span class="profile-span">咨询方式 </span>
+                        <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{consultinfoData.consultChannel.typename}}</span>
+                        <i class="fa-angle-right font20 my-right color-ccc"></i>
+                    </li>
+                    <li class=" carousel color666 border-top-1 border-bottom-1" id="consultRelation" {{action 'toSelfChoose' 'consultRelation' 'consultRelation' on="tap"}}>
+                        <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                        <span class="profile-span">与老人关系 </span>
+                        <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{consultinfoData.consultRelation.typename}}</span>
+                        <i class="fa-angle-right font20 my-right color-ccc"></i>
+                    </li>
+
+                    <li class=" carousel color666 border-top-1 border-bottom-1" id="advDate" {{action 'toSelfChoose' 'advDate' 'advDate' on="tap"}}>
+                        <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                        <span class="profile-span">咨询时间 </span>
+                        <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{consultinfoData.advDateShortString}}</span>
+                        <i class="fa-angle-right font20 my-right color-ccc"></i>
+                    </li>
+                    <li class=" carousel color666 border-top-1 border-bottom-1" id="appointmentDate" {{action 'toSelfChoose' 'appointmentDate' 'appointmentDate' on="tap"}}>
+                        <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                        <span class="profile-span">预约参观时间</span>
+                        <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{consultinfoData.appointmentDateString}}</span>
+                        <i class="fa-angle-right font20 my-right color-ccc"></i>
+                    </li>
+                    <li class=" carousel color666 border-top-1 border-bottom-1" id="advTel" {{action 'modification' 'advTel' 'advTel' on="tap"}}>
+                        <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                        <span class="profile-span">联系电话</span>
+                        <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{consultinfoData.advTel}}</span>
+                        <i class="fa-angle-right font20 my-right color-ccc"></i>
+                    </li>
+                    <li class=" carousel color666 border-top-1 border-bottom-1" id="otherReceiveStaff" {{action 'toSelfChoose' 'otherReceiveStaff' 'otherReceiveStaff'  on="tap"}}>
+                        <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                        <span class="profile-span">预约接待人</span>
+                        <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{consultinfoData.otherReceiveStaff.name}}</span>
+                        <i class="fa-angle-right font20 my-right color-ccc"></i>
+                    </li>
+                    <li class=" carousel color666 border-top-1 border-bottom-1" id="remark" {{action 'modification' 'remark' 'remark' on="tap"}}>
+                        <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                        <span class="profile-span">详细情况</span>
+                        <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{consultinfoData.remarkString}}</span>
+                        <i class="fa-angle-right font20 my-right color-ccc"></i>
+                    </li>
+                    <li class=" carousel color666 border-top-1 border-bottom-1" id="advWay" {{action 'toSelfChoose' 'advWay' 'advWay' on="tap"}}>
+                        <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                        <span class="profile-span">了解渠道</span>
+                        <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{consultinfoData.advWayName}}</span>
+                        <i class="fa-angle-right font20 my-right color-ccc"></i>
+                    </li>
+
+
+                    <!-- <li class=" carousel color666 border-top-1 border-bottom-1" id="customerName" {{action 'modification' 'customerName' 'customerName' on="tap"}}>
+                        <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                        <span class="profile-span">老人姓名</span>
+                        <span class="pull-right"  style="line-height: 42px;margin-right: 10px;">{{consultinfoData.customerName}}</span>
+                        <i class="fa-angle-right font20 my-right color-ccc"></i>
+                    </li> -->
+
+                    <li class=" carousel color666 border-top-1 border-bottom-1" id="customerGender" {{action 'toSelfChoose' 'customerGender' 'customerGender' on="tap"}}>
+                        <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                        <span class="profile-span">老人性别</span>
+                        <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{consultinfoData.customerGender.typename}}</span>
+                        <i class="fa-angle-right font20 my-right color-ccc"></i>
+                    </li>
+
+                    <li class=" carousel color666 border-top-1 border-bottom-1" id="customerBrith" {{action 'modification' 'customerBrith' 'customerBrith' on="tap"}}>
+                        <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                        <span class="profile-span">老人年龄 </span>
+                        <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{consultinfoData.customerBrith}}</span>
+                        <i class="fa-angle-right font20 my-right color-ccc"></i>
+                    </li>
+                    <!-- <li class=" carousel color666 border-top-1 border-bottom-1" id="customerEducation" {{action 'toSelfChoose' 'customerEducation' 'customerEducation' on="tap"}}>
+                        <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                        <span class="profile-span">文化程度</span>
+                        <span class="pull-right"  style="line-height: 42px;margin-right: 10px;">{{consultinfoData.customerEducation.typename}}</span>
+                        <i class="fa-angle-right font20 my-right color-ccc"></i>
+                    </li> -->
+                    <li class=" carousel color666 border-top-1 border-bottom-1" id="customerSelfCareAbility" {{action 'toSelfChoose' 'customerSelfCareAbility' 'customerSelfCareAbility' on="tap"}}>
+                        <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                        <span class="profile-span">自理能力</span>
+                        <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{consultinfoData.customerSelfCareAbility.typename}}</span>
+                        <i class="fa-angle-right font20 my-right color-ccc"></i>
+                    </li>
+                    <!-- <li class=" carousel color666 border-top-1 border-bottom-1" id="customerPS" {{action 'modification' 'customerPS' 'customerPS' on="tap"}}>
+                        <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                        <span class="profile-span">身体状况</span>
+                        <span class="pull-right"  style="line-height: 42px;margin-right: 10px;">{{consultinfoData.customerPS}}</span>
+                        <i class="fa-angle-right font20 my-right color-ccc"></i>
+                    </li> -->
+                    <!-- <li class=" carousel color666 border-top-1 border-bottom-1" id="customerAddr" {{action 'modification' 'customerAddr' 'customerAddr' on="tap"}}>
+                        <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                        <span class="profile-span">居住地址</span>
+                        <span class="pull-right"  style="line-height: 42px;margin-right: 10px;">{{consultinfoData.customerAddr}}</span>
+                        <i class="fa-angle-right font20 my-right color-ccc"></i>
+                    </li>
+                    <li class=" carousel color666 border-top-1 border-bottom-1" id="customerTel" {{action 'modification' 'customerTel' 'customerTel' on="tap"}}>
+                        <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                        <span class="profile-span">老人电话</span>
+                        <span class="pull-right"  style="line-height: 42px;margin-right: 10px;">{{consultinfoData.customerTel}}</span>
+                        <i class="fa-angle-right font20 my-right color-ccc"></i>
+                    </li> -->
+
+
+
+                    <li class=" carousel color666 border-top-1 border-bottom-1" id="inPreference" {{action 'toSelfChoose' 'inPreference' 'inPreference' on="tap"}}>
+                        <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                        <span class="profile-span">入住偏好 </span>
+                        <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{consultinfoData.inPreferenceName}}</span>
+                        <i class="fa-angle-right font20 my-right color-ccc"></i>
+                    </li>
+                    <li class=" carousel color666 border-top-1 border-bottom-1" id="care" {{action 'modification' 'care' 'care' on="tap"}}>
+                        <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                        <span class="profile-span">特别关心 </span>
+                        <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{consultinfoData.careString}}</span>
+                        <i class="fa-angle-right font20 my-right color-ccc"></i>
+                    </li>
+                    <li class=" carousel color666 border-top-1 border-bottom-1" id="dietRequirements" {{action 'modification' 'dietRequirements' 'dietRequirements' on="tap"}}>
+                        <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                        <span class="profile-span">餐饮要求 </span>
+                        <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{consultinfoData.dietRequirementsString}}</span>
+                        <i class="fa-angle-right font20 my-right color-ccc"></i>
+                    </li>
+                    <li class=" carousel color666 border-top-1 border-bottom-1" id="roomRequirements" {{action 'modification' 'roomRequirements' 'roomRequirements' on="tap"}}>
+                        <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                        <span class="profile-span">房间要求</span>
+                        <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{consultinfoData.roomRequirementsString}}</span>
+                        <i class="fa-angle-right font20 my-right color-ccc"></i>
+                    </li>
+                    <li class=" carousel color666 border-top-1 border-bottom-1" id="serviceRequirements" {{action 'modification' 'serviceRequirements' 'serviceRequirements' on="tap"}}>
+                        <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                        <span class="profile-span">照护要求</span>
+                        <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{consultinfoData.serviceRequirementsString}}</span>
+                        <i class="fa-angle-right font20 my-right color-ccc"></i>
+                    </li>
+                    <li class=" carousel color666 border-top-1 border-bottom-1" id="otherRequirements" {{action 'modification' 'otherRequirements' 'otherRequirements' on="tap"}}>
+                        <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                        <span class="profile-span">其他要求</span>
+                        <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{consultinfoData.otherRequirementsString}}</span>
+                        <i class="fa-angle-right font20 my-right color-ccc"></i>
+                    </li>
+                    <li class=" carousel color666 border-top-1 border-bottom-1" id="psychologicalPrice" {{action 'modification' 'psychologicalPrice' 'psychologicalPrice' on="tap"}}>
+                        <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                        <span class="profile-span">心理价位</span>
+                        <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{consultinfoData.psychologicalPrice}}元</span>
+                        <i class="fa-angle-right font20 my-right color-ccc"></i>
+                    </li>
+                    <li class=" carousel color666 border-top-1 border-bottom-1" id="discontent" {{action 'modification' 'discontent' 'discontent' on="tap"}}>
+                        <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                        <span class="profile-span">不满意地方</span>
+                        <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{consultinfoData.discontentString}}</span>
+                        <i class="fa-angle-right font20 my-right color-ccc"></i>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+        {{/ui/mobile/gestures-container}}
+        {{ui/container/infinite-scroll moniteData=infiniteContentPropertyName didRenderAction="didRender" didInsertElementAction="didInsertElement"}}
+    {{/if}}
+
+
+
+    {{#if (eq curTabCode 'tabCallBack')}}
+    {{#ui/mobile/gestures-container}}
+        <div id="consultDetailContainer" class="mainContent {{if global_pageConstructure.showLoader 'hide' ''}}">
+            <div class="wrapperInner " style="padding-top:44px;">
+                <ul class="profile">
+                    {{#each consultinfoData.backVistInfos as |backvist|}}
+                        <li class=" carousel color666 border-top-1 border-bottom-1" id="backvist{{backvist.id}}" {{action "toBackvist" backvist on="tap"}}>
+                            <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                            {{#if backvist.remarkString}}
+                                <span class="profile-span">{{backvist.createDateTimeString}} | {{backvist.remarkString}}</span>
+                            {{else}}
+                                <span class="profile-span">{{backvist.createDateTimeString}} </span>
+                            {{/if}}
+                            <i class="fa-angle-right font20 my-right color-ccc"></i>
+                        </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+        <div class="detail-dynamicsbtn bottom40" id="addBackvist" {{action 'addBackvist' on="tap"}}>
+          <img class="bottom2" width='15' src="assets/images/mobile/add.png" alt="">
+          <span class="padding-left-10">添加跟进信息</span>
+        </div>
+        {{/ui/mobile/gestures-container}}
+        {{ui/container/infinite-scroll moniteData=infiniteContentPropertyName didRenderAction="didRender" didInsertElementAction="didInsertElement"}}
+    {{/if}}

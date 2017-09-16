@@ -1,0 +1,128 @@
+<div class="row">
+    <div id="health-area" class="col-sm-12 top10 nopadding-right">
+        <div class="col-sm-3 user-add-btn pull-right mt15 nopadding-right">
+            {{#ui/mix-button class=" user-btn pull-right" iconClass="fa-plus" text='新增餐饮等级' clickAction="addData" addData="addData" }}
+            {{/ui/mix-button}}
+        </div>
+    </div>
+</div>
+<div class="col-sm-12 nopadding-left nopadding-right">
+    <div class="">
+        <div class="box-body">
+            <div id="datatable1_wrapper" class="dataTables_wrapper form-inline " role="grid">
+                <table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable mt15" aria-describedby="datatable1_info">
+                    <thead>
+                        <tr role="row">
+                            <th rowspan="1" colspan="1" width="">等级名称</th>
+                            <th rowspan="1" colspan="1" width="">等级价格(元/天)</th>
+                            <th rowspan="1" colspan="1" width="">等级备注</th>
+                        </tr>
+                    </thead>
+                    {{#if informationList}}
+                    <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+                        {{#each informationList as |information|}}
+                            <tr class="gradeA odd" {{action "toDetailPage" information on="click"}}>
+                                <td class=" ellipsis ">{{information.typename}}</td>
+                                <td class=" ellipsis">{{information.typeValue}}</td>
+                                <td class=" ellipsis">{{information.remark}}</td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                    {{else}}
+                    <div class="nodate">暂无数据</div>
+                    {{/if}}
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- /BOX -->
+</div>
+<!--添加服务信息  -->
+{{#bs-form formLayout=formLayout model=informationModel action=(action "saveClick") invalid=(action "invalid")}}
+{{#if showpopInvitePassModal}}
+    {{#bs-modal body=false footer=false header=false closedAction=(action "invitation")}}
+        {{#bs-modal-header}}
+            {{#if addDict}}
+                <h4 class="modal-title">添加餐饮等级</h4>
+            {{else}}
+                <h4 class="modal-title">餐饮等级详情</h4>
+            {{/if}}
+        {{/bs-modal-header}}
+        {{#bs-modal-body}}
+            <div class="modal-body clearfix">
+                <div class="form-group">
+                    <div class="col-sm-12" style="text-align: center;">
+                        <div class="col-xs-12 col-sm-12">
+                            <div class="form-input-group">
+                                <span class="input-group-addon">等级名称：</span>
+                                <div>
+                                    <div class="inline-block form-input-group">
+                                        {{#if showData}}
+                                            <!-- <div>{{input class="input-group-content" type="text" value=information.typename}}</div> -->
+                                            {{bs-form-element property="typename" class="inline-block form-input-group" controlType="typename" placeholder="必填项"}}
+                                        {{else}}
+                                            <div class="font-light input-group-content">{{information.typename}}</div>
+                                        {{/if}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="divide-10"></div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-12">
+                            <div class="form-input-group">
+                                <span class="input-group-addon">等级价格(元/天)：</span>
+                                <div>
+                                    <div class="inline-block form-input-group">
+                                        {{#if showData}}
+                                            <!-- <div>{{input class="input-group-content" type="text" value=information.typeValue}}</div> -->
+                                            {{bs-form-element property="typeValue" class="inline-block form-input-group" controlType="typeValue" placeholder="必填项"}}
+                                        {{else}}
+                                            <div class="font-light input-group-content">{{information.typeValue}}</div>
+                                        {{/if}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="divide-10"></div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12">
+                            <div class="form-input-group">
+                                <span class="input-group-addon">等级备注：</span>
+                                <div class="inline-block form-input-group">
+                                    {{#if showData}}
+                                        <!-- <div>{{input class="input-group-content" type="text" value=information.remark }}</div> -->
+                                        {{textarea type="text" class="full-width inline-block form-input-group label-normal form-control" value=information.remark}}
+                                    {{else}}
+                                        <div class="font-light input-group-content">{{information.remark}}</div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                            <div class="divide-10"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {{/bs-modal-body}}
+        {{#bs-modal-footer class="user-add-btn" as |footer|}}
+            {{#if addDict}}
+                {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check" text='确定' clickAction="saveClick" saveClick="saveClick" }}
+                {{/ui/mix-button}}
+                {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply" text='取消' clickAction="invitation" invitation="invitation" }}
+                {{/ui/mix-button}}
+            {{else}}
+                {{#if showData}}
+                    {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check" text='确定' clickAction="saveClick" saveClick="saveClick" }}
+                    {{/ui/mix-button}}
+                    {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply" text='取消' clickAction="invitation" invitation="invitation" }}
+                    {{/ui/mix-button}}
+                {{else}}
+                    {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-edit" text='编辑' clickAction="editClick" editClick="editClick" }}
+                    {{/ui/mix-button}}
+                    {{#ui/mix-button class="user-btn trash-btn" iconClass="fa fa-trash-o" text='删除' clickAction="delateClick" delateClick="delateClick" clickActParams=information }}
+                    {{/ui/mix-button}}
+                {{/if}}
+            {{/if}}
+        {{/bs-modal-footer}}
+    {{/bs-modal}}
+{{/if}}
+{{/bs-form}}

@@ -1,0 +1,15 @@
+<div class="col-sm-4">
+  <label for="name">姓名</label>
+  {{input type="text" id=name value=name}}
+</div>
+
+<div class="col-sm-4">
+<label for="phone">电话</label>
+{{input type="text" id=phone value=phone}}
+<!-- <button class="btn btn-success btn-sm" style="border-radius:10px" {{action "querySubtask" name phone}}>查询</button> -->
+
+{{#ui/mix-button iconClass="fa-search"
+  text="查询" clickAction="querySubtask" querySubtask="querySubtask"}}
+{{/ui/mix-button}}
+
+</div>

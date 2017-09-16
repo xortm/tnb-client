@@ -1,0 +1,25 @@
+{{#ui/mobile/gestures-container}}
+    <div id="{{infiniteContainerName}}" class="mainContent {{if global_pageConstructure.showLoader 'hide' ''}}">
+        <div class="wrapperInner padding-bottom50" style="background:#ffffff;">
+            <ul class="profile">
+
+                <li class=" carousel color666 border-top-1 border-bottom-1" id="title" {{action 'modification' 'title' 'title' on="tap"}}>
+                    <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                    <span class="profile-span">标题</span>
+                    <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{marketskillData.titleString}}</span>
+                    <i class="fa-angle-right font20 my-right color-ccc"></i>
+                </li>
+                <li class=" carousel color666 border-top-1 border-bottom-1" id="remark" {{action 'modification' 'remark' 'remark' on="tap"}}>
+                    <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                    <span class="profile-span">内容</span>
+                    <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{marketskillData.remarkString}}</span>
+                    <i class="fa-angle-right font20 my-right color-ccc"></i>
+                </li>
+
+            </ul>
+            {{ui/container/infinite-scroll moniteData=infiniteContentPropertyName didRenderAction="didRender" didInsertElementAction="didInsertElement"}}
+        </div>
+    </div>
+
+
+{{/ui/mobile/gestures-container}}

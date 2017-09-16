@@ -1,0 +1,226 @@
+
+<div class="col-sm-12">
+	<div class="box margin-middle max-width">
+		<!-- BOX-BODY -->
+		<div class="box-body">
+				{{#bs-form formLayout=formLayout model=customerbusinessflowModel invalid=(action "invalid")}}
+			<div class="row">
+				<div class="col-xs-12">
+					<p class="user-add-btn">
+						{{#if detailEdit}}
+
+						{{else}}
+							{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='返回'  clickAction="detailCancel" detailCancel="detailCancel"}}
+			        {{/ui/mix-button}}
+						{{/if}}
+					</p>
+				</div>
+				<!-- 列表详细介绍 -->
+				<div class="col-xs-12 nopadding-left">
+					<div class="col-xs-12 nopadding-horizontal mt20">
+
+            <div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">试住开始日期：</span>
+                {{#if detailEdit}}
+									{{#bs-form-element class="inline-block form-input-group" controlType="experiencStartTime"  property="experienceStartTime" }}
+								  {{ui/addon/bs-datetimepicker date=customerbusinessflowInfo.experienceStartTimeDate placeholder="试住开始日期(必填)"
+									locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD' minDate=minday
+									show="dpShowAction" change="changeTryStartAction" }}
+									{{/bs-form-element }}
+                {{else}}
+                  <div class="input-group-content">{{customerbusinessflowInfo.experienceStartTimeDateString}}</div>
+                {{/if}}
+							</div>
+						</div>
+
+            <div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">试住结束日期：</span>
+                {{#if detailEdit}}
+									{{#bs-form-element class="inline-block form-input-group" controlType="experienceEndTime"  property="experienceEndTime" }}
+								  	{{ui/addon/bs-datetimepicker date=customerbusinessflowInfo.experienceEndTimeDate placeholder="试住结束日期(必填)"
+										locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'
+										show="dpShowAction" change="changeTryEndAction" }}
+									{{/bs-form-element }}
+								{{else}}
+                  <div class="input-group-content">{{customerbusinessflowInfo.experienceEndTimeDateString}}</div>
+                {{/if}}
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">经办人：</span>
+                {{#if detailEdit}}
+									{{#bs-form-element class="inline-block form-input-group" controlType="experienceStaff"  property="experienceStaff" }}
+										{{#power-select class="input-group-content" placeholder='经办人姓名(必填)' options=staffList  selected=defaultStaff searchField="namePinyin"
+										noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "selectStaff" ) as |staff|}}
+											{{staff.name}}
+										{{/power-select}}
+									{{/bs-form-element}}
+                {{else}}
+                  <div class="input-group-content">{{customerbusinessflowInfo.experienceStaff.name}}</div>
+                {{/if}}
+							</div>
+						</div>
+
+
+
+            <div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">试住办理日期：</span>
+                {{#if detailEdit}}
+									{{#bs-form-element class="inline-block form-input-group" controlType="experienceDate"  property="experienceDate" }}
+										{{ui/addon/bs-datetimepicker date=customerbusinessflowInfo.experienceDateTime placeholder="试住办理日期(必填)"
+										locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD' maxDate=today
+										show="dpShowAction" change="changeTryAction" }}
+									{{/bs-form-element}}
+	                {{else}}
+                  <div class="input-group-content">{{customerbusinessflowInfo.experienceDateTimeString}}</div>
+                {{/if}}
+							</div>
+						</div>
+
+            <div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">试住床位：</span>
+                {{#if detailEdit}}
+									{{#bs-form-element class="inline-block form-input-group" controlType="experienceBed"  property="experienceBed" }}
+										{{callbusi/bed-choose class="inline-block form-input-group" bedShow=bedShow
+										submmit="submmit" selectBed="selectBed" selectBuild="selectBuild" bedList=bedList defaultBed=defaultBed}}
+									{{/bs-form-element}}
+                {{else}}
+                  <div class="input-group-content">{{customerbusinessflowInfo.bed.room.floor.building.name}}{{customerbusinessflowInfo.bed.room.floor.name}}:{{customerbusinessflowInfo.bed.room.name}}-{{customerbusinessflowInfo.bed.name}}</div>
+                {{/if}}
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">床位价格：</span>
+								{{#if customerbusinessflowInfo.experienceBed}}
+                  <div class="input-group-content">{{customerbusinessflowInfo.experienceBed.price}}</div>
+								{{else}}
+									<div class="input-group-content">{{customerbusinessflowInfo.orderBed.price}}</div>
+								{{/if}}
+							</div>
+						</div>
+
+
+
+
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">餐饮等级：</span>
+                {{#if detailEdit}}
+									{{callbusi/dict-selector class="inline-block" curDict=customerbusinessflowModel.customer.diningStandard groupCode=constants.diningStandard isTenant=true
+										showName=customerbusinessflowModel.customer.diningStandard.typename value=customerbusinessflowModel.customer.diningStandard
+										 preselected=false dictSelect="diningStandardSelect"}}
+                {{else}}
+                  <div class="input-group-content">{{customerbusinessflowModel.diningStandard.typename}}</div>
+                {{/if}}
+							</div>
+						</div>
+
+
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">餐饮价格：</span>
+                  <div class="input-group-content">{{customerbusinessflowInfo.diningStandard.typeValue}}</div>
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">护理方案：</span>
+								{{#if project}}
+                  <div class="input-group-content"><a class="pointer" {{action "toProject" project on="click"}}>{{customerbusinessflowInfo.customer.name}}的护理方案</a></div>
+								{{else}}
+									<div class="input-group-content"><a class="pointer" {{action "toNursingproject" on="click"}}>请先设置护理方案</a></div>
+								{{/if}}
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">护理方案价格：</span>
+                  <div class="input-group-content">{{project.price}}</div>
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">试住参考价格：</span>
+                  <div class="input-group-content">{{referencePrice}}</div>
+							</div>
+						</div>
+
+            <div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">试住实际价格：</span>
+                {{#if detailEdit}}
+                    {{bs-form-element property="experiencePrice" class="inline-block form-input-group label-normal" controlType="experiencePrice" placeholder='试住实际价格(必填)'}}
+                {{else}}
+                  <div class="input-group-content">{{customerbusinessflowInfo.experiencePrice}}</div>
+                {{/if}}
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">试住合同编号：</span>
+                {{#if detailEdit}}
+                    {{bs-form-element property="tryContractNO" class="inline-block form-input-group label-normal" controlType="tryContractNO" placeholder='试住合同编号(必填)'}}
+                {{else}}
+                  <div class="input-group-content">{{customerbusinessflowInfo.tryContractNO}}</div>
+                {{/if}}
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-12">
+							<div class="form-input-group">
+								<span class="input-group-addon">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：</span>
+								{{#if detailEdit}}
+									{{textarea type="text" class="full-width inline-block form-input-group label-normal form-control" value=customerbusinessflowInfo.experienceRemark placeholder='备注'}}
+								{{else}}
+									<div class="input-group-content">{{customerbusinessflowInfo.experienceRemark}}</div>
+								{{/if}}
+							</div>
+						</div>
+
+						{{#unless add}}
+						<div class=" col-sm-12 ">
+									{{#callbusi/customer-info customerInfo=customer detailModify=false showCustomer=true}}
+									{{/callbusi/customer-info}}
+						</div>
+						{{/unless}}
+					</div>
+					<div class="col-sm-12">
+						<div class="text-center padding-top30">
+								<p class="text-center user-add-btn" style="display:inline-block;margin:0 auto!important ">
+								{{#if detailEdit}}
+								{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check"  text='提交' clickAction="detailSaveClick" detailSaveClick="detailSaveClick" clickActParams=customerbusinessflowInfo}}
+								{{/ui/mix-button}}
+								{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply"  text='取消'  clickAction="detailCancel" detailCancel="detailCancel" }}
+				        {{/ui/mix-button}}
+	              <!-- {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='暂存'  clickAction="stagingAction" stagingAction="stagingAction" }}
+				        {{/ui/mix-button}} --> 
+								{{else}}
+								{{/if}}
+								</p>
+						</div>
+					</div>
+				</div>
+				<!-- 列表详细介绍 -->
+			</div>
+			{{/bs-form}}
+
+		</div>
+
+		<!-- /BOX-BODY -->
+	</div>
+
+</div>

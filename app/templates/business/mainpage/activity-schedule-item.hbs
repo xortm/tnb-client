@@ -1,0 +1,25 @@
+<div id="userActivityScheduleItemContainer" class="mainContent">
+  <div class="wrapperInner jujia-Bd">
+{{#ui/mobile/gestures-container}}
+<div class="jujia-container activity-schedule-item">
+  <p class="textCenter">本周{{title}}活动安排</p>
+  <!-- <p>本周设置的{{title}}活动安排如下：</p> -->
+  <section class="schedule-item">
+    <ul>
+      {{#each activityPlanList as |activityPlan| }}
+      <li>
+        <span class="">{{activityPlan.day.typename}}</span>
+        <span>{{activityPlan.time}}</span>
+        <span>{{activityPlan.place}}</span>
+        <p>{{activityPlan.description}}</p>
+      </li>
+      {{/each}}
+    </ul>
+  </section>
+</div>
+
+
+{{/ui/mobile/gestures-container}}
+</div>
+</div>
+{{ui/container/infinite-scroll moniteData="userJujiaMy" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

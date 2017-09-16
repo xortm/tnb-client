@@ -1,0 +1,228 @@
+
+<div class="col-sm-12">
+	<div class="box margin-middle max-width">
+		<!-- BOX-BODY -->
+		<div class="box-body">
+			<form id="ember2994" role="form" style class="ember-view form-undefined">
+			<div class="row">
+				<div class="col-xs-12">
+					<p class="user-add-btn">
+						<a id="ember3108" style="touch-action: manipulation; -ms-touch-action: manipulation;" name="base-element" href="unsafe:javascript:void(0)" class="user-btn edit-btn ember-view">
+							<button class="btn btn-icon btn-turquoise btn-xs pull-right btn_xs_padding" style="touch-action: manipulation; -ms-touch-action: manipulation;">
+								<i class="fa fa-edit"></i>
+								&nbsp;
+								<span>编辑</span>
+							</button>
+						</a>
+						<a id="ember3109" style="touch-action: manipulation; -ms-touch-action: manipulation;" name="base-element" href="unsafe:javascript:void(0)" class="user-btn trash-btn ember-view">
+							<button class="btn btn-icon btn-turquoise btn-xs pull-right btn_xs_padding" style="touch-action: manipulation; -ms-touch-action: manipulation;">
+								<i class="fa fa-trash-o"></i>
+								&nbsp;
+								<span>删除</span>
+							</button>
+						</a>
+					</p>
+				</div>
+				<!-- 列表详细介绍 -->
+				<div class="col-xs-12 nopadding-left">
+					<div class="col-xs-12 nopadding-horizontal mt20">
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">客户姓名：</span>
+								{{#if detailEdit}}
+									{{#if id}}
+										{{bs-form-element property="name" class="inline-block form-input-group label-normal" controlType="name" placeholder='客户姓名(必填)'}}
+									{{else}}
+											{{bs-form-element property="name" class="inline-block form-input-group label-normal" controlType="name" placeholder='客户姓名'}}
+									{{/if}}
+								{{else}}
+									<div class="input-group-content">王先生</div>
+								{{/if}}
+							</div>
+							
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">身份证号：</span>
+								{{#if detailEdit}}
+									{{#if id}}
+										{{bs-form-element property="name" class="inline-block form-input-group label-normal" controlType="name" placeholder='身份证号(必填)'}}
+									{{else}}
+											{{bs-form-element property="name" class="inline-block form-input-group label-normal" controlType="name" placeholder='身份证号'}}
+									{{/if}}
+								{{else}}
+									<div class="input-group-content">{{roomInfo.name}}</div>
+								{{/if}}
+							</div>
+							
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">床位信息：</span>
+								{{#bs-form-element class="inline-block form-input-group" controlType="roomType"  property="roomType" }}
+								{{#if detailEdit}}
+									{{#if id}}
+										{{callbusi/dict-selector groupCode=constants.roomType curDict=roomInfo.roomType
+											showName=roomInfo.roomType.typename dictSelect="roomSelect" preselected=false value=roomModel.roomType}}
+									{{else}}
+										{{callbusi/dict-selector groupCode=constants.roomType curDict=roomInfo.roomType
+											showName='床位信息' dictSelect="roomSelect" preselected=false value=roomModel.roomType}}
+									{{/if}}
+								{{else}}
+									<div class="input-group-content">{{roomInfo.roomType.typename}}</div>
+								{{/if}}
+								{{/bs-form-element}}
+							</div>
+							
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">护理等级：</span>
+								{{#bs-form-element class="inline-block form-input-group" controlType="roomType"  property="roomType" }}
+								{{#if detailEdit}}
+									{{#if id}}
+										{{callbusi/dict-selector groupCode=constants.roomType curDict=roomInfo.roomType
+											showName=roomInfo.roomType.typename dictSelect="roomSelect" preselected=false value=roomModel.roomType}}
+									{{else}}
+										{{callbusi/dict-selector groupCode=constants.roomType curDict=roomInfo.roomType
+											showName='护理等级' dictSelect="roomSelect" preselected=false value=roomModel.roomType}}
+									{{/if}}
+								{{else}}
+									<div class="input-group-content">{{roomInfo.roomType.typename}}</div>
+								{{/if}}
+								{{/bs-form-element}}
+							</div>
+							
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">餐饮标准：</span>
+								{{#bs-form-element class="inline-block form-input-group" controlType="roomType"  property="roomType" }}
+								{{#if detailEdit}}
+									{{#if id}}
+										{{callbusi/dict-selector groupCode=constants.roomType curDict=roomInfo.roomType
+											showName=roomInfo.roomType.typename dictSelect="roomSelect" preselected=false value=roomModel.roomType}}
+									{{else}}
+										{{callbusi/dict-selector groupCode=constants.roomType curDict=roomInfo.roomType
+											showName='餐饮标准' dictSelect="roomSelect" preselected=false value=roomModel.roomType}}
+									{{/if}}
+								{{else}}
+									<div class="input-group-content">{{roomInfo.roomType.typename}}</div>
+								{{/if}}
+								{{/bs-form-element}}
+							</div>
+							
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">自理能力：</span>
+								{{#bs-form-element class="inline-block form-input-group" controlType="roomType"  property="roomType" }}
+								{{#if detailEdit}}
+									{{#if id}}
+										{{callbusi/dict-selector groupCode=constants.roomType curDict=roomInfo.roomType
+											showName=roomInfo.roomType.typename dictSelect="roomSelect" preselected=false value=roomModel.roomType}}
+									{{else}}
+										{{callbusi/dict-selector groupCode=constants.roomType curDict=roomInfo.roomType
+											showName='自理能力' dictSelect="roomSelect" preselected=false value=roomModel.roomType}}
+									{{/if}}
+								{{else}}
+									<div class="input-group-content">{{roomInfo.roomType.typename}}</div>
+								{{/if}}
+								{{/bs-form-element}}
+							</div>
+							
+						</div>
+
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">入住开始日期：</span>
+								{{#bs-form-element class="inline-block form-input-group" controlType="roomType"  property="roomType" }}
+								{{#if detailEdit}}
+									{{#if id}}
+										{{callbusi/dict-selector groupCode=constants.roomType curDict=roomInfo.roomType
+											showName=roomInfo.roomType.typename dictSelect="roomSelect" preselected=false value=roomModel.roomType}}
+									{{else}}
+										{{callbusi/dict-selector groupCode=constants.roomType curDict=roomInfo.roomType
+											showName='入住开始日期' dictSelect="roomSelect" preselected=false value=roomModel.roomType}}
+									{{/if}}
+								{{else}}
+									<div class="input-group-content">{{roomInfo.roomType.typename}}</div>
+								{{/if}}
+								{{/bs-form-element}}
+							</div>
+							
+						</div>
+
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">入住截止日期：</span>
+								{{#bs-form-element class="inline-block form-input-group" controlType="roomType"  property="roomType" }}
+								{{#if detailEdit}}
+									{{#if id}}
+										{{callbusi/dict-selector groupCode=constants.roomType curDict=roomInfo.roomType
+											showName=roomInfo.roomType.typename dictSelect="roomSelect" preselected=false value=roomModel.roomType}}
+									{{else}}
+										{{callbusi/dict-selector groupCode=constants.roomType curDict=roomInfo.roomType
+											showName='入住截止日期' dictSelect="roomSelect" preselected=false value=roomModel.roomType}}
+									{{/if}}
+								{{else}}
+									<div class="input-group-content">{{roomInfo.roomType.typename}}</div>
+								{{/if}}
+								{{/bs-form-element}}
+							</div>
+							
+						</div>
+
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">入住状态：</span>
+								{{#bs-form-element class="inline-block form-input-group" controlType="roomType"  property="roomType" }}
+								{{#if detailEdit}}
+									{{#if id}}
+										{{callbusi/dict-selector groupCode=constants.roomType curDict=roomInfo.roomType
+											showName=roomInfo.roomType.typename dictSelect="roomSelect" preselected=false value=roomModel.roomType}}
+									{{else}}
+										{{callbusi/dict-selector groupCode=constants.roomType curDict=roomInfo.roomType
+											showName='入住状态' dictSelect="roomSelect" preselected=false value=roomModel.roomType}}
+									{{/if}}
+								{{else}}
+									<div class="input-group-content">{{roomInfo.roomType.typename}}</div>
+								{{/if}}
+								{{/bs-form-element}}
+							</div>
+							
+						</div>
+
+
+					</div>
+				</div>
+				<!-- 列表详细介绍 -->
+			</div>
+		</form>
+		</div>
+		<!-- /BOX-BODY -->
+	</div>
+</div>
+{{#if showpopInvitePassModal}}
+	{{#bs-modal body=false footer=false header=false closedAction=(action "invitation")
+	submitAction=(action "cancelPassSubmit" roomInfo)}}
+		{{#bs-modal-header}}
+			<h3 class="modal-title">删除提示</h3>
+		{{/bs-modal-header}}
+		{{#bs-modal-body}}
+			<h4 class="modal-title">是否删除该条记录？</h4>
+		{{/bs-modal-body}}
+		{{#bs-modal-footer as |footer|}}
+			{{#bs-button action=(action "cancelPassSubmit" roomInfo) type="primary" disabled=prepaidDisabled}}确定{{/bs-button}}
+			{{#bs-button action=(action "invitation") type="default"}}取消{{/bs-button}}
+		{{/bs-modal-footer}}
+	{{/bs-modal}}
+{{/if}}

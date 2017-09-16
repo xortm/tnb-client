@@ -1,0 +1,22 @@
+<div id="fileImplementHistoryContainer" class="mainContent">
+  <div class="wrapperInner jujia-Bd">
+{{#ui/mobile/gestures-container}}
+<div class="jujia-container healthy-file-implement">
+  <section class="jujia-catalog">
+    <ul>
+      {{#each executionReportList as |executionReport|}}
+      <li class="account" id="executionReportItem_{{executionReport.id}}" {{action "goDetail" executionReport on="tap"}}>
+        <i class="fa fa-info-circle prev"></i>
+        <span class="" style="text-indent:5px;">{{executionReport.createTimeString}}&nbsp;&nbsp;执行报告</span>
+        <i class="fa fa-angle-right next"></i>
+      </li>
+      {{/each}}
+    </ul>
+  </section>
+</div>
+
+
+{{/ui/mobile/gestures-container}}
+</div>
+</div>
+{{ui/container/infinite-scroll moniteData="executionReportList" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

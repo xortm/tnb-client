@@ -1,0 +1,27 @@
+<div id="userBloodOxygenContainer" class="mainContent">
+  <div class="wrapperInner healthy-fileBd">
+{{#ui/mobile/gestures-container}}
+<div class="jujia-container healthy-check">
+  <section class="check">
+    <div id="bloodOxygen" style="height:260px;" class="text-center"></div>
+    <p>您最近一次测量的血氧值为：{{firstOxygen.result}}毫升%</p>
+    <p>{{contentsEmpty}}</p>
+  </section>
+
+  <section class="jujia-catalog">
+    <ul>
+      <li class="blood-oxygen-upload" id="blood-oxygen-upload" {{action 'switchPage' 'blood-oxygen-upload' 'blood-oxygen-upload' on="tap"}}>
+        <i class="fa fa-upload prev"></i>
+        <span class="">手动上传</span>
+        <i class="fa fa-angle-right next"></i>
+      </li>
+    </ul>
+  </section>
+
+</div>
+
+
+{{/ui/mobile/gestures-container}}
+</div>
+</div>
+{{ui/container/infinite-scroll moniteData="" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

@@ -1,0 +1,287 @@
+
+<div class="col-sm-12" id="schePageArea">
+  <!-- BOX -->
+  <div class="box">
+    <div class="box-body">
+
+      <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+      	<div class="row">
+          <div class="col-sm-12" style="font-size:16px;margin-bottom:10px;">
+        	  <!--搜索-->
+            <div class="col-sm-5 nopadding-left">
+              {{#if theWeek}}
+              <span> 本周</span>
+              {{else}}
+              <span> 第{{curWeek}}周</span>
+              {{/if}}
+              <div id="monitor" style="display:inline-block;">
+                  (<span></span>-
+                  <span></span>)
+              </div>
+              <span>排班计划</span>
+            </div>
+            <div class="col-sm-5">
+              <span style="display:inline-block;" {{action 'prevWeek' on="click"}}>
+                {{bs-tooltip title="上一周" class="light-tooltip"}}
+                <i class="fa fa-chevron-left pointer"></i>&nbsp;
+              </span>
+              <span style="display:inline-block;" {{action 'detailWeek' on="click"}}>
+                {{bs-tooltip title="周列表" class="light-tooltip"}}
+                <i class="fa fa-calendar pointer"></i>&nbsp;
+              </span>
+              <span style="display:inline-block;" {{action "nextWeek" on="click"}}>
+                {{bs-tooltip title="下一周" class="light-tooltip"}}
+                <i class="fa fa-chevron-right pointer"></i>
+              </span>
+              {{#if editWeek}}
+              <div class="col-sm-12" style="position:absolute;background-color:#fff;padding:15px;line-height:35px;z-index:5;">
+                {{#each chooseWeek as |week|}}
+                  <div class="col-sm-1 pointer center {{if week.hasSelected 'badge-orange' ''}} {{if week.hasChoosed 'color' ''}}" style="border:1px solid #eee;padding:0;width:40px;" {{action 'changeWeek' week on="click"}}>{{week.num}}</div>
+                {{/each}}
+              </div>
+              {{/if}}
+            </div>
+        	  <!--搜索-->
+            <div class="col-sm-2 pull-left nopadding-right">
+              {{#ui/mix-button class="user-btn pull-left font16" iconClass="fa fa-users" paddingBorder="padding4 border-1-plantem" text='其他人员'  clickAction="editWork" editWork="editWork"}}
+              {{/ui/mix-button}}
+            </div>
+          </div>
+          <div class="col-sm-1">
+            {{#if detailEdit}}
+            {{else}}
+  					<p class="user-add-btn">
+  							{{#ui/form-function editAction="detailEditClick" detailEditClick="detailEditClick"
+  							 deleteNone=true}}
+  							{{/ui/form-function}}
+  					</p>
+            {{/if}}
+  				</div>
+          {{#if detailEdit}}
+          <div class="col-sm-12 nopadding-right">
+            <div class="col-sm-3 nopadding-left" style="line-height:43px;">
+              <div class="form-input-group">
+                <span class="input-group-addon">把此周：</span>
+                {{#power-select class="form-input-group" placeholder='' options=copyWeekList  selected=copyWeek searchEnabled=false
+                noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "selectCopyWeek" ) as |week|}}
+                  {{week.text}}
+                {{/power-select}}
+              </div>
+            </div>
+            <div class="col-sm-3 nopadding-left" style="line-height:43px;">
+              <div class="form-input-group">
+                <span class="input-group-addon">复制到：</span>
+                {{#power-select class="form-input-group" placeholder='' options=copyToWeekList  selected=copyToWeek searchEnabled=false
+                noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "selectCopyToWeek" ) as |week|}}
+                  {{week.text}}
+                {{/power-select}}
+              </div>
+            </div>
+            <div class="col-sm-3 pull-left nopadding-right">
+              {{#ui/mix-button class="user-btn pull-left font16" iconClass="fa fa-copy" paddingBorder="padding4 border-1-plantem" text='复制排班'  clickAction="pasteWorkList" pasteWorkList="pasteWorkList"}}
+              {{/ui/mix-button}}
+            </div>
+          </div>
+          {{else}}
+          <div class="col-sm-12" style="height:43px;"></div>
+          {{/if}}
+      	</div>
+        <table id="datatable1" cellpadding="0" cellspacing="0" border="0" style="margin-top:10px;" class="datatable table table-bordered dataTable" aria-describedby="datatable1_info">
+          <thead >
+            <tr role="row">
+              <th class="center listcolor" rowspan="1" colspan="1" width="12.5%"></th>
+              {{#each dayList as |day|}}
+              <th class="center listcolor {{if day.today 'badge-orange' ''}}" rowspan="1" colspan="1" width="12.5%">{{day.day}}</th>
+              {{/each}}
+            </tr>
+            <tr role="row">
+              <th class=" listcolor" rowspan="1" colspan="1" width="12.5%">姓名</th>
+              {{#each weekList as |week|}}
+              <th class="center listcolor {{if week.today 'badge-orange' ''}}" rowspan="1" colspan="1" width="12.5%">{{week.week}}</th>
+              {{/each}}
+            </tr>
+          </thead>
+          {{#if detailEdit}}
+          {{#if schedulingList}}
+          <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+            {{#each schedulingList as |staff|}}
+            <tr>
+              <td class="ellipsis" >
+                <span class='staff'>
+                  {{ui/img-intergration name="avatarImg" imgSrc='assets/images/icon/personstaff.png'}}
+                </span>
+                <span>{{staff.name}}</span>
+              </td>
+              {{#each staff.dateList as |date|}}
+              <td  class="ellipsis center work-date {{if date.hasChoosed 'weak-color' ''}}"  style="position:relative;" {{action 'detaiDate' date staff on="click" bubbles=false}}>
+                <div  style="width:100%;height:100%;">
+                  {{#each date.workList as |work|}}
+                    {{#if work.hasSelected}}
+                      <div class="{{work.workTimeSetting.colorName}} work-name" >{{work.workTimeSetting.name}}</div>
+                    {{/if}}
+                  {{/each}}
+                  {{#if date.leaving}}
+                  <div class="leave-text">假</div>
+                  {{/if}}
+                </div>
+                {{#if detailWork}}
+                {{#if date.hasChoosed}}
+                <div  class="nopadding-left nopadding-right work-item" id="work-pop"
+                style="z-index:2;border:1px solid #ddd;position:absolute;display:flex;flex-wrap:wrap;top:35px;left:15px;width:172px;background-color:#ddd;border-radius:5px;">
+                  {{#each date.workList as |work index|}}
+                    <div class="center pull-left pointer {{if work.hasSelected 'choose-color' 'nochoose-color'}} choose-work"
+                    style="display:table;width:50px;height:40px;border-radius:5px;margin:3px;" {{action 'chooseWork' work date on="click" bubbles=false}}>
+                      <span style="display:table-cell;vertical-align:middle;">{{work.workTimeSetting.subName}}</span>
+                    </div>
+                  {{/each}}
+                  <span class="paiban_seperator" ></span>
+                  <span class='pull-right paiban-img pointer' {{action "quick" date staff on="click"}} style="display:inline-block;margin-right:15px;line-height:38px;margin-left:5px;">
+                    {{ui/img-intergration name="avatarImg" imgSrc='assets/images/icon/quick.png'}}
+                    {{bs-tooltip title="一键排班" class="light-tooltip"}}
+                  </span>
+                </div>
+                {{/if}}
+                {{/if}}
+              </td>
+              {{/each}}
+            </tr>
+            {{/each}}
+          </tbody>
+          {{/if}}
+          {{else}}
+          {{/if}}
+        </table>
+      </div>
+
+    </div>
+    <div class="text-center padding-top30">
+        <p class="text-center user-add-btn" style="display:inline-block;margin:0 auto!important ">
+        {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check"  text='保存' clickAction="show" show="show"}}
+        {{/ui/mix-button}}
+        {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply"  text='重置'  clickAction="detailCancel" detailCancel="detailCancel" }}
+        {{/ui/mix-button}}
+          <div class="pull-right user-add-btn bottom-func">
+            <div class="pointer pull-right text-underline" {{action "printImg" on="click"}}>
+              <i class="fa fa-print">
+              </i>
+              打印本页
+            </div>
+          </div>
+        </p>
+    </div>
+    <!--startprint-->
+    <div class="col-sm-12 hide">
+      {{copyWeek.text}}<span>排班计划</span>
+      <span style="float:right;">
+        <span><img style="height:12px;width:12px;" src="/assets/images/icon/leave.png"></span><span >:表示员工当日请假</span>
+      </span>
+
+    </div>
+    <table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="center hide datatable table table-bordered dataTable" aria-describedby="datatable1_info">
+      <thead >
+        <tr role="row">
+          <th class="center listcolor" rowspan="1" colspan="1" width="12.5%"></th>
+          {{#each dayList as |day|}}
+          <th class="center listcolo" rowspan="1" colspan="1" width="12.5%">{{day.day}}</th>
+          {{/each}}
+        </tr>
+        <tr role="row">
+          <th rowspan="1" colspan="1" width="12.5%">姓名</th>
+          {{#each weekList as |week|}}
+          <th class="center" rowspan="1" colspan="1" width="12.5%">{{week.week}}</th>
+          {{/each}}
+        </tr>
+      </thead>
+      <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+        {{#each schedulingList as |staff|}}
+        <tr>
+          <td class="ellipsis">
+            <span>{{staff.name}}</span>
+          </td>
+          {{#each staff.dateList as |date|}}
+          <td>
+            <div style="font-size:16px;">
+              {{#if date.leaving}}
+              <span class="leave-text"><img style="height:12px;width:12px;" src="/assets/images/icon/leave.png"></span>
+              {{/if}}
+              {{#if date.workAllName}}
+              {{date.workAllName}}
+              {{else}}
+              <span style="color:#fff;">&nbsp;</span>
+              {{/if}}
+            </div>
+          </td>
+          {{/each}}
+
+        </tr>
+        {{/each}}
+      </tbody>
+
+    </table>
+    <!--endprint-->
+  </div>
+  <!-- /BOX -->
+</div>
+{{#if editStaff}}
+{{#bs-modal body=false footer=false header=false closedAction=(action "exitStaff")}}
+{{#bs-modal-header}}
+   <h4 class="modal-title">设置排班人员</h4>
+ {{/bs-modal-header}}
+{{#bs-modal-body}}
+<div class="staff-box">
+  <div class=" col-sm-5 nopadding-left nopadding-right" style="margin-left:5px;border:1px solid #ddd;border-radius:5px;padding-top:5px;">
+    <div>护理组和未编组员工</div>
+    <div class="choose-box">
+      {{#each allStaffList as |staff|}}
+        {{#if staff.hasSelected}}
+        {{else}}
+        <div class="pointer" {{action 'chooseStaff' staff on="click"}}>
+          {{#if staff.group}}
+          <span style="color:red;font-size:13px;">组</span>
+          {{else}}
+          <span style="display:inline-block;width:13px;height:13px;"></span>
+          {{/if}}
+          <span>{{staff.name}}</span>
+        </div>
+        {{/if}}
+      {{/each}}
+    </div>
+  </div>
+  <div class="col-sm-1 nopadding-left nopadding-right" style="height:225px;padding-top:25px;font-size:40px;">
+    <div style="line-height:100px;"><i class="fa fa-long-arrow-right"></i></div>
+    <div style="line-height:100px;"><i class="fa fa-long-arrow-left"></i></div>
+  </div>
+  <div class=" col-sm-5 nopadding-left nopadding-right"style="margin-left:5px;border:1px solid #ddd;border-radius:3px;padding-top:5px;">
+    <div>已选护理组或员工</div>
+    <div class="choose-box">
+      {{#each chooseStaffs as |staff|}}
+        <div class="pointer" {{action 'chooseStaffBack' staff on="click"}}>
+          {{#if staff.group}}
+          <span style="color:red;font-size:13px;">组</span>
+          {{else}}
+          <span style="display:inline-block;width:13px;height:13px;"></span>
+          {{/if}}
+          <span>{{staff.name}}</span>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+</div>
+{{/bs-modal-body}}
+{{#bs-modal-footer class="user-add-btn"}}
+{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="come" come="come" }}
+{{/ui/mix-button}}
+{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消' clickAction="exitStaff" exitStaff="exitStaff"}}
+{{/ui/mix-button}}
+{{/bs-modal-footer}}
+{{/bs-modal}}
+{{/if}}
+
+
+
+
+
+
+
+
+{{staffLeaveList}}

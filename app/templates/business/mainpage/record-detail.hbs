@@ -1,0 +1,13 @@
+{{#ui/mobile/gestures-container}}
+  <div id="recordDetailContainer" class="mainContent border-top-1 {{if global_pageConstructure.showLoader 'hide' ''}}">
+  <div class="col-xs-12" style="margin-top:15px;font-size:16px;">{{fieldInfo.field.name}}:</div>
+  <div class="wrapperInner" style="top:35px;">
+      {{callbusi/mobile/record-detail fieldInfo=fieldInfo lastLevel=lastLevel toNextPage="toNextPage" saveValue="saveValue"}}
+  </div>
+  <div class="detail-dynamicsbtn" id="save-record-detail"  style="bottom:0px;margin-left:10px;width:95%;" {{action 'saveValue' fieldInfo on="tap"}}>
+    <span class="padding-left-10">保存</span>
+  </div>
+</div>
+{{/ui/mobile/gestures-container}}
+{{ui/container/infinite-scroll moniteData="template"
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

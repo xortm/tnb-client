@@ -1,0 +1,107 @@
+<div id="staffscheduleContainer" class="mainContent">
+  <div class="wrapperInner">
+
+    {{log "scheduleItemArray111 hbs" scheduleItemArray}}
+    {{#ui/mobile/gestures-container}}
+    {{#if hasScheduleFlag}}
+      <div class="height44 line-height-44 padding-left-10 bgcolor-white border-bottom-1">
+        <span class="font16 weight-bold">{{theMonth}}</span>
+        <span class="font12">月份没有排班</span>
+        <span class="pull-right right10"><a class="schedule_A" href="#" {{action 'lookSchedule' on="tap"}}>{{lookMonthSchedule}}</a></span>
+      </div>
+      <div class="border-top-1 top10 scheduleFathter">
+        {{#each scheduleItemArray as |staffschedule|}}
+          <div class="clear scheduleChange" id="{{staffschedule.id}}">
+            <div class="pull-left width18B padding-left-10">
+              <div class="color999999 padding-top5">
+                {{staffschedule.weekDay}}
+              </div>
+              <div class="colorCCC padding-top3">
+                {{month}}-{{staffschedule.dayStr}}
+              </div>
+            </div>
+            <div class="pull-left padding-12-10 width82B">
+              <img class="a-img" src="assets/images/mobile/nowork.png"/>
+              未排班
+            </div>
+
+          </div>
+        {{/each}}
+      </div>
+    {{else}}
+    <div class="height44 line-height-44 padding-left-10 bgcolor-white border-bottom-1" id="{{staffschedule.id}}">
+      <span class="font16 weight-bold">{{theMonth}}</span>
+      <span class="font12">月份上班{{workDays}}天，休息{{restDays}}天</span>
+      <span class="pull-right right10"><a  class="schedule_A" href="#" {{action 'lookSchedule' on="tap"}}>{{lookMonthSchedule}}</a></span>
+    </div>
+    <div class="border-top-1 top10 scheduleFathter">
+      {{#each scheduleItemArray as |staffschedule|}}
+        <div class="scheduleChange" id="{{staffschedule.id}}">
+          {{#if staffschedule.items}}
+            <div class="clear">
+
+                <div class="pull-left width18B padding-left-10">
+                  <div class="color999999 padding-top5">
+                    {{staffschedule.weekDay}}
+                  </div>
+                  <div class="colorCCC padding-top3">
+                    {{month}}-{{staffschedule.dayStr}}
+                  </div>
+                </div>
+              <div class="pull-left width82B">
+                <div class="pull-left padding-12-10 width18B">
+                  <img class="a-img" src="assets/images/mobile/workday.png"/>
+                </div>
+                <div class="pull-left width82B">
+                  {{#if (eq staffschedule.items.length 3)}}
+                    {{#each staffschedule.items as |item|}}
+                    <div class="pull-left padding-top3 padding-left-3">
+                      {{item.workTimeSetting.name}}
+                      ({{item.workTimeSetting.startTime}}-{{item.workTimeSetting.endTime}})
+                    </div>
+                    {{/each}}
+                  {{else if (eq staffschedule.items.length 2)}}
+                    {{#each staffschedule.items as |item|}}
+                    <div class="pull-left padding-12-3">
+                      {{item.workTimeSetting.name}}
+                      ({{item.workTimeSetting.startTime}}-{{item.workTimeSetting.endTime}})
+                    </div>
+                    {{/each}}
+                  {{else if (eq staffschedule.items.length 1)}}
+                      {{#each staffschedule.items as |item|}}
+                      <div class="pull-left padding-12-10 padding-left-3">
+                        {{item.workTimeSetting.name}}
+                        ({{item.workTimeSetting.startTime}}-{{item.workTimeSetting.endTime}})
+                      </div>
+                      {{/each}}
+                  {{/if}}
+                </div>
+              </div>
+            </div>
+          {{else}}
+            <div class="clear" id="{{staffschedule.id}}">
+              <div class="pull-left width18B padding-left-10">
+                <div class="color999999 padding-top5">
+                  {{staffschedule.weekDay}}
+                </div>
+                <div class="colorCCC padding-top3">
+                  {{month}}-{{staffschedule.dayStr}}
+                </div>
+              </div>
+
+              <div class="pull-left padding-12-10 width82B">
+                <img class="a-img" src="assets/images/mobile/nowork.png"/>
+                未排班
+              </div>
+            </div>
+          {{/if}}
+        </div>
+      {{/each}}
+    </div>
+    {{/if}}
+    {{/ui/mobile/gestures-container}}
+
+  </div>
+</div>
+{{ui/container/infinite-scroll moniteData="scheduleItemArraylist"
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

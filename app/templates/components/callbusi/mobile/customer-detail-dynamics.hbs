@@ -1,0 +1,79 @@
+
+<!-- <div class="top55 center">
+  {{#ui/icon-button iconClass="fa-plus font30"
+  data-toggle="tooltip"  title="添加"  data-placement="top" data-original-title="添加"
+  clickAction="addDynamics" clickActParams=customer.id addDynamics="addDynamics"}}
+  {{/ui/icon-button}}
+</div> -->
+{{#if showLoadingImg}}
+  <div class="customer-detail-healthposi top20">
+    <img class="width33" src="assets/images/logo/loading.gif" alt="">
+  </div>
+{{/if}}
+<div id="nursinglogContainer" class="mainContent top40  border-top-1">
+  <div class="wrapperInner">
+    {{#ui/mobile/gestures-container}}
+    <div class="top9 bgcolor-white">
+    {{log "nursinglogList hbs" nursinglogList}}
+    {{#each nursinglogList as |nursinglog|}}
+      <ul class="nopadding-left margin-0-10px border-bottom-1 height60 position-relative" id="nosinglog_{{nursinglog.id}}" {{action 'theEdit' nursinglog.id nursinglog.recordUser.id on='tap'}}>
+        <!-- <li class="center font-big color666">{{dynamics.title}}</li> -->
+        <li class="color365472 padding-top8 clear padding-bottom10">
+          <div class="pull-left">
+            {{#ui/img-intergration name="headImg"
+            imgSrc=nursinglog.recordUser.avatarUrl height=40 width=40}}
+            {{/ui/img-intergration}}
+            {{log "nursinglog.recordUser" nursinglog.recordUser}}
+            {{log "nursinglog.recordUser.avatarUrl" nursinglog.recordUser.avatarUrl}}
+          </div>
+          <ul class="pull-left padding-left-8">
+            <li class="font16 font-black">{{nursinglog.recordUser.name}}</li>
+            <li class="font12 color999999">{{nursinglog.recordUser.staffTel}}</li>
+          </ul>
+          {{log "nursinglogremarkHasApplyNum" nursinglog.remarkHasApplyNum}}
+
+          <div class="pull-right color999999">
+            <div class="">
+              {{nursinglog.recordTimeStringNMddhhmm}}
+            </div>
+          </div>
+        </li>
+
+        {{#if (eq nursinglog.remarkHasApplyNum 1)}}
+          <div class="position_absolute" style="bottom:0;right:30%;">
+            <img class="" width='60' src="assets/images/mobile/done.png" alt="">
+          </div>
+        {{else if (eq nursinglog.remarkHasApplyNum 2)}}
+          <div class="position_absolute" style="bottom:0;right:30%;">
+            <img class="" width='60' src="assets/images/mobile/followup.png" alt="">
+          </div>
+        {{else if (eq nursinglog.remarkHasApplyNum 3)}}
+          <div class="position_absolute" style="bottom:0;right:30%;">
+            <img class="" width='60' src="assets/images/mobile/summary.png" alt="">
+          </div>
+        {{else}}
+          <div class="position_absolute" style="bottom:0;right:30%;">
+            <img class="" width='60' src="assets/images/mobile/nothing.png" alt="">
+          </div>
+        {{/if}}
+
+        <!-- <li class="top10 padding-bottom10">{{nursinglog.remarkContent}}</li> -->
+      </ul>
+    {{/each}}
+    </div>
+
+
+    {{/ui/mobile/gestures-container}}
+
+  </div>
+
+</div>
+{{#ui/mobile/gestures-container}}
+<div class="detail-dynamicsbtn" id="detail_dynamicsbtn" {{action 'addDynamics' on="tap"}}>
+  <img class="bottom2" width='15' src="assets/images/mobile/add.png" alt="">
+  <span class="padding-left-10">添加</span>
+</div>
+{{/ui/mobile/gestures-container}}
+
+{{ui/container/infinite-scroll moniteData="nursinglogList"
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

@@ -1,0 +1,26 @@
+<div class="square-item-line">
+  <div class="pull-left">已选择护理项目：</div>
+  {{#each serviceList as |serviceItem|}}
+    {{#if serviceItem.selected}}
+    <div class="pull-left square-name">{{serviceItem.text}}</div>
+    {{/if}}
+  {{/each}}
+</div>
+<div class="square-item-line top16">
+  <div class="pull-left">按天服务项目：</div>
+  <div class="col-sm-8">
+  {{#each defaultServiceList as |serviceItem|}}
+  {{ui/selection-square text=serviceItem.text hasSelected=serviceItem.selected
+     itemSelect="serviceItemSelect" code=serviceItem.code}}
+  {{/each}}
+  </div>
+</div>
+<div class="square-item-line top16">
+  <div class="pull-left">按周服务项目：</div>
+  <div class="col-sm-8">
+  {{#each otherServiceList as |serviceItem|}}
+  {{ui/selection-square text=serviceItem.text hasSelected=serviceItem.selected
+     itemSelect="serviceItemSelect" code=serviceItem.code}}
+  {{/each}}
+  </div>
+</div>

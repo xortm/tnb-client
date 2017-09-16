@@ -1,0 +1,57 @@
+<div class="busi-info ">
+    {{#bs-form formLayout=formLayout model=systemModel action=(action "detailSaveClick") invalid=(action "invalid")}}
+        <div class="sign col-sm-12 nopadding-horizontal top8 bottom12">
+            <div class="pull-right user-add-btn nopadding-left ">
+                {{#if addMode}}
+                {{else}}
+                    {{#if detailModify}}
+                    {{else}}
+                    {{#ui/form-function editAction="detailModifyClick" detailModifyClick="detailModifyClick" removeAction="delById" delById="delById" }}
+                    {{/ui/form-function}}
+                    <!-- {{#ui/icon-button iconClass="fa-edit pull-right incon-button-font"
+                    data-toggle="tooltip"  title="编辑"  data-placement="top" data-original-title="编辑"
+                    clickAction="detailModifyClick" detailModifyClick="detailModifyClick"}}
+                    {{/ui/icon-button}} -->
+                    {{/if}}
+                {{/if}}
+            </div>
+        </div>
+        <div style="clear:both" />
+        <div class="line">
+            <div class="col-xs-12 col-sm-6 nopadding-left ">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon s">用户名：</span>
+                        <div class="font-light input-group-content">{{systemModel.loginName}}</div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">密码：</span>
+                    {{#if detailModify}}
+                    {{bs-form-element property="passcode" class="inline-block form-input-group label-normal" controlType="password" placeholder=""}}
+                    {{else}}
+                    <!-- <div class="font-light input-group-content">{{systemModel.passcode}}</div> -->
+                    {{#if systemModel.passcode}}
+                    <div class="font-light input-group-content">******</div>
+                    {{else}}
+                      <div class="font-light input-group-content"></div>
+                        {{/if}}
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+          <div class="text-center padding-top30 padding-bottom100">
+              <p class="text-center user-add-btn" style="display:inline-block;margin:0 auto!important ">
+                      {{#if detailModify}}
+                          {{#ui/mix-button class=" user-btn edit-btn " iconClass="fa-check" text='保存' }}
+                          {{/ui/mix-button}}
+                          {{#ui/mix-button class=" user-btn times-btn " iconClass="fa fa-mail-reply" text='取消' clickAction="cancelClick" cancelClick="cancelClick" }}
+                          {{/ui/mix-button}}
+                      {{else}}
+                      {{/if}}
+              </p>
+          </div>
+          </div>
+    {{/bs-form}}
+</div>

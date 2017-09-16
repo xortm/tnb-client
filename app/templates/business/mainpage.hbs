@@ -1,0 +1,256 @@
+{{#if global_curStatus.isMobile}}
+  {{#if global_pageConstructure.showLoader}}
+    <div class="mainpageLoading">
+      <img class="width33" src="assets/images/logo/loading.gif" alt="">
+    </div>
+  {{/if}}
+  {{#if isShowMobileShade}}
+    <div class="change-sex center" style="padding: 70% 5%;color: #fff;font-size:20px;" modaltype="">
+      {{mobileShadeMessage}}
+    </div>
+  {{/if}}
+  {{#each service_PageConstrut.routeList as |route|}}
+  <div name="routeArea" class="{{route.displayClass}}">
+    {{outlet route.routeName}}
+  </div>
+  {{/each}}
+{{else}}
+<header class="navbar clearfix" id="header">
+	<div class="container">
+			<div class="navbar-brand">
+				<img src="{{imgSrc}}" alt="天年宝产品" class="img-responsive">
+				<!-- <a href="#"  {{action "showPopTip" "相关记录已添加" on="click"}}>
+					<img src="assets/images/logo/logo.png" alt="天年宝产品" class="img-responsive">
+				</a> -->
+				<!-- /COMPANY LOGO -->
+				<!-- /TEAM STATUS FOR MOBILE -->
+				<!-- SIDEBAR COLLAPSE -->
+				<div id="sidebar-collapse" class="sidebar-collapse btn">
+					<i class="fa fa-bars"
+						data-icon1="fa fa-bars"
+						data-icon2="fa fa-bars" ></i>
+				</div>
+				<!-- /SIDEBAR COLLAPSE -->
+			</div>
+      <ul>
+        <li class="dropdown pull-left top16">
+
+        </li>
+      </ul>
+			<!-- /NAVBAR LEFT -->
+			<!-- BEGIN TOP NAVIGATION MENU -->
+			<ul class="nav navbar-nav pull-right">
+        <li class="dropdown user pull-right" id="header-user">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <div class="pull-left padding-right-5">
+            {{ui/img-intergration name="headImg" hasUploader=false
+              imgSrc=global_curStatus.curStatus.currentUser.avatarUrl height=28 width=28}}
+            </div>
+            <span class="username">{{global_curStatus.curStatus.currentUser.name}}</span>
+            <i class="fa fa-angle-down"></i>
+          </a>
+          <ul class="dropdown-menu">
+            {{ui/userinfo-menu text="修改密码" code="changePass" menuSelect="popChangePass" iconClass="el-lock"}}
+            {{ui/userinfo-menu text="退出登录" code="quitLogin" menuSelect="quit" iconClass="el-export"}}
+          </ul>
+        </li>
+
+        <!-- <li class="dropdown pull-right">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-cog"></i>
+            <span class="name">皮肤</span>
+            <i class="fa fa-angle-down"></i>
+          </a>
+          <ul class="dropdown-menu skins">
+            <li class="dropdown-title">
+              <span><i class="fa fa-leaf"></i>界面皮肤</span>
+            </li>
+            {{#each themes as | theme |}}
+            <li><a href="#" data-skin="default" {{action "changeTheme" theme.code on="click"}}>{{theme.titleWhole}}</a></li>
+            {{/each}}
+           </ul>
+        </li> -->
+
+			</ul>
+	</div>
+
+</header>
+<div id="main-content" class="{{unless media.isDesktop 'margin-left-0 top50' ''}}">
+	<div id="content" class="col-lg-12" >
+    <div class="row">
+    	<div class="col-sm-12">
+    		<div class="page-header clearfix">
+    			<ul class="breadcrumb pull-left">
+    				<li>
+    					<i class="fa fa-home"></i>
+              {{#if global_curStatus.isJujia}}
+                <a href="index.html?type=consumer&systype=2">首页</a>
+              {{else}}
+                <a href="index.html">首页</a>
+              {{/if}}
+    				</li>
+            {{#each breadCrumbsList as | item |}}
+              {{#if (eq item breadCrumbsList.lastObject)}}
+              <li>{{item.title}}</li>
+              {{else}}
+              <li><a href="javascript:void(0)" {{action "transPage" item}}>{{item.title}}</a></li>
+               {{/if}}
+            {{/each}}
+    			</ul>
+    			<!-- /BREADCRUMBS -->
+    			<div class="clearfix pull-right top16 right20">
+            {{#ui/icon-button iconClass="fa-refresh font-large color-brand" class="pull-right right8"
+            data-toggle="tooltip"  title="刷新"  data-placement="top" data-original-title="刷新"
+            clickAction="refreshPage" refreshPage="refreshPage" }}
+            {{/ui/icon-button}}
+    			</div>
+    		</div>
+    	</div>
+    </div>
+		{{outlet}}
+	</div>
+  <div id="pop-tip" class="pop-tip"></div>
+  <div id="sim-pop" class="sim-pop"></div>
+</div>
+
+<!-- 修改密码弹层 -->
+{{#if showPopPasschangeModal}}
+{{#bs-modal body=false footer=false header=false closedAction=(action "cancelPassSubmit")}}
+{{#bs-modal-header}}
+<h4 class="modal-title">修改密码</h4>
+{{/bs-modal-header}}
+{{#bs-modal-body}}
+  <div class="row">
+    <div class="col-sm-12">
+      <label for="password" class="col-sm-3 col-sm-offset-1 control-label top5"><strong>旧密码:</strong></label>
+      <div class="col-sm-6">
+        {{input type="password" class="form-control" id="password" value=password focus-in="changeInfo" placeholder="请输入旧密码"}}
+      </div>
+    </div>
+    <div class="col-sm-12 top10">
+      <label for="newPass" class="col-sm-3 col-sm-offset-1 control-label top5"><strong>新密码:</strong></label>
+      <div class="col-sm-6">
+        {{input type="password" class="form-control" id="newPass" value=newPass focus-in="changeInfo" placeholder="请输入6位以上字符"}}
+      </div>
+    </div>
+    <div class="col-sm-12 top10">
+      <label for="confirmPass" class="col-sm-3 col-sm-offset-1 control-label top5"><strong>新密码确认:</strong></label>
+      <div class="col-sm-6">
+        {{input type="password" class="form-control" id="confirmPass" value=confirmPass focus-in="changeInfo" placeholder="请再次输入新密码"}}
+        <div class="{{if resetSuccess 'text-success' 'text-danger'}} left4 top2">{{responseInfo}}</div>
+      </div>
+    </div>
+  </div>
+  {{/bs-modal-body}}
+{{#bs-modal-footer class="user-add-btn"}}
+  {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="changePassSubmit" changePassSubmit="changePassSubmit" }}
+  {{/ui/mix-button}}
+  {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="cancelPassSubmit" cancelPassSubmit="cancelPassSubmit" }}
+  {{/ui/mix-button}}
+{{/bs-modal-footer}}
+{{/bs-modal}}
+{{/if}}
+<!-- 通用提示弹层 -->
+<!-- {{#if showDialogModal}}
+{{#bs-modal body=false footer=false header=false}}
+  {{#bs-modal-body}}
+    <div class="row msgbar">
+      {{dialogMessage}}
+    </div>
+    <div class="row funcbar user-add-btn">
+      {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="confirmDialog" confirmDialog="confirmDialog"}}
+      {{/ui/mix-button}}
+      {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="closeDialog" closeDialog="closeDialog"}}
+      {{/ui/mix-button}}
+    </div>
+  {{/bs-modal-body}}
+{{/bs-modal}}
+{{/if}} -->
+{{#if showDialogModal}}
+{{#bs-modal body=false footer=false header=false closedAction=(action "closeDialog")}}
+  {{#bs-modal-header}}
+    <h3 class="modal-title">确认窗口</h3>
+  {{/bs-modal-header}}
+  {{#bs-modal-body}}
+  <div class="row">
+    <div class="col-sm-12 center" style="font-size:24px;">
+      {{dialogMessage}}
+    </div>
+  </div>
+  {{/bs-modal-body}}
+  {{#bs-modal-footer class="user-add-btn"}}
+    {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="confirmDialog" confirmDialog="confirmDialog"}}
+    {{/ui/mix-button}}
+    {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="closeDialog" closeDialog="closeDialog"}}
+    {{/ui/mix-button}}
+  {{/bs-modal-footer}}
+{{/bs-modal}}
+{{/if}}
+<!--alert弹层-->
+{{#if showAlertModal}}
+{{#bs-modal body=false footer=false header=false closedAction=(action "closeAlert")}}
+  {{#bs-modal-header}}
+    <h3 class="modal-title">提示窗口</h3>
+  {{/bs-modal-header}}
+  {{#bs-modal-body}}
+  <div class="row">
+    <div class="col-sm-12 center" style="font-size:24px;">
+      {{alertMessage}}
+    </div>
+  </div>
+  {{/bs-modal-body}}
+  {{#bs-modal-footer class="user-add-btn alert-modal"}}
+    {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="closeAlert" closeAlert="closeAlert"}}
+    {{/ui/mix-button}}
+  {{/bs-modal-footer}}
+{{/bs-modal}}
+{{/if}}
+<!-- 图片编辑弹层 -->
+{{#if showImageCropper}}
+{{#bs-modal body=false footer=false header=false openedAction=(action "imageCropperOpened") closedAction=(action "cancelImageCropper")}}
+{{#bs-modal-header}}
+<h4 class="modal-title">图片上传</h4>
+{{/bs-modal-header}}
+{{#bs-modal-body}}
+<div class="row">
+  <div class="col-sm-12 left60 font16">
+    请选择图片，并对图片进行编辑,取得合适的大小。
+  </div>
+  <div class="col-sm-12 top16">
+    <div class="col-sm-1 transparent">.</div>
+    <div id="image-cropper" class="col-sm-7">
+        <div class="cropit-preview"></div>
+        <input type="file" name="imgUpFile" class="cropit-image-input" accept="image/png, image/jpeg, image/gif"/>
+        <div class="controls-wrapper">
+          <div class="rotation-btns">
+            <i class="fa-rotate-left" title="左翻转"></i>
+            &nbsp;&nbsp;
+            <i class="fa-repeat" title="右翻转">
+            </i>
+          </div>
+          <div class="slider-wrapper">
+            <i class="fa-file-image-o"></i>
+            &nbsp;
+            <input type="range" class="cropit-image-zoom-input custom" min="0" max="1" step="0.01">
+            <!-- {{input type="range" class="cropit-image-zoom-input custom" min="0" max="1" value=rangeValue step="0.1"}} -->
+            &nbsp;
+            <i class="fa-file-image-o font-bigger"></i>
+          </div>
+        </div>
+    </div>
+    <div class="col-sm-4 top40 user-add-btn">
+      {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-file-photo-o"  text='选择图片文件'
+        clickAction="chooseImage" chooseImage="chooseImage"}}
+      {{/ui/mix-button}}
+      <div class="divide-40 clear"></div>
+      {{#ui/mix-button class="user-btn trash-btn" iconClass="fa fa-check"  text='使用这个图片'
+        clickAction="cropImgOk" cropImgOk="cropImgOk"}}
+      {{/ui/mix-button}}
+    </div>
+  </div>
+</div>
+{{/bs-modal-body}}
+{{/bs-modal}}
+{{/if}}
+
+{{/if}}

@@ -1,0 +1,16 @@
+<div id="scoreQuestionCustomerContainer" class="mainContent {{if global_pageConstructure.showLoader 'hide' ''}}">
+  <div class="wrapperInner">
+  {{#ui/mobile/gestures-container}}
+    <div class="col-xs-middle time-content nopadding-horizontal width100B clearfix position-relative">
+      {{log "customerItem in hbs:" customerItem}}
+      {{#each customerItem.services as |service|}}
+      {{log "service in hbs:" service}}
+        {{#callbusi/mobile/score-item scoreQusetionitem=service hasReadyFlag=service.hasReady}}
+        {{/callbusi/mobile/score-item}}
+      {{/each}}
+    </div>
+  {{/ui/mobile/gestures-container}}
+  </div>
+</div>
+{{ui/container/infinite-scroll moniteData=""
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

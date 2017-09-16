@@ -1,0 +1,83 @@
+<div class="col-sm-12 panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">相关联系历史</h3>
+    <div class="panel-options">
+      <a href="#" data-toggle="panel" class="no-decoration">
+        <span class="expand-icon">
+          {{#ui/icon-button iconClass="fa-angle-double-down"
+          title="展开" data-original-title="展开"}}
+          {{/ui/icon-button}}
+        </span>
+        <span class="collapse-icon">
+          {{#ui/icon-button iconClass="fa-angle-double-up"
+          title="收起" data-original-title="收起"}}
+          {{/ui/icon-button}}
+        </span>
+      </a>
+    </div>
+  </div>
+  <div class="panel-body">
+    {{#if calls}}
+    <table class="table responsive">
+      <thead>
+        <tr>
+          <th>类型</th>
+          <th>开始时间</th>
+          <th>结束时间</th>
+          <th>处理坐席</th>
+          <th>通话状态</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each calls as |call|}}
+        <tr>
+          {{#if call.isCallin}}
+          <td><img src="assets/images/callin.png" width="25" alt=""/></td>
+          {{else}}
+          <td><img src="assets/images/callout.png" width="25" alt=""/></td>
+          {{/if}}
+          <td class="text-muted">{{call.beginTimeStr}}</td>
+          <td class="text-muted">{{call.endTimeStr}}</td>
+          <td class="text-muted">{{csUser}}</td>
+          <td class="text-muted">{{call.status.typename}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    {{else}}
+    <div class="text-muted">暂无相关联系历史</div>
+    {{/if}}
+  </div>
+</div>
+
+
+<!-- <div class="col-sm-12 bgcolor-w padding20">
+  <strong>相关联系历史</strong>
+  <table class="table responsive">
+    <thead>
+      <tr>
+        <th>类型</th>
+        <th>开始时间</th>
+        <th>结束时间</th>
+        <th>处理坐席</th>
+        <th>通话状态</th>
+      </tr>
+    </thead>
+
+    <tbody>
+        {{#each calls as |call|}}
+        <tr>
+          {{#if call.isCallin}}
+          <td><img src="assets/images/callin.png" width="25" alt=""/></td>
+          {{else}}
+          <td><img src="assets/images/callout.png" width="25" alt=""/></td>
+          {{/if}}
+          <td class="text-muted">{{call.beginTimeStr}}</td>
+          <td class="text-muted">{{call.endTimeStr}}</td>
+          <td class="text-muted">{{csUser}}</td>
+          <td class="text-muted">{{call.status.typename}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+  </table>
+</div> -->

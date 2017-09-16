@@ -1,0 +1,27 @@
+<div itemId="{{item.id}}" name="listContainer" class="contentArea contentAreaList width100B">
+  {{#if (eq item.flag.typecode constants.hbeaconWarningCancelByHand)}}
+  <div class="finish-tag" style="right:-63px;font-size:12px;">已处理</div>
+  {{/if}}
+  <div class="col-xs-middle time-content nopadding-horizontal width100B clearfix position-relative" id="item_{{item.id}}" {{action "gotoDetail" on="tap"}}>
+    <div class="title pull-left" style="width:110px;">
+      <div class="time-label color2FA7FD" style="font-size:14px;">{{item.createDateTimeShortString}}</div>
+      <div class="task-title extend font12">{{item.reason}}</div>
+    </div>
+    <div class="item-split"></div>
+    <div class="content clearfix padding-left-114 width100B position_absolute" style="float:none;">
+      {{#if (eq item.flag.typecode constants.hbeaconWarningCancelByHand)}}
+        <div class="user-info font16" style="margin-top:0;">{{item.caller.name}} <span class="font12 color999999">{{item.bed.roomBedName}}</span></div>
+        <div class="detail extend color999999">处理人:{{item.operater.name}}</div>
+        <div class="detail extend color999999">处理时间:{{item.operateTimeShortString}}</div>
+        <div class="detail extend color999999">备注信息:{{item.operateNote}}</div>
+      {{else if (eq item.flag.typecode constants.hbeaconWarningCancelBySys)}}
+        <div class="user-info font16" style="margin-top:0;">{{item.caller.name}} <span class="font12 color999999">{{item.bed.roomBedName}}</span></div>
+        <div class="detail extend color999999">处理状态:{{item.flag.typename}}</div>
+        <div class="detail extend color999999">复位时间:{{item.cancelTimeShortString}}</div>
+      {{else}}
+        <div class="user-info font16">{{item.caller.name}} <span class="font12 color999999">{{item.bed.roomBedName}}</span></div>
+        <div class="detail extend color999999">处理状态:{{item.flag.typename}}</div>
+      {{/if}}
+    </div>
+  </div>
+</div>

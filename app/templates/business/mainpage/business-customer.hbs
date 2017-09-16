@@ -1,0 +1,194 @@
+<div class="col-sm-12">
+    <!-- BOX -->
+    <div class="box">
+        <div class="box-body">
+            <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+                <div class="row">
+                    <div class="col-sm-6 nopadding-right">
+                        <!--搜索-->
+                        <div class="col-sm-4 nopadding-left">
+                            <div class="input-group">
+                                {{input class="form-control" type="text" placeholder="搜索姓名/联系电话" value=queryCondition enter="search"}}
+                                <span class="input-group-btn">
+        		      <button class="btn btn-primary btn-reduce" type="button" style="touch-action: manipulation; -ms-touch-action: manipulation;" {{action "search" on="click"}}>
+                    <i class="fa fa-search"></i>
+                  </button>
+      	        </span>
+                            </div>
+                        </div>
+              <div class="col-sm-6 nopadding-left pull-left nopadding-right">
+                 {{callbusi/time-search class="inline-block" text='预定日期' dateShow=dateShow chooseDate=chooseDate search="search"
+                 submmit="submmit" emptied='emptied' changeBeginDateAction='changeBeginDateAction' changeEndDateAction='changeEndDateAction'}}
+              </div>
+                </div>
+                <div class="col-sm-2 nopadding-left nopadding-right " style="line-height:30px;font-size:13px;">
+                    <i class="pointer {{if queryScheduled 'fa-dot-circle-o' 'fa-circle-o'}}" {{action 'queryScheduled' on='click'}}><span>已预定</span></i>
+                    <i class="pointer {{if queryAll 'fa-dot-circle-o' 'fa-circle-o'}}" {{action 'queryAll' on='click'}}><span>全部</span></i>
+                </div>
+                <div class="user-add-btn col-sm-2 nopadding-right nopadding-left">
+                    {{#ui/mix-button class="user-btn pull-right" iconClass="fa-plus" text='新增预定信息' clickAction="toDetailPage" toDetailPage="toDetailPage" }}
+                    {{/ui/mix-button}}
+                </div>
+                <div class="user-add-btn col-sm-2 nopadding-right nopadding-left">
+                    {{#ui/mix-button class="user-btn pull-right" iconClass="fa-plus" text='咨询转预定' clickAction="consultation" consultation="consultation" }}
+                    {{/ui/mix-button}}
+                </div>
+            </div>
+            <table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+                <thead>
+                    <tr role="row">
+                        <th rowspan="1" colspan="1" width="">老人姓名</th>
+                        <th rowspan="1" colspan="1" width="">电话</th>
+                        <th rowspan="1" colspan="1" width="">床位信息</th>
+                        <th rowspan="1" colspan="1" width="">经办人</th>
+                        <th rowspan="1" colspan="1" width="">预定日期</th>
+                        <th rowspan="1" colspan="1" width="">办理状态</th>
+                        <th rowspan="1" colspan="1" width="">操作</th>
+                    </tr>
+                </thead>
+                {{#if flowList}}
+                <tbody>
+                    {{#each flowList as |flow|}}
+                        <tr>
+                            <td {{action "toDetail" flow on="click"}}>{{flow.customer.name}}</td>
+                            <td {{action "toDetail" flow on="click"}}>{{flow.telphone}}</td>
+                            <td {{action "toDetail" flow on="click"}}>{{flow.orderBed.room.allName}}-{{flow.orderBed.name}}</td>
+                            <td {{action "toDetail" flow on="click"}}>{{flow.staff.name}}</td>
+                            <th rowspan="1" colspan="1" width="" {{action "toDetail" flow on="click"}}>{{flow.orderDateTimeString}}</th>
+                            <td {{action "toDetail" flow on="click"}}>{{flow.orderType}}</td>
+                            <td>
+                              {{#if flow.couldCancel}}
+                              <a {{action "delDetail" flow on="click" bubbles=false}}>取消预定</a>
+                              {{/if}}
+                            </td>
+                        </tr>
+                    {{/each}}
+                </tbody>
+                {{else}}
+                <div class="nodate">暂无数据</div>
+                {{/if}}
+            </table>
+            {{#if flowList }}
+                {{page-numbers content=flowList showFL=true numPagesToShow=5 exportAllExcel="exportToAllExcel" exportAll=exportAll}}
+            {{else}}
+                <h1 class="col-sm-12 center unTask"></h1>
+            {{/if}}
+        </div>
+    </div>
+    <table id="datatable1" cellpadding="0" cellspacing="0" border="0" style='visibility: collapse;position: absolute;z-index: -999;' class="export-block datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+        <thead>
+            <tr role="row">
+                <th rowspan="1" colspan="1" width="">老人姓名</th>
+                <th rowspan="1" colspan="1" width="">电话</th>
+                <th rowspan="1" colspan="1" width="">床位信息</th>
+                <th rowspan="1" colspan="1" width="">经办人</th>
+                <th rowspan="1" colspan="1" width="">预定日期</th>
+                <th rowspan="1" colspan="1" width="">办理状态</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each exportList as |flow|}}
+                <tr>
+                    <td {{action "toDetail" flow on="click"}}>{{flow.customer.name}}</td>
+                    <td {{action "toDetail" flow on="click"}}>{{flow.telphone}}</td>
+                    <td {{action "toDetail" flow on="click"}}>{{flow.orderBed.room.allName}}-{{flow.orderBed.name}}</td>
+                    <td {{action "toDetail" flow on="click"}}>{{flow.staff.name}}</td>
+                    <th rowspan="1" colspan="1" width="" {{action "toDetail" flow on="click"}}>{{flow.orderDateTimeString}}</th>
+                    <td {{action "toDetail" flow on="click"}}>{{flow.status.typename}}</td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+<!-- /BOX -->
+</div>
+
+{{#if toScheduled}}
+{{#bs-modal body=false footer=false header=false closedAction="noScheduled" size='lg'}}
+  {{#bs-modal-header}}
+    <h3 class="modal-title">咨询转预定</h3>
+  {{/bs-modal-header}}
+  {{#bs-modal-body}}
+  <div class="">
+    <div class="box" style="max-height:500px;overflow-y:auto;">
+      <div class="box-body">
+      <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+        <div class="row">
+          <!--搜索-->
+          <!-- 条件搜索 -->
+          <div class="col-sm-6 ">
+            <div class="pull-left">
+              <div class="input-group bottom8">
+                {{input class="form-control" type="text" placeholder="搜索姓名/电话" value=consult enter="searchConsult"}}
+                <span class="input-group-btn">
+                  <button class="btn btn-primary btn-reduce" type="button" style="touch-action: manipulation; -ms-touch-action: manipulation;" {{action "searchConsult" on="click"}}>
+                    <i class="fa fa-search"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+            <!--搜索-->
+          </div>
+          <!--搜索-->
+        </div>
+        <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable mt15" aria-describedby="datatable1_info">
+          <thead>
+            <tr role="row">
+              <th rowspan="1" colspan="1" width="">咨询人姓名</th>
+              <th rowspan="1" colspan="1" width="">联系电话</th>
+              <th rowspan="1" colspan="1" class="" width="">咨询日期</th>
+              <th rowspan="1" colspan="1" width="">接待人</th>
+              <th class="center" rowspan="1" colspan="1" class="" width="">操作</th>
+            </tr>
+          </thead>
+          {{#if consultList}}
+        <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+            {{#each consultList as |consult|}}
+            <tr class="gradeA odd">
+              <td class=" ellipsis sorting_1">{{consult.advName}}</td>
+              <td class=" ellipsis " >{{consult.advTel}}</td>
+              <td class="ellipsis">{{consult.advDateString}}</td>
+              <td class=" ellipsis">{{consult.receiveStaff.name}}</td>
+              {{#if consult.computedStatus}}
+              <td class=""></td>
+              {{else}}
+              <td class=""><a style="text-decoration: underline;margin-right: 5px;" {{action "jumpAdvance" consult on="click"}}>咨询转预定</a></td>
+              {{/if}}
+            </tr>
+            {{/each}}
+         </tbody>
+         {{else}}
+         <div class="nodate">暂无数据</div>
+         {{/if}}
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- /BOX -->
+  </div>
+
+  {{/bs-modal-body}}
+{{/bs-modal}}
+{{/if}}
+
+{{#if delModel}}
+{{#bs-modal body=false footer=false header=false closedAction="invitation"}}
+  {{#bs-modal-header}}
+    <h3 class="modal-title">取消预定</h3>
+  {{/bs-modal-header}}
+  {{#bs-modal-body}}
+  <div class="col-xs-12 col-sm-12">
+    <div class="form-input-group">
+      <span class="input-group-addon">退订原因：</span>
+      {{textarea type="text" class="full-width inline-block form-input-group label-normal form-control" value=curFlow.cancelRemark}}
+    </div>
+  </div>
+  {{/bs-modal-body}}
+  {{#bs-modal-footer class="user-add-btn"}}
+    {{#ui/mix-button class="user-btn edit-btn" id="saveQuestion" iconClass="fa fa-save"  text='确定' clickAction="cancelPassSubmit" cancelPassSubmit="cancelPassSubmit"}}
+    {{/ui/mix-button}}
+    {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="invitation" invitation="invitation"}}
+    {{/ui/mix-button}}
+  {{/bs-modal-footer}}
+{{/bs-modal}}
+{{/if}}

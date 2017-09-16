@@ -1,0 +1,189 @@
+
+<div class="col-sm-12">
+	<div class="box margin-middle max-width">
+		<!-- BOX-BODY -->
+		<div class="box-body">
+				{{#bs-form formLayout=formLayout model=customerflowdModel invalid=(action "invalid")}}
+			<div class="row">
+				<div class="col-xs-12">
+					<p class="user-add-btn">
+						{{#if lookDetail}}
+							{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply"  text='返回'
+							clickAction="detailCancel" detailCancel="detailCancel" }}
+							{{/ui/mix-button}}
+						{{else}}
+							{{#if detailEdit}}
+							{{else}}
+								{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply"  text='返回'
+								clickAction="detailCancel" detailCancel="detailCancel" }}
+								{{/ui/mix-button}}
+								{{#ui/form-function editAction="detailEditClick" detailEditClick="detailEditClick"
+								editClickParams=customerflow deleteNone=true}}
+								{{/ui/form-function}}
+							{{/if}}
+						{{/if}}
+					</p>
+				</div>
+				<!-- 列表详细介绍 -->
+				<div class="col-xs-12 nopadding-left">
+					<div class="col-xs-12 nopadding-horizontal mt20">
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+							<span class="input-group-addon">老人姓名：</span>
+              {{#if detailEdit}}
+                {{#bs-form-element class="inline-block form-input-group" placeholder='老人姓名(必填)' controlType="customer"  property="customer" }}
+                  {{#power-select class="input-group-content" placeholder='老人姓名(必填)' options=customerList  selected=defaultOldName searchField="namePinyin"
+                  noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "selectOldman" ) as |name|}}
+                    {{name.name}}
+                  {{/power-select}}
+                {{/bs-form-element}}
+              {{else}}
+              <div class="input-group-content">{{customerflow.customer.name}}</div>
+              {{/if}}
+							</div>
+						</div>
+
+            <div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+							<span class="input-group-addon">身份证号：</span>
+              	<div class="input-group-content">
+									{{#if customerflow.customer.cardCode}}
+										{{customerflow.customer.cardCode}}
+									{{else}}
+										会自动关联选择老人身份信息
+									{{/if}}
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">床位信息：</span>
+                  <div class="input-group-content">
+										{{#if customerflow.customer.bed.name}}
+											{{customerflow.customer.bed.buildingFloorName}}:{{customerflow.customer.bed.roomBedName}}
+										{{else}}
+											会自动关联选择老人床位信息
+										{{/if}}
+									</div>
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+							<span class="input-group-addon">登&nbsp;&nbsp;记&nbsp;&nbsp;人：</span>
+              {{#if detailEdit}}
+              {{#bs-form-element class="inline-block form-input-group" controlType="leaveStaff"  property="leaveStaff" }}
+                {{#power-select class="input-group-content" placeholder='登记人(必填)' options=userList  selected=defaultName searchField="namePinyin"
+                noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "selectName" ) as |name|}}
+                  {{name.name}}
+                {{/power-select}}
+                {{/bs-form-element}}
+                {{else}}
+									<div class="input-group-content">{{customerflow.leaveStaff.name}}</div>
+								{{/if}}
+							</div>
+
+						</div>
+
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+							<span class="input-group-addon">登记日期：</span>
+							{{#if lookDetail}}
+								<div class="input-group-content">{{customerflowdModel.leaveRecordDateString}}</div>
+							{{else}}
+								{{#if detailEdit}}
+								{{#bs-form-element class="inline-block form-input-group" controlType="leaveRecordDate"  property="leaveRecordDate" }}
+										{{ui/addon/bs-datetimepicker date=customerflowdModel.theLeaveRecordDate  placeholder='登记日期(必填)' minDate=theToday
+										locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD' value=customerflowdModel.leaveRecordDate
+										show="dpShowAction" change="changeAction" }}
+									{{/bs-form-element}}
+									{{else}}
+									<div class="input-group-content">{{customerflowdModel.leaveRecordDateString}}</div>
+								{{/if}}
+							{{/if}}
+							</div>
+
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+							<span class="input-group-addon">退住日期：</span>
+							{{#if lookDetail}}
+								<div class="input-group-content">{{customerflowdModel.leaveDateString}}</div>
+							{{else}}
+								{{#if detailEdit}}
+									{{#bs-form-element class="inline-block form-input-group" controlType="leaveDate"   property="leaveDate" }}
+						      {{ui/addon/bs-datetimepicker date=customerflowdModel.theLeaveDate placeholder='退住日期(必填)' minDate=theToday
+		              locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD' value=customerflowdModel.leaveDate
+		               show="dpShowAction" change="changeLeaveAction" }}
+									 {{/bs-form-element}}
+								{{else}}
+									<div class="input-group-content">{{customerflowdModel.leaveDateString}}</div>
+							 	{{/if}}
+							{{/if}}
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+							<span class="input-group-addon">退住原因：</span>
+							{{#if lookDetail}}
+								<div class="input-group-content">{{customerflowdModel.leaveReason.typename}}</div>
+							{{else}}
+								{{#if detailEdit}}
+									{{#bs-form-element class="inline-block form-input-group" controlType="leaveReason"   property="leaveReason" }}
+									{{callbusi/dict-selector class="inline-block" curDict=customerflowdModel.leaveReason groupCode=constants.leaveReason
+										showName="老人的退住原因(必填)" value=customerflowdModel.leaveReason preselected=false}}
+									 {{/bs-form-element}}
+								{{else}}
+									<div class="input-group-content">{{customerflowdModel.leaveReason.typename}}</div>
+							 	{{/if}}
+							{{/if}}
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-12">
+							<div class="form-input-group">
+								<span class="input-group-addon">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：</span>
+								{{#if lookDetail}}
+									<div class="input-group-content">{{customerflow.leaveRemark}}</div>
+								{{else}}
+									{{#if detailEdit}}
+										{{textarea type="text" class="full-width inline-block form-input-group
+		                 label-normal form-control" value=customerflow.leaveRemark placeholder='备注'}}
+									{{else}}
+										<div class="input-group-content">{{customerflow.leaveRemark}}</div>
+									{{/if}}
+								{{/if}}
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+				<!-- 列表详细介绍 -->
+				<div class="center">
+					<p class="text-center user-add-btn padding-top30 inlineBlock margin0auto">
+					{{#if lookDetail}}
+					{{else}}
+						{{#if detailEdit}}
+							{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check"  text='保存'
+							clickAction="detailSaveClick" detailSaveClick="detailSaveClick" clickActParams=customerflow}}
+							{{/ui/mix-button}}
+							{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply"  text='取消'
+							clickAction="detailCancel" detailCancel="detailCancel" }}
+							{{/ui/mix-button}}
+						{{/if}}
+					{{/if}}
+					</p>
+				</div>
+
+
+			</div>
+{{/bs-form}}
+
+		</div>
+		<!-- /BOX-BODY -->
+	</div>
+</div>

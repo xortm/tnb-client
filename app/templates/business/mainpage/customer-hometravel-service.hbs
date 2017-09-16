@@ -1,0 +1,142 @@
+{{#if global_curStatus.isMobile}}
+<!--手机端-->
+<div id="taskSquareContainer" class="mainContent">
+  <div class="wrapperInner">
+    <div class="line-item-task user-list clearfix" {{action "goDetail" on="click"}}>
+      <div class="pull-left nopadding-horizontal nopadding-vertical imgArea">
+        <img src="assets/images/avatars/old3.jpg"/>
+        <p class="top10">刘丽娜</p>
+      </div>
+      <div class="contentArea">
+        <div class="col-xs-12">
+          <div class="title">A-301-5床</div>
+          <p class="clearfix workers">
+            <i class="fa fa-female pull-left"></i>
+            <span class="pull-left">韩梅梅</span>
+          </p>
+          <div class="content">
+            <p class="clearfix top4">
+              <span class="pull-left">年龄：</span>
+              <span class="pull-left">87</span>
+            </p>
+            <p class="clearfix top4">
+              <span class="pull-left">入住时间：</span>
+              <span class="pull-left">2015-08-08</span>
+            </p>
+            <p class="clearfix top4 health ellipsis">
+              <span>近期身体状况：</span>
+              <span>正常</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="line-item-task user-list clearfix">
+      <div class="pull-left nopadding-horizontal nopadding-vertical imgArea">
+        <img src="assets/images/avatars/1404011051fca2ad42797b7068.jpg"/>
+        <p class="top10">李娜</p>
+      </div>
+      <div class="contentArea">
+        <div class="col-xs-12">
+          <div class="title">A-301-5床</div>
+          <p class="clearfix workers">
+            <i class="fa fa-female pull-left"></i>
+            <span class="pull-left">护工三11</span>
+          </p>
+          <div class="content">
+            <p class="clearfix top4">
+              <span class="pull-left">年龄：</span>
+              <span class="pull-left">87</span>
+            </p>
+            <p class="clearfix top4">
+              <span class="pull-left">入住时间：</span>
+              <span class="pull-left">2015-08-08</span>
+            </p>
+            <p class="clearfix top4 health ellipsis">
+              <span>近期身体状况：</span>
+              <span>正常</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="line-item-task user-list clearfix">
+      <div class="pull-left nopadding-horizontal nopadding-vertical imgArea">
+        <img src="assets/images/avatars/3379861_122508002258_2.jpg"/>
+        <p class="top10">王贵福</p>
+      </div>
+      <div class="contentArea">
+        <div class="col-xs-12">
+          <div class="title">A-301-5床</div>
+          <p class="clearfix workers">
+            <i class="fa fa-female pull-left"></i>
+            <span class="pull-left">护工三11</span>
+          </p>
+          <div class="content">
+            <p class="clearfix top4">
+              <span class="pull-left">年龄：</span>
+              <span class="pull-left">87</span>
+            </p>
+            <p class="clearfix top4">
+              <span class="pull-left">入住时间：</span>
+              <span class="pull-left">2015-08-08</span>
+            </p>
+            <p class="clearfix top4  health ellipsis">
+              <span>近期身体状况：</span>
+              <span>血压偏高</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{{else}}
+<!--pc端-->
+<div class="col-sm-12">
+  <div class="box">
+  	<!-- BOX-BODY -->
+  	<div class="box-body">
+      <div class="row clearfix" style="margin-bottom:15px">
+        <div class="col-sm-4">
+          <div class="pull-left">
+            <div class="input-group bottom8">
+              {{input class="form-control" type="text" placeholder="搜索姓名/床位号" value=queryCondition enter="search"}}
+              <!-- <input class="form-control" type="text" placeholder="搜索姓名/房间号/护工姓名"> -->
+              <span class="input-group-btn">
+                <button class="btn btn-primary btn-reduce" type="button" style="touch-action: manipulation; -ms-touch-action: manipulation;" {{action "search" on="click"}}>
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+          </div>
+          <!--搜索-->
+        </div>
+        <div class="user-add-btn col-sm-3 pull-right nopadding-right" >
+          {{#ui/mix-button class=" user-btn pull-right" iconClass="fa-plus"  text='添加新用户'  clickAction="toAddPage" toAddPage="toAddPage"}}
+          {{/ui/mix-button}}
+          <!-- <a id="uploadExcel" class="btn btn-icon btn-turquoise btn-xs pull-right" {{action "toAddPage" on="click"}}>
+            <i class="el-plus"></i>
+            添加新用户
+          </a> -->
+        </div>
+      </div>
+      <div class="clearfix">
+        <div class="row">
+        {{#each cusList  as |customer|}}
+          {{callbusi/customer-list-item customer=customer goDetail="goDetail"}}
+        {{/each}}
+      </div>
+      </div>
+      {{#if cusList }}
+          {{page-numbers content=cusList showFL=true numPagesToShow=12}}
+      {{else}}
+          <h1 class="col-sm-12 center unTask"></h1>
+      {{/if}}
+    </div>
+  </div>
+</div>
+{{/if}}

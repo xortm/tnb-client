@@ -1,0 +1,50 @@
+<div class="col-sm-12">
+  <div class="box">
+    <div class="box-body">
+    <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+    	<div class="row">
+        <!--搜索-->
+        <div class="col-sm-9 nopadding-left">
+          </div>
+          <div class="user-add-btn col-sm-3 pull-right nopadding-right">
+            {{#ui/mix-button class=" user-btn pull-right" iconClass="fa-plus"  text='新增活动计划'  clickAction="toDetailPage" toDetailPage="toDetailPage" style="padding-right:0px;margin-right:0px;"}}
+            {{/ui/mix-button}}
+      	  </div>
+    	  <!--搜索-->
+    	</div>
+      <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable mt15" aria-describedby="datatable1_info">
+        <thead>
+          <tr role="row">
+            <th rowspan="1" colspan="1" width="">活动名称</th>
+            <th rowspan="1" colspan="1" width="">活动时间</th>
+            <th rowspan="1" colspan="1" width="">周几</th>
+            <th rowspan="1" colspan="1" width="">活动地点</th>
+            <th rowspan="1" colspan="1" width="">活动描述</th>
+          </tr>
+        </thead>
+        {{#if planList}}
+      <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+          {{#each planList as |plan|}}
+          <tr class="gradeA odd" {{action "toDetailPage" plan on="click"}}>
+            <td class=" ellipsis sorting_1">{{plan.activity.title}}</td>
+            <td class=" ellipsis ">{{plan.time}}</td>
+            <td class=" ellipsis">{{plan.day.typename}}</td>
+            <td class=" ellipsis ">{{plan.place}}</td>
+            <td class=" ellipsis ">{{plan.description}}</td>
+      	  </tr>
+          {{/each}}
+       </tbody>
+       {{else}}
+       <div class="nodate">暂无数据</div>
+       {{/if}}
+        </table>
+        {{#if planList }}
+            {{page-numbers content=planList showFL=true numPagesToShow=5}}
+            {{else}}
+                <h1 class="col-sm-12 center unTask"></h1>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+  <!-- /BOX -->
+</div>

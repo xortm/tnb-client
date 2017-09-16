@@ -1,0 +1,40 @@
+{{#bs-modal body=false footer=false header=false size="lg"}}
+  {{#bs-modal-header}}
+    <h3 class="modal-title">护理项目编辑</h3>
+  {{/bs-modal-header}}
+  {{#bs-modal-body}}
+  <div class="set-level-list-table center-block">
+    <table class="table table-hover">
+      <thead>
+        <tr role="row">
+          <th rowspan="1" colspan="1" width="">项目名称</th>
+          <th rowspan="1" colspan="1" width="">护理类别</th>
+          <th rowspan="1" colspan="1" width="">类别</th>
+          <th rowspan="1" colspan="1" width="">周期</th>
+          <th rowspan="1" colspan="1" width="">频次</th>
+          <th rowspan="1" colspan="1" width="">所需时间</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each serviceLevelInfo.services as |service|}}
+        <tr  >
+          <td class="ellipsis" width="15%">{{service.item.name}}</td>
+          <td class="ellipsis hidden-xs" width="15%">{{service.item.careType.typename}}</td>
+          <td class="ellipsis" width="10%">{{service.item.countType.typename}}</td>
+          <td class="ellipsis hidden-xs" width="22%">
+            {{callbusi/dict-selector class="inline-block" curDict=service.period groupCode=constants.period
+              showName=service.item.period.typename value=service.period preselected=false allowClear=true}}
+          </td>
+          <td class="ellipsis hidden-xs" width="22%">{{input class="form-control" type="text" placeholder=service.item.frequency value=service.frequency}}</td>
+          <td class="ellipsis" width="15%">{{service.item.serviceTime}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+  {{/bs-modal-body}}
+  {{#bs-modal-footer as |footer|}}
+    {{#bs-button action=(action "saveService" serviceLevelInfo) type="primary" disabled=prepaidDisabled}}确定{{/bs-button}}
+    {{#bs-button action=(action "invitation") type="default"}}取消{{/bs-button}}
+  {{/bs-modal-footer}}
+{{/bs-modal}}

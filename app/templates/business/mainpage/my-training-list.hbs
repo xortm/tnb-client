@@ -1,0 +1,19 @@
+<div id="shareDocumentContainer" class="mainContent {{if global_pageConstructure.showLoader 'hide' ''}}">
+  <div class="wrapperInner">
+    {{#ui/mobile/gestures-container}}
+      {{#if shareDocumentList}}
+      <div class="training">
+        {{#each shareDocumentList as |shareDocument|}}
+          <div class="trainingList" id="shareDocumentItem_{{shareDocument.id}}" {{action "goDetail" shareDocument on="tap"}}>
+            <i class="prev-icon"><img class="a-img" src="assets/images/mobile/training.png"/></i>
+            <div class="title">{{shareDocument.name}}</div>
+          </div>
+        {{/each}}
+      </div>
+      {{else}}
+          <div class="nodate">暂无数据</div>
+      {{/if}}
+    {{/ui/mobile/gestures-container}}
+</div>
+</div>
+{{ui/container/infinite-scroll moniteData="shareDocumentList" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

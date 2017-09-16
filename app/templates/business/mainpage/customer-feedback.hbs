@@ -1,0 +1,29 @@
+<div id="customerFeedbackContainer" class="mainContent {{if global_pageConstructure.showLoader 'hide' ''}}">
+  <div class="wrapperInner jujia-Bd">
+    {{#ui/mobile/gestures-container}}
+    <div class="left10 right10 top10">
+      <!-- <div class="matter">
+        <span class="matter-span">反馈事项：</span>
+        <div class="matter-select">
+          {{callbusi/dict-selector curDict=feedBackTypeOrg groupCode=constants.feedBackTypeOrg showName="反馈事项" dictSelect="feedBackTypeOrgSelect" value=feedBackTypeOrg preselected=false}}
+        </div>
+      </div> -->
+      <div class="width100B">
+        <p class="font16 font-black line-height-30 bottom0">反馈内容：</p>
+        {{textarea type="text" value=feedbackContents class="width100B border-radius5 padding10 border-1solid-ccc font14 line-height-20 color333333" cols="80" rows="6" placeholder="请输入您遇到的问题或建议（请限制在300字以内）"}}
+      </div>
+      <div class="width100B top10">
+        <span class="font16 font-black line-height-30">联系电话：</span>
+        {{input value=telephoneNum class="font14 color333333 line-height-30 padding-0-5 border-radius5 border-1solid-ccc" placeholder="选填,便于我们联系您"}}
+      </div>
+      <!-- <button type="button" name="button" {{ action "saveItem"}}>确认提交</button> -->
+      <div class='tip'>{{tipInfo}}</div>
+    </div>
+    {{ui/mobile/task-detail-button needDoubleClickPrevent=true touchStartAction="saveItem" saveItem="saveItem" butContent="提交"}}
+    <!-- <div class="clearfix detail-tosure"  id="detail_tosure" {{action "saveItem" on="tap"}}>
+    提交
+  </div> -->
+    {{/ui/mobile/gestures-container}}
+  </div>
+</div>
+{{ui/container/infinite-scroll moniteData="userJujiaMy" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

@@ -1,0 +1,95 @@
+{{#if isMobile}}
+<div id="userCsInfoContainer" class="mainContent {{if global_pageConstructure.showLoader 'hide' ''}}" style="top:43px;">
+  <div class="wrapperInner cs-infoBd">
+{{#ui/mobile/gestures-container}}
+<div class="position-relative">
+  <img class="" height='156' src="assets/images/mobile/backg.png"/>
+<center class="mov-spacer">
+  <div class="position-relative clear" id="business_mine"
+   {{action 'switchPage' 'business-mine' 'business_mine' on="tap"}}
+   style="">
+  <i class="pull-left left11 glyphicon business-mine-img">
+      {{#ui/img-intergration name="headImg"
+      imgSrc=model.curUser.avatarUrl height=88 width=90
+      businessType=constants.uploadBusinessType_headimg}}
+      {{/ui/img-intergration}}
+  </i>
+  <ul class="pull-left padding-top10 padding-left-20">
+    <li class="center-li1">{{model.curUser.name}}</li>
+    <li class="center-li2">个人信息</li>
+  </ul>
+  <i class="pull-right fa-angle-right img-right font24 white-text-color"></i>
+
+  </div>
+</center>
+</div>
+
+<ul class="profile"  >
+  <!-- <li class="top10 carousel color666">
+    <i class="profile-i"><img class="a-img" src="assets/images/icon/follow.png"/></i>
+    <span class="profile-span">我的关注 </span>
+    <i class="fa-angle-right font20 my-right color-ccc"></i>
+  </li> -->
+  <!-- <li class="top10 carousel color666">
+    <i class="profile-i"><img class="a-img" src="assets/images/icon/wallet.png"/></i>
+    <span class="profile-span">不是钱包 </span>
+    <i class="fa-angle-right font20 my-right color-ccc"></i>
+  </li>
+  <div class="margin-leftright10 border-bottom-1"></div> -->
+  {{#if footBarMenusShowFlag}}
+    <li class="carousel color666" id="belong_team" {{action 'switchPage' 'belong-team' 'belong_team' on="tap"}}>
+      <i class="profile-i"><img class="a-img" src="assets/images/mobile/Group@2x.png"/></i>
+      <span class="profile-span">所属护理组 </span>
+      <i class="fa-angle-right font20 my-right color-ccc"></i>
+    </li>
+    <div class="margin-leftright10 border-bottom-1"></div>
+
+    <li class="carousel color666 border-bottom-1" id="my_schedule" {{action 'switchPage' 'my-schedule' 'my_schedule' on="tap"}}>
+      <i class="profile-i"><img class="a-img" src="assets/images/mobile/schedule.png"/></i>
+      <span class="profile-span">我的排班 </span>
+      <i class="fa-angle-right font20 my-right color-ccc"></i>
+    </li>
+
+    <li class="carousel color666 border-bottom-1" id="my_training_type" {{action 'switchPage' 'my-training-type' 'my_training_type' on="tap"}}>
+      <i class="profile-i"><img class="a-img" src="assets/images/mobile/training-list.png"/></i>
+      <span class="profile-span">我的培训 </span>
+      <i class="fa-angle-right font20 my-right color-ccc"></i>
+    </li>
+
+    <li class="carousel color666 border-bottom-1" id="workdelivery-self-mobile" {{action 'switchPage' 'workdelivery-self-mobile' 'workdelivery-self-mobile' on="tap"}}>
+      <i class="profile-i"><img class="a-img" src="assets/images/mobile/jiaojie.png"/></i>
+      <span class="profile-span">班次交接 </span>
+      <i class="fa-angle-right font20 my-right color-ccc"></i>
+    </li>
+  {{/if}}
+
+  <!-- <li class="carousel color666 border-bottom-1" id="customer-feedback" {{action 'switchPage' 'customer-feedback' 'customer-feedback' on="tap"}}>
+    <i class="profile-i"><img class="a-img" src="assets/images/mobile/schedule.png"/></i>
+    <span class="profile-span">反馈 </span>
+    <i class="fa-angle-right font20 my-right color-ccc"></i>
+  </li> -->
+
+
+  <!-- <li class='carousel color666' id="fulfil_task" {{action 'switchPage' 'fulfil-task' 'fulfil_task' on="tap"}}>
+    <i class="profile-i"><img class="a-img" src="assets/images/icon/completetask.png"/></i>
+    <span class="profile-span">完成任务 </span>
+    <i class="fa-angle-right font20 my-right color-ccc"></i>
+  </li> -->
+
+  <li class="top10 carousel color666 border-top-1 border-bottom-1" id="my_settings" {{action 'switchPage' 'my-settings' 'my_settings' on="tap"}}>
+    <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+    <span class="profile-span">设置 </span>
+    <i class="fa-angle-right font20 my-right color-ccc"></i>
+  </li>
+
+  <li class="top10 carousel color666 border-top-1 border-bottom-1">
+    <i class="profile-i"><img class="a-img" src="assets/images/mobile/telphone.png"/></i>
+    <span class="profile-span">客服电话：010-56018110 </span>
+
+  </li>
+</ul>
+{{/ui/mobile/gestures-container}}
+</div>
+</div>
+{{ui/container/infinite-scroll moniteData="userCsInfo" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}
+{{/if}}

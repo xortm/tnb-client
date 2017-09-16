@@ -1,0 +1,49 @@
+<div class="box-body">
+<div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+  <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable mt15" aria-describedby="datatable1_info">
+    <thead>
+      <tr role="row">
+        <th rowspan="1" colspan="1" width="" {{action "toBlownUp" diet on="click"}}>老人姓名</th>
+        <th rowspan="1" colspan="1" width="">膳食图片</th>
+        <th rowspan="1" colspan="1" width="">创建时间</th>
+      </tr>
+    </thead>
+    {{#if dietList}}
+  <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+      {{#each dietList as |diet|}}
+      <tr class="gradeA odd">
+        <td class=" ellipsis sorting_1">{{diet.customer.name}}</td>
+        <td class=" ellipsis" {{action "toBlownUp" diet on="click"}}>
+          点击查看
+          <!-- <img src="{{diet.picPathUrl}}" alt="{{diet.title}}"> -->
+        </td>
+        <td class=" ellipsis sorting_1">{{diet.createTimeStr}}</td>
+      </tr>
+      {{/each}}
+   </tbody>
+   {{else}}
+   <div class="nodate">暂无数据</div>
+   {{/if}}
+    </table>
+    {{#if dietList }}
+        {{page-numbers content=dietList showFL=true numPagesToShow=5}}
+        {{else}}
+            <h1 class="col-sm-12 center unTask"></h1>
+    {{/if}}
+  </div>
+</div>
+
+{{#if showBigImageModal}}
+    {{#bs-modal body=false footer=false header=false closedAction=(action "invitation")}}
+        {{#bs-modal-header}}
+            <h4 class="modal-title">{{diet.customer.name}}的膳食图片</h4>
+        {{/bs-modal-header}}
+        {{#bs-modal-body}}
+            <div class="modal-body clearfix">
+                <div class="col-sm-12" style="text-align: center;">
+                  <img class="width100B" src="{{diet.picPathUrl}}" alt="{{diet.title}}">
+                </div>
+            </div>
+        {{/bs-modal-body}}
+    {{/bs-modal}}
+{{/if}}

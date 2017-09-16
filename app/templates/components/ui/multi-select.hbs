@@ -1,0 +1,15 @@
+<a class="btn bottom0 multi-select dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+  {{titleText.text}} <span class="caret"></span>
+</a>
+{{log 'arrayVal' arrayVal}}
+<div class="multi-select dropdown-menu bgcolor-gray">
+  <div class="btn-group pull-right" data-toggle="buttons">
+    {{#each selectContext as |item|}}
+    {{log 'itemSelec' item}}
+    <label class="btn btn-select-item bottom0 {{if item.selec 'active'}}" {{action 'isSelected' titleText item}}>
+      <input type="checkbox" name={{titleText.name}} value={{item.text}}>{{item.text}}
+    </label>
+    {{/each}}
+
+  </div>
+</div>

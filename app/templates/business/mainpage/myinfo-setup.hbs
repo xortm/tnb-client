@@ -1,0 +1,23 @@
+{{outlet}}
+<div id="userMyInfoSetup" class="mainContent">
+  <div class="wrapperInner">
+<style media="screen">
+ul.profile >li:hover{background: #fff}
+</style>
+<ul class="profile">
+  <li {{action 'myinfoRemind'}} style=""><strong>消息提醒</strong> <span class="pull-right ">&nbsp;
+    {{#if shutOpen}}
+    <img src="assets/images/switch-shut.png" width="20" alt="关闭消息提醒"/>
+    {{else}}
+    <img src="assets/images/switch-open.png" width="20" alt="打开消息提醒"/>
+    {{/if}}
+  </span> </li>
+<li><strong>意见反馈</strong> <span class="pull-right ">&nbsp;<i class="el-right-open"></i></span></li>
+  <li><strong>关于我们</strong><span class="pull-right ">&nbsp;<i class="el-right-open"></i></span></li>
+</ul>
+<div class="col-xs-12">
+  <button class="btn btn-white btn-block btn-send-position" {{action 'quit1'}}><span>退出登录</span></button>
+</div></div></div>
+{{ui/container/infinite-scroll moniteData="userMyInfoSetup" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}
+
+<!-- {{ui/container/infinite-scroll moniteData="userMyInfoSetup" didUpdateAction="didUpdate" didInsertElementAction="didInsertElement"}} -->

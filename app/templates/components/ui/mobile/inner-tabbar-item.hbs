@@ -1,0 +1,14 @@
+    <div class='tab-text'>
+      <span>
+        {{menu.text}}
+      </span>
+      {{#if numberTip}}
+        {{#if (gt numberTip 0)}}
+          <div class="circle-tip pull-right">{{numberTip}}</div>
+        {{/if}}
+      {{/if}}
+    </div>
+    {{#if selected}}
+    <div class="clear"/>
+    <!-- <div class="tab-arrow"><i class="tab-nav-arrow"></i></div> -->
+    {{/if}}

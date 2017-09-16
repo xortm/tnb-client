@@ -1,0 +1,10 @@
+<div class="inner-tab {{positionClass}} {{theme}} {{customerDetailClass}} {{if showLoadingImgIn 'disabled'}}">
+  {{#each menus as |menu|}}
+    {{ log 'tab menu in hbs:' menu }}
+    {{ui/mobile/inner-tabbar-item clickActParams=menu menu=menu selected=menu.selected class="pull-left"
+      colNumber=menus.length numberTip=menu.numberTip
+      touchStartAction="menuClick" menuClick="menuClick" renderAction="menuChange"
+      menuChange="menuChange"
+    }}
+  {{/each}}
+</div>

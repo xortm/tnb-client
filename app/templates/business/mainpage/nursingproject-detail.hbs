@@ -1,0 +1,307 @@
+<div class="box">
+<div class="service-level box-body row">
+	<h3 class="col-sm-12 base-imformation">
+		<span class="inline-block" style="float:left;">基础信息</span>
+		<p class="user-add-btn inline-block">
+			{{#if detailEdit}}
+			{{else}}
+			{{#if nodetail}}
+			{{else}}
+				{{#ui/form-function editAction="detailEditClick" detailEditClick="detailEditClick"
+				removeAction="delById" delById="delById"}}
+				{{/ui/form-function}}
+				{{/if}}
+			{{/if}}
+		</p>
+	</h3>
+	<div class="col-sm-12 mr10 " style="width:99%;">
+		<div class="nopadding-vertical">
+			<!-- 列表编辑-->
+			{{#bs-form formLayout=formLayout model=projectModel invalid=(action "invalid")}}
+				<div class="row">
+					<div class="col-xs-12 nopadding-horizontal mb20">
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group label-normal">
+								<span class="input-group-addon">姓名：</span>
+								<div class="input-group-content">{{projectInfo.customer.name}}</div>
+							</div>
+
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group label-normal">
+								<span class="input-group-addon">价格(元/天)：</span>
+									<div class="input-group-content">{{projectInfo.price}}</div>
+							</div>
+
+						</div>
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group label-normal">
+								<span class="input-group-addon">增值服务费：</span>
+								<div class="input-group-content">{{projectInfo.valueAddPrice}}</div>
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-12">
+							<div class="form-input-group label-normal">
+								<span class="input-group-addon">备注：</span>
+									{{#if detailEdit}}
+										{{input class="form-control" type="text" placeholder=projectInfo.remark value=projectInfo.remark}}
+									{{else}}
+											<div class="input-group-content">{{projectInfo.remark}}</div>
+									{{/if}}
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group label-normal">
+								<span class="input-group-addon ">护理等级：</span>
+								{{#if detailEdit}}
+								{{#if levelCheck}}
+									<div class="inline-block form-input-group col-sm-6 nopadding-left">
+										<div class="input-group-addon 	">{{level.name}}</div>
+									</div>
+
+								{{else}}
+									{{#bs-form-element class="inline-block form-input-group col-sm-6 nopadding-left" controlType="level"  property="level" }}
+										{{#power-select class="input-group-content" placeholder='等级名称' options=levelList  selected=level searchField="name"
+										noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "selectLevel" ) as |level|}}
+											{{level.name}}
+										{{/power-select}}
+									{{/bs-form-element}}
+								{{/if}}
+									<span style="line-height:22px;font-size:14px;margin-left:5px;float:left;" class="levelCheck input-group-addon">
+										<i class="fa {{if levelCheck 'fa-check-square-o' 'fa-square-o'}} "  {{action 'levelCheck' on="click"}}></i>
+										<span class="">参考问卷定级</span>
+									</span>
+								{{else}}
+								<div class="inline-block form-input-group col-sm-6 nopadding-left">
+									<div class="input-group-addon 	">{{projectInfo.level.name}}</div>
+								</div>
+
+									<span style="line-height:25px;font-size:14px;margin-left:5px;float:left;" class="levelCheck input-group-addon">
+										<i class="fa {{if levelCheck 'fa-check-square-o' 'fa-square-o'}} "  {{action 'levelCheck' on="click"}}></i>
+										<span class="">参考问卷定级</span>
+									</span>
+								{{/if}}
+							</div>
+						</div>
+						{{#if levelCheck}}
+								{{#if resultList}}
+						<div class="col-xs-12 col-sm-12 result">
+							<div class="form-input-group label-normal">
+								<span class="input-group-addon">对应问卷：</span>
+								<table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable nomargin-top" aria-describedby="datatable1_info">
+				          <thead>
+				            <tr role="row">
+				              <th rowspan="1" colspan="1" width="">问卷类型</th>
+				              <th rowspan="1" colspan="1" width="">问卷得分</th>
+				              <th rowspan="1" colspan="1" width="">创建时间</th>
+				              <th rowspan="1" colspan="1" width="">对应等级</th>
+				              <th rowspan="1" colspan="1" width="">问卷选择</th>
+				            </tr>
+				          </thead>
+				          <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+				            {{#each resultList as |result|}}
+				            <tr>
+				              <td class="ellipsis" >{{result.model.title}}</td>
+				              <td class="ellipsis other" >{{result.score}}</td>
+				              <td class="ellipsis other" >{{result.createDateTimeString}}</td>
+											{{#if result.level.name}}
+				              <td class="ellipsis other">{{result.level.name}}</td>
+				              <td class="ellipsis other"><i class="fa {{if result.resultCheck 'fa-check-square-o' 'fa-square-o'}} "  {{action 'resultCheck' result on="click"}}></i></td>
+											{{else}}
+											<td class="ellipsis other">对应等级</td>
+				              <td class="ellipsis other">不可选</td>
+											{{/if}}
+				            </tr>
+				            {{/each}}
+				          </tbody>
+				        </table>
+							</div>
+						</div>
+										{{else}}
+											<div class="col-xs-4 col-sm-4">
+												<div class="form-input-group label-normal">
+													<span class="input-group-addon hasError">该老人没有问卷供参考</span>
+												</div>
+											</div>
+										{{/if}}
+						{{else}}
+						{{/if}}
+					</div>
+				</div>
+				<!-- 列表编辑 -->
+			{{/bs-form}}
+		</div>
+		<!-- /BOX-BODY -->
+	</div>
+
+	<h3 class="col-sm-12 nursingproject">护理项目
+		<div class="remark"><i class="fa fa-star"></i>推荐护理项目</div>
+		<div class="remark"><i class="fa fa-check"></i>已选定护理项目</div>
+		<div class="remark"><i class="fa fa-check" style="color:#000;"></i>护理计划已安排的护理项目</div>
+	</h3>
+
+	<div class="col-sm-12 nopadding-left nopadding-right">
+		{{#each allServiceList as |service|}}
+		{{#bs-form formLayout=formLayout model=serviceModel invalid=(action "invalid")}}
+		<div class="{{if media.isJumbo 'col-lg-3' 'col-sm-4'}} service">
+
+				{{callbusi/service-list-item class="inline-block" service=service flags=flags checkService="checkService" checkService=(action "checkService" service)
+				chooseService="chooseService" chooseService=(action 'chooseService' service) detailEdit=detailEdit}}
+
+		</div>
+		{{/bs-form}}
+		{{/each}}
+	</div>
+
+
+	<div class="col-sm-12">
+	<div class="text-center padding-top30">
+			<p class="text-center user-add-btn" style="display:inline-block;margin:0 auto!important ">
+			{{#if detailEdit}}
+			{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check"  text='保存' clickAction="detailSaveClick" detailSaveClick="detailSaveClick"}}
+			{{/ui/mix-button}}
+			{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply"  text='取消'  clickAction="detailCancel" detailCancel="detailCancel" }}
+			{{/ui/mix-button}}
+			{{else}}
+			{{/if}}
+			</p>
+	</div>
+	</div>
+</div>
+</div>
+
+
+{{#if showpopInvitePassModal}}
+	{{#bs-modal body=false footer=false header=false}}
+		{{#bs-modal-header}}
+			<h3 class="modal-title">删除提示</h3>
+		{{/bs-modal-header}}
+		{{#bs-modal-body}}
+			<h4 class="modal-title">是否删除该条记录？</h4>
+		{{/bs-modal-body}}
+		{{#bs-modal-footer as |footer|}}
+			{{#bs-button action=(action "cancelPassSubmit" projectInfo) type="primary" disabled=prepaidDisabled}}确定{{/bs-button}}
+			{{#bs-button action=(action "invitation") type="default" }}取消{{/bs-button}}
+		{{/bs-modal-footer}}
+	{{/bs-modal}}
+{{/if}}
+
+{{#if serviceInfo}}
+	{{#bs-modal body=false footer=false header=false closedAction=(action "cancel")}}
+		{{#bs-modal-header}}
+			<h3 class="modal-title">项目详情</h3>
+		{{/bs-modal-header}}
+		{{#bs-modal-body}}
+		<div class="line ">
+			<div class="col-xs-12 col-sm-6">
+				<div class="form-input-group">
+					<span class="input-group-addon">项目名称：</span>
+					<div class="input-group-content">{{curService.name}}</div>
+				</div>
+			</div>
+			<div class="col-xs-12 col-sm-6"	>
+				<div class="form-input-group">
+					<span class="input-group-addon">执行方式：</span>
+					<div class="input-group-content">{{curService.countType.typename }}</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-xs-12 col-sm-6"	>
+			<div class="form-input-group">
+				<span class="input-group-addon">类&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;型：</span>
+				<div class="input-group-content">{{curService.serviceType.typename }}</div>
+			</div>
+		</div>
+		{{#if curService.period}}
+		<div class="col-xs-12 col-sm-6"	>
+			<div class="form-input-group">
+				<span class="input-group-addon">周&emsp;&emsp;期：</span>
+				<div class="input-group-content">{{curService.period.typename}}</div>
+			</div>
+		</div>
+		<div class="col-xs-12 col-sm-6"	>
+			<div class="form-input-group">
+				<span class="input-group-addon">频次&nbsp;(次/{{serviceitemInfo.period.typename}})：</span>
+				<div class="input-group-content">{{curService.frequency}}</div>
+				</div>
+		</div>
+		{{else}}
+		{{/if}}
+		<div class="col-xs-12 col-sm-6"	>
+			<div class=" form-input-group">
+				<div class="input-group-addon">参考时长(分钟)：</div>
+				<div class="input-group-content">{{curService.serviceTime}}</div>
+			</div>
+		</div>
+		<div class="col-xs-12 col-sm-6"	>
+			<div class="form-input-group">
+				<div class="input-group-addon">项目说明：</div>
+				<div class="input-group-content">{{curService.remark}}</div>
+			</div>
+		</div>
+		<div class="col-xs-12 col-sm-6"	>
+			<div class="form-input-group">
+				<div class="input-group-addon">数量单位：</div>
+				<div class="input-group-content">{{curService.serviceNum}}</div>
+			</div>
+		</div>
+		<div class="col-xs-12 col-sm-6"	>
+			<div class="form-input-group">
+				<div class="input-group-addon">服务类型：</div>
+				<div class="input-group-content">{{curService.serviceValueType.typename }}</div>
+			</div>
+		</div>
+		{{#if curService.valueAdd}}
+		<div class="col-xs-12 col-sm-6"	>
+			<div class="form-input-group">
+				<div class="input-group-addon">价格(元/次)</div>
+				<div class="input-group-content">{{curService.price }}</div>
+			</div>
+		</div>
+		{{/if}}
+		<div class="col-xs-12 col-sm-12"	>
+			<div class=" form-input-group">
+				<div class="input-group-addon">完成情况：</div>
+						<div class="input-group-content">
+							{{#if curService.resultList}}
+								{{#each curService.resultList as |result|}}
+								<span >
+									{{result.name}}
+								</span>
+								{{/each}}
+							{{else}}
+								<span >
+									无
+								</span>
+							{{/if}}
+						</div>
+			</div>
+		</div>
+		<div class="col-xs-12 col-sm-12"	>
+			<div class=" form-input-group">
+				<div class="input-group-addon">所需物品：</div>
+						<div class="input-group-content">
+							{{#if curService.merchList}}
+								{{#each curService.merchList as |merch|}}
+								<span >
+									{{merch.merch.name}} × {{merch.merchNum}} {{merch.merch.merchUnit.typename}}
+								</span>
+								{{/each}}
+							{{else}}
+								<span>无</span>
+							{{/if}}
+						</div>
+				</div>
+		</div>
+		{{/bs-modal-body}}
+		{{#bs-modal-footer class="user-add-btn"}}
+			{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="cancel" cancel="cancel"}}
+			{{/ui/mix-button}}
+			{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="cancel" cancel="cancel"}}
+			{{/ui/mix-button}}
+		{{/bs-modal-footer}}
+	{{/bs-modal}}
+{{/if}}

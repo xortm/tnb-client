@@ -1,0 +1,51 @@
+{{#if isMobile}}
+<div id="userMyInfoCstag" class="mainContent">
+  <div class="wrapperInner">
+<div>
+  <ul class="certification busi-info">
+    {{#if hidden}}
+    <li>{{succeed}}</li>
+    {{/if}}
+    {{#if FailReason}}
+    <li><strong>认证失败原因</strong></li>
+    <div>
+      <p style="color:#000">  {{model.curUser.verifyFailReason }}</p>
+    </div>
+    {{/if}}
+    <li><strong>身份证号码</strong></li>
+    <li >{{input type="text" class='edit_height width100' maxlength='18' disabled=isDisabled value=model.curUser.edinfo.idcardNum placeholder='请输入身份证号码' }}</li>
+    <li><strong>身份证正面(&lt;1M)</strong></li>
+    <li style="height:165px;"  >
+      <center >
+        {{#ui/img-intergration name="idcardImg"
+        hasUploader=trueOrFalse
+        imgSrc=model.curUser.edinfo.idPhotoUrl  width=280 height=170
+        uploadUrl=uploadUrl
+        uploadSucc="uploadidcardImg"
+        uploadFail="uploadFailIdCardImg"
+        businessType=constants.uploadBusinessType_idcard
+      }}
+      {{/ui/img-intergration}}
+    </center>
+  </li>
+  <li><strong>身份证反面(&lt;1M)</strong></li>
+  <li>
+    <center>
+      {{#ui/img-intergration name="idcardImg2"
+      hasUploader=trueOrFalse
+      imgSrc=model.curUser.edinfo.idPhotoReverseUrl width=280 height=170
+      uploadUrl=uploadUrl
+      uploadSucc="uploadidcardImgReverse"
+      uploadFail="uploadFailImgReverse"
+      businessType=constants.uploadBusinessType_idcard
+    }}
+    {{/ui/img-intergration}}
+  </center>
+</li>
+</ul>
+</div></div></div>
+{{ui/container/infinite-scroll moniteData="userMyInfoCertification" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}
+
+<!-- {{ui/container/infinite-scroll moniteData="userMyInfoCertification" didUpdateAction="didUpdate" didInsertElementAction="didInsertElement"}} -->
+
+{{/if}}

@@ -1,0 +1,52 @@
+<div class="col-sm-12">
+    <div class="box">
+        <!-- BOX-BODY -->
+        <div class="box-body">
+            <div class="clearfix">
+                <div class="row ">
+                    <div class="line">
+                        <div class="font-big color5">请选择评估模板,可同时勾选一个或者多个：</div>
+                        <div class="col-sm-7  nopadding-left">
+                            <table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable mt15" aria-describedby="datatable1_info">
+                                <thead>
+                                    <tr role="row">
+                                        <th class="" rowspan="1" colspan="1" width="">模板名称</th>
+                                        <th class="" rowspan="1" colspan="1" width="">模板创建时间</th>
+                                        <th class="" rowspan="1" colspan="1" width="">模板说明</th>
+                                        <th class="" rowspan="1" colspan="1" width="">模板选择</th>
+                                    </tr>
+                                </thead>
+                                {{#if useModelList}}
+                                <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+                                    {{#each useModelList as |useModel|}}
+                                        {{log "useModel item" useModel}}
+                                        <tr class="gradeA odd" {{action "chooseModel" useModel on="click"}}>
+                                            <td class="ellipsis sorting_1">{{useModel.title}}</td>
+                                            <td class="ellipsis ">{{useModel.createTime}}</td>
+                                            <td class="ellipsis ">{{useModel.remark}}</td>
+                                            <td class="ellipsis "><i class="fontLogo {{if useModel.hasChoosed 'fa-check' ''}}"></i></td>
+                                        </tr>
+                                    {{/each}}
+                                </tbody>
+                                {{else}}
+                                <div class="nodate">暂无数据</div>
+                                {{/if}}
+                            </table>
+                            <!-- <div class="next btn-reduce pointer" {{action 'nextClick' on='click'}}>
+                            <div class="nextFont">下一步</div>
+                        </div> -->
+                            <div class="col-sm-12">
+                                <div class="text-center padding-top30 ">
+                                    <p class="text-center user-add-btn" style="display:inline-block;margin:0 auto!important ">
+                                        {{#ui/mix-button class=" user-btn edit-btn " iconClass="fa-chevron-right" text='下一步' clickAction="nextClick" nextClick="nextClick" }}
+                                        {{/ui/mix-button}}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

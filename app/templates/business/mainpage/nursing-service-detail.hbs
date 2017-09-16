@@ -1,0 +1,186 @@
+<div class="col-sm-12">
+	<div class="box margin-middle max-width">
+		<!-- BOX-BODY -->
+		<div class="box-body">
+			{{#bs-form formLayout=formLayout model=serviceitemModel invalid=(action "invalid")}}
+				<div class="row">
+					<div class="col-xs-12">
+						<p class="user-add-btn">
+							{{#if detailEdit}}
+							{{else}}
+								{{#ui/form-function editAction="detailEditClick" detailEditClick="detailEditClick" removeAction="delById" delById="delById" }}
+								{{/ui/form-function}}
+							{{/if}}
+						</p>
+					</div>
+
+					<!-- 列表详细介绍 -->
+					<div class="col-xs-12 nopadding-left">
+						<div class="col-xs-12 nopadding-horizontal mt20">
+							<div class="col-xs-12 col-sm-6">
+								<div class="form-input-group">
+									<span class="input-group-addon">项目名称：</span>
+									{{#if detailEdit}}
+										{{bs-form-element property="name" class="inline-block form-input-group label-normal" controlType="name" placeholder='必填项'}}
+									{{else}}
+										<div class="input-group-content">{{serviceitemInfo.name}}</div>
+									{{/if}}
+								</div>
+							</div>
+
+							<!-- <div class="col-xs-12 col-sm-6"	>
+				      <div class="form-input-group">
+				        <span class="input-group-addon">执行方式：</span>
+									{{#if detailEdit}}
+										{{#if id}}
+											{{#bs-form-element class="inline-block form-input-group" controlType="countType"  property="countType" }}
+												{{callbusi/dict-selector class="inline-block" groupCode=constants.countType curDict=serviceitemInfo.countType
+													showName=serviceitemInfo.countType.typename dictSelect="countTypeSelect"}}
+											{{/bs-form-element }}
+										{{else}}
+											{{#bs-form-element class="inline-block form-input-group" controlType="countType"  property="countType" }}
+												{{callbusi/dict-selector class="inline-block" groupCode=constants.countType curDict=serviceitemInfo.countType
+												showName='执行方式' dictSelect="countTypeSelect" preselected=false}}
+											{{/bs-form-element }}
+										{{/if}}
+									{{else}}
+										<div class="input-group-content">{{serviceitemInfo.countType.typename }}</div>
+									{{/if}}
+							</div>
+						</div> -->
+
+							<div class="col-xs-12 col-sm-6">
+								<div class="form-input-group">
+									<span class="input-group-addon">项目类型：</span>
+									{{#if detailEdit}}
+										{{#if id}}
+											{{#bs-form-element class="inline-block form-input-group" controlType="serviceType" property="serviceType" }}
+												{{callbusi/dict-selector class="inline-block" groupCode=constants.serviceType curDict=serviceitemModel.serviceType
+													showName=serviceitemInfo.serviceType.typename dictSelect="serviceTypeSelect"}}
+											{{/bs-form-element }}
+										{{else}}
+											{{#bs-form-element class="inline-block form-input-group" controlType="serviceType" property="serviceType" }}
+												{{callbusi/dict-selector class="inline-block" groupCode=constants.serviceType curDict=serviceitemModel.serviceType
+													showName='必填项' dictSelect="serviceTypeSelect" preselected=false}}
+											{{/bs-form-element }}
+										{{/if}}
+									{{else}}
+										<div class="input-group-content">{{serviceitemInfo.serviceType.typename }}</div>
+									{{/if}}
+								</div>
+							</div>
+
+							{{#if count}}
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-input-group">
+										<span class="input-group-addon">周&emsp;&emsp;期：</span>
+										{{#if detailEdit}}
+											{{#if id}}
+												{{callbusi/dict-selector class="inline-block" groupCode=constants.period curDict=serviceitemInfo.period
+												showName=serviceitemInfo.period.typename dictSelect="periodSelect"}}
+											{{else}}
+												{{callbusi/dict-selector class="inline-block" groupCode=constants.period curDict=serviceitemInfo.period
+												showName='周期' dictSelect="periodSelect" preselected=false}}
+											{{/if}}
+										{{else}}
+											<div class="input-group-content">{{serviceitemInfo.period.typename}}</div>
+										{{/if}}
+									</div>
+								</div>
+
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-input-group">
+										<span class="input-group-addon">频次&nbsp;(次/{{serviceitemInfo.period.typename}})：</span>
+										{{#if detailEdit}}
+											{{bs-form-element property="frequency" class="inline-block form-input-group label-normal" controlType="frequency"}}
+										{{else}}
+											<div class="input-group-content">{{serviceitemInfo.frequency}}</div>
+										{{/if}}
+									</div>
+								</div>
+							{{else}}
+
+							{{/if}}
+							<div class="col-xs-12 col-sm-6">
+								<div class=" form-input-group">
+									<div class="input-group-addon">参考时长(分钟)：</div>
+									{{#if detailEdit}}
+										{{bs-form-element property="serviceTime" class="inline-block form-input-group label-normal" controlType="serviceTime" placeholder='必填项'}}
+									{{else}}
+										<div class="input-group-content">{{serviceitemInfo.serviceTime}}</div>
+									{{/if}}
+								</div>
+							</div>
+
+							<!-- <div class="col-sm-6">
+							<div class="form-input-group">
+							<span class="input-group-addon">角色岗位：</span>
+								{{#if detailEdit}}
+										{{#bs-form-element class="inline-block form-input-group" controlType="roleType"  property="roleType" }}
+											{{callbusi/dict-selector class="inline-block" curDict=serviceitemModel.serviceitemType groupCode=constants.roleType
+												showName=serviceitemModel.roleType.typename value=serviceitemModel.roleType preselected=ture}}
+										{{/bs-form-element}}
+								{{else}}
+									<div class="input-group-content">{{serviceitemInfo.roleType.typename}}</div>
+								{{/if}}
+							</div>
+          </div> -->
+
+
+							<div class="col-xs-12 col-sm-6">
+								<div class="form-input-group">
+									<div class="input-group-addon">参考价格(元)：</div>
+									{{#if detailEdit}}
+										{{bs-form-element property="referencePrice" class="inline-block form-input-group label-normal" controlType="referencePrice" placeholder='必填项'}}
+									{{else}}
+										<div class="input-group-content">{{serviceitemInfo.referencePrice}}</div>
+									{{/if}}
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="form-input-group">
+									<div class="input-group-addon">项目说明：</div>
+									{{#if detailEdit}}
+										{{callbusi/busi-form-element class="inline-block full-width" placeholder="具体描述请写在这里"
+										model=serviceitemInfo property="remark"}}
+									{{else}}
+										<div class="input-group-content">{{serviceitemInfo.remark}}</div>
+									{{/if}}
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- 列表详细介绍 -->
+				</div>
+				<div class="text-center padding-top30">
+					<p class="text-center user-add-btn" style="display:inline-block;margin:0 auto!important ">
+						{{#if detailEdit}}
+							{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check" text='保存' clickAction="saveServiceitem" saveServiceitem="saveServiceitem" }}
+							{{/ui/mix-button}}
+							{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply" text='取消' clickAction="detailCancel" detailCancel="detailCancel" }}
+							{{/ui/mix-button}}
+						{{else}}
+						{{/if}}
+					</p>
+				</div>
+			{{/bs-form}}
+		</div>
+		<!-- /BOX-BODY -->
+	</div>
+</div>
+
+{{#if showpopInvitePassModal}}
+	{{#bs-modal body=false footer=false header=false closedAction=(action "invitation") submitAction=(action "cancelPassSubmit" serviceitemInfo)}}
+		{{#bs-modal-header}}
+			<h3 class="modal-title">删除提示</h3>
+		{{/bs-modal-header}}
+		{{#bs-modal-body}}
+			<h4 class="modal-title">是否删除该条记录？</h4>
+		{{/bs-modal-body}}
+
+		{{#bs-modal-footer as |footer|}}
+			{{#bs-button action=(action "cancelPassSubmit" serviceitemInfo) type="primary" disabled=prepaidDisabled}}确定{{/bs-button}}
+			{{#bs-button action=(action "invitation") type="default" }}取消{{/bs-button}}
+		{{/bs-modal-footer}}
+	{{/bs-modal}}
+{{/if}}

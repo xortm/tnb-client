@@ -1,0 +1,70 @@
+<div class="col-md-12">
+	<div class="box margin-middle max-width">
+		<!-- BOX-BODY -->
+		<div class="box-body">
+			{{#bs-form formLayout=formLayout model=sportsModel action=(action "saveSports") invalid=(action "invalid")}}
+				<!-- 列表编辑-->
+				<div class="row">
+					<div class="col-xs-12">
+						<p class="user-add-btn">
+							{{#if detailEdit}}
+							{{else}}
+								{{#ui/form-function editAction="detailEditClick" detailEditClick="detailEditClick" removeAction="delById" delById="delById" }}
+								{{/ui/form-function}}
+							{{/if}}
+						</p>
+					</div>
+					<div class="col-xs-12 nopadding-horizontal mt20">
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">方案名称：</span>
+								{{#if detailEdit}}
+									{{bs-form-element property="title" class="inline-block form-input-group" controlType="title" placeholder="必填项"}}
+								{{else}}
+									<div class="input-group-content">{{sports.title}}</div>
+								{{/if}}
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-12">
+							<div class="form-input-group">
+								<span class="input-group-addon">方案内容：</span>
+								{{#if detailEdit}}
+									{{#bs-form-element class="inline-block form-input-group" controlType="contents" property="contents" }}
+									{{textarea type="text" class="full-width inline-block form-input-group label-normal form-control" value=sportsModel.contents placeholder="必填项"}}
+									{{/bs-form-element}}
+								{{else}}
+									<div class="input-group-content">{{sports.contents}}</div>
+								{{/if}}
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-12 margin-top-10">
+							<div class="form-input-group">
+								<span class="input-group-addon">方案图片：</span>
+								{{#if detailEdit}}
+								{{#bs-form-element class="inline-block form-input-group" controlType="picPath" property="picPath" }}
+									{{#ui/img-intergration-simple name="sportsImg" hasUploader=true imgSrc=sportsModel.picPathUrl width=300 height=300 margin-left=0 uploadUrl=uploadUrl uploadSucc="uploadSucc" uploadFail="uploadFailImg" businessType=constants.uploadBusinessType_jujia as |component|}}
+						      {{/ui/img-intergration-simple}}
+								{{/bs-form-element}}
+								{{else}}
+									<div class="input-group-content height-auto"><img class="width200 height-auto" src="{{sports.picPathUrl}}" alt="{{sports.title}}"></div>
+								{{/if}}
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 列表编辑 -->
+				<div class="padding-top30 center">
+					<p class="text-center user-add-btn margin0auto inlineBlock">
+						{{#if detailEdit}}
+							{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check" text='保存' }}
+							{{/ui/mix-button}}
+							{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply" text='取消' clickAction="detailCancel" detailCancel="detailCancel" }}
+							{{/ui/mix-button}}
+						{{/if}}
+					</p>
+				</div>
+			{{/bs-form}}
+		</div>
+		<!-- /BOX-BODY -->
+	</div>
+</div>

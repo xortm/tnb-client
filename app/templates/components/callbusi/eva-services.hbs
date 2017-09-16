@@ -1,0 +1,13 @@
+<div class="square-item-line">
+  <div class="">{{text1}}：</div>
+  <div class="col-sm-9 nopadding-left">&nbsp;&nbsp;{{chooseService}}</div>
+</div>
+<div class="square-item-line top30">
+  <div class="">{{text2}}：</div>
+  <div class="col-sm-9 nopadding-left">
+  {{#each allServiceList as |serviceItem|}}
+  {{ui/selection-square text=serviceItem.name hasSelected=serviceItem.selected
+     itemSelect="serviceItemSelect" code=serviceItem.id}}
+  {{/each}}
+  </div>
+</div>

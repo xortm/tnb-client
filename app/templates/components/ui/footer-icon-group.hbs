@@ -1,0 +1,4 @@
+  {{#each menus as |menu|}}
+  {{ui/footer-icon-group-item  menu=menu groupSelected=selected groupExpanded=groupExpanded
+  touchStartAction="menuClick" menuClick="menuClick" clickActParams=menu}}
+  {{/each}}

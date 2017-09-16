@@ -1,0 +1,28 @@
+{{log "customerdynamic in hbs:" customerdynamic}}
+<div class="width100B height-auto padding-5-10 position-relative bk-color-white bottom-border-plan1" {{action 'showDelBut' on="press"}}>
+  <div class="width100B height40 clearfix">
+    <div class="pull-left font14 line-height-40 color333333">记录人:{{customerdynamic.createUser.name}}</div>
+    <div class="pull-right font14 line-height-40 color333333">{{customerdynamic.createTimeStr}}</div>
+  </div>
+  <div class="width100B height-auto">
+    {{#if (eq customerdynamic.dynamicType.typecode constants.dynamicType1)}}
+    <!-- 视频 -->
+    {{else if (eq customerdynamic.dynamicType.typecode constants.dynamicType2)}}
+    <!-- 语音 -->
+    {{else if (eq customerdynamic.dynamicType.typecode constants.dynamicType3)}}
+    <!-- 图片 -->
+      <!-- {{#ui/img-intergration-simple name="dynamicShowImg" isMobile=true businessFlag="clickShowBigImgUpload" showBigImageModal=showBigImageModal hasUploader=true isResizeImage=true imgSrc=customerdynamic.picPathUrl height=60 width=60 margin-left=0 uploadUrl=uploadUrl uploadSucc="uploadSucc" uploadFail="uploadFail" businessType=constants.uploadBusinessType_headimg as |component|
+      }}
+      {{/ui/img-intergration-simple}} -->
+      <img src="{{customerdynamic.picPathUrl}}" alt="" class="width100B">
+    {{else if (eq customerdynamic.dynamicType.typecode constants.dynamicType4)}}
+    <!-- 文字类 -->
+      <p class="font14 line-height-20 color999999">{{customerdynamic.contents}}</p>
+    {{/if}}
+  </div>
+  {{#if showDelButFlag}}
+    <div class="width100B height100B position_absolute bk-color-000000-D5" style="top:0;left:0;" {{action 'hideDelBut' on="tap"}}>
+    </div>
+    <div class="width80 height34 font14 line-height-34 header-text-color bk-color-2FA7FD position_absolute abs-top-50B abs-left-50B margin-left-f40 margin-top-f17 border-radius3 center" {{action 'delItemAction' customerdynamic.id on="tap"}}>{{responseInfo}}</div>
+  {{/if}}
+</div>

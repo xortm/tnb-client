@@ -1,0 +1,271 @@
+.bg-accent{
+  background-color: @table-bg-accent;
+}
+/*选择块*/
+.square-item-line{
+  display:flex;
+  font-size: 16px;
+  line-height: 35px
+}
+.square-item{
+  float:left;
+  cursor: pointer;
+  overflow: hidden;
+  height:35px;
+  line-height: 35px;
+  margin-left: 8px;
+  margin-right: 8px;
+  padding-left: 16px;
+  padding-right: 16px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  color:@primary-color;
+  background: @light-grey-color;
+}
+.square-item.selected {
+  background: #6fafc5;
+}
+.square-name{
+  margin-right: 16px;
+}
+.service-title{
+  text-align: center;
+}
+.square-item .text{
+  text-align: center;
+  font-size:16px;
+  color:@primary-color;
+}
+.square-item.selected .text{
+  color:white;
+}
+.room .lable-item{
+  width: 50px;
+  float:left;
+  cursor: pointer;
+  line-height: 30px;
+  margin: 2px;
+  padding-left:4px;
+  padding-right:4px;
+  color:@light-grey-color;
+  img{
+    margin: 0 5px;
+    width: 30px;
+    height: 30px;
+  }
+  .text{
+    text-align: center;
+    font-size:14px;
+    color:green;
+  }
+}
+.border{
+  border:1px solid #ccc;
+  min-height: 200px;
+}
+.nurse .lable-item{
+  width:50px;
+  float:left;
+  cursor: pointer;
+  line-height: 30px;
+  margin: 2px;
+  padding-left:4px;
+  padding-right:4px;
+  color:@dark-color;
+
+  img{
+    margin: 0 5px;
+    width: 30px;
+    height: 30px;
+  }
+  .text{
+    text-align: center;
+    font-size:14px;
+    color:@dark-color;
+  }
+}
+/*bar相关内容*/
+//长条
+.rect-bar{
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: initial;
+  padding-top:4px;
+  height:20px;
+  font-size: 12px;
+  text-align:center;
+}
+//小方块
+.square{
+  width:20px;
+  height:20px;
+}
+//弹层lable类型
+.layer-lable-style{
+  margin-top:15px;
+  font-size: 12px;
+  color:#666;
+}
+//带颜色的标签
+.color-label-main {
+  background-color: #F37936;
+  color: white;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: 200;
+  display: inline-block;
+  padding: 2px 8px;
+}
+/*pc端卡片条目*/
+.line-image{
+  width:100px;
+  height:100px;
+}
+.line-image img{
+  width:100px;
+  height:100px;
+  border-radius: 50%;
+}
+
+/*左侧功能及搜索框*/
+.func-area{
+  padding-top:8px;
+}
+.func-area .func{
+  font-size:14px;
+  cursor:pointer;
+  margin-top:4px;
+}
+.search-bar {
+	display: block;
+	text-align: right;
+  position:relative;
+	.search {
+		border: 1px solid @sidebar-font-color;
+		border-radius: 4px;
+		color: @sidebar-font-color;
+		padding: 4px 10px;
+		width: 140px;
+		padding-right: 30px !important;
+	}
+  .search-icon{
+    display: block;
+    font-size: 14px;
+    line-height: 1;
+    position: relative;
+    right:10px;
+    top: -24px;
+    color: #888888;
+  }
+}
+/*左侧卡片列表*/
+.list-content .short-list-line:first{
+  border-top:solid 1px @item-border;
+}
+.short-list-line{
+  height:35px;
+  line-height: 35px;
+  font-size:14px;
+  display: table;
+  border: solid 1px @item-border;
+  width: 100%;
+}
+
+.short-list-line:hover{
+  background-color: @table-bg-hover;
+}
+.short-list-line .index{
+  border-right:solid 1px @item-border;
+  width:40px;
+  float:left;
+  text-align:center;
+  height:35px;
+  line-height: 35px;
+}
+.short-list-line .content{
+  float:left;
+  overflow: hidden;
+  padding-left:4px;
+  height:35px;
+  line-height: 35px;
+}
+.short-list-line.bg-accent .content{
+  border-right:solid 1px @item-border;
+  text-align: left;
+  float:none;
+  overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+}
+.short-list-line .part-func{
+  border-left:solid 1px @item-border;
+  width:30px;
+  float:right;
+  text-align:center;
+  height:35px;
+  line-height: 35px;
+}
+
+/*内容部分*/
+.selected-area{
+  background-color: @table-bg-accent;
+}
+.list-item{
+  position: relative;
+}
+.list-item .func{
+  position: absolute;
+  top:16px;right:24px;
+}
+/*弹层及提示*/
+#pop-tip{
+  position: fixed;
+  z-index: @zindex-modal;
+  width:300px;
+  height:170px;
+  border-radius: 50%;
+  left:50%;
+  margin-left: -100px;
+  top:35%;
+  margin-top: -50px;
+  display: none;
+  text-align:center;
+  line-height: 100px;
+  font-size:20px;
+  font-weight: normal;
+  border:1px solid #fff;
+  .pop-gif{
+    height: 50px;
+    width: 145px;
+    position: absolute;
+    right: -45px;
+    bottom: 15px;
+  }
+}
+#sim-pop{
+  position: fixed;
+  z-index: @zindex-modal;
+  left:50%;
+  top:15%;
+  margin-top: -50px;
+  display: none;
+  text-align:center;
+  color: #000;
+  font-size:20px;
+  font-weight: normal;
+  .pop-gif{
+    height: 20px;
+    width: 40px;
+    position: absolute;
+    right: -35px;
+    bottom:5px;
+  }
+}
+.saving{
+  border:none !important;
+}
+.save-gif{
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  left:0;
+}

@@ -1,0 +1,99 @@
+<div class="col-sm-12">
+	<div class="box margin-middle max-width">
+		<!-- BOX-BODY -->
+		<div class="box-body">
+			<div class="row">
+				<div class="col-xs-12">
+					<p class="user-add-btn">
+						{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-edit" text='审核' clickAction="audit" audit="audit" }}
+						{{/ui/mix-button}}
+						{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo" text='取消' clickAction="detailCancel" detailCancel="detailCancel" }}
+						{{/ui/mix-button}}
+					</p>
+				</div>
+				<!-- 列表详细介绍 -->
+				<div class="col-xs-12 nopadding-left">
+					<div class="col-xs-12 nopadding-horizontal mt20">
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">用户姓名：</span>
+								<div class="input-group-content">{{billInfo.customer.name}}</div>
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">账单类别：</span>
+								<div class="input-group-content">{{billInfo.billType.typename}}</div>
+							</div>
+						</div>
+
+						{{#if year}}
+							<div class="col-xs-12 col-sm-6">
+								<div class="form-input-group">
+									<span class="input-group-addon">账单年份：</span>
+									<div class="input-group-content">{{billInfo.year}}</div>
+								</div>
+							</div>
+
+							{{#if month}}
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-input-group">
+										<span class="input-group-addon">账单月份：</span>
+										<div class="input-group-content">{{billInfo.month}}</div>
+									</div>
+								</div>
+							{{/if}}
+
+							{{#if quarter}}
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-input-group">
+										<span class="input-group-addon">账单季度：</span>
+										<div class="input-group-content">{{billInfo.quarter}}</div>
+									</div>
+								</div>
+							{{/if}}
+
+						{{/if}}
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">账单金额(元)：</span>
+								<div class="input-group-content">{{billInfo.total}}</div>
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-12">
+							<div class="form-input-group">
+								<span class="input-group-addon">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：</span>
+								<div class="input-group-content">{{billInfo.remark}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 列表详细介绍 -->
+			</div>
+		</div>
+		<!-- /BOX-BODY -->
+	</div>
+</div>
+
+{{#if showAudit}}
+	{{#bs-modal body=false footer=false header=false}}
+		{{#bs-modal-header}}
+			<h3 class="modal-title">审核提示</h3>
+		{{/bs-modal-header}}
+		{{#bs-modal-body}}
+			<h4 class="modal-title">是否提交审核？</h4>
+		{{/bs-modal-body}}
+
+		{{#bs-modal-footer class="user-add-btn audit"}}
+			{{#ui/mix-button class="pass-btn" iconClass="fa fa-check"  text='审核通过' clickAction="passed" passed="passed" }}
+			{{/ui/mix-button}}
+			{{#ui/mix-button class="reject-btn " iconClass="fa fa-times"  text='审核驳回' clickAction="rejected" rejected="rejected" }}
+			{{/ui/mix-button}}
+			{{#ui/mix-button class="recall-btn" iconClass="fa fa-undo" text='取消' clickAction="recall" recall="recall" }}
+			{{/ui/mix-button}}
+		{{/bs-modal-footer}}
+	{{/bs-modal}}
+{{/if}}

@@ -1,0 +1,80 @@
+<div id="fileImplementDetailContainer" class="mainContent">
+  <div class="wrapperInner jujia-Bd">
+{{#ui/mobile/gestures-container}}
+<div class="jujia-container healthy-file-implement">
+  <section class="implement">
+    <i class="fa fa-file-text-o prev"></i>
+    <span class="top">{{executionReport.createTimeString}}&nbsp;&nbsp;执行报告详情</span>
+    <div class="line">
+      <span>签到：</span>
+      <ul>
+        {{#each checkScoreObject.list as |list| }}
+          {{#if list}}
+          <li><i class="fa fa-star"></i></li>
+          {{else}}
+          <li><i class="fa fa-star-o"></i></li>
+          {{/if}}
+        {{/each}}
+      </ul>
+      <span>执行{{checkScoreObject.status}}，积分+{{checkScoreObject.num}}</span>
+    </div>
+    <div class="line">
+      <span>膳食：</span>
+      <ul>
+        {{#each mealScoreObject.list as |list| }}
+          {{#if list}}
+          <li><i class="fa fa-star"></i></li>
+          {{else}}
+          <li><i class="fa fa-star-o"></i></li>
+          {{/if}}
+        {{/each}}
+      </ul>
+      <span>执行{{mealScoreObject.status}}，积分+{{mealScoreObject.num}}</span>
+    </div>
+    <div class="line">
+      <span>运动：</span>
+      <ul>
+        {{#each sportScoreObject.list as |list| }}
+          {{#if list}}
+          <li><i class="fa fa-star"></i></li>
+          {{else}}
+          <li><i class="fa fa-star-o"></i></li>
+          {{/if}}
+        {{/each}}
+      </ul>
+      <span>执行{{sportScoreObject.status}}，积分+{{sportScoreObject.num}}</span>
+    </div>
+    <div class="line">
+      <span>用药：</span>
+      <ul>
+        {{#each medicationScoreObject.list as |list| }}
+          {{#if list}}
+          <li><i class="fa fa-star"></i></li>
+          {{else}}
+          <li><i class="fa fa-star-o"></i></li>
+          {{/if}}
+        {{/each}}
+      </ul>
+      <span>执行{{medicationScoreObject.status}}，积分+{{medicationScoreObject.num}}</span>
+    </div>
+    <div class="line">
+      <span>康复：</span>
+      <ul>
+        {{#each recoveryScoreObject.list as |list| }}
+          {{#if list}}
+          <li><i class="fa fa-star"></i></li>
+          {{else}}
+          <li><i class="fa fa-star-o"></i></li>
+          {{/if}}
+        {{/each}}
+      </ul>
+      <span>执行{{recoveryScoreObject.status}}，积分+{{recoveryScoreObject.num}}</span>
+    </div>
+  </section>
+</div>
+
+
+{{/ui/mobile/gestures-container}}
+</div>
+</div>
+{{ui/container/infinite-scroll moniteData="" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

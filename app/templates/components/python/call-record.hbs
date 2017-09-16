@@ -1,0 +1,22 @@
+<a class="list-group-item" {{action "showDetail" record.id on="mouseDown"}}>
+        <div class="row">
+          <div class="col-sm-5">
+            <span class="fa-phone"></span>
+            <strong>{{record.callingNumber}}</strong>
+          </div>
+          <div class="col-sm-7 pull-right"><strong>{{moment-format record.beginTime 'MM-DD HH:mm:ss'}}</strong></div>
+        </div>
+        <div class="row">
+          <div class="col-sm-5"><strong>{{record.customer.name}}</strong></div>
+          <div class="col-sm-7 pull-right">
+            <span class="badge {{if record.state.success 'badge-success' 'badge-danger'}}">
+              <strong>{{record.state.name}}</strong>
+            </span>
+          </div>
+        </div>
+        <div class="row top8">
+          <div class="col-sm-5"><strong>通话时长:{{record.duration}}秒</strong></div>
+          <!-- <div class="col-sm-7 pull-right"><a class="link-color" href="#">查看详情</a></div> -->
+          <!-- <a href="#"><div class="col-sm-7 pull-right">查看工单</div></a> -->
+        </div>
+</a>

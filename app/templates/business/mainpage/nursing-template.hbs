@@ -1,0 +1,32 @@
+
+<div class="nodate font20 top150">
+  <span class="pointer dayHover padding10 border-radius5" {{action "editCustomer" on="click"}}>
+    先选择老人呦！
+    <img src="assets/images/icon/customer_c.png" alt="选择老人" style="height:35px">
+  </span>
+</div>
+
+<!--选择老人-->
+{{#if editcustomer}}
+{{#bs-modal body=false footer=false header=false closedAction=(action "exitCustomer")}}
+
+{{#bs-modal-body}}
+  <div class="col-sm-12">
+    <div class="col-sm-12">
+      <div class="col-sm-6 nopadding-left nopadding-right" style="line-height:30px;font-size:13px;">
+        {{#power-select class="input-group-content" placeholder='姓名' options=customerList  selected=customer searchField="namePinyin"
+        noMatchesMessage="没有相关内容"	allowClear=false onchange=(action "chooseCustomer" ) as |customer|}}
+          {{customer.name}}
+        {{/power-select}}
+      </div>
+    </div>
+  </div>
+{{/bs-modal-body}}
+{{#bs-modal-footer class="user-add-btn"}}
+{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="confirm" confirm="confirm" }}
+{{/ui/mix-button}}
+{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消' clickAction="exitCustomer" exitCustomer="exitCustomer"}}
+{{/ui/mix-button}}
+{{/bs-modal-footer}}
+{{/bs-modal}}
+{{/if}}

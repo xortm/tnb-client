@@ -1,0 +1,167 @@
+
+<div class="col-md-12">
+	<div class="box margin-middle max-width">
+		<!-- BOX-BODY -->
+		<div class="box-body">
+			{{#bs-form formLayout=formLayout model=schedulingModel invalid=(action "invalid")}}
+			<!-- 列表编辑-->
+			<div class="row">
+				<div class="col-xs-12">
+					<p class="user-add-btn">
+						<!-- <button class="btn btn-primary" type="button"><i class="fa fa-check icon-white"></i>&ensp;保存</button>
+						<button class="btn btn-light-grey"><i class="fa fa-times"></i>&ensp;取消</button> -->
+						{{#if detailEdit}}
+							{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='保存'   clickActParams=scheduling clickAction="saveScheduling" saveScheduling="saveScheduling"}}
+			        {{/ui/mix-button}}
+							{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="detailCancel" detailCancel="detailCancel"}}
+			        {{/ui/mix-button}}
+						{{else}}
+							{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-edit"  text='修改'  clickAction="detailEditClick" detailEditClick="detailEditClick"}}
+			        {{/ui/mix-button}}
+							{{#ui/mix-button class="user-btn trash-btn" iconClass="fa fa-trash-o"  text='删除'  clickAction="delById" delById="delById" clickActParams=scheduling}}
+			        {{/ui/mix-button}}
+						{{/if}}
+					</p>
+				</div>
+					<div class="col-xs-12 nopadding-horizontal mt20">
+						<!-- <div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">排班人员：</span>
+								{{#if detailEdit}}
+									{{input class="input-group-content" value=scheduling.user.name}}
+                {{#if flagEdit}}
+									<div class="input-group-content">{{scheduling.user.name}}</div>
+									{{else}}
+									{{#bs-form-element class="inline-block form-input-group" controlType="user"  property="user" }}
+                  {{#power-select class="inline-block input-group-content" placeholder="必填项" options=userList selected=defaultUser searchField="user.name" noMatchesMessage="没有相关内容"
+                  allowClear=false onchange=(action "selectNurse" ) as |name|}}
+					        {{name.name}}
+					        {{/power-select}}
+									{{/bs-form-element}}
+										{{/if}}
+								{{else}}
+									<div class="input-group-content">{{scheduling.user.name}}</div>
+								{{/if}}
+		           </div>
+							<div class="divide-10"></div>
+						</div> -->
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">排班人员：</span>
+								{{#if detailEdit}}
+									{{#bs-form-element class="inline-block form-input-group" property="user" }}
+									{{#power-select class="input-group-content" placeholder='必填项' options=userList  selected=defaultUser searchField="user.name"
+									noMatchesMessage="没有相关内容"	allowClear=false onchange=(action "selectNurse" ) as |name|}}
+										{{name.name}}
+									{{/power-select}}
+									{{/bs-form-element}}
+								{{else}}
+									<div class="input-group-content">{{scheduling.user.name}}</div>
+								{{/if}}
+							</div>
+
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">工作类型：</span>
+								<!-- <input class="input-group-content" placeholder=""/> -->
+								{{#if detailEdit}}
+								{{#bs-form-element class="inline-block form-input-group" controlType="period"  property="period" }}
+									{{callbusi/dict-selector curDict=schedulingModel.type groupCode=constants.period
+										showName="必填项" dictSelect="typeSelect" value=schedulingModel.type preselected=false}}
+										<!-- {{log "schedulingModel.type_self" schedulingModel.type}} -->
+									{{/bs-form-element}}
+								{{else}}
+									<div class="input-group-content">{{schedulingModel.type.typename}}</div>
+								{{/if}}
+							</div>
+							<div class="divide-10"></div>
+						</div>
+
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">开始日期：</span>
+								{{#if detailEdit}}
+									<!-- {{input type="date" class="input-group-content" value=schedulingModel.callTimeString required="true"}} -->
+									<!-- {{bootstrap-datepicker placeholder="点击显示日历" class="input-group-content"
+			              format="yyyy-mm-dd" language="zh-CN" value=schedulingModel.callTimeDate
+			              show="dpShowAction" changeDate="changeCallTimeAction" id="schedulingDate"}} -->
+										{{ui/addon/bs-datetimepicker date=schedulingModel.startTimeDate placeholder="开始日期"
+											locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'
+											value=schedulingModel.startTimeDate show="dpShowAction" change="changeStartTimeAction" }}
+								{{else}}
+									<div class="input-group-content">{{schedulingModel.startTimeString}}</div>
+								{{/if}}
+								  <!-- <input type="date" class="input-group-content" placeholder=""/> -->
+							</div>
+							<div class="divide-10"></div>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">结束日期：</span>
+								{{#if detailEdit}}
+									<!-- {{input type="date" class="input-group-content" value=schedulingModel.callTimeString required="true"}} -->
+									<!-- {{bootstrap-datepicker placeholder="点击显示日历" class="input-group-content"
+			              format="yyyy-mm-dd" language="zh-CN" value=schedulingModel.callTimeDate
+			              show="dpShowAction" changeDate="changeCallTimeAction" id="schedulingDate"}} -->
+										{{ui/addon/bs-datetimepicker date=schedulingModel.endTimeDate placeholder="结束日期"
+											locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'
+											value=schedulingModel.endTimeDate show="dpShowAction" change="changeEndTimeAction" }}
+								{{else}}
+									<div class="input-group-content">{{schedulingModel.endTimeString}}</div>
+								{{/if}}
+								  <!-- <input type="date" class="input-group-content" placeholder=""/> -->
+							</div>
+							<div class="divide-10"></div>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">添&nbsp;加&nbsp;人&nbsp;：</span>
+									<div class="input-group-content">{{schedulingModel.createUser.name}}</div>
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+		          <div class="form-input-group">
+		            <span class="input-group-addon">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：</span>
+		            <!-- <input class="input-group-content" placeholder=""/> -->
+								{{#if detailEdit}}
+									{{input class="input-group-content" value=schedulingModel.remark}}
+									<!-- {{bs-form-element  property="operateNote" class="inline-block form-input-group" controlType="operateNote" }} -->
+								{{else}}
+									<div class="input-group-content">{{schedulingModel.remark}}</div>
+								{{/if}}
+		          </div>
+
+		        </div>
+
+					</div>
+			</div>
+			<!-- 列表编辑 -->
+			{{/bs-form}}
+		</div>
+		<!-- /BOX-BODY -->
+	</div>
+</div>
+
+<!-- {{#if showpopInvitePassModal}}
+	{{#bs-modal body=false footer=false header=false closedAction=(action "invitation")
+	submitAction=(action "cancelPassSubmit" scheduling)}}
+		{{#bs-modal-header}}
+			<h3 class="modal-title">删除提示</h3>
+		{{/bs-modal-header}}
+		{{#bs-modal-body}}
+			<h4 class="modal-title">是否删除该条记录？</h4>
+		{{/bs-modal-body}}
+
+		{{#bs-modal-footer as |footer|}}
+			{{#bs-button action=(action "cancelPassSubmit" scheduling) type="primary" disabled=prepaidDisabled}}确定{{/bs-button}}
+			{{#bs-button action=(action "invitation") type="default"}}取消{{/bs-button}}
+		{{/bs-modal-footer}}
+	{{/bs-modal}}
+{{/if}} -->

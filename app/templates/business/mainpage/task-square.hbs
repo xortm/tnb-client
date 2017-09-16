@@ -1,0 +1,82 @@
+{{#ui/mobile/inner-tabbar menus=tabFuncs switchTab="switchTab" serviceListFlag=serviceListFlag clickActFlag=clickActFlag itemXs="col-xs-6" positionClass="abs-top-0 width50B  positionLeft25B top7 border-radius5" theme="block-mode" showLoadingImg=showLoadingImg}}
+{{/ui/mobile/inner-tabbar}}
+<div class="task-squaretime">
+  <div class="font16">
+    {{weekDay}}
+  </div>
+  <div class="font12">
+    {{monthDay}}
+  </div>
+</div>
+{{#ui/mobile/gestures-container}}
+{{#if squareScanShow}}
+  <div class="task-squarescen" id="square_scan" {{action "squareScan" on="tap"}}>
+    <img class="" width='20' src="assets/images/icon/scan.png"/>
+  </div>
+{{else}}
+  <div class="task-squarescen font15 header-text-color" id="square_all" {{action "squareAll" on="tap"}}>
+    全  部
+  </div>
+{{/if}}
+
+{{#if squareScanShow}}
+  {{#unless (eq curTabCode 'finished')}}
+    {{ui/mobile/hor-switcher defData=switcherDef switchAction="switchDataMode" widthClass="width50B bk-color-white"
+    class="hor-switcher" showLoadingImg=showLoadingImg}}
+  {{/unless}}
+{{/if}}
+{{#if showLoadingImg}}
+  <div class="center top40">
+    <img class="width33" src="assets/images/logo/loading.gif" alt="">
+  </div>
+{{/if}}
+
+  {{log "has ? scrollFlag" scrollFlag}}
+  {{#if (eq curTabCode 'todayTask')}}
+  <div id="taskSquareContainer" class="mainContent {{if showLoadingImg 'hidden'}} {{if squareScanShow 'top53' 'top9'}}">
+    <div class="wrapperInner padding-bottom50">
+      {{#if (eq dataType 'task')}}
+      {{log "serviceList1111" serviceList}}
+      {{#if saveFlag}}
+      <div class="change-sex center" style="padding: 70% 5%;color: #fff;font-size:20px;">
+        {{saveFlagMessage}}
+      </div>
+      {{/if}}
+        {{#each serviceList  as |task|}}
+        {{log "project111112" task.timeStrOne}}
+          {{#callbusi/mobile/list-task-item saveFlag=saveFlag item=task type=1 scrollFlagDomId="taskSquareContainer" didInsertAct="didInsertAct"
+            finish="finish" panStartAction="panStartAction" panEndAction="panEndAction" outerClass="col-sm-6 col-xs-12"}}
+            {{/callbusi/mobile/list-task-item}}
+        {{/each}}
+      {{else}}
+        {{#each serviceCustomerList  as |task|}}
+          {{#callbusi/mobile/list-task-item item=task type=2 scrollFlagDomId="taskSquareContainer" didInsertAct="didInsertAct"
+            finish="finish" panStartAction="panStartAction" panEndAction="panEndAction" outerClass="col-sm-6 col-xs-12"}}
+          {{/callbusi/mobile/list-task-item}}
+        {{/each}}
+      {{/if}}
+
+    </div>
+  </div>
+  {{ui/container/infinite-scroll moniteData="serviceList" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}
+  {{else}}
+  <div id="taskSquareContainer" class="mainContent {{if showLoadingImg 'hidden'}}" style="top:40px;">
+    <!-- {{#if showLoadingImg}}
+      <div class="center top20">
+        <img class="width33" src="assets/images/logo/loading.gif" alt="">
+      </div>
+    {{/if}} -->
+    <div class="wrapperInner">
+      <div class="timesCount">
+          {{#each countList  as |customer|}}
+            {{#ui/mobile/customer-expandable-item customer=customer nursingLog="saveNursingLog"
+              customerId=customer.id itemExpand="countItemExpand"
+              itemExpand="itemExpand" expanded=customer.expanded}}
+            {{/ui/mobile/customer-expandable-item}}
+          {{/each}}
+        </div>
+        </div>
+      </div>
+      {{ui/container/infinite-scroll moniteData="serviceList" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}
+    {{/if}}
+{{/ui/mobile/gestures-container}}

@@ -1,0 +1,98 @@
+<div id="nursinglogDetailContainer" class="mainContent">
+  <div class="wrapperInner bgcolor-white">
+  {{#if lookModel}}
+  <div class="margin-0-10px border-bottom-1 height44 position-relative">
+    <div class="pull-left font-black font16  line-height-44">
+      <span>{{nursinglog.nurscustomer.name}}</span>
+      <span class="padding-left-10">{{nursinglog.nurscustomer.bed.name}}</span>
+    </div>
+
+    {{#if (eq nursinglog.remarkHasApplyNum 1)}}
+      <div class="position_absolute" style="bottom:0;right:30%;">
+        <img class="" width='48' src="assets/images/mobile/done.png" alt="">
+      </div>
+    {{else if (eq nursinglog.remarkHasApplyNum 2)}}
+      <div class="position_absolute" style="bottom:0;right:30%;">
+        <img class="" width='48' src="assets/images/mobile/followup.png" alt="">
+      </div>
+    {{else if (eq nursinglog.remarkHasApplyNum 3)}}
+      <div class="position_absolute" style="bottom:0;right:30%;">
+        <img class="" width='48' src="assets/images/mobile/summary.png" alt="">
+      </div>
+    {{else}}
+      <div class="position_absolute" style="bottom:0;right:30%;">
+        <img class="" width='48' src="assets/images/mobile/nothing.png" alt="">
+      </div>
+    {{/if}}
+
+    <ul class="pull-right text-right color999999 nopadding-left">
+        <li class="font14 top5">{{nursinglog.recordUser.name}}</li>
+        <li class="font12 top2">{{nursinglog.recordTimeStringNMddhhmm}}</li>
+    </ul>
+  </div>
+  <div class="padding-0-10 top10 color666666">
+    {{nursinglog.remarkContent}}
+  </div>
+
+  {{else}}
+  {{#ui/mobile/gestures-container}}
+    <div class="margin-0-10px border-bottom-1 height44 line-height-44">
+      <div class="pull-left font-black font16">
+        <span>{{nursinglog.nurscustomer.name}}</span>
+        <span class="padding-left-10">{{nursinglog.nurscustomer.bed.name}}</span>
+      </div>
+      <div class="pull-right color999999">
+        <span class="font14">{{nursinglog.recordUser.name}}</span>
+      </div>
+    </div>
+    <div class="clearfix top10 height30 line-height-30 border-radius5 center left10 border-1solid"
+     style="width:108px;overflow:hidden;background:##F0F0F0;color:#ccc;">
+      <div class="pull-left width50B {{if common 'allcss'}}" {{action 'commonaction' on='tap'}}>
+        普通
+      </div>
+      <div class="pull-left width50B {{if sumup 'allcss'}}" {{action 'sumupaction' on='tap'}}>
+        总结
+      </div>
+    </div>
+
+      <ul class="padding-left-10 padding-right-10">
+         <li class="top10">
+           {{textarea type="text" class="full-width min-height-100 form-input-group label-normal form-control"
+          value=logContent  placeholder="日志内容"}}
+        </li>
+
+
+      <!-- {{#if speechFlag}}
+        <li id="speech111" {{action "speechEnd" on="tap"}} class="top10 logSpeech">
+          结束录音</li>
+      {{else}}
+        <li id="speechEnd" {{action "speechInput" on="tap"}} class="top10 logSpeech">
+          点击录音</li>
+      {{/if}} -->
+      </ul>
+
+      <div class="position-relative padding10 dynamics-detail-items clearfix">
+        {{#each tagItems  as |item|}}
+          {{#if common}}
+            {{#if (eq item.typecode "nurseTag2")}}
+              <div class="dynamics-detail-tag tagend {{if item.hasSelect 'tagendlogSelect' ''}}" {{action "tagChoice" item.id on="tap"}}>
+                {{item.typename}}</div>
+            {{else if (eq item.typecode "nurseTag1")}}
+            <div class="dynamics-detail-tag tagfollow {{if item.hasSelect 'tagfollowlogSelect' ''}}" {{action "tagChoice" item.id on="tap"}}>
+              {{item.typename}}</div>
+            {{/if}}
+          {{/if}}
+        {{/each}}
+      </div>
+
+      <div class="dynamics-detail-save" id="save_log" {{action 'saveLog' on='tap'}}>
+        保存
+      </div>
+      {{/ui/mobile/gestures-container}}
+
+    {{/if}}
+
+  </div>
+</div>
+{{ui/container/infinite-scroll moniteData="nursinglogDetailList"
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

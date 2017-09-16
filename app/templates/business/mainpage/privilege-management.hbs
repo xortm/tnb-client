@@ -1,0 +1,87 @@
+<div class="col-md-12">
+    <!-- BOX -->
+    <div class="box">
+        <div class="box-body">
+            <div id="datatable1_wrapper" class="dataTables_wrapper form-inline " role="grid">
+                <div class="row">
+                    <div class="col-md-9">
+                        <!--搜索-->
+                        <div class="col-md-3 no-padding-l-r">
+                          <div class="input-group bottom8">
+                            {{input class="form-control" enter='searchPrivilege' value=queryCondition type="text" placeholder="搜索权限名称"}}
+                            <span class="input-group-btn" {{action 'searchPrivilege'}}>
+                              <button class="btn btn-primary btn-reduce" type="button" style="touch-action: manipulation; -ms-touch-action: manipulation;">
+                                <i class="fa fa-search"></i>
+                              </button>
+                            </span>
+                          </div>
+                        </div>
+                        <div class="col-md-3 no-padding-l-r">
+                          <div class="input-group bottom8">
+                            {{input class="form-control" enter='searchParentPrivilege' value=queryParentCondition type="text" placeholder="搜索上级权限名称"}}
+                            <span class="input-group-btn" {{action 'searchParentPrivilege'}}>
+                              <button class="btn btn-primary btn-reduce" type="button" style="touch-action: manipulation; -ms-touch-action: manipulation;">
+                                <i class="fa fa-search"></i>
+                              </button>
+                            </span>
+                          </div>
+                        </div>
+                        <div class="col-md-3 no-padding-l-r">
+                          <div class="input-group  full-width" >
+                              <select class="ember-select form-control inline-block" onchange= {{ action 'systemTypeChange' value="target.value"}}>
+                                  <option value="1">机构</option>
+                                  <option value="2">居家</option>
+                              </select>
+                          </div>
+                        </div>
+                        <!--搜索-->
+                    </div>
+                    <div class="user-add-btn col-md-3">
+                        {{#ui/mix-button class="user-btn pull-right" iconClass="el-plus" text='添加' clickAction="addPrivilege" addPrivilege="addPrivilege" }}
+                        {{/ui/mix-button}}
+                    </div>
+                </div>
+                <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+                    <thead>
+                        <tr role="row">
+                            <th rowspan="1" colspan="1" width="">名称</th>
+                            <th rowspan="1" colspan="1" width="">url</th>
+                            <th rowspan="1" colspan="1" width="">级别</th>
+                            <th rowspan="1" colspan="1" width="">上级</th>
+                            <th rowspan="1" colspan="1" width="">序号</th>
+                            <th rowspan="1" colspan="1" width="">掩码</th>
+                            <th rowspan="1" colspan="1" width="">类别</th>
+                        </tr>
+                    </thead>
+                    <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+                        {{#if privilegeList }}
+                            {{#each privilegeList as |privilege|}}
+                                <tr {{action "enterDetail" privilege on="click"}}>
+                                    <td class="ellipsis">
+                                        {{#if privilege.showName }}
+                                            {{privilege.showName}}
+                                        {{else}}
+                                            {{privilege.mobileMenuName}}(移动端)
+                                        {{/if}}
+                                    </td>
+                                    <td class="ellipsis hidden-xs">{{privilege.code}}</td>
+                                    <td class="ellipsis hidden-xs">{{privilege.level}}</td>
+                                    <td class="ellipsis hidden-xs">{{privilege.parent.showName}}</td>
+                                    <td class="ellipsis hidden-xs">{{privilege.order}}</td>
+                                    <td class="ellipsis hidden-xs">{{privilege.remark}}</td>
+                                    <td class="ellipsis hidden-xs">{{privilege.type}}</td>
+                                </tr>
+                            {{/each}}
+                        {{/if}}
+                    </tbody>
+                </table>
+                {{#if privilegeList }}
+                    {{page-numbers content=privilegeList showFL=true numPagesToShow=5}}
+                {{else}}
+                    <h1 class="col-sm-12 center unTask"></h1>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+    <!-- /BOX -->
+</div>

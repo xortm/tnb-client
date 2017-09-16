@@ -1,0 +1,185 @@
+<div class="col-sm-12" id="overflowXHidden">
+  <div class="box position-relative overflow-hidden padding-bottom50">
+    <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+      <div class="row clear font14">
+        <div  class="col-sm-6 nopadding-left">
+          <div class="col-sm-6 date-range nopadding-horizonta">
+              <div class="input-group line-height-30">
+                <a class="js_update btn btn-default" {{action 'elderSeach' on='click'}}>
+                  老人检索&nbsp;<i class="fa fa-chevron-down"></i>
+                </a>
+                <!-- <a class="padding-left-15 pointer" {{action 'queryAll' on='click'}}>
+                  查看全部老人
+                </a> -->
+              </div>
+            {{#if seachCriteria}}
+            {{callbusi/build-searchcustomer customClass="positionLeft15"
+            theCustomerList=theCustomerList searchHide="searchHide" queryAll="queryAll" come="come"}}
+            {{/if}}
+          </div>
+          {{#if dynamicType}}
+          <div class="col-sm-6 nopadding-horizonta line-height-30">
+            <div class="pull-right">
+                <!-- <i class="pointer {{if queryScheduled 'fa-dot-circle-o' 'fa-circle-o'}}" {{action 'queryScheduled' on='click'}}> </i>-->
+                <span>&nbsp;只显示预警老人</span>
+                {{#if queryScheduled}}
+                  <div class="pull-right color-white select-warning" {{action 'queryScheduled' on='click'}}>
+                    <div class="pull-left padding-left-5">否</div>
+                    <div class=" pull-left select-backg-true left10" style=""></div>
+                  </div>
+                {{else}}
+                  <div class="pull-right color-white select-warning bk-color-ccc" {{action 'queryScheduled' on='click'}}>
+                    <div class=" pull-left select-backg-true right5 left5 right10" style=""></div>
+                    <div class="pull-left">是</div>
+                  </div>
+                {{/if}}
+
+            </div>
+          </div>
+          {{/if}}
+        </div>
+        <div class="col-sm-6">
+          {{#if dynamicType}}
+          <div class="col-sm-8 nopadding-left nopadding-right line-height-30">
+              <span><img class="topF2" src="assets/images/icon/heart.png" alt="">  健康数据</span>
+              <span class="left26"><img class="topF2" src="assets/images/icon/download.png" alt="">  位置信息</span>
+              <span class="left26"><img class="topF2" src="assets/images/icon/warning.png" alt="">  预警信息</span>
+          </div>
+          {{/if}}
+          <!-- <div class="pull-right">
+              <div class="">
+                <a class="js_update btn-default btn" {{action 'selectType' on="click"}}>
+                  {{selectTypeName}}&nbsp;<i class="fa fa-chevron-down"></i>
+                </a>
+              </div>
+              {{#if selectTypeFlag}}
+                <div class="position-absolute pointer feedSelectBox">
+                  <div class="feedSelect {{if dynamicType 'bk-color-ccc'}}" {{action 'dynamicType' on="click"}}>
+                    查看动态
+                  </div>
+                  <div class="feedSelect {{if positionType 'bk-color-ccc'}}" {{action 'positionType' on="click"}}>
+                    查看位置
+                  </div>
+                </div>
+              {{/if}}
+          </div> -->
+        </div>
+      </div>
+
+    {{#if dynamicType}}
+      <div class="top20 left-10 right-10 clear">
+        {{#if customerList}}
+          {{#each customerList as |customer|}}
+            {{callbusi/customer-elderstate class="pull-left"
+              warningNew=warningNew heartNew=heartNew downloadNew=downloadNew
+              customer=customer showelder="showelderfeed"}}
+          {{/each}}
+        {{else}}
+          <div class="nodate">暂无数据</div>
+        {{/if}}
+      </div>
+    {{else}}
+      <div class="center">
+        房态图加位置
+      </div>
+    {{/if}}
+
+    </div>
+
+  </div>
+</div>
+
+<div class="elderShowLeft" id="click_elder" style="z-index:100;">
+  <div class="leftHideBtn pointer" id="elderHideBtn">
+      <img class="topF2" src="assets/images/icon/leftBtn.png" alt="">
+  </div>
+  <ul class="nopadding-left" style="height:100%;overflow:hidden;">
+    <li class="height50 font18 padding-left40 weight-bold">
+      {{elderMessage}}
+    </li>
+    <li class="clear top20">
+      <div class="pull-left padding-left-20">
+        {{#ui/img-intergration name="headImg"
+        imgSrc=customerAvatarUrl height=66 width=66
+        businessType=constants.uploadBusinessType_headimg
+        }}
+        {{/ui/img-intergration}}
+      </div>
+      <div class="pull-left padding-left-8">
+        <div class="top10 font14">
+          {{customerName}}
+        </div>
+        <div class="top10">
+          {{buildingRoomBed}}
+        </div>
+      </div>
+    </li>
+    {{#if (eq showFlag "heartNewFlag")}}
+      <li class="top40 padding-left-20 font14">
+        <div class="top10  center">
+          <div class="padding-left-10 pull-left width33B">检测时间</div>
+          <div class="pull-left width33B">体检项目</div>
+          <div class="pull-left width33B">测量值</div>
+        </div>
+        {{#each heartNewList as |message|}}
+          <div class="top10  center">
+            <div class="padding-left-10 pull-left width33B">
+              {{#if message.time}}
+              {{message.time}}
+              {{else}}
+              无
+              {{/if}}
+            </div>
+
+            {{#if (eq message.business 'healthExamType1')}}
+              <div class="pull-left width33B">{{message.healthName}}</div>
+              <div class="pull-left width33B">{{message.result}}/{{message.resultAddtion}}{{message.healthTypeUnit}}</div>
+            {{else}}
+              <div class="pull-left width33B">{{message.healthName}}</div>
+              <div class="pull-left width33B">{{message.result}}{{message.healthTypeUnit}}</div>
+            {{/if}}
+          </div>
+        {{/each}}
+      </li>
+    {{else if (eq showFlag "warningNewFlag")}}
+      <li class="top40 padding-left-20 font14">
+        <!-- <div class="top10  center">
+          <div class="padding-left-10 pull-left width33B">呼叫时间</div>
+          <div class="pull-left width67B">呼叫位置</div>
+        </div> -->
+        {{#each warningNewList as |message|}}
+          <!-- <div class="top10  center">
+            <div class="padding-left-10 pull-left width33B">{{message.time}}</div>
+            <div class="pull-left width67B">{{message.allBedName}}</div>
+          </div> -->
+          <div class="top10  padding-left-10 padding-right-5">
+            {{message.time}},老人{{message.content}}
+            {{#if (eq message.business "cancelButtonCalling")}}
+              。
+            {{else}}
+            ,在{{message.allBedName}}
+            {{/if}}
+          </div>
+        {{/each}}
+      </li>
+    {{else if (eq showFlag "downloadNewFlag")}}
+      <li class="top40 padding-left-20 font14">
+        <div class="top10  center">
+          <div class="padding-left-10 pull-left width33B">时间</div>
+          <div class="pull-left width67B">所在位置</div>
+          <!-- <div class="pull-left width33B">信息</div> -->
+        </div>
+        {{#each downloadNewList as |message|}}
+          <div class="top10  center">
+            <div class="padding-left-10 pull-left width33B">{{message.time}}</div>
+            <div class="pull-left width67B">{{message.position}}</div>
+            <!-- <div class="pull-left width33B">{{message.content}}</div> -->
+          </div>
+        {{/each}}
+      </li>
+    {{/if}}
+
+
+  </ul>
+
+</div>

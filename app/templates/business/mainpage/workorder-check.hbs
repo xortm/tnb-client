@@ -1,0 +1,134 @@
+{{outlet}}
+<div class="page-content">
+  {{log 'faanfwe0' curtask}}
+{{#if curtask}}
+<div class="row margin-bottom10">
+  <div class="col-sm-2">
+    {{#power-select placeholder="工单状态" options=completeList selected=status
+      allowClear=true onchange=(action "statuschoose") as |sta|}}
+      {{sta.typename}}
+    {{/power-select}}
+  </div>
+  <div class="col-sm-5">
+    修改日期：
+      {{input type="date" value=chooseDateFrom class='choosedatetype' focus-out="choosetime"}}~
+      {{input type="date" value=chooseDateTo class='choosedatetype' focus-out="choosetime"}}
+  </div>
+  <div class="col-sm-3 pull-right">
+    <div class="input-group">
+        {{input type="search" class="form-control" name="search" value=ordername enter='searchorder' placeholder="搜索（姓名/标题）"}}
+        <span class="input-group-addon">
+          <span class="linecons-search" id="linecons-search" {{action 'searchorder'}}></span>
+        </span>
+    </div>
+  </div>
+</div>
+{{#if workOrderList}}
+{{log 'workorderlistget2'}}
+<div class="row">
+    <div class="col-sm-4">
+      {{log 'workOrderget1' workOrderList}}
+      {{#each workOrderList as |workOrder|}}
+      {{log 'workOrderget' workOrderList}}
+       <!-- value={{workOrder.id}} style={{choosecolor}}-->
+        <div class="hovertype list-line border-bot1 {{if workOrder.choosecolor 'chooseco' ''}}" {{action 'displayDetail' workOrder on="click"}}>
+            {{log 'workorderlistget'}}
+            {{#callbusi/workorder-list
+                workOrder=workOrder
+              }}
+            {{/callbusi/workorder-list}}
+        </div>
+      {{/each}}
+      <div class="tight-row bk-color-white">
+        {{log 'workorderlist get has the meta ?' workOrderList}}
+        {{page-numbers content=workOrderList showFL=true numPagesToShow=3}}
+      </div>
+    </div>
+
+    <div class="col-sm-8">
+          <div class="list-line margin10-notop ">
+            {{#callbusi/workorder-item
+              workOrder=workOrder
+              popSuccess="popSuccess"
+              popfreezeOrder="popfreezeOrder"
+              popremovefreezeOrder="popremovefreezeOrder"
+              editMode=false
+              successOrder="successOrder"
+              isnotCheck = false
+              }}
+            {{/callbusi/workorder-item}}
+          </div>
+          <div class="panel panel-default bottom-buffer-little rightmove  line2">
+            {{#each workOrderAddlist as |workOrderAdd|}}
+              {{log 'workorderaddlistget in hbs' workOrderAdd.additionalType}}
+              <div class="row">
+                <div class="col-sm-8 fontBigger weight-bold">
+                  {{workOrderAdd.additional.name}} 添加了{{workOrderAdd.additionalTypeShow}}
+                  <span class="redtime">&nbsp;&nbsp;&nbsp;&nbsp;{{workOrderAdd.remindTimeShow}}</span>
+                </div>
+                <div class="col-sm-4 pull-right font-color">
+                  {{workOrderAdd.createTimeShow}}
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6 font-color line-height-label">
+                  {{workOrderAdd.content}}
+                </div>
+              </div>
+              <br>
+            {{/each}}
+          </div>
+    </div>
+  </div>
+{{else}}
+<h1 class="center unTask">没有工单</h1>
+{{/if}}
+{{else}}
+<h1 class="center unTask">请选择当前任务</h1>
+{{/if}}
+
+</div>
+
+<!-- 确认弹层 -->
+{{#if alertmodal}}
+ {{#bs-modal body=false footer=false header=false submitAction=(action "checkConfirm")
+    closedAction=(action "cancelSubmit")}}
+  {{#bs-modal-header}}
+     <div class="modal-confirm">确认成单？</div>
+   {{/bs-modal-header}}
+  {{#bs-modal-footer as |footer|}}
+    {{#bs-button action=(action "cancelSubmit") type="default"}}取消{{/bs-button}}
+    {{#bs-button action=(action "checkConfirm") type="default"}}确定{{/bs-button}}
+  {{/bs-modal-footer}}
+   {{/bs-modal}}
+{{/if}}
+<!-- 冻结弹层 -->
+{{#if freezemodal}}
+ {{#bs-modal body=false footer=false header=false submitAction=(action "freezeFunc")
+    closedAction=(action "cancelFreeze")}}
+  {{#bs-modal-header}}
+     <div class="modal-confirm">冻结工单</div>
+   {{/bs-modal-header}}
+   <div class="layer-lable-style">冻结原因（必填）：</div>
+   <div style="padding:10px 0;">
+     {{input type="text" value=freezeReason class="form-control"}}
+   </div>
+  {{#bs-modal-footer as |footer|}}
+    {{#bs-button action=(action "cancelFreeze") type="default"}}取消{{/bs-button}}
+    {{#bs-button action=(action "freezeFunc") type="default" disabled=freezeDisabled}}确定{{/bs-button}}
+  {{/bs-modal-footer}}
+   {{/bs-modal}}
+{{/if}}
+<!-- 解除冻结弹层 -->
+{{#if freezeRemovemodal}}
+ {{#bs-modal body=false footer=false header=false submitAction=(action "removefreezeFunc")
+    closedAction=(action "cancelremoveFreeze")}}
+  {{#bs-modal-header}}
+     <div class="modal-confirm">确定解除冻结?</div>
+   {{/bs-modal-header}}
+  {{#bs-modal-footer as |footer|}}
+    {{#bs-button action=(action "cancelremoveFreeze") type="default"}}取消{{/bs-button}}
+    {{#bs-button action=(action "removefreezeFunc") type="default"}}确定{{/bs-button}}
+  {{/bs-modal-footer}}
+   {{/bs-modal}}
+{{/if}}

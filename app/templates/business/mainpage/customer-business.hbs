@@ -1,0 +1,62 @@
+<div id="customerBusinessContainer" class="mainContent {{if global_pageConstructure.showLoader 'hide' ''}}" style="top:43px;">
+  <div class="wrapperInner cs-infoBd">
+    {{#if customerId}}
+      {{#ui/mobile/gestures-container}}
+      <div class="bk-color-2FA7FD width100B height-auto padding-10-0 top10">
+        <div class="font20 color-white line-height-30 center">监护人信息</div>
+        <div class="font14 color-white line-height-20 padding-left-20">
+          <span>姓&nbsp;&nbsp;&nbsp;&nbsp;名: </span>
+          <span>{{healtyCustomer.guardianFirstName}}</span>
+        </div>
+        <div class="font14 color-white line-height-30 padding-left-20">
+          <span>性&nbsp;&nbsp;&nbsp;&nbsp;别: </span>
+          <span>{{healtyCustomer.guardianFirstGener.typename}}</span>
+        </div>
+        <div class="font14 color-white line-height-30 padding-left-20">
+          <span>联系方式: </span>
+          <span>{{healtyCustomer.guardianFirstContact}}</span>
+        </div>
+        <div class="font14 color-white line-height-30 padding-left-20">
+          <span>与老人关系: </span>
+          <span>{{healtyCustomer.firstRelation.typename}}</span>
+        </div>
+      </div>
+
+      <ul class="profile">
+        <li class="carousel color666" id="customer-health" {{action 'switchPage' 'customer-health' 'customer-health' on="tap"}}>
+          <i class="profile-i"><img class="a-img" src="assets/images/mobile/customer-health.png"/></i>
+          <span class="profile-span">健康数据 </span>
+          <i class="fa-angle-right font20 my-right color-ccc"></i>
+        </li>
+        <div class="margin-leftright10 border-bottom-1"></div>
+
+        <li class="carousel color666 border-bottom-1" id="customer-point" {{action 'switchPage' 'customer-point' 'customer-point' on="tap"}}>
+          <i class="profile-i"><img class="a-img" src="assets/images/mobile/customer-point.png"/></i>
+          <span class="profile-span">生活习惯 </span>
+          <i class="fa-angle-right font20 my-right color-ccc"></i>
+        </li>
+
+        <li class="carousel color666 border-bottom-1" id="customer-dynamic-list" {{action 'switchPage' 'customer-dynamic-list' 'customer-dynamic-list' on="tap"}}>
+          <i class="profile-i"><img class="a-img" src="assets/images/mobile/customer-dynamic-list.png"/></i>
+          <span class="profile-span">老人动态 </span>
+          <i class="fa-angle-right font20 my-right color-ccc"></i>
+        </li>
+
+        <li class="carousel color666 border-bottom-1" id="pressure-sores-care" {{action 'switchPage' 'pressure-sores-care' 'pressure-sores-care' on="tap"}}>
+          <i class="profile-i"><img class="a-img" src="assets/images/mobile/pressure-sores-care.png"/></i>
+          <span class="profile-span">压疮管理 </span>
+          <i class="fa-angle-right font20 my-right color-ccc"></i>
+        </li>
+
+      </ul>
+      {{/ui/mobile/gestures-container}}
+    {{else}}
+      {{#if nocustomerId}}
+        <div class="center" style="margin-top:40px;">请在上方选择老人</div>
+      {{else}}
+        <div class="nodate">暂无数据</div>
+      {{/if}}
+    {{/if}}
+  </div>
+</div>
+{{ui/container/infinite-scroll moniteData="" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

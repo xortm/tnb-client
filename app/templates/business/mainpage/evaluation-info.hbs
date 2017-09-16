@@ -1,0 +1,67 @@
+{{#ui/mobile/gestures-container}}
+<div id="evaluationInfoContainer" class="mainContent border-top-1 {{if global_pageConstructure.showLoader 'hide' ''}} " style="background:#fff;">
+  <div id="health-area" class="wrapperInner" >
+      {{#if nocustomerId}}
+        <div class="center" style="margin-top:40px;">
+          请返回上一级选择老人
+        </div>
+      {{else}}
+        {{#if nowResult}}
+        <div class="col-xs-12 nopadding-left nopadding-right" style="padding-bottom:40px;">
+          <ul class="profile">
+              <li class=" carousel color666 border-top-1 border-bottom-1" id="chooseUser" {{action 'toChoose' 'user' "chooseUser" on="tap"}}>
+                  <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                  <span class="profile-span">评估人 </span>
+                  <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{nowResult.user.name}}</span>
+                  <i class="fa-angle-right font20 my-right color-ccc"></i>
+              </li>
+              <li class=" carousel color666 border-top-1 border-bottom-1" id="chooseDate" {{action 'toChoose' 'date' "chooseDate" on="tap"}}>
+                  <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                  <span class="profile-span">评估日期 </span>
+                  <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{nowResult.createDateTimeString}}</span>
+                  <i class="fa-angle-right font20 my-right color-ccc"></i>
+              </li>
+              <li class=" carousel color666 border-top-1 border-bottom-1">
+                  <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                  <span class="profile-span">问卷内容 </span>
+                  <span class="pull-right" style="line-height: 42px;margin-right: 10px;">得分：{{score}}</span>
+              </li>
+                  <div class="col-xs-12" style="padding-top:10px;">
+                    {{#each nowResult.questions as |question|}}
+                      <div style="font-size:15px;">{{question.curIndex}}.{{question.questionContent}}</div>
+                      {{#each question.answerList as |answer|}}
+                        <div style="font-size:15px;margin:7px 0;" {{action "chooseAnswer" answer question on="tap"}} id="{{concat 'eva-info-mobile-' answer.id}}">
+                          <div class="fontLogo choose-inline-block choose-box {{if answer.hasSelcted 'fa-check' ''}}" ></div>&nbsp;&nbsp;
+                          {{answer.curIndex}}.{{answer.content}}({{answer.score}}分)
+                        </div>
+                      {{/each}}
+                    {{/each}}
+                  </div>
+          </ul>
+        </div>
+        {{else}}
+          <div class="nodate">请增加评估</div>
+        {{/if}}
+      {{/if}}
+  </div>
+</div>
+{{#if showModel}}
+  <div class="change-sex center" style="padding: 70% 5%;color: #fff;" >
+    {{showContent}}
+  </div>
+{{/if}}
+{{#ui/mobile/gestures-container}}
+{{#if nocustomerId}}
+{{else}}
+<div class="detail-dynamicsbtn" id="eva-view-history"  style="bottom:40px;" {{action 'toResultHistory' on="tap"}}>
+  <span class="padding-left-10">查看历史评估</span>
+</div>
+<div class="detail-dynamicsbtn" id="eva-add-result"  style="bottom:0px;" {{action 'addNewEva' on="tap"}}>
+  <img class="bottom2" width='15' src="assets/images/mobile/add.png" alt="">
+  <span class="padding-left-10">新增评估</span>
+</div>
+{{/if}}
+{{/ui/mobile/gestures-container}}
+{{/ui/mobile/gestures-container}}
+{{ui/container/infinite-scroll moniteData="nowResult"
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

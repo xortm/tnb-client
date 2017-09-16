@@ -1,0 +1,38 @@
+{{#bs-modal body=false footer=false header=false closedAction=(action "invitation")}}
+    {{#bs-modal-header}}
+        <h4 class="modal-title">删除随时任务</h4>
+    {{/bs-modal-header}}
+    {{#bs-modal-body}}
+    <div id="showExesContainer" class="mainContent">
+      <div class="wrapperInner">
+        <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable mt15" style="margin-top:0;margin-bottom:10px;" aria-describedby="datatable1_info">
+          <thead>
+            <tr role="row">
+              <th rowspan="1" colspan="1" width="" style="border-bottom:none;">项目名称</th>
+              <th rowspan="1" colspan="1" width="" style="border-bottom:none;">服务人员</th>
+              <th rowspan="1" colspan="1" width="" style="border-bottom:none;">服务时间</th>
+              <th rowspan="1" colspan="1" width="" style="border-bottom:none;">操作</th>
+            </tr>
+          </thead>
+          <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+            {{#each itemExes as |itemExe|}}
+            {{log "111111111111111111" nursing}}
+            <tr class="gradeA odd">
+              <td class=" ellipsis sorting_1">{{itemExe.itemProject.item.name}}</td>
+              <td class=" ellipsis ">{{itemExe.exeStaff.name}}</td>
+              <td class=" ellipsis " >{{itemExe.createDateTimeString}}</td>
+              <td class=" ellipsis" style="color:#2FA7FD;" {{action "minusAction" itemExe.id itemExe.exeStaff.id}}>删除</td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {{/bs-modal-body}}
+    <!-- {{#bs-modal-footer class="user-add-btn"}}
+      {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-print"  text='打印' clickAction="printImg" printImg="printImg"}}
+      {{/ui/mix-button}}
+      {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="invitation" invitation="invitation"}}
+      {{/ui/mix-button}}
+    {{/bs-modal-footer}} -->
+{{/bs-modal}}

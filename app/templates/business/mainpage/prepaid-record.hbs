@@ -1,0 +1,179 @@
+{{outlet}}
+<!-- 日期搜索导航 -->
+<div class="col-sm-11">
+  <div class="row">
+    <div class="col-sm-6">
+      创建日期：
+        {{input type="date" value=chooseDateFrom class='choosedatetype' focus-out="choosetime"}}~
+        {{input type="date" value=chooseDateTo class='choosedatetype' focus-out="choosetime"}}
+    </div>
+    <div class="col-sm-3 pull-right">
+      <span class="money">钱包：￥{{balance}}</span>
+      {{#ui/mix-button iconClass="fa-cny"
+      clickAction="doPrepaid" doPrepaid="doPrepaid" text="充值"}}
+      {{/ui/mix-button}}
+    </div>
+  </div>
+  {{#if payrecordList}}
+  <div class="row bk-color-white top30">
+    <table class="table responsive">
+      <thead>
+        <tr>
+          <th>订单号</th>
+          <th>金额</th>
+          <th>支付渠道</th>
+          <th>支付时间</th>
+          <th>支付状态</th>
+          <th>创建时间</th>
+          <th>备注</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each payrecordList as |payrecord|}}
+        {{ log 'payrecord in hbs:' payrecord }}
+        <tr>
+          <td>{{payrecord.code}}</td>
+          <td class="moneyorange">￥{{payrecord.amountRounded}}</td>
+          <td>{{payrecord.payChannelStr}}</td>
+          <td>{{payrecord.payTimeStr}}</td>
+          {{#if (eq payrecord.payStatus 1)}}
+            <td class="moneygreen">{{payrecord.payStatusStr}}</td>
+          {{/if}}
+          {{#if (eq payrecord.payStatus 0)}}
+            <td class="moneyred">{{payrecord.payStatusStr}}</td>
+          {{/if}}
+          {{#if (eq payrecord.payStatus 3)}}
+            <td class="moneyred">{{payrecord.payStatusStr}}</td>
+          {{/if}}
+          {{#if (eq payrecord.payStatus 2)}}
+            <td>{{payrecord.payStatusStr}}</td>
+          {{/if}}
+          <td>{{payrecord.createTimeStr}}</td>
+          <td>{{payrecord.remark}}</td>
+          <td>
+            {{#if (eq payrecord.payStatus 3)}}
+              <span class="oprationStyle" {{action "doRepayment" payrecord on="click"}}>支付</span>
+            {{/if}}
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+  <div class="col-sm-5 col-sm-offset-4 top16">
+    <div class="tight-row bk-color-white padding-top5">
+      {{page-numbers content=payrecordList showFL=true numPagesToShow=3}}
+    </div>
+  </div>
+  {{/if}}
+</div>
+
+<!-- 充值弹层 -->
+{{#if showModal}}
+ {{#bs-modal body=false footer=false header=false submitAction=(action "prepaidCash")
+    closedAction=(action "cancelSubmit")}}
+  {{#bs-modal-header}}
+  {{log 'proportion.value get ' proportion}}
+     <h4 class="modal-title inline-block">充值：</h4>
+   {{/bs-modal-header}}
+   <div class="layer-lable-style">充值金额：<span class="text-danger">*</span></div>
+     <div style="width:20%;display:inline-block;padding:10px 0;">
+          {{input type="text" value=content class="form-control" placeholder="请输入金额"}}
+      </div>
+      <div style="width:10%;display:inline-block;">
+        元
+      </div>
+  <div class="layer-lable-style">备注：</div>
+     <div style="padding:10px 0;">
+       {{input type="text" value=remark class="form-control" placeholder="请输入备注"}}
+     </div>
+  <!-- {{bs-modal-footer closeTitle="取消" submitTitle="充值"}} -->
+  <div class="text-danger bottom10">*为必填内容且必须为数字</div>
+  {{#bs-modal-footer as |footer|}}
+    {{#bs-button action=(action "cancelSubmit") type="default"}}取消{{/bs-button}}
+    {{#bs-button action=(action "prepaidCash") type="default" disabled=prepaidDisabled}}充值{{/bs-button}}
+  {{/bs-modal-footer}}
+   {{/bs-modal}}
+{{/if}}
+<!-- 跳转确认弹层 -->
+{{#if alertmodal}}
+{{#bs-modal body=false footer=false header=false submitAction=(action "transationTo")
+   closedAction=(action "cancelpassSubmit")}}
+{{#bs-modal-header}}
+<h4 class="modal-title">认证</h4>
+{{/bs-modal-header}}
+{{#bs-modal-body}}
+您还没有完成企业认证，确定现在进行认证？
+{{/bs-modal-body}}
+{{#bs-modal-footer as |footer|}}
+{{#bs-button action=(action "transationTo") type="success"}}确定{{/bs-button}}
+{{#bs-button action=(action "cancelpassSubmit") type="warning"}}取消{{/bs-button}}
+{{/bs-modal-footer}}
+{{/bs-modal}}
+{{/if}}
+<!-- 微信支付弹层 -->
+{{#if wechatmodal}}
+{{log 'jfnewufhwuiaerhjfksdrniuwhr' wechatmodal}}
+  {{#bs-modal body=false footer=false header=false submitAction=(action "cancelwechat")
+  closedAction=(action "cancelwechat")}}
+    {{#bs-modal-header}}<!-- LOGO收银台 -->
+      <img src="assets/images/logo3.png" width="120" alt="">
+      <span style="font-size:20px;font-family:'微软雅黑';">收银台</span>
+    {{/bs-modal-header}}
+    {{#bs-modal-body}}<!-- 二维码 金额 微信支付LOGO -->
+    <div class="row">
+      <div class="col-sm-8 margin-rightfu17 pull-right"><img src="assets/images/WePayLogo.png" width="140"/></div>
+      <!-- <div class="col-sm-1"></div> -->
+      <!-- <div class="col-sm-3"><img src="assets/images/WePayLogo.png" width="120"/></div> -->
+      <!-- <div class="col-sm-8"><img src="{{QrWechat}}" width="180"/></div> -->
+    </div>
+    <div class="row">
+      <div class="col-sm-8 pull-right"><img src="{{QrWechat}}" width="180"/></div>
+    </div>
+    <div class="row">
+      <div class="col-sm-8 margin-rightfu17 pull-right"><img src="assets/images/WePayDes.png" width="150"/></div>
+    </div>
+    {{/bs-modal-body}}
+    {{#bs-modal-footer as |footer|}}
+      {{#bs-button action=(action "cancelwechat") type="default"}}取消{{/bs-button}}
+      {{#bs-button action=(action "cancelwechat") type="default"}}确定{{/bs-button}}
+    {{/bs-modal-footer}}
+  {{/bs-modal}}
+{{/if}}
+<!-- 微信支付弹层 -->
+{{#if wechatSucModal}}
+  {{#bs-modal body=false footer=false header=false submitAction=(action "cancelwechatSuc")
+  closedAction=(action "cancelwechatSuc")}}
+    {{#bs-modal-header}}<!-- LOGO收银台 -->
+      <img src="assets/images/logo3.png" width="120" alt="">
+      <span style="font-size:20px;font-family:'微软雅黑';">收银台</span>
+    {{/bs-modal-header}}
+    {{#bs-modal-body}}<!-- 二维码 金额 微信支付LOGO -->
+    <div class="text-align-type">
+      <div><img src="assets/images/bind-suc.png" width="120"/></div>
+    </div>
+    <div class="text-align-type">
+      <div class="weight-bold font18">充值成功!</div>
+    </div>
+    {{/bs-modal-body}}
+    {{#bs-modal-footer as |footer|}}
+      {{#bs-button action=(action "cancelwechatSuc") type="default"}}确定{{/bs-button}}
+    {{/bs-modal-footer}}
+  {{/bs-modal}}
+{{/if}}
+<!-- 充值失败弹层 -->
+{{#if wechatFailModal}}
+{{#bs-modal body=false footer=false header=false closedAction=(action "cancelwechatFail")}}
+{{#bs-modal-header}}
+<h4 class="modal-title">充值失败</h4>
+{{/bs-modal-header}}
+{{#bs-modal-body}}
+充值失败，请稍后重试
+{{/bs-modal-body}}
+{{#bs-modal-footer as |footer|}}
+{{#bs-button action=(action "cancelwechatFail") type="success"}}确定{{/bs-button}}
+{{#bs-button action=(action "cancelwechatFail") type="warning"}}取消{{/bs-button}}
+{{/bs-modal-footer}}
+{{/bs-modal}}
+{{/if}}

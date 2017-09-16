@@ -1,0 +1,29 @@
+<!--
+创建人:薛立想
+创建时间:2017-08-30
+定时任务与不定时任务用不同的jrol组件
+ -->
+<div id="{{infiniteContainerName}}" class="mainContent">
+  <div class="wrapperInner" style="padding-top:50px;">
+    {{#if countList}}
+      <div class="timesCount">
+        {{log "countList in hbs:" countList}}
+        {{#each countList  as |customer|}}
+          {{#ui/mobile/customer-expandable-item customer=customer nursingLog="saveNursingLog" finishSave="finishSave"
+            customerId=customer.id itemExpand="countItemExpand" showRightFlag=showRightFlag
+            itemExpand="itemExpand" expanded=customer.expanded didInsertAct="didInsertActCustomer"}}
+          {{/ui/mobile/customer-expandable-item}}
+        {{/each}}
+      </div>
+    {{else}}
+      {{#if nocustomerId}}
+        <div class="center" style="margin-top:90px;">
+          请选择老人，或点击全部按钮查看全部
+        </div>
+      {{else}}
+        <div class="nodate">暂无数据</div>
+      {{/if}}
+    {{/if}}
+    </div>
+    </div>
+    {{ui/container/infinite-scroll moniteData="" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

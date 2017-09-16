@@ -1,0 +1,56 @@
+
+
+<div class="col-sm-12">
+  <div class="box">
+    <div class="box-body">
+    <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+    	<div class="row">
+        <!--搜索-->
+        <div class="col-sm-2 ">
+          {{#power-select class="inline-block" placeholder="选择反馈人" options=customerList selected=customer searchField="namePinyin" noMatchesMessage="没有相关内容"
+          allowClear=true onchange=(action "selectCustomer" ) as |customer|}}
+          {{customer.name}}
+          {{/power-select}}
+          </div>
+          <div class="col-sm-10 nopadding-right">
+            {{callbusi/time-search class="inline-block" text='按反馈时间搜索' dateShow=dateShow chooseDate=chooseDate search="search"
+            submmit="submmit" emptied='emptied' changeBeginDateAction='changeBeginDateAction' changeEndDateAction='changeEndDateAction'}}
+      	  </div>
+    	  <!--搜索-->
+    	</div>
+      <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable mt15" aria-describedby="datatable1_info">
+        <thead>
+          <tr role="row">
+            <th rowspan="1" colspan="1" width="">反馈人</th>
+            <th rowspan="1" colspan="1" width="">反馈时间</th>
+            <th rowspan="1" colspan="1" width="">反馈类型</th>
+            <!-- <th rowspan="1" colspan="1" width="">标题</th> -->
+            <th rowspan="1" colspan="1" width="">反馈内容</th>
+          </tr>
+        </thead>
+        {{#if feedbackList}}
+      <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+          {{#each feedbackList as |feedback|}}
+          <tr class="gradeA odd" style="cursor:default;">
+            <td class="width10B ellipsis sorting_1">{{feedback.customer.name}}</td>
+            <td class="width20B ellipsis sorting_1">{{feedback.createTimeString}}</td>
+            <td class="width20B ellipsis ">{{feedback.type.typename}}</td>
+            <!-- <td class=" ellipsis">{{feedback.title}}</td> -->
+            <td class="width50B ellipsis">{{feedback.contents}}</td>
+      	  </tr>
+          {{/each}}
+       </tbody>
+       {{else}}
+       <div class="nodate">暂无数据</div>
+       {{/if}}
+        </table>
+        {{#if feedbackList }}
+            {{page-numbers content=feedbackList showFL=true numPagesToShow=5}}
+            {{else}}
+                <h1 class="col-sm-12 center unTask"></h1>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+  <!-- /BOX -->
+</div>

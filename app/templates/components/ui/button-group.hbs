@@ -1,0 +1,10 @@
+{{#each defData as |item|}}
+<button type="button" class="btn btn-default {{if item.selected 'btn-gray'}}" title="{{if item.icon item.text}}"
+  {{action "choice" item on="click"}}>
+  {{#if item.icon}}
+    <i class="{{item.icon}}"></i>
+  {{else}}
+    {{item.text}}
+  {{/if}}
+</button>
+{{/each}}

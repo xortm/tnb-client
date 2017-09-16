@@ -1,0 +1,80 @@
+{{#if curTask}}
+<div class="panel-options">
+  {{#if modification}}<i class=""></i>{{/if}}
+  <div class="pull-left  addbtu">
+    {{#if editEnd}}
+    {{#ui/mix-button iconClass="el-plus"
+    text="添加"
+    clickAction="addKnowledgeBase" addKnowledgeBase="addKnowledgeBase" clickActParams=testParams}}
+    {{/ui/mix-button}}
+    <span class= "pull-right" > &nbsp;&nbsp;</span>
+    {{#ui/mix-button iconClass='fa-remove'
+    text="删除"
+    clickAction="deleteKnowLedgeBase" deleteKnowLedgeBase="deleteKnowLedgeBase" clickActParams=testParams}}
+    {{/ui/mix-button}}
+    <span class= "pull-right" > &nbsp;&nbsp;</span>
+    {{#ui/mix-button iconClass=iconClass
+    text=cancel
+    clickAction="allKnowLedgeBaseBut" allKnowLedgeBaseBut="allKnowLedgeBaseBut" clickActParams=testParams}}
+    {{/ui/mix-button}}
+    {{/if}}
+  </div>
+  <div class="pull-right  datalinehight">
+    <span >修改日期：</span>
+    {{input class=" datalinehight" type="date"  class='choosedatetype'  value=endTime focus-out="beginOver"}}
+    {{log "startTime" startTime}}
+    <span >~</span>
+    {{input class="datalinehight " type="date" class='choosedatetype' value=startTime focus-out="beginOver"}}
+    {{log "startTime" startTime}}
+    <span class="search Input_noneBorder">
+      {{input enter="searchta" type="search" size="15" class="datalinehight "
+      value=tasksname  placeholder="搜索/全部知识" }}
+      <i class=" fa-search" {{action 'searchta'}}></i>
+    </span>
+  </div>
+</div>
+{{#if  managementList}}
+{{log 'managementList' managementList}}
+<div class="col-sm-12">
+  <ul class="knowledgecenter ">
+    {{#each managementList as |management|}}
+    {{#if checkedSelected}}
+    {{input class="pull-left negative-margin29" type="checkbox" checked=management.checked}}
+    {{/if}}
+    <li class="panel">
+      <span class="pull-right " >
+        <p id="datalinehight ">最后修改于{{management.updateDateComp}}</p>
+      </span>
+      <h3 class="panel-title">{{management.title}}</h3>
+      <p class="main-text-color">{{management.content}}</p>
+    </li>
+    {{/each}}
+  </ul>
+  <div class="tight-row bk-color-white bottom10 padding5 no-padding5-bottom">
+    {{page-numbers content=managementList showFL=true numPagesToShow=3}}
+  </div>
+</div>
+{{/if}}
+{{else}}
+<center class="unTask">
+  <h1>-_-</h1>
+  <br>
+  <h1>无任务...</h1>
+</center>
+{{/if}}
+{{#if showAddContents}}
+{{#bs-modal body=false footer=false header=false submitAction=(action "changePassSubmit")
+closedAction=(action "cancelPassSubmit")}}
+{{#bs-modal-header}}
+{{input type="text"  class="form-control" value=title placeholder="标题" }}
+{{/bs-modal-header}}
+{{#bs-modal-body}}
+{{textarea  class="form-control contentcss" value=content placeholder="内容" }}
+{{/bs-modal-body}}
+{{#bs-modal-footer as |footer|}}
+<span class={{if fail1 'f' 't  pull-left' }}>标题、内容必须填写！</span>
+{{#bs-button action=(action "cancelPassSubmit") type="default"}}取消{{/bs-button}}
+{{#bs-button action=(action "changePassSubmit" ) type="default"}}保存{{/bs-button}}
+{{/bs-modal-footer}}
+{{/bs-modal}}
+{{/if}}

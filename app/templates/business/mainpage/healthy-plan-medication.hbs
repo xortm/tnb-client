@@ -1,0 +1,26 @@
+<div id="userHealthyPlanMedicationContainer" class="mainContent">
+  <div class="wrapperInner jujia-Bd">
+{{#ui/mobile/gestures-container}}
+<div class="jujia-container healthy-plan-diet">
+  <section class="msg-box">
+    <!-- <img class="diet-img" src="{{drugAdvice.picPathUrl}}" alt=""> -->
+    {{ui/img-zoomage imgSrc=drugAdvice.picPathUrl}}
+    <p class="p1">我们为您选择的用药方案是：{{drugAdvice.title}}</p>
+    <p class="p2">{{drugAdvice.contents}}</p>
+  </section>
+  <section class="jujia-catalog">
+    <ul>
+      <li class="medication-upload" id="medication-upload" {{action 'switchPage' 'medication-upload' 'medication-upload' on="tap"}}>
+        <i class="fa fa-upload prev"></i>
+        <span class="">上传用药</span>
+        <i class="fa fa-angle-right next"></i>
+      </li>
+    </ul>
+  </section>
+</div>
+
+
+{{/ui/mobile/gestures-container}}
+</div>
+</div>
+{{ui/container/infinite-scroll moniteData="userJujiaMy" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

@@ -1,0 +1,112 @@
+
+<div class="col-sm-12">
+	<div class="box margin-middle max-width">
+		<!-- BOX-BODY -->
+		<div class="box-body">
+			{{#bs-form formLayout=formLayout model=staffCustomerInfo invalid=(action "invalid")}}
+			<div class="row">
+				<div class="col-xs-12">
+					<p class="user-add-btn">
+						{{#if detailEdit}}
+							{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='保存' clickAction="saveStaffCustomer" saveStaffCustomer="saveStaffCustomer"}}
+							{{/ui/mix-button}}
+							{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="detailCancel" detailCancel="detailCancel" }}
+							{{/ui/mix-button}}
+						{{else}}
+							{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-edit"  text='编辑'  clickAction="detailEditClick" detailEditClick="detailEditClick"}}
+			        {{/ui/mix-button}}
+						{{/if}}
+					</p>
+				</div>
+				<!-- 列表详细介绍 -->
+				<div class="col-xs-12 nopadding-left">
+					<div class="col-xs-12 nopadding-horizontal mt20">
+
+						<!--已选成员-->
+						<div class="col-xs-12 col-sm-12">
+							<div class="form-input-group">
+								<span class="input-group-addon">已选客户：</span>
+								{{#if detailEdit}}
+									{{#if chooseCustomer}}
+										{{#each chooseCustomer as |customer|}}
+												{{ui/choose-lable class="room" text=customer.name hasSelected=customer.selected
+												itemSelect="changeStaffBack" code=customer.id }}
+										{{/each}}
+									{{else}}
+										<div class="input-group-content">请选择客户</div>
+									{{/if}}
+								{{else}}
+									<div class="input-group-content">{{chooseCustomerStr}}</div>
+								{{/if}}
+							</div>
+							{{log "chooseCustomer_self" chooseCustomer}}
+							{{log "customerNameList_self" customerNameList}}
+							{{log "staffCustomerList_self" staffCustomerList}}
+						</div>
+						<!--未选成员-->
+            {{#if detailEdit}}
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+                <span class="input-group-addon">未选客户：</span>
+                    {{#each customerNameList as |customer|}}
+										{{ui/choose-lable class="nurse" text=customer.name hasSelected=customer.selected
+										itemSelect="changeStaffType" code=customer.id }}
+                    {{/each}}
+							</div>
+						</div>
+            {{/if}}
+
+						<!--备注-->
+						<div class="col-xs-12 col-sm-12">
+							<div class="form-input-group">
+								<span class="input-group-addon">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：</span>
+								{{#if detailEdit}}
+									{{#if id}}
+										{{textarea type="text" class="full-width inline-block form-input-group label-normal form-control" value=staffCustomerInfo.remark}}
+									{{else}}
+											{{textarea type="text" class="full-width inline-block form-input-group label-normal form-control" value=staffCustomerInfo.remark placeholder='备注'}}
+									{{/if}}
+								{{else}}
+									<div class="input-group-content">{{staffCustomerInfo.remark}}</div>
+								{{/if}}
+							</div>
+
+						</div>
+
+<!---
+              {{#if detailEdit}}
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+                <span class="input-group-addon">未选房间：</span>
+                    {{#each roomNameList as |room|}}
+										{{ui/choose-lable class="room" text=room.name hasSelected=room.selected
+										itemSelect="changeRoomType" code=room.id }}
+                    {{/each}}
+							</div>
+						</div>
+            {{/if}}
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">已选房间：</span>
+								{{#if detailEdit}}
+                    {{#each chooseRoom as |room|}}
+										{{ui/choose-lable class="room" text=room.name hasSelected=room.selected
+										itemSelect="changeRoomBack" code=room.id }}
+                    {{/each}}
+								{{else}}
+									<div class="input-group-content">{{staffCustomerInfo.roomsName}}</div>
+								{{/if}}
+							</div>
+
+						</div>-->
+					</div>
+				</div>
+				<!-- 列表详细介绍 -->
+
+			</div>
+			{{/bs-form}}
+		</div>
+		<!-- /BOX-BODY -->
+	</div>
+</div>

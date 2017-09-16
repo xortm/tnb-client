@@ -1,0 +1,69 @@
+<div class="busi-info ">
+    {{#bs-form formLayout=formLayout model=drugShemeModel action=(action "detailSaveClick") invalid=(action "invalid")}}
+        <div class="sign col-sm-12  nopadding-horizontal top8 bottom12">
+            <div class="pull-right user-add-btn nopadding-left">
+                {{#if addMode}}
+                {{else}}
+                    {{#if detailModify}}
+                    {{else}}
+                        {{#ui/form-function editAction="detailModifyClick" detailModifyClick="detailModifyClick" removeAction="delById" delById="delById" }}
+                        {{/ui/form-function}}
+                    {{/if}}
+                {{/if}}
+            </div>
+        </div>
+        <div style="clear:both" />
+        <div class="line">
+            <div class="col-xs-12 col-sm-6 nopadding-left ">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon nopadding-top">标题：</span>
+                    {{#if detailModify}}
+                        {{bs-form-element property="title" class="inline-block form-input-group" controlType="title" placeholder=""}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{drugShemeModel.title}}</div>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">内容</span>
+                    {{#if detailModify}}
+                        {{bs-form-element property="contents" class="inline-block form-input-group" controlType="contents" placeholder=""}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{drugShemeModel.contents}}</div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+
+        <div class="line">
+            <div class="col-xs-12 col-sm-6 nopadding-left margin-top-10">
+                <div class="form-input-group">
+                    <span class="input-group-addon">用药方案图片：</span>
+                    {{#if detailModify}}
+                        {{#bs-form-element class="inline-block form-input-group" controlType="picPath" property="picPath" }}
+                            {{#ui/img-intergration-simple name="drugImg" hasUploader=true imgSrc=drugShemeModel.picPathUrl width=300 height=70 margin-left=0 uploadUrl=uploadUrl uploadSucc="uploadSucc" uploadFail="uploadFailImg" businessType=constants.uploadBusinessType_jujia as
+                                |component|}}
+                            {{/ui/img-intergration-simple}}
+                        {{/bs-form-element}}
+                    {{else}}
+                        <div class="input-group-content"><img class="width200 height-auto" src="{{drugShemeModel.picPathUrl}}" alt=""></div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="text-center padding-top30 padding-bottom100">
+                <p class="text-center user-add-btn" style="display:inline-block;margin:0 auto!important ">
+                    {{#if detailModify}}
+                        {{#ui/mix-button class=" user-btn edit-btn " iconClass="fa-check" text='保存' }}
+                        {{/ui/mix-button}}
+                        {{#ui/mix-button class=" user-btn times-btn " iconClass="fa fa-mail-reply" text='取消' clickAction="cancelClick" cancelClick="cancelClick" }}
+                        {{/ui/mix-button}}
+                    {{else}}
+                    {{/if}}
+                </p>
+            </div>
+        </div>
+    {{/bs-form}}
+</div>

@@ -1,0 +1,61 @@
+<div id="userHealthyFileCheckContainer" class="mainContent">
+  <div class="wrapperInner healthy-fileBd">
+{{#ui/mobile/gestures-container}}
+<div class="jujia-container healthy-file-check">
+  <section class="check">
+    <i class="fa fa-file-text-o prev"></i>
+    <span class="">血糖监测</span>
+    <!-- <p>血糖监测是评价糖尿病的重要指标......</p> -->
+    <div id="myChartEmptyCheck" style="height:220px;clear:both;" class="text-center"></div>
+    <p>您最近一次血糖值：{{firstEmpty.result}}(mmol/L)</p>
+  </section>
+  <section class="check">
+    <i class="fa fa-file-text-o prev"></i>
+    <span class="">血压监测</span>
+    <div id="myChartBloodCheck" style="height:220px;clear:both;" class="text-center"></div>
+    <p>您最近一次血压值：{{firstBlood.result}}/{{firstBlood.resultAddtion}}(mmHg)</p>
+  </section>
+  <section class="check">
+    <i class="fa fa-file-text-o prev"></i>
+    <span class="">血氧监测</span>
+    <div id="myChartOxygenCheck" style="height:220px;clear:both;" class="text-center"></div>
+    <p>最近一次血氧值：{{firstOxygen.result}}(毫升%)</p>
+  </section>
+  <section class="check">
+    <i class="fa fa-file-text-o prev"></i>
+    <span class="">呼吸频率监测</span>
+    <div id="myChartBreathCheck" style="height:220px;clear:both;" class="text-center"></div>
+    <p>最近一次呼吸频率值：{{firstBreath.result}}(次/分)</p>
+  </section>
+  <section class="check">
+    <i class="fa fa-file-text-o prev"></i>
+    <span class="">体重监测</span>
+    <div id="myChartWeightCheck" style="height:220px;clear:both;" class="text-center"></div>
+    <p>最近一次体重值：{{firstWeight.result}}(kg)</p>
+  </section>
+  <section class="check">
+    <i class="fa fa-file-text-o prev"></i>
+    <span class="">脂肪监测</span>
+    <div id="myChartFatCheck" style="height:220px;clear:both;" class="text-center"></div>
+    <p>最近一次脂肪数据：{{firstFat.result}}(g/100g)</p>
+  </section>
+  <section class="check">
+    <i class="fa fa-file-text-o prev"></i>
+    <span class="">心率监测</span>
+    <div id="myChartHeartCheck" style="height:220px;clear:both;" class="text-center"></div>
+    <p>最近一次心率值：{{firstHeart.result}}(times/min)</p>
+  </section>
+  <section class="check">
+    <i class="fa fa-file-text-o prev"></i>
+    <span class="">体温监测</span>
+    <div id="myChartTemperatureCheck" style="height:220px;clear:both;" class="text-center"></div>
+    <p>最近一次体温值：{{firstTemperature.result}}(℃)</p>
+  </section>
+
+</div>
+
+
+{{/ui/mobile/gestures-container}}
+</div>
+</div>
+{{ui/container/infinite-scroll moniteData="" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

@@ -1,0 +1,47 @@
+<!--
+创建人:薛立想
+创建时间:2017-08-30
+定时任务与不定时任务用不同的jrol组件
+ -->
+{{#if showRightFlag}}
+  <ul id="" class="padding4 {{concat infiniteContainerName "-filterUl"}}" style="position:fixed;right:0px;top:95px;z-index:99;">
+    <li class="center">0</li>
+    <li class="font24 marginF5-0 center {{concat infiniteContainerName "-li0_6"}}"{{action "queryTime" '0' '6' on="tap"}}>|</li><li class="center">6</li>
+    <li class="font24 marginF5-0 center {{concat infiniteContainerName "-li6_8"}}" {{action "queryTime" '6' '8' on="tap"}}>|</li><li class="center">8</li>
+    <li class="font24 marginF5-0 center {{concat infiniteContainerName "-li8_10"}}" {{action "queryTime" '8' '10' on="tap"}}>|</li><li>10</li>
+    <li class="font24 marginF5-0 center {{concat infiniteContainerName "-li10_12"}}" {{action "queryTime" '10' '12' on="tap"}}>|</li><li>12</li>
+    <li class="font24 marginF5-0 center {{concat infiniteContainerName "-li12_14"}}" {{action "queryTime" '12' '14' on="tap"}}>|</li><li>14</li>
+    <li class="font24 marginF5-0 center {{concat infiniteContainerName "-li14_16"}}" {{action "queryTime" '14' '16' on="tap"}}>|</li><li>16</li>
+    <li class="font24 marginF5-0 center {{concat infiniteContainerName "-li16_18"}}" {{action "queryTime" '16' '18' on="tap"}}>|</li><li>18</li>
+    <li class="font24 marginF5-0 center {{concat infiniteContainerName "-li18_20"}}" {{action "queryTime" '18' '20' on="tap"}}>|</li><li>20</li>
+    <li class="font24 marginF5-0 center {{concat infiniteContainerName "-li20_24"}}" {{action "queryTime" '20' '24' on="tap"}}>|</li><li>24</li>
+    <li class="font14 center padding-top5 {{concat infiniteContainerName "-li_hasApply"}}" style="width:14px;height:42px;line-height:14px;" {{action "queryTime" 'hasApply' 'hasApply' on="tap"}}>
+      <p style="width:14px;height:14px;line-height:14px;" class="bottom0">已执行</p>
+    </li>
+  </ul>
+{{/if}}
+<!-- 定时任务组件 -->
+<div id="{{infiniteContainerName}}" class="mainContent">
+  <div class="wrapperInner padding-bottom50" style="padding-top:50px;">
+      <div id="{{concat infiniteContainerName "-scrollFlagId"}}" style="height:1px; width:100%;"></div>
+      {{#if serviceList}}
+        {{#each serviceList  as |task|}}
+          {{#callbusi/mobile/list-task-item saveFlag=saveFlag item=task type=1
+            scrollFlagDomId=infiniteContainerName didInsertAct="didInsertAct"
+            finish="finish" panStartAction="panStartAction" panEndAction="panEndAction" infiniteContainerName=infiniteContainerName
+            outerClass="col-sm-6 col-xs-12 list-task-item-class" }}
+            {{/callbusi/mobile/list-task-item}}
+        {{/each}}
+      {{else}}
+        {{#if nocustomerId}}
+          <div class="center" style="margin-top:90px;">
+            请选择老人，或点击全部老人按钮查看全部
+          </div>
+        {{else}}
+          <div class="nodate">暂无数据</div>
+        {{/if}}
+      {{/if}}
+
+  </div>
+</div>
+{{ui/container/infinite-scroll moniteData="" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

@@ -1,0 +1,60 @@
+{{#ui/mobile/gestures-container}}
+<div id="accountsInfoContainer" class="mainContent {{if global_pageConstructure.showLoader 'hide' ''}}">
+  <div class="wrapperInner">
+    <div class="bottom12 top12 col-sm-12 padding-left20">
+      <strong class="font16 font-black">基本信息</strong>
+    </div>
+    <ul class="padding-0-10 bk-color-white">
+      <li class="line-height-44 clearfix">
+        <span class="padding-left-10 font-black font16">房间床位</span>
+        <span class="color666666 font14 pull-right width60B">{{customer.bed.allBedName}}</span>
+      </li>
+      <li class="border-bottom-1"></li>
+      <li class="line-height-44 clearfix">
+        <span class="padding-left-10 font-black font16">护理等级</span>
+        <span class="color666666 font14 pull-right width60B">{{customer.projectLevelName}}</span>
+      </li>
+      <li class="border-bottom-1"></li>
+      <li class="line-height-44 clearfix">
+        <span class="padding-left-10 font-black font16">自理能力</span>
+        <span class="color666666 font14 pull-right width60B">{{customer.selfCareAbility.typename}}</span>
+      </li>
+      <li class="border-bottom-1"></li>
+      <li class="line-height-44 clearfix">
+        <span class="padding-left-10 font-black font16">餐饮等级</span>
+        <span class="color666666 font14 pull-right width60B">{{customer.diningStandard.typename}}</span>
+      </li>
+      <li class="border-bottom-1"></li>
+      <li class="line-height-44 clearfix">
+        <span class="padding-left-10 font-black font16">护理组</span>
+        <span class="color666666 font14 pull-right width60B">{{customer.groupsName}}</span>
+      </li>
+      <li class="border-bottom-1"></li>
+      <li class="line-height-44 clearfix">
+        <span class="padding-left-10 font-black font16">护理人员</span>
+        <span class="color666666 font14 pull-right width60B">{{customer.employeesName}}</span>
+      </li>
+    </ul>
+
+    <div class="bottom12 top12 col-sm-12 padding-left20">
+      <strong class="font16 font-black">设备信息</strong>
+    </div>
+    <ul class="padding-0-10 bk-color-white top-1">
+      {{#each realDevicetypeList as |realDevicetype index|}}
+      {{#if realDevicetype.isShow}}
+        <li class="height44 line-height-44">
+          <span class="padding-left-10 font-black font16">{{realDevicetype.deviceName}}：</span>
+          <span class="color666666 font14 pull-right width60B">{{realDevicetype.deviceObj.seq}}</span>
+        </li>
+        <li class="border-bottom-1"></li>
+      {{/if}}
+      {{/each}}
+    </ul>
+
+
+  </div>
+</div>
+{{/ui/mobile/gestures-container}}
+
+{{ui/container/infinite-scroll moniteData="theCustomerList" didRenderAction="didRender"
+didInsertElementAction="didInsertElement"}}

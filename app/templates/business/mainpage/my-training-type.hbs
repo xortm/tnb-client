@@ -1,0 +1,19 @@
+<div id="documentTypeContainer" class="mainContent {{if global_pageConstructure.showLoader 'hide' ''}}">
+  <div class="wrapperInner">
+    {{#ui/mobile/gestures-container}}
+      {{#if documentTypeList}}
+      <div class="training">
+        {{#each documentTypeList as |documentType|}}
+          <div class="trainingList" id="shareDocumentItem_{{documentType.id}}" {{action "goDetail" documentType on="tap"}}>
+            <i class="prev-icon"><img class="a-img" src="assets/images/mobile/training-type.png"/></i>
+            <div class="title">{{documentType.name}}</div>
+          </div>
+        {{/each}}
+      </div>
+      {{else}}
+          <div class="nodate">暂无数据</div>
+      {{/if}}
+    {{/ui/mobile/gestures-container}}
+</div>
+</div>
+{{ui/container/infinite-scroll moniteData="documentTypeList" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

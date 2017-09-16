@@ -1,0 +1,73 @@
+{{log 'curTask' curTask.id}}
+{{#if curTask}}
+{{#if curTask.id}}
+<div class="page-content">
+  <div class="col-sm-12 nopadding-horizontal">
+    <div class="col-lg-3 col-md-3 col-sm-4 nopadding-horizontal">
+      {{#power-select placeholder="我的客服" options=csStatus selected=csStatusSel
+      allowClear=true onchange=(action "staSelect") as |status|}}
+      {{status.typename}}
+      {{/power-select}}
+      <!-- <button class="dropdown-toggle col-sm-8 padding5" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+        {{dropdownTitle}} <span class="caret left4"></span>
+      </button>
+      <div class="dropdown-menu col-sm-8 padding0">
+        <div class="btn-group col-sm-12 center bgcolor-gray" data-toggle="buttons">
+          <label class="btn btn-select-item bottom0 btn-block col-sm-12" {{action 'taskStatus' '' '— — 我的客服 — —'}}>
+            <input type="radio"> — — 我的客服 — —
+          </label>
+          <label class="btn btn-select-item bottom0 btn-block col-sm-12" {{action 'taskStatus' 'taskApply' '待审核客服'}}>
+            <input type="radio">待审核客服
+          </label>
+          <label class="btn btn-select-item bottom0 btn-block col-sm-12" {{action 'taskStatus' 'taskApplyInvited' '邀请中的客服'}}>
+            <input type="radio">邀请中的客服
+          </label>
+          <label class="btn btn-default" {{action 'csConcerned' '关注的客服'}}>
+          <input type="radio">关注的客服
+        </label>
+        <label class="btn btn-select-item bottom0 btn-block col-sm-12" {{action 'taskStatus' 'taskApplySuccNotLocateSeat' '已通过(坐席未分配)的客服'}}>
+          <input type="radio">已通过(坐席未分配)的客服
+        </label>
+        <label class="btn btn-select-item bottom0 btn-block col-sm-12" {{action 'taskStatus' 'taskApplySucc' '工作中的客服'}}>
+          <input type="radio">工作中的客服
+        </label>
+      </div>
+    </div> -->
+  </div>
+  <div class="col-lg-4 col-md-5 col-sm-6 nopadding-horizontal pull-right">
+    <div class="input-group">
+      {{input type="search" class="form-control" name="search" value=csname enter='searchCs' placeholder="搜索客服"}}
+      <span class="input-group-addon hovertype" {{action 'searchCs'}}>
+        <span class="linecons-search" id="linecons-search"></span>
+      </span>
+    </div>
+  </div>
+</div>
+{{#if csList}}
+{{#each csList as |list|}}
+  <div class="col-sm-12 padding20 top15 bgcolor-w hovertype" {{action 'enterDetail' list.user}}>
+  {{#callbusi/cs-item
+    csuser = list.user
+    csList = list
+    curTask = curTask
+    agreeApply = 'agreeApply'
+    refuseApply = 'refuseApply'
+  }}
+  {{/callbusi/cs-item }}
+</div>
+{{/each}}
+<div class="col-sm-5 top8 nopadding-horizontal">
+  <div class="tight-row bk-color-white padding5">
+    {{page-numbers content=csList showFL=true numPagesToShow=3}}
+  </div>
+</div>
+{{else}}
+<h1 class="col-sm-12 center unTask">没有满足条件的客服~</h1>
+{{/if}}
+</div>
+{{else}}
+<h1 class="center unTask">请先选择任务~</h1>
+{{/if}}
+{{else}}
+<h1 class="center unTask">请先选择任务~</h1>
+{{/if}}

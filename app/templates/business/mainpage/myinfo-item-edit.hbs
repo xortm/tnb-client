@@ -1,0 +1,18 @@
+<div id="userMyInfoItemEdit" class="mainContent">
+  <div class="wrapperInner">
+    <div>
+      <ul class="nopadding-left bgcolor-white">
+        <li class="input_noneborder input_border-bottom top10 textarea">
+          {{input type="text" class='edit height40 fullWidth padding-left-8' maxlength=maxlength
+          value=edit placeholder=editPlaceholder }}
+        </li>
+        <li class="top10 center"></li>
+      </ul>
+    <center class="center-edit">
+      <p>{{succeed}}</p>
+    </center>
+    </div>
+  </div>
+</div>
+{{ui/container/infinite-scroll moniteData="userMyInfoItemEdit" didRenderAction="didRender"
+didInsertElementAction="didInsertElement"}}

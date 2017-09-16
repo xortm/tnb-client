@@ -1,0 +1,27 @@
+<div class="col-sm-12">
+  <div class="box panel-default col-sm-12">
+    <div class="box-body">
+      <div class="tabbable">
+        <ul class="nav nav-tabs">
+          <li class="active" {{action "chooseGroup" "roomType" on="click"}}><a href="#tab_3_1" data-toggle="tab">房间类型</a></li>
+          <li {{action "chooseGroup" "bedType" on="click"}}><a href="#tab_3_2" data-toggle="tab">床位类型</a></li>
+          <li {{action "chooseGroup" "publicType" on="click"}}><a href="#tab_3_4" data-toggle="tab">公共区域类型</a></li>
+        </ul>
+        <div class="tab-content fade in col-md-12 nopadding-left nopadding-right">
+          <div class="tab-pane fade in padding-top8 active" id="tab_3_1">
+            {{#callbusi/space-information-detail informationList=informationList  group=group }}
+            {{/callbusi/space-information-detail}}
+          </div>
+           <div class="tab-pane fade in padding-top8" id="tab_3_2">
+             {{#callbusi/space-information-detail informationList=informationList  group=group}}
+             {{/callbusi/space-information-detail}}
+          </div>
+          <div class="tab-pane fade in padding-top8" id="tab_3_4">
+            {{#callbusi/space-information-detail informationList=informationList  group=group}}
+            {{/callbusi/space-information-detail}}
+         </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

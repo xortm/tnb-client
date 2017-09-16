@@ -1,0 +1,25 @@
+
+<div id="messageContainer" class="mainContent">
+  <div class="wrapperInner">
+  {{#ui/mobile/gestures-container}}
+  {{#each messageNews as |message|}}
+    <div  id="messageItem_{{message.detailType}}" class="bk-color-white clear border-bottom-1F0F0F0 padding-5-10" {{action 'toDetailItem' message.detailType on="tap"}}>
+      <div class="pull-left width18B center line-height-35">
+        <i class="inlineBlockt font20 dropdown {{message.icon}}">
+          {{#if message.num}}
+          <span class="positionAbs">{{message.num}}</span>
+          {{/if}}
+        </i>
+      </div>
+      <div class="pull-left height44  width82B">
+        <div class="weightbold">{{message.detailTypeStr}}<span class="pull-right font-light">
+          {{message.createTimeString}}</span></div>
+        <div class="extend">{{message.contentShow}}</div>
+      </div>
+    </div>
+  {{/each}}
+  {{/ui/mobile/gestures-container}}
+  </div>
+</div>
+{{ui/container/infinite-scroll moniteData="messageNews" didRenderAction="didRender"
+didInsertElementAction="didInsertElement"}}

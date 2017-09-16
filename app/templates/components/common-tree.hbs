@@ -1,0 +1,24 @@
+{{yield node}}
+<a href="javascript:void(0)"{{action "clickMenu" node on="click"}}>
+  {{#if node.icon}}
+      <i class="{{node.icon}}"></i>
+  {{/if}}
+    <span class="{{if isRoot 'menu-text' 'sub-menu-text'}}">
+      {{node.text}}
+    </span>
+    {{#if hasSub}}
+      <span class="arrow"></span>
+    {{/if}}
+</a>
+{{#if node.children.length}}
+<ul class="sub">
+  {{ log 'node is' node}}
+  {{#each node.children as |child|}}
+    {{ log 'child in hbs:' child }}
+    {{#common-tree node=child as |childs|}}
+      {{ log 'childs inner:' childs }}
+      {{yield childs}}
+    {{/common-tree}}
+  {{/each}}
+</ul>
+{{/if}}

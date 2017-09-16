@@ -1,0 +1,47 @@
+{{#ui/mobile/gestures-container}}
+<div class="{{if chartShow "" "hide"}}">
+  {{callbusi/mobile/chart-data healthInfoArray=healthInfoArray showLoadingImgAction="showLoadingImgAction" didRenderFlag=didRenderFlag}}
+</div>
+<div id="healthInfoContainer" class="mainContent {{if global_pageConstructure.showLoader 'hide' ''}}">
+  <div class="wrapperInner">
+    <div class="">
+      {{#if healthInfoList}}
+        {{#each healthInfoList as |healthInfo|}}
+        {{#if (eq healthInfo.type 2)}}
+        <div class="padding-0-10 height39">
+          <span class="font16 font-black">{{healthInfo.dayStr}}</span>
+          <span class="color666666">{{healthInfo.dateTimeSeq}}</span>
+        </div>
+        {{else if (eq healthInfo.type 1)}}
+        {{#if (eq healthInfo.resHbsType 1)}}
+        <ul class="padding-0-10 bk-color-white height35 center">
+          <li class="pull-left width30B">{{healthInfo.hourM}}</li>
+          <li class="pull-left width30B">{{healthInfo.typename}}</li>
+          <!-- <li class="pull-left width40B extend bk-color-2FA7FD padding-right-5 header-text-color">{{healthInfo.resultType}}</li> -->
+          <li class="pull-left width40B extend" id="healthInfo_{{healthInfo.id}}"
+          {{action "showText" healthInfo.resultType healthInfo.id on="tap"}}>{{healthInfo.resultType}}</li>
+        </ul>
+        {{else}}
+        <ul class="padding-0-10 bk-color-white height35 center">
+          <li class="pull-left width30B">{{healthInfo.hourM}}</li>
+          <li class="pull-left width30B">{{healthInfo.typename}}</li>
+          <li class="pull-left width40B">{{healthInfo.resultType}}</li>
+        </ul>
+        {{/if}}
+        {{/if}}
+        {{/each}}
+      {{else}}
+        <div class="nodate">暂无数据</div>
+      {{/if}}
+    </div>
+  </div>
+</div>
+{{#if showModel}}
+  <div class="change-sex center" style="padding: 70% 5%;color: #fff;" {{action "closeText" on="tap"}}>
+    {{showContent}}
+  </div>
+{{/if}}
+{{/ui/mobile/gestures-container}}
+
+{{ui/container/infinite-scroll moniteData="healthInfoList" didRenderAction="didRender"
+didInsertElementAction="didInsertElement"}}

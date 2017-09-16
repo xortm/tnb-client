@@ -1,0 +1,30 @@
+<div id="chartDataWrapper" class="" style="position:fixed;top:44px;bottom:49px;left:0;right:0;background:#F7F7F7;z-index:1000;" {{action "swipeRightActiion" on="swipeRight"}} {{action "swipeLeftActiion" on="swipeLeft"}}>
+  <div class="customer-detail-healthposi top20 {{if showLoadingImg "" "hide"}}">
+    <img class="width33" src="assets/images/logo/loading.gif" alt="">
+  </div>
+  <div class="wrapperin" style="position:absolute;top:0;bottom:0;left:0;">
+    <div class="pull-left" style="width:16.7%;">
+      <div id="myChartBlood" style="width:100%;margin-top:15px;" class="text-center"></div>
+    </div>
+    <div class="pull-left" style="width:16.6%;">
+      <div id="myChartOxygen" style="width:100%;margin-top:15px;" class="text-center"></div>
+    </div>
+    <div class="pull-left" style="width:16.7%;">
+      <div id="myChartEmpty" style="width:100%;margin-top:15px;" class="text-center"></div>
+    </div>
+    <div class="pull-left" style="width:16.6%;">
+      <div id="myChartBreath" style="width:100%;margin-top:15px;" class="text-center"></div>
+    </div>
+    <div class="pull-left" style="width:16.6%;">
+      <div id="myChartHeart" style="width:100%;margin-top:15px;" class="text-center"></div>
+    </div>
+    <div class="pull-left" style="width:16.7%;">
+      <div id="myChartTemperature" style="width:100%;margin-top:15px;" class="text-center"></div>
+    </div>
+  </div>
+  <div class="circleWrapper">
+    {{#each swipeFlagArr as |arr|}}
+    <div class="circle {{if (eq arr swipeFlag) "circleShow" ""}}"></div>
+    {{/each}}
+  </div>
+</div>

@@ -1,0 +1,16 @@
+<div id="theUserContainer" class="mainContent">
+  <div class="wrapperInner">
+    {{#ui/mobile/gestures-container}}
+    <ul class="profile">
+    <li class="top10 carousel color666 border-bottom-1" id="change_password" {{action 'changePassword' 'change-password' 'change_password' on="tap"}}>
+      <i class="profile-i"><img class="a-img" src="assets/images/mobile/password.png"/></i>
+      <span class="profile-span">修改密码 </span>
+      <i class="fa-angle-right font20 my-right color-ccc"></i>
+    </li>
+    <li class="top10 line-height-40 carousel color666 font-big center border-bottom-1" id="sign_out" {{action 'signOut' 'sign_out' on="tap"}}>
+      退出登录
+    </li>
+    </ul>
+    {{/ui/mobile/gestures-container}}
+  </div>
+</div>

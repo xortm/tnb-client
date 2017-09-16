@@ -1,0 +1,155 @@
+<div class="col-md-12">
+	<div class="box margin-middle max-width">
+		<!-- BOX-BODY -->
+		<div class="box-body">
+			{{#bs-form formLayout=formLayout model=activityModel action=(action "saveActivity") invalid=(action "invalid")}}
+				<!-- 列表编辑-->
+				<div class="row">
+					<div class="col-xs-12">
+						<p class="user-add-btn">
+							{{#if detailEdit}}
+							{{else}}
+								{{#ui/form-function editAction="detailEditClick" detailEditClick="detailEditClick" removeAction="delById" delById="delById" }}
+								{{/ui/form-function}}
+							{{/if}}
+						</p>
+					</div>
+					<div class="col-xs-12 nopadding-horizontal mt20">
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">标&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;题：</span>
+								{{#if detailEdit}}
+									{{bs-form-element property="title" class="inline-block form-input-group" controlType="title" placeholder="必填项"}}
+								{{else}}
+									<div class="input-group-content">{{activityModel.title}}</div>
+								{{/if}}
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">内&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;容：</span>
+								{{#if detailEdit}}
+										{{bs-form-element property="discription" class="inline-block form-input-group" controlType="discription" placeholder="必填项"}}
+								{{else}}
+									<div class="input-group-content">{{activityModel.discription}}</div>
+								{{/if}}
+							</div>
+						</div>
+
+            <div class="col-xs-12 col-sm-6">
+              <div class="form-input-group">
+                <span class="input-group-addon">举办时间：</span>
+                {{#if detailEdit}}
+                {{#bs-form-element class="inline-block form-input-group" controlType="holdTime"  property="holdTime" }}
+                  {{ui/addon/bs-datetimepicker date=activityModel.holdTimeDate placeholder="必填项"
+                    locale="zh-CN" iconClasses="fa fa-calendar" maxDate=today
+                     show="dpShowAction" change="changeHoldTimeAction" }}
+                {{/bs-form-element}}
+                {{else}}
+                  <div class="input-group-content">{{activityModel.holdTimeString}}</div>
+                {{/if}}
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+              <div class="form-input-group">
+                <span class="input-group-addon">举办活动：</span>
+                {{#if detailEdit}}
+                {{#bs-form-element class="inline-block form-input-group" controlType="activityPlan"  property="activityPlan" }}
+                {{#power-select class="inline-block input-group-content" placeholder="必填项" options=planList selected=activityModel.activityPlan searchField="planPinyin" noMatchesMessage="没有相关内容"
+                allowClear=false onchange=(action "selectActivity" ) as |activityPlan|}}
+                {{activityPlan.activity.title}}
+                {{/power-select}}
+                {{/bs-form-element}}
+                {{else}}
+                  <div class="input-group-content">{{activityModel.activityPlan.activity.title}}</div>
+                {{/if}}
+              </div>
+            </div>
+
+						<div class="col-xs-12 col-sm-6 margin-top-10">
+							<div class="form-input-group">
+								<span class="input-group-addon">活动图片：</span>
+								{{#if detailEdit}}
+								{{#bs-form-element class="inline-block form-input-group" controlType="picPath1" property="picPath1" }}
+									{{#ui/img-intergration-simple name="activityImg1" hasUploader=true imgSrc=activityModel.picPath1Url width=300 height=70 margin-left=0  uploadUrl=uploadUrl uploadSucc="uploadSucc1" uploadFail="uploadFailImg" businessType=constants.uploadBusinessType_jujia as |component|}}
+						      {{/ui/img-intergration-simple}}
+								{{/bs-form-element}}
+								{{else}}
+									<div class="input-group-content"><img class="width200 height-auto" src="{{activityModel.picPath1Url}}" alt=""></div>
+								{{/if}}
+							</div>
+						</div>
+            <div class="col-xs-12 col-sm-6 margin-top-10">
+							<div class="form-input-group">
+								<span class="input-group-addon">活动图片：</span>
+								{{#if detailEdit}}
+								{{#bs-form-element class="inline-block form-input-group" controlType="picPath2" property="picPath2" }}
+									{{#ui/img-intergration-simple name="activityImg2" hasUploader=true imgSrc=activityModel.picPath2Url width=300 height=70 margin-left=0 uploadUrl=uploadUrl uploadSucc="uploadSucc2" uploadFail="uploadFailImg" businessType=constants.uploadBusinessType_jujia as |component|}}
+						      {{/ui/img-intergration-simple}}
+								{{/bs-form-element}}
+								{{else}}
+									<div class="input-group-content"><img class="width200 height-auto" src="{{activityModel.picPath2Url}}" alt="{{activityModel.title}}"></div>
+								{{/if}}
+							</div>
+						</div>
+
+            <div class="col-xs-12 col-sm-6 margin-top-10">
+							<div class="form-input-group">
+								<span class="input-group-addon">活动图片：</span>
+								{{#if detailEdit}}
+								{{#bs-form-element class="inline-block form-input-group" controlType="picPath3" property="picPath3" }}
+									{{#ui/img-intergration-simple name="activityImg3" hasUploader=true imgSrc=activityModel.picPath3Url width=300 height=70 margin-left=0 uploadUrl=uploadUrl uploadSucc="uploadSucc3" uploadFail="uploadFailImg" businessType=constants.uploadBusinessType_jujia as |component|}}
+						      {{/ui/img-intergration-simple}}
+								{{/bs-form-element}}
+								{{else}}
+									<div class="input-group-content"><img class="width200 height-auto" src="{{activityModel.picPath3Url}}" alt=""></div>
+								{{/if}}
+							</div>
+						</div>
+
+            <div class="col-xs-12 col-sm-6 margin-top-10">
+							<div class="form-input-group">
+								<span class="input-group-addon">活动图片：</span>
+								{{#if detailEdit}}
+								{{#bs-form-element class="inline-block form-input-group" controlType="picPath4" property="picPath4" }}
+									{{#ui/img-intergration-simple name="activityImg4" hasUploader=true imgSrc=activityModel.picPath4Url width=300 height=70 margin-left=0 uploadUrl=uploadUrl uploadSucc="uploadSucc4" uploadFail="uploadFailImg" businessType=constants.uploadBusinessType_jujia as |component|}}
+						      {{/ui/img-intergration-simple}}
+								{{/bs-form-element}}
+								{{else}}
+									<div class="input-group-content"><img class="width200 height-auto" src="{{activityModel.picPath4Url}}" alt=""></div>
+								{{/if}}
+							</div>
+						</div>
+
+            <div class="col-xs-12 col-sm-6 margin-top-10">
+							<div class="form-input-group">
+								<span class="input-group-addon">活动图片：</span>
+								{{#if detailEdit}}
+								{{#bs-form-element class="inline-block form-input-group" controlType="picPath5" property="picPath5" }}
+									{{#ui/img-intergration-simple name="activityImg5" hasUploader=true imgSrc=activityModel.picPath5Url width=300 height=70 margin-left=0 uploadUrl=uploadUrl uploadSucc="uploadSucc5" uploadFail="uploadFailImg" businessType=constants.uploadBusinessType_jujia as |component|}}
+						      {{/ui/img-intergration-simple}}
+								{{/bs-form-element}}
+								{{else}}
+									<div class="input-group-content"><img class="width200 height-auto" src="{{activityModel.picPath5Url}}" alt=""></div>
+								{{/if}}
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 列表编辑 -->
+				<div class="padding-top30 center">
+					<p class="text-center user-add-btn margin0auto inlineBlock">
+						{{#if detailEdit}}
+							{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check" text='保存' }}
+							{{/ui/mix-button}}
+							{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply" text='取消' clickAction="detailCancel" detailCancel="detailCancel" }}
+							{{/ui/mix-button}}
+						{{/if}}
+					</p>
+				</div>
+			{{/bs-form}}
+		</div>
+		<!-- /BOX-BODY -->
+	</div>
+</div>

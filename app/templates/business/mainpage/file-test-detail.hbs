@@ -1,0 +1,17 @@
+<div id="fileTestDetailContainer" class="mainContent">
+  <div class="wrapperInner jujia-Bd">
+{{#ui/mobile/gestures-container}}
+<div class="jujia-container healthy-file-test">
+  <section class="lately">
+    <i class="fa fa-file-text-o prev"></i>
+    <span class="">{{physicalReport.createTimeStr}}&nbsp;&nbsp;体检报告详情</span>
+    <!-- <img class="lecture-img" class="lecture" src="{{physicalReport.picPathUrl}}" alt=""> -->
+    {{ui/img-zoomage imgSrc=physicalReport.picPathUrl}}
+  </section>
+</div>
+
+
+{{/ui/mobile/gestures-container}}
+</div>
+</div>
+{{ui/container/infinite-scroll moniteData="physicalReport" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

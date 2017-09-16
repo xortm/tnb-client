@@ -1,0 +1,45 @@
+<!--pc端-->
+<div class="col-sm-12">
+    <div class="box img-top-padding50 ">
+        {{#if informationParams}}
+            <!-- <div class="bottom12">
+                <ul class="nopadding-left border-bottom">
+                    <li class="pull-left margin-right30 {{if infoParams 'select-bottom-border' ''}}" {{action "infoClick" "infoParams" on="click"}}><a href="#tab_1_1" data-toggle="tab" class="{{if infoParams 'select-title' 'noselect-title'}} the-a">基本信息</a></li>
+                    <li class="pull-left margin-right30 {{if pointParams 'select-bottom-border' ''}}" {{action "pointClick" "pointParams" on="click"}}><a href="#tab_1_3" data-toggle="tab" class="{{if pointParams 'select-title' 'noselect-title'}} the-a">个人特点</a></li>
+                    <li class="pull-left margin-right30 {{if contactParams 'select-bottom-border' ''}}" {{action "contactClick" "contactParams" on="click"}}><a href="#tab_1_4" data-toggle="tab" class="{{if contactParams 'select-title' 'noselect-title'}} the-a">联系人信息</a></li>
+                </ul>
+                <div class="clear"></div>
+            </div> -->
+            <div class="tab-content fade in nopadding-left nopadding-right">
+                {{#callbusi/customer-info customerInfo=customer saveCustomer="saveCustomer" shortSave=shortSave showCustomer=showCustomer addMode=true jujia=true}}
+                {{/callbusi/customer-info}}
+                <!-- <div class="tab-pane fade in  active" id="tab_1_1">
+                    {{#callbusi/customer-info customerInfo=customer saveCustomer="saveCustomer" shortSave=shortSave showCustomer=showCustomer addMode=true}}
+                    {{/callbusi/customer-info}}
+                </div>
+                <div class="tab-pane fade in " id="tab_1_3">
+                    {{#callbusi/customer-point-info customerInComp=customer addMode=true}}
+                    {{/callbusi/customer-point-info}}
+                </div>
+                <div class="tab-pane fade in " id="tab_1_4">
+                    {{#callbusi/customer-contact-info customerInfo=customer addMode=true}}
+                    {{/callbusi/customer-contact-info}}
+                </div>                     -->
+            </div>
+        {{else}}
+            {{#if healthParams}}
+
+            {{else}}
+                {{#if serviceParams}}
+
+                {{else}}
+                    {{#if recordParams}}
+
+                    {{else}}
+
+                    {{/if}}
+                {{/if}}
+            {{/if}}
+        {{/if}}
+    </div>
+</div>

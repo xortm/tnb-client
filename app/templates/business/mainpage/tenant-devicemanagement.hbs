@@ -1,0 +1,61 @@
+<div class="col-md-12">
+  <!-- BOX -->
+  <div class="box">
+    <div class="box-body">
+      <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+      	<div class="row">
+            <div class="col-md-9 top10"></div>
+          <div class="user-add-btn col-md-3">
+            {{#ui/mix-button class="user-btn pull-right" iconClass="fa-plus"  text='添加'  clickAction="showAddDevice" showAddDevice="showAddDevice"}}
+            {{/ui/mix-button}}
+          </div>
+      	</div>
+        <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+          <thead>
+            <tr role="row">
+							<th rowspan="1" colspan="1" width="">方案类型</th>
+              <th rowspan="1" colspan="1" width="">说明</th>
+              <th rowspan="1" colspan="1" width="">操作</th>
+            </tr>
+          </thead>
+          <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+            {{#each devicetypeList as |deviceType|}}
+						<tr>
+							<td class="ellipsis">{{deviceType.deviceName}}</td>
+              <td class="ellipsis hidden-xs">{{deviceType.remark}}</td>
+              <td class="ellipsis hidden-xs">
+                <button {{action "delete" deviceType}}>删除</button>
+              </td>
+						</tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <!-- /BOX -->
+</div>
+<!--新增设备类别-->
+{{#if showAdd}}
+    {{#bs-modal body=false footer=false header=false}}
+        {{#bs-modal-body}}
+                <div class="col-sm-12 nopadding-left">
+                    <div class="form-input-group">
+                        <span class="input-group-addon">设备类别:</span>
+                        {{#bs-form-element class="inline-block form-input-group" controlType="accessType" property="accessType" }}
+                            {{#power-select class="input-group-content" placeholder='设备类别' options=devicetypeSelectList  selected=devicetype searchField="deviceName"
+                            noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "deviceTypeSelect" ) as |deviceType|}}
+                              {{deviceType.deviceName}}
+                            {{/power-select}}
+                        {{/bs-form-element}}
+                    </div>
+                </div>
+        {{/bs-modal-body}}
+        {{#bs-modal-footer class="user-add-btn" }}
+            {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check" text='确定' clickAction="saveDevice" saveDevice="saveDevice" }}
+            {{/ui/mix-button}}
+            {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply" text='取消' clickAction="cancelAddDevice" cancelAddDevice="cancelAddDevice" }}
+            {{/ui/mix-button}}
+        {{/bs-modal-footer}}
+    {{/bs-modal}}
+{{/if}}

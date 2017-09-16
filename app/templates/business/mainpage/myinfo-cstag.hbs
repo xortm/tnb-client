@@ -1,0 +1,37 @@
+<div id="userMyInfoCertification" class="mainContent">
+  <div class="wrapperInner">
+<div class="margin_auto">
+  <br>
+  {{#each model.curUser.cstag as |cstag|}}
+  {{cstag.typename}}
+  {{/each}}
+  <br>
+</div>
+<div class="" style="margin:0 60%;">
+  {{#ui/mix-button iconClass="el-plus"  text="添加"
+  clickAction="addCstag" addCstag="addCstag" clickActParams=testParams}}
+  {{/ui/mix-button}}
+</div>
+<hr>
+{{#if showCstag}}
+<div class="topbor margin_auto  ">
+  {{#each model.cstag as |cstag|}}
+  <label>{{input type="checkbox" data-toggle=model.curUser.language  name="37"  checked=cstag.checked }}{{cstag.typename}}</label>
+  {{/each}}
+  <br>
+</div>
+<div class="" style="margin:0 60%;">
+  {{#ui/mix-button iconClass="el-plus"  text="确定"
+  clickAction="sureAddCstag" sureAddCstag="sureAddCstag" clickActParams=testParams}}
+  {{/ui/mix-button}}
+</div>
+
+{{/if}}
+{{#if curUserCstag}}
+
+<!-- {{ui/container/infinite-scroll moniteData="userMyInfoCstag" didUpdateAction="didUpdate" didInsertElementAction="didInsertElement"}} -->
+
+{{else}}
+{{/if}}
+</div></div>
+{{ui/container/infinite-scroll moniteData="userMyInfoCstag" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

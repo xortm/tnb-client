@@ -1,0 +1,45 @@
+<div class="col-sm-12">
+  <!-- BOX -->
+  <div class="box">
+    <div class="box-body">
+      <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+      	<div class="row">
+          <div class="col-sm-9 nopadding-left">
+            <div class="col-sm-7" style="font-size:24px;">
+        	    <div class="input-group">
+            		{{assessTypeName}}
+        	    </div>
+        	  </div>
+        	  <!--搜索-->
+          </div>
+      	  <div class="user-add-btn col-sm-3 nopadding-right">
+            {{#ui/mix-button class="user-btn pull-right" iconClass="fa-plus"  text='新增'  clickAction="toDetailPage" toDetailPage="toDetailPage"}}
+            {{/ui/mix-button}}
+      	  </div>
+      	</div>
+        <table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+          <thead>
+            <tr role="row">
+              <th rowspan="1" colspan="1" width="">等级名称</th>
+              <th rowspan="1" colspan="1" width="">最低分</th>
+              <th rowspan="1" colspan="1" width="">最高分</th>
+              <th rowspan="1" colspan="1" width="">描述</th>
+            </tr>
+          </thead>
+          <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+            {{#each riskList as |risk|}}
+            <tr {{action "toDetailPage" risk on="click"}}>
+              <td class="ellipsis" >{{risk.levelName}}</td>
+              <td class="ellipsis" >{{risk.minScore}}</td>
+              <td class="ellipsis" >{{risk.maxScore}}</td>
+              <td class="ellipsis" >{{risk.remark}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+  <!-- /BOX -->
+</div>

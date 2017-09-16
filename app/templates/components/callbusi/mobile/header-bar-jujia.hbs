@@ -1,0 +1,41 @@
+<mobile-header class="jujia">
+      {{#if backRoutePath}}
+      <div id="pageBackBtn" class="pull-left" {{action "transPage" backRoutePath on="tap"}}>
+        <a class="the-a back" href="javascript:void(0)">
+          <img src="../assets/images/icon/left.png" alt="" style="display:block; width:22px; height:22px; float:left; margin: 11px 12px;">
+          <!-- <i class="fa fa-angle-left header-text-color fontSize20"></i> &nbsp; -->
+        </a>
+      </div>
+      {{/if}}
+      <div class="">
+        <a class="logo" href="#"><img src="assets/images/kangyi/kangyi-logo.png" alt=""></a>
+      </div>
+      <div id="pagecallBtn" class="pull-right" {{action "showModalAction" on="tap"}}>
+        <a class="the-a call" href="javascript:void(0)">
+          <i class="fa fa-bell header-text-color fontSize14"></i> &nbsp;
+        </a>
+      </div>
+
+      <!--  点击显示用户信息  -->
+      {{#if showModal}}
+          {{#bs-modal body=false footer=false header=false closedAction=(action "invitation")}}
+              {{#bs-modal-header}}
+                  <h4 class="modal-title">您的手机号:</h4>
+              {{/bs-modal-header}}
+              {{#bs-modal-body}}
+                  <div class="modal-body clearfix">
+                      <div class="width100B" style="text-align: center; margin:0 auto; font-size:26px; line-height:46px; color:#008040;">
+                        <a style="color:#008040;" href="tel://{{curCustomer.phone}}">{{curCustomer.phone}}</a>
+                        <!-- <span>{{curCustomer.phone}}</span> -->
+                      </div>
+                  </div>
+                  <!--endprint-->
+              {{/bs-modal-body}}
+              <!-- {{#bs-modal-footer class="user-add-btn"}}
+                {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='确定'  clickAction="invitation" invitation="invitation"}}
+                {{/ui/mix-button}}
+          		{{/bs-modal-footer}} -->
+          {{/bs-modal}}
+      {{/if}}
+
+</mobile-header>

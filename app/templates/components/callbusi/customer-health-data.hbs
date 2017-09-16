@@ -1,0 +1,845 @@
+<div class="row">
+    <div id="health-area" class="col-sm-12 ">
+        <!--搜索-->
+        <!-- <div class="col-sm-3 pull-left mt15 nopadding-left ">
+            <div class="form-input-group full-width">
+                <div class="data-title col-sm-3 nopadding-left">按数据项搜索：</div>
+                {{callbusi/dict-selector class=" inline-block form-input-group " groupCode=constants.healthExamType showName="体检项目" dictSelect="healthSelect" preselected=false allowClear=true}}
+            </div>
+        </div> -->
+        <!-- <div class="col-sm-6 mt15" style="padding-top:5px;">
+            <div class="data-title pull-left">按时间搜索：</div>
+            <span class="date-range pull-left">
+        <div class="btn-group">
+          <a class="js_update btn btn-default" href="#" {{action "search" "today" on="click"}}>今天</a>
+          <a class="js_update btn btn-default" href="#" {{action "search" "seven" on="click"}}>最近7天</a>
+          <a class="js_update btn btn-default " href="#" {{action "search" "thirty" on="click"}}>最近一个月</a>
+
+          <a id="reportrange" class="btn reportrange" {{action "showDate" on="click"}}>
+            <i class="fa fa-calendar"></i>
+            <span>自定义日期</span>
+            <i class="fa fa-angle-down"></i>
+            </a>
+        </div>
+        {{#if dateShow}}
+
+            <div class="date-box form-input-group">
+                <div class="row">
+                    <div class="col-xs-4 col-sm-4 org-title">开始时间：</div>
+                    <div class="col-xs-8 col-sm-8 nopadding-left">
+                        {{ui/addon/bs-datetimepicker date=null placeholder="开始时间" locale="zh-CN" iconClasses="fa fa-calendar" show="dpShowAction" change="changeBeginDateAction"}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 col-sm-4 org-title">结束时间：</div>
+                    <div class="col-xs-8 col-sm-8 nopadding-left">
+                        {{ui/addon/bs-datetimepicker date=null placeholder="结束时间" locale="zh-CN" iconClasses="fa fa-calendar" show="dpShowAction" change="changeEndDateAction"}}
+                    </div>
+                </div>
+                <div class="btn-row text-center">
+                    <button class="btn btn-primary" {{action "hideDate" on="click"}}><i class="fa fa-check icon-white"></i>&ensp;确定</button>
+                    <button class="btn btn-light-grey" {{action "hideDate" on="click"}}><i class="fa fa-times"></i>&ensp;取消</button>
+                </div>
+            </div>
+
+        {{else}}
+        {{/if}}
+        </span>
+    </div> -->
+        <!--搜索-->
+        <div class="row col-sm-9">
+            <div class="change-view pull-left">
+              {{#if global_curStatus.isJujia}}
+                <span class="clearfix  pull-left">
+                  <a id="listBtn2" class="jujia_cur"{{action "showListJujia" on="click"}}>{{bs-tooltip title="列表式" class="light-tooltip"}}<i class="fa fa-list-ul change-fa"></i></a>
+                  <a id="textBtn2" class="jujia_nocur"{{action "showTextJujia" on="click"}}>{{bs-tooltip title="图文式" class="light-tooltip"}}<i class="fa fa-bar-chart-o change-fa"></i></a>
+                </span>
+              {{else}}
+                <span class="clearfix  pull-left">
+                  <a id="listBtn2" class="cur"{{action "showList" on="click"}}>{{bs-tooltip title="列表式" class="light-tooltip"}}<i class="fa fa-list-ul change-fa"></i></a>
+                  <a id="textBtn2"{{action "showText" on="click"}}>{{bs-tooltip title="图文式" class="light-tooltip"}}<i class="fa fa-bar-chart-o change-fa"></i></a>
+                </span>
+              {{/if}}
+                <!-- {{#if allDateShow}}
+                <span class="col-sm-3 clearfix data-title pull-left" style="border:none;"></span>
+            {{else}}
+                {{#if todayShow}}
+                    <span class="col-sm-3 clearfix data-title pull-left" style="border:none;">今天</span>
+                {{else}}
+                    {{#if sevenShow}}
+                        <span class="col-sm-3 clearfix data-title pull-left" style="border:none;">最近7天</span>
+                    {{else}}
+                        {{#if thirtyShow}}
+                            <span class="col-sm-3 clearfix data-title pull-left" style="border:none;">最近一个月</span>
+                        {{else}}
+                            {{#if compareShow}}
+                                <span class="col-sm-3 clearfix data-title pull-left" style="border:none;">{{computedBegin}}至{{computedEnd}}</span>
+                            {{else}}
+                            {{/if}}
+                        {{/if}}
+                    {{/if}}
+                {{/if}}
+            {{/if}} -->
+            </div>
+        </div>
+        <div class="col-sm-3 user-add-btn pull-right mt15 nopadding-right">
+          {{#if jujia}}
+          {{else}}
+            {{#ui/mix-button class=" user-btn pull-right" iconClass="fa-plus" text='新增健康数据' clickAction="addData" addData="addData" }}
+            {{/ui/mix-button}}
+            {{/if}}
+        </div>
+    </div>
+</div>
+
+<!-- 列表式 -->
+<div  style="overflow:scroll;"  class="dataTables_wrapper {{if textShow '' 'hidden'}}">
+    <table id="datatable1_wrapper" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered dataTable" aria-describedby="datatable1_info" >
+        <thead>
+            <tr role="row">
+                <th rowspan="1" colspan="1" width="" class="text-nowrap center">体检项目</th>
+                <th rowspan="1" colspan="1" width="" class="noBorder-right"></th>
+                <th rowspan="1" colspan="1" width="" class="noBorder-all"></th>
+                <th rowspan="1" colspan="1" width="20%" class="noBorder-all text-nowrap">今天</th>
+                <th rowspan="1" colspan="1" width="" class="noBorder-all"></th>
+                <th rowspan="1" colspan="1" width="" class="noBorder-left"></th>
+                <th rowspan="1" colspan="1" width="" class="noBorder-right"></th>
+                <th rowspan="1" colspan="1" width="" class="noBorder-all"></th>
+                <th rowspan="1" colspan="1" width="20%" class="noBorder-all text-nowrap">昨天</th>
+                <th rowspan="1" colspan="1" width="" class="noBorder-all"></th>
+                <th rowspan="1" colspan="1" width="" class="noBorder-left"></th>
+                <th rowspan="1" colspan="1" width="" class="noBorder-right"></th>
+                <th rowspan="1" colspan="1" width="" class="noBorder-all"></th>
+                <th rowspan="1" colspan="1" width="20%" class="noBorder-all text-nowrap">前天</th>
+                <th rowspan="1" colspan="1" width="" class="noBorder-all"></th>
+                <th rowspan="1" colspan="1" width="" class="noBorder-left"></th>
+                <th rowspan="1" colspan="1" width="" class="noBorder-right"></th>
+                <th rowspan="1" colspan="1" width="" class="noBorder-all"></th>
+                <th rowspan="1" colspan="1" width="20%" class="noBorder-all text-nowrap">三天前</th>
+                <th rowspan="1" colspan="1" width="" class="noBorder-all"></th>
+                <th rowspan="1" colspan="1" width="" class="noBorder-left"></th>
+                <th rowspan="1" colspan="1" width="" class="noBorder-right"></th>
+                <th rowspan="1" colspan="1" width="" class="noBorder-all"></th>
+                <th rowspan="1" colspan="1" width="20%" class="noBorder-all text-nowrap">四天前</th>
+                <th rowspan="1" colspan="1" width="" class="noBorder-all"></th>
+                <th rowspan="1" colspan="1" width="" class="noBorder-left"></th>
+                <th rowspan="1" colspan="1" width="" class="noBorder-right"></th>
+                <th rowspan="1" colspan="1" width="" class="noBorder-all"></th>
+                <th rowspan="1" colspan="1" width="20%" class="noBorder-all text-nowrap">五天前</th>
+                <th rowspan="1" colspan="1" width="" class="noBorder-all"></th>
+                <th rowspan="1" colspan="1" width="" class="noBorder-left"></th>
+                <th rowspan="1" colspan="1" width="" class="noBorder-right"></th>
+                <th rowspan="1" colspan="1" width="" class="noBorder-all"></th>
+                <th rowspan="1" colspan="1" width="20%" class="noBorder-all text-nowrap">六天前</th>
+                <th rowspan="1" colspan="1" width="" class="noBorder-all"></th>
+                <th rowspan="1" colspan="1" width="" class="noBorder-left"></th>
+            </tr>
+            <tr role="row" style="cursor:default;">
+              <th rowspan="1" colspan="1" width="" class="noBorder1 center"></th>
+              {{#each timeAry as |timeItem|}}
+              <th rowspan="1" colspan="1" width="20%" class="noBorder1 center text-nowrap">{{timeItem.timeValue}}</th>
+              {{/each}}
+            </tr>
+        </thead>
+        <tbody role="alert" aria-live="polite" aria-relevant="all" class="" id='tbody'>
+            <!-- {{#each typeItems as |typeItem|}}
+                <tr style="cursor:default;" typecode="{{typeItem.typecode}}">
+                   <td class="ellipsis center text-nowrap" >{{typeItem.typeName}}</td>
+                    {{#each seqItems as |seqItem|}}
+                    <td class="ellipsis center text-nowrap" seq="{{seqItem.seq}}">11</td>
+                    {{/each}}
+                </tr>
+            {{/each}} -->
+        </tbody>
+    </table>
+</div>
+{{#if textShow}}
+  {{#if statusService.isJujia}}
+    <div class="pull-right user-add-btn bottom-func">
+      <!-- <span class="" {{action "uploadData" on="click"}}>导出健康数据</span> -->
+      <div class="pointer pull-right text-underline margin-top-10" {{action "uploadData" on="click"}}>
+        <i class="fa fa-file-excel-o">
+        </i>
+        导出本页到Excel
+      </div>
+    </div>
+  {{/if}}
+{{/if}}
+<!-- 分页插件 -->
+<!-- {{#if healthList }}
+    {{page-numbers content=healthList showFL=true numPagesToShow=3}}
+{{else}}
+    <h1 class="col-sm-12 center unTask"></h1>
+{{/if}} -->
+<!-- 图文式 -->
+<!-- <div class="{{if textShow 'hidden' ''}}">
+    <div class="line text-center {{if informationShow '' 'hidden'}}">
+        <p class=" text-center row data-title " style="height:50px;display:inline-block;margin:0 auto!important ">当前无数据，请选择体检项目</p>
+    </div>
+</div>
+<div class="{{if informationShow 'hidden' ''}}">
+    <div class="row {{if textShow 'hidden' ''}}">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-12">
+
+                    <div class="float-chart-box pt20 pb20">
+                        <div id="myChart" style="height:400px;" class="text-center"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+<!-- 图表 -->
+<div class="row {{if textShow 'hidden' ''}}">
+    <div class="col-sm-12">
+        <div class="col-sm-6 float-chart-box pt20 pb20 pull-left">
+            <div id="myChartBlood" style="height:400px;" class="text-center"></div>
+            <div class="alert alert-block alert-warning fade in width-100">
+                <p>最近一次血压值(mmHg)：{{firstBlood.bloodResult}}</p>
+                <p>建议：{{analysisObj.healthExamType1.contents}}</p>
+                <p>综合建议：{{analysisObj.healthExamType1.mul_contents}}</p>
+            </div>
+        </div>
+        <div class="col-sm-6 float-chart-box pt20 pb20 pull-left">
+            <div id="myChartOxygen" style="height:400px;" class="text-center"></div>
+            <div class="alert alert-block alert-warning fade in width-100">
+                <p>最近一次血氧值(%)：{{firstOxygen.result}}</p>
+                <p>最近一次脉搏值(times/min)：{{firstOxygen.resultAddtion}}</p>
+                <p>建议：{{analysisObj.healthExamType2.contents}}</p>
+                <p>综合建议：{{analysisObj.healthExamType2.mul_contents}}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12">
+        <div class="col-sm-6 float-chart-box pt20 pb20 pull-left">
+            <div id="myChartBreath" style="height:400px;" class="text-center"></div>
+            <div class="alert alert-block alert-warning fade in width-100">
+                <p>最近一次呼吸频率值(times/min)：{{firstBreath.result}}</p>
+                <p>建议：{{analysisObj.healthExamType4.contents}}</p>
+                <p>综合建议：{{analysisObj.healthExamType4.mul_contents}}</p>
+            </div>
+        </div>
+        <div class="col-sm-6 float-chart-box pt20 pb20 pull-left">
+            <div id="myChartHeart" style="height:400px;" class="text-center"></div>
+            <div class="alert alert-block alert-warning fade in width-100">
+                <p>最近一次心率值(times/min)：{{firstHeart.result}}</p>
+                <p>建议：{{analysisObj.healthExamType3.contents}}</p>
+                <p>综合建议：{{analysisObj.healthExamType3.mul_contents}}</p>
+            </div>
+        </div>
+    </div>
+
+
+        <div class="col-sm-6 float-chart-box pt20 pb20 pull-left">
+            <div id="myChartEmpty" style="height:400px;" class="text-center"></div>
+            <div class="alert alert-block alert-warning fade in width-100">
+                <p>最近一次血糖值(mmol/L)：{{firstEmpty.result}}</p>
+                <p>建议：{{analysisObj.healthExamType7.contents}}</p>
+                <p>综合建议：{{analysisObj.healthExamType7.mul_contents}}</p>
+            </div>
+        </div>
+        <div class="col-sm-6 float-chart-box pt20 pb20 pull-left hide">
+            <div id="myChartBefore" style="height:400px;" class="text-center"></div>
+            <div class="alert alert-block alert-warning fade in width-100">
+                <p>最近一次餐前血糖值(mmol/L)：{{firstBefore.result}}</p>
+                <p>建议：{{analysisObj.healthExamType8.contents}}</p>
+                <p>综合建议：{{analysisObj.healthExamType8.mul_contents}}</p>
+            </div>
+        </div>
+
+
+    <div class="col-sm-12 hide">
+        <div class="col-sm-6 float-chart-box pt20 pb20 pull-left">
+            <div id="myChartAfter" style="height:400px;" class="text-center"></div>
+            <div class="alert alert-block alert-warning fade in width-100">
+                <p>最近一次餐后血糖值(mmol/L)：{{firstAfter.result}}</p>
+                <p>建议：{{analysisObj.healthExamType9.contents}}</p>
+                <p>综合建议：{{analysisObj.healthExamType9.mul_contents}}</p>
+            </div>
+        </div>
+        <div class="col-sm-6 float-chart-box pt20 pb20 pull-left">
+            <div id="myChartFat" style="height:400px;" class="text-center"></div>
+            <div class="alert alert-block alert-warning fade in width-100">
+                <p>最近一次脂肪数据(g/100g)：{{firstFat.result}}</p>
+                <p>建议：{{analysisObj.healthExamType10.contents}}</p>
+                <p>综合建议：{{analysisObj.healthExamType10.mul_contents}}</p>
+            </div>
+        </div>
+    </div>
+
+
+      <div class="col-sm-6 float-chart-box pt20 pb20 pull-left hide">
+          <div id="myChartWeight" style="height:400px;" class="text-center"></div>
+          <div class="alert alert-block alert-warning fade in width-100">
+              <p>最近一次体重值(kg)：{{firstWeight.result}}</p>
+              <p>建议：{{analysisObj.healthExamType6.contents}}</p>
+              <p>综合建议：{{analysisObj.healthExamType6.mul_contents}}</p>
+          </div>
+      </div>
+        <div class="col-sm-6 float-chart-box pt20 pb20 pull-left">
+            <div id="myChartTemperature" style="height:400px;" class="text-center"></div>
+            <div class="alert alert-block alert-warning fade in width-100">
+                <p>最近一次体温值(℃)：{{firstTemperature.result}}</p>
+                <p>建议：{{analysisObj.healthExamType5.contents}}</p>
+                <p>综合建议：{{analysisObj.healthExamType5.mul_contents}}</p>
+            </div>
+        </div>
+
+
+    <div class="col-sm-12 hide">
+        <div class="col-sm-6 float-chart-box pt20 pb20 pull-left">
+            <div id="myChartAnalysis" style="height:400px;" class="text-center"></div>
+            <div class="alert alert-block alert-warning fade in width-100">
+                <p>最近一次尿液分析数据：</p>
+                <br />
+                <p class="choose-inline-block">白细胞：{{firstAnalysis.result}}</p>&nbsp;&nbsp;&nbsp;
+                <p class="choose-inline-block">亚硝酸盐：{{firstAnalysis.resultAddtion}}</p>&nbsp;&nbsp;&nbsp;
+                <p class="choose-inline-block">尿胆原：{{firstAnalysis.resultAddtionSec}}</p>&nbsp;&nbsp;&nbsp;
+                <p class="choose-inline-block">蛋白质：{{firstAnalysis.resultAddtionThir}}</p>&nbsp;&nbsp;&nbsp;
+                <p class="choose-inline-block">酸碱度：{{firstAnalysis.resultAddtionFou}}</p>&nbsp;&nbsp;&nbsp;
+                <p class="choose-inline-block">红细胞：{{firstAnalysis.resultAddtionFiv}}</p>
+                <br />
+                <p class="choose-inline-block">比重：{{firstAnalysis.resultAddtionSix}}</p>&nbsp;&nbsp;&nbsp;
+                <p class="choose-inline-block">酮体：{{firstAnalysis.resultAddtionSev}}</p>&nbsp;&nbsp;&nbsp;
+                <p class="choose-inline-block">胆红素：{{firstAnalysis.resultAddtionEig}}</p>&nbsp;&nbsp;&nbsp;
+                <p class="choose-inline-block">尿葡萄糖：{{firstAnalysis.resultAddtionNin}}</p>&nbsp;&nbsp;&nbsp;
+                <p class="choose-inline-block">维生素：{{firstAnalysis.resultAddtionTen}}</p>
+                <br />
+                <br />
+                <p>建议：{{analysisObj.healthExamType12.contents}}</p>
+                <p>综合建议：{{analysisObj.healthExamType12.mul_contents}}</p>
+            </div>
+        </div>
+        <div class="col-sm-6 float-chart-box pt20 pb20 pull-left">
+            <div id="myChartBloodFat" style="height:400px;" class="text-center"></div>
+            <div class="alert alert-block alert-warning fade in width-100">
+                <p>最近一次血脂数据：</p>
+                <br />
+                <p class="choose-inline-block">胆固醇(mmol/L)：{{firstBloodFat.result}}</p>&nbsp;&nbsp;&nbsp;
+                <p class="choose-inline-block">高密度脂蛋白胆固醇(mmol/L)：{{firstBloodFat.resultAddtion}}</p>&nbsp;&nbsp;&nbsp;
+                <p class="choose-inline-block">甘油三酯含量(mmol/L)：{{firstBloodFat.resultAddtionSec}}</p>&nbsp;&nbsp;&nbsp;
+                <p class="choose-inline-block">低密度脂蛋白胆固醇(mmol/L)：{{firstBloodFat.resultAddtionThir}}</p>&nbsp;&nbsp;&nbsp;
+                <p class="choose-inline-block">总胆固醇和高密度胆固醇的比值(%)：{{firstBloodFat.resultAddtionFou}}</p>
+                <br />
+                <br />
+                <p>建议：{{analysisObj.healthExamType13.contents}}</p>
+                <p>综合建议：{{analysisObj.healthExamType13.mul_contents}}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 hide">
+      <div class="col-sm-6 float-chart-box pt20 pb20 pull-left">
+          <div style="height:400px;border" class="text-center">
+            <div style="font-size:20px;color:#333;font-weight: 700;padding-bottom:20px;">心电图</div>
+            <img src={{firstHeartImg.realHeartImg}} alt="">
+          </div>
+      </div>
+    </div>
+</div>
+
+<!-- End 添加新健康数据弹窗 -->
+{{#if showpopInvitePassModal}}
+    {{#bs-modal body=false footer=false header=false closedAction=(action "invitation") }}
+        {{#bs-modal-header}}
+            <h4 class="modal-title">添加新健康数据</h4>
+        {{/bs-modal-header}}
+        {{#bs-modal-body}}
+        {{#bs-form formLayout=formLayout model=healthModel invalid=(action "invalid")}}
+            <div class="modal-body clearfix">
+                <div class="form-group">
+                    <div class="col-sm-12" style="text-align: center;">
+                        <div class="col-xs-12 col-sm-12">
+                            <div class="form-input-group">
+                                <span class="input-group-addon">体检时间：</span>
+                                <div>
+                                    {{#if health.edit}}
+                                      <div class="inline-block form-input-group">
+                                        {{#bs-form-element class="inline-block form-input-group" controlType="examDateTime"  property="examDateTime" }}
+                                          {{ui/addon/bs-datetimepicker date=health.examDate placeholder="体检时间" locale="zh-CN"
+                                          iconClasses="fa fa-calendar"   show="dpShowAction" change="changeExamAction" format="HH:mm" minDate=health.minTime maxDate=health.maxTime}}
+                                        {{/bs-form-element}}
+                                      </div>
+                                    {{else}}
+                                      <div class="inline-block form-input-group">
+                                        {{#bs-form-element class="inline-block form-input-group" controlType="examDateTime"  property="examDateTime" }}
+                                          {{ui/addon/bs-datetimepicker date=health.examDate placeholder="体检时间" locale="zh-CN" iconClasses="fa fa-calendar"   show="dpShowAction" change="changeExamAction" }}
+                                        {{/bs-form-element}}
+                                      </div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                            <div class="divide-10"></div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12">
+                            <div class="form-input-group">
+                                <span class="input-group-addon">体检项目：</span>
+                                {{#if health.edit}}
+                                  <div class="input-group-content">
+                                    {{health.itemtype.typename}}
+                                  </div>
+                                {{else}}
+                                  <div class="inline-block form-input-group">
+                                      {{#bs-form-element class="inline-block form-input-group" controlType="itemtype"  property="itemtype" }}
+                                      {{#power-select options=healthTypeList selected=health.itemtype placeholder='数据项目'
+                                				allowClear=false onchange=(action "addHealthSelect") as |itemtype|}}
+                                				{{itemtype.typename}}
+                                			{{/power-select}}
+                                      {{/bs-form-element}}
+                                  </div>
+                                {{/if}}
+                            </div>
+                            <div class="divide-10"></div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12">
+                            {{#if bloodShow}}
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">高压(mm/Hg)：</span>
+                                    <div>
+                                      {{#bs-form-element class="inline-block form-input-group" controlType="result"  property="result" }}
+                                        {{input class="input-group-content" value=health.result type="text"}}
+                                      {{/bs-form-element}}
+                                    </div>
+                                </div>
+                                <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">低压(mm/Hg)：</span>
+                                    <div>
+                                      {{#bs-form-element class="inline-block form-input-group" controlType="result"  property="result" }}
+                                        {{input class="input-group-content" value=health.resultAddtion type="text"}}
+                                      {{/bs-form-element}}
+                                    </div>
+                                </div>
+                            {{else}}
+                                {{#if heartShow}}
+                                    <div class="form-input-group">
+                                        <span class="input-group-addon">心率(times/min)：</span>
+                                        <div>
+                                          {{#bs-form-element class="inline-block form-input-group" controlType="result"  property="result" }}
+                                            {{input class="input-group-content" value=health.result type="text"}}
+                                          {{/bs-form-element}}
+                                        </div>
+                                    </div>
+                                {{else}}
+                                {{#if analysisShow}}
+
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">白细胞：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.result type="text"}}
+                                    </div>
+                                </div>
+                                <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">亚硝酸盐：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.resultAddtion type="text"}}
+                                    </div>
+                                </div>
+                                <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">尿胆原：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.resultAddtionSec type="text"}}
+                                    </div>
+                                </div>
+                                <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">蛋白质：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.resultAddtionThir type="text"}}
+                                    </div>
+                                </div>
+                                <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">酸碱度：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.resultAddtionFou type="text"}}
+                                    </div>
+                                </div>
+                                <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">红细胞：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.resultAddtionFiv type="text"}}
+                                    </div>
+                                </div>
+                                <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">比重：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.resultAddtionSix type="text"}}
+                                    </div>
+                                </div>
+                                <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">酮体：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.resultAddtionSev type="text"}}
+                                    </div>
+                                </div>
+                                <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">胆红素：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.resultAddtionEig type="text"}}
+                                    </div>
+                                </div>
+                                <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">尿葡萄糖：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.resultAddtionNin type="text"}}
+                                    </div>
+                                </div>
+                                <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">维生素：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.resultAddtionTen type="text"}}
+                                    </div>
+                                </div>
+                                {{else}}
+                                {{#if OxygenShow}}
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">血氧值(%)：</span>
+                                    <div>
+                                      {{#bs-form-element class="inline-block form-input-group" controlType="result"  property="result" }}
+                                        {{input class="input-group-content" value=health.result type="text"}}
+                                      {{/bs-form-element}}
+                                    </div>
+                                </div>
+                                <!-- <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">脉搏(times/min)：</span>
+                                    <div>
+                                      {{#bs-form-element class="inline-block form-input-group" controlType="result"  property="result" }}
+                                        {{input class="input-group-content" value=health.resultAddtion type="text"}}
+                                      {{/bs-form-element}}
+                                    </div>
+                                </div> -->
+                                {{else}}
+                                {{#if bloodFatShow}}
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">胆固醇(mmol/L)：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.result type="text"}}
+                                    </div>
+                                </div>
+                                <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">高密度脂蛋白胆固醇(mmol/L)：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.resultAddtion type="text"}}
+                                    </div>
+                                </div>
+                                <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">甘油三酯含量(mmol/L)：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.resultAddtionSec type="text"}}
+                                    </div>
+                                </div>
+                                <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">低密度脂蛋白胆固醇(mmol/L)：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.resultAddtionThir type="text"}}
+                                    </div>
+                                </div>
+                                <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">总胆固醇和高密度胆固醇的比值(%)：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.resultAddtionFou type="text"}}
+                                    </div>
+                                </div>
+                                {{else}}
+                                    <div class="form-input-group">
+                                        <span class="input-group-addon {{if health.itemRemark '' 'hidden'}}">{{defaultTypeName}}({{health.itemRemark}})：</span>
+                                        <span class="input-group-addon {{if health.itemRemark 'hidden' ''}}">{{defaultTypeName}}：</span>
+                                        <div>
+                                            <!-- <div class="font-light input-group-content">无</div> -->
+                                            <!-- <input class="input-group-content"  readonly="true" value=""/> -->
+                                          {{#bs-form-element class="inline-block form-input-group" controlType="result"  property="result" }}
+                                            {{input class="input-group-content" value=health.result type="text"}}
+                                          {{/bs-form-element}}
+                                        </div>
+                                    </div>
+                                    {{/if}}
+                                    {{/if}}
+                                    {{/if}}
+                                {{/if}}
+                            {{/if}}
+                            <div class="divide-10"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/bs-form}}
+        {{/bs-modal-body}}
+        {{#bs-modal-footer class="user-add-btn" as |footer|}}
+            <!-- {{#bs-button action=(action "saveClick" ) type="primary" disabled=prepaidDisabled}}保存{{/bs-button}}
+			{{#bs-button action=(action "invitation") type="default"}}取消{{/bs-button}} -->
+            {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check" text='保存' clickAction="saveClick" saveClick="saveClick" }}
+            {{/ui/mix-button}}
+            {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply" text='取消' clickAction="invitation" invitation="invitation" }}
+            {{/ui/mix-button}}
+        {{/bs-modal-footer}}
+    {{/bs-modal}}
+{{/if}}
+<!--尿液分析和心电图(弹框)  -->
+{{#if showpopInvitePassModalTwo}}
+    {{#bs-modal body=false footer=false header=false closedAction=(action "cancel")}}
+        {{#bs-modal-header}}
+            <h4 class="modal-title">心电图</h4>
+        {{/bs-modal-header}}
+        {{#bs-modal-body}}
+        <div class="">
+          <img src={{url}} alt="" style="margin:0 auto;display:block;">
+        </div>
+
+        {{/bs-modal-body}}
+        {{#bs-modal-footer class="user-add-btn" as |footer|}}
+            <!-- {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply" text='取消' clickAction="cancel" cancel="cancel" }}
+            {{/ui/mix-button}} -->
+            <div class="col-sm-12">
+                <div class="text-center ">
+                    <p class="text-center user-add-btn left-none" style="display:inline-block;margin:0 auto!important ">
+                        {{#ui/mix-button class=" user-btn times-btn " iconClass="fa fa-mail-reply" text='取消' clickAction="cancel" cancel="cancel" }}
+                        {{/ui/mix-button}}
+                    </p>
+                </div>
+            </div>
+        {{/bs-modal-footer}}
+    {{/bs-modal}}
+{{/if}}
+<!--编辑健康数据-->
+{{#if showpopInvitePassModalThree}}
+    {{#bs-modal body=false footer=false header=false closedAction=(action "invitation") }}
+        {{#bs-modal-header}}
+            <h4 class="modal-title">编辑健康数据</h4>
+        {{/bs-modal-header}}
+        {{#bs-modal-body}}
+        {{#bs-form formLayout=formLayout model=healthModel invalid=(action "invalid")}}
+            <div class="modal-body clearfix">
+                <div class="form-group">
+                    <div class="col-sm-12" style="text-align: center;">
+                        <div class="col-xs-12 col-sm-12">
+                            <div class="form-input-group">
+                                <span class="input-group-addon">体检时间：</span>
+                                <div class="input-group-content">
+                                    {{health.examDateString}}
+                                </div>
+                            </div>
+                            <div class="divide-10"></div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12">
+                            <div class="form-input-group">
+                                <span class="input-group-addon">体检项目：</span>
+                                <div class="input-group-content">
+                                  {{health.itemtype.typename}}
+                                </div>
+                            </div>
+                            <div class="divide-10"></div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12">
+                            {{#if bloodShow}}
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">高压(mm/Hg)：</span>
+                                    <div>
+                                      {{#bs-form-element class="inline-block form-input-group" controlType="result"  property="result" }}
+                                        {{input class="input-group-content" value=health.result type="text"}}
+                                      {{/bs-form-element}}
+                                    </div>
+                                </div>
+                                <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">低压(mm/Hg)：</span>
+                                    <div>
+                                      {{#bs-form-element class="inline-block form-input-group" controlType="result"  property="result" }}
+                                        {{input class="input-group-content" value=health.resultAddtion type="text"}}
+                                      {{/bs-form-element}}
+                                    </div>
+                                </div>
+                            {{else}}
+                                {{#if heartShow}}
+                                    <div class="form-input-group">
+                                        <span class="input-group-addon">心率(times/min)：</span>
+                                        <div>
+                                          {{#bs-form-element class="inline-block form-input-group" controlType="result"  property="result" }}
+                                            {{input class="input-group-content" value=health.result type="text"}}
+                                          {{/bs-form-element}}
+                                        </div>
+                                    </div>
+                                {{else}}
+                                {{#if analysisShow}}
+
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">白细胞：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.result type="text"}}
+                                    </div>
+                                </div>
+                                <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">亚硝酸盐：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.resultAddtion type="text"}}
+                                    </div>
+                                </div>
+                                <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">尿胆原：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.resultAddtionSec type="text"}}
+                                    </div>
+                                </div>
+                                <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">蛋白质：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.resultAddtionThir type="text"}}
+                                    </div>
+                                </div>
+                                <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">酸碱度：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.resultAddtionFou type="text"}}
+                                    </div>
+                                </div>
+                                <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">红细胞：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.resultAddtionFiv type="text"}}
+                                    </div>
+                                </div>
+                                <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">比重：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.resultAddtionSix type="text"}}
+                                    </div>
+                                </div>
+                                <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">酮体：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.resultAddtionSev type="text"}}
+                                    </div>
+                                </div>
+                                <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">胆红素：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.resultAddtionEig type="text"}}
+                                    </div>
+                                </div>
+                                <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">尿葡萄糖：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.resultAddtionNin type="text"}}
+                                    </div>
+                                </div>
+                                <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">维生素：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.resultAddtionTen type="text"}}
+                                    </div>
+                                </div>
+                                {{else}}
+                                {{#if OxygenShow}}
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">血氧值(%)：</span>
+                                    <div>
+                                      {{#bs-form-element class="inline-block form-input-group" controlType="result"  property="result" }}
+                                        {{input class="input-group-content" value=health.result type="text"}}
+                                      {{/bs-form-element}}
+                                    </div>
+                                </div>
+                                <!-- <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">脉搏(times/min)：</span>
+                                    <div>
+                                      {{#bs-form-element class="inline-block form-input-group" controlType="result"  property="result" }}
+                                        {{input class="input-group-content" value=health.resultAddtion type="text"}}
+                                      {{/bs-form-element}}
+                                    </div>
+                                </div> -->
+                                {{else}}
+                                {{#if bloodFatShow}}
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">胆固醇(mmol/L)：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.result type="text"}}
+                                    </div>
+                                </div>
+                                <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">高密度脂蛋白胆固醇(mmol/L)：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.resultAddtion type="text"}}
+                                    </div>
+                                </div>
+                                <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">甘油三酯含量(mmol/L)：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.resultAddtionSec type="text"}}
+                                    </div>
+                                </div>
+                                <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">低密度脂蛋白胆固醇(mmol/L)：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.resultAddtionThir type="text"}}
+                                    </div>
+                                </div>
+                                <div class="divide-10"></div>
+                                <div class="form-input-group">
+                                    <span class="input-group-addon">总胆固醇和高密度胆固醇的比值(%)：</span>
+                                    <div>
+                                        {{input class="input-group-content" value=health.resultAddtionFou type="text"}}
+                                    </div>
+                                </div>
+                                {{else}}
+                                    <div class="form-input-group">
+                                        <span class="input-group-addon {{if health.itemRemark '' 'hidden'}}">{{defaultTypeName}}({{health.itemRemark}})：</span>
+                                        <span class="input-group-addon {{if health.itemRemark 'hidden' ''}}">{{defaultTypeName}}：</span>
+                                        <div>
+                                            <!-- <div class="font-light input-group-content">无</div> -->
+                                            <!-- <input class="input-group-content"  readonly="true" value=""/> -->
+                                          {{#bs-form-element class="inline-block form-input-group" controlType="result"  property="result" }}
+                                            {{input class="input-group-content" value=health.result type="text"}}
+                                          {{/bs-form-element}}
+                                        </div>
+                                    </div>
+                                    {{/if}}
+                                    {{/if}}
+                                    {{/if}}
+                                {{/if}}
+                            {{/if}}
+                            <div class="divide-10"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/bs-form}}
+        {{/bs-modal-body}}
+        {{#bs-modal-footer class="user-add-btn" as |footer|}}
+            <!-- {{#bs-button action=(action "saveClick" ) type="primary" disabled=prepaidDisabled}}保存{{/bs-button}}
+			{{#bs-button action=(action "invitation") type="default"}}取消{{/bs-button}} -->
+            {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check" text='保存' clickAction="saveClick" saveClick="saveClick" }}
+            {{/ui/mix-button}}
+            {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply" text='取消' clickAction="invitation" invitation="invitation" }}
+            {{/ui/mix-button}}
+        {{/bs-modal-footer}}
+    {{/bs-modal}}
+{{/if}}

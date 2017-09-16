@@ -1,0 +1,111 @@
+{{#if curTask}}
+<div class="page-content">
+  <div class="col-sm-12">
+    <div class="col-sm-3 nopadding-horizontal">
+      <div class="input-group">
+        {{input type="search" class="form-control" name="search" value=customer enter='searchCustomer' placeholder="搜索 姓名/手机号"}}
+        <span class="input-group-addon hovertype" {{action 'searchCustomer'}}>
+          <span class="linecons-search" id="linecons-search"></span>
+        </span>
+      </div>
+    </div>
+    <a href="{{templateUrl}}" class="pull-right top5" target="_blank">下载excel模板</a>
+    <a id="uploadExcel" class="btn btn-icon btn-turquoise btn-xs pull-right right10"><!-- title="号码上传后将平均分配给审核通过的客服人员" -->
+      <i class="el-plus"></i>
+      <a class="fa-inverse">&nbsp;批量上传</a>
+    </a>
+      {{#pl-uploader extensions="xlsx" for="uploadExcel"
+         onfileadd="uploadExcel" as |queue features|}}
+      {{/pl-uploader}}
+
+    <!-- <div class="col-sm-4 pull-right">
+      {{#ui/mix-button iconClass="el-plus"
+      text="新增客户"
+      clickAction="addCustomer" addCustomer="addCustomer" clickActParams=testParams}}
+      {{/ui/mix-button}}
+    </div> -->
+  </div>
+  <div class="">
+    &nbsp;{{#if showUpSucc}}
+        <div class="pull-right">{{uploadSucMsg}}</div>
+    {{/if}}
+    {{#if showUpError}}
+        <div class="pull-right">excel文件上传失败</div>
+    {{/if}}
+  </div>
+
+  {{#if csCustomerList}}
+  <div class="col-sm-12 top8">
+    <div class="col-sm-3 bgcolor-w nopadding-horizontal border-except-right">
+      {{#each csCustomerList as |csCustomer|}}
+      {{#callbusi/customer-list-item
+        customer=csCustomer
+        gotoDetail = 'gotoDetail'
+      }}
+      {{/callbusi/customer-list-item}}
+      {{/each}}
+      <div class="tight-row bk-color-white padding-top5">
+        {{page-numbers content=csCustomerList showFL=true numPagesToShow=3}}
+      </div>
+    </div>
+    {{#if curCustomer.click}}
+    <div class="col-sm-9">
+      <div class="col-sm-12 nopadding-horizontal">
+        {{#callbusi/customer-info
+          customer=curCustomer
+          editCustomer = 'editCustomer'
+        }}
+        {{/callbusi/customer-info}}
+      </div>
+
+      {{#if curCustomer.extendInfo}}
+      <div class="col-sm-12 nopadding-horizontal">
+        {{#callbusi/customer-information
+          customer=curCustomer
+          gotoDetail = 'gotoDetail'
+        }}
+        {{/callbusi/customer-information}}
+      </div>
+      {{/if}}
+
+      <div class="col-sm-12 nopadding-horizontal">
+        {{#callbusi/customer-contact
+          csUser=curCustomer.agent.name
+          calls=curCustomerCall
+        }}
+        {{/callbusi/customer-contact}}
+      </div>
+    </div>
+    {{/if}}
+  </div>
+  {{else}}
+  <h1 class="col-sm-12 center unTask">客户不存在</h1>
+  {{/if}}
+</div>
+{{#if confirmIdModal}}
+{{#bs-modal body=false footer=false header=false abrogate=(action "abrogate")}}
+{{#bs-modal-header}}
+<h4 class="modal-title">新增客户确认</h4>
+{{/bs-modal-header}}
+{{#bs-modal-body}}
+号码上传后将平均分配给审核通过的客服人员，确认现在上传？
+{{/bs-modal-body}}
+{{#bs-modal-footer as |footer|}}
+{{#bs-button action=(action "notarize" confirmIdModal) type="success"}}确定{{/bs-button}}
+{{#bs-button action=(action "abrogate") type="warning"}}取消{{/bs-button}}
+{{/bs-modal-footer}}
+{{/bs-modal}}
+{{/if}}
+{{#if showpopCustomerModal}}
+{{#callbusi/customer-modal
+  isDisabled = isDisabled
+  customer = curEditCustomer
+  saveCustomer = 'saveCustomer'
+  cancelCustomerChange = 'cancelCustomerChange'
+}}
+{{/callbusi/customer-modal}}
+{{/if}}
+
+{{else}}
+<h1 class="center unTask">没有选择任务</h1>
+{{/if}}

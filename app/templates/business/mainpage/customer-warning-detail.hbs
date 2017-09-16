@@ -1,0 +1,72 @@
+<div id="customerWarningDetailContainer" class="mainContent">
+  <div class="wrapperInner">
+    {{#ui/mobile/gestures-container}}
+    <div class="finished-detail">
+      <div class="title clearfix">
+        <div class="content">{{warningItem.caller.name}}
+          <span class="color666666 padding-left-10">
+            {{warningItem.bed.roomBedName}}
+          </span>
+        </div>
+        <div class="time">
+          <!-- <img width='28' src="assets/images/mobile/clock.png"/> -->
+          {{warningItem.createDateTimeShortString}}
+        </div>
+      </div>
+      {{#if (eq warningItem.flag.typecode constants.hbeaconWarningCancelByHand)}}
+        <div class="border-top-bottom-1 height35">
+          <span class="task-detail-split"></span>
+          <span class="font14"><span class="font-black font16">{{warningItem.reason}}</span>({{warningItem.flag.typename}})</span>
+        </div>
+        <div class="bk-color-white padding-left-10">
+          <div class="color999999 padding-top10"><span class="color666666">处理人：</span>{{warningItem.operater.name}}</div>
+          <div class="color999999 padding-top5"><span class="color666666">处理时间：</span>{{warningItem.operateTimeShortString}}</div>
+          <div class="color999999 padding-top5 padding-bottom10"><span class="color666666">备注信息：</span>{{warningItem.operateNote}}</div>
+        </div>
+      {{else if (eq warningItem.flag.typecode constants.hbeaconWarningCancelBySys)}}
+        <div class="border-top-bottom-1 height35">
+          <span class="task-detail-split"></span>
+          <span class="font14"><span class="font-black font16">{{warningItem.reason}}</span>({{warningItem.flag.typename}})</span>
+        </div>
+        <div class="bk-color-white padding-left-10">
+          <div class="color999999 padding-top10"><span class="color666666">复位时间：</span>{{warningItem.cancelTimeShortString}}</div>
+        </div>
+        <div class="finish-tag  padding-left-10 bk-color-white padding-right-10 padding-bottom15">
+          <div class="">
+            {{textarea class="" placeholder="请输入备注信息" value=operateNote}}
+          </div>
+        </div>
+        {{#ui/mobile/gestures-container}}
+        <div class="clearfix">
+          {{ui/mobile/task-detail-button needDoubleClickPrevent=true touchStartAction="saveDetail" saveDetail="saveDetail" outerClass="detail_warning" butContent="确定"}}
+          <!-- <div class="clearfix detail-tosure"  id="detail_tosure" {{action "saveDetail" on="tap"}}>
+            确定
+          </div> -->
+        </div>
+        {{/ui/mobile/gestures-container}}
+      {{else}}
+        <div class="border-top-bottom-1 height35">
+          <span class="task-detail-split"></span>
+          <span class="font14"><span class="font-black font16">{{warningItem.reason}}</span>({{warningItem.flag.typename}})</span>
+        </div>
+        <div class="finish-tag  padding-left-10 bk-color-white padding-right-10 padding-bottom15">
+          <div class="">
+            {{textarea class="" placeholder="请输入备注信息" value=operateNote}}
+          </div>
+        </div>
+
+      {{#ui/mobile/gestures-container}}
+      <div class="clearfix">
+        {{ui/mobile/task-detail-button needDoubleClickPrevent=true touchStartAction="saveDetail" saveDetail="saveDetail" outerClass="detail_warning" butContent="确定"}}
+        <!-- <div class="clearfix detail-tosure"  id="detail_tosure" {{action "saveDetail" on="tap"}}>
+          确定
+        </div> -->
+      </div>
+      {{/ui/mobile/gestures-container}}
+    {{/if}}
+  </div>
+  {{/ui/mobile/gestures-container}}
+  </div>
+</div>
+{{ui/container/infinite-scroll moniteData=""
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

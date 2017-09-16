@@ -1,0 +1,183 @@
+
+<div class="col-md-12">
+	<div class="box margin-middle max-width">
+		<!-- BOX-BODY -->
+		<div class="box-body">
+			{{#bs-form formLayout=formLayout model=nursingModel  invalid=(action "invalid")}}
+			<!-- 编辑的功能-->
+			<div class="row clear">
+				<div class="col-xs-12">
+					<p class="user-add-btn">
+						{{#if detailEdit}}
+
+						{{else}}
+							{{#ui/icon-button class="user-btn trash-btn pull-right incon-button-font" iconClass="fa fa-trash-o"
+							 text='删除'  clickAction="delById" delById="delById" clickActParams=nursing}}
+							 {{bs-tooltip title="删除" class="light-tooltip"}}
+							{{/ui/icon-button}}
+							{{#ui/icon-button class="user-btn edit-btn pull-right incon-button-font" iconClass="fa fa-edit"
+							 text='编辑'  clickAction="detailEditClick" detailEditClick="detailEditClick"}}
+							 {{bs-tooltip title="编辑" class="light-tooltip"}}
+			        {{/ui/icon-button}}
+						{{/if}}
+					</p>
+				</div>
+
+
+
+					<div class="col-xs-12 nopadding-horizontal mt20">
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">老人姓名：</span>
+								{{#if detailEdit}}
+									<!-- {{input class="input-group-content" value=nursing.caller.name}} -->
+                {{#if flagEdit}}
+									<div class="input-group-content">{{nursing.nurscustomer.name}}</div>
+									{{else}}
+									{{#bs-form-element class="inline-block form-input-group" controlType="nurscustomer"  property="nurscustomer" }}
+                  {{#power-select class="inline-block input-group-content" placeholder="必填项" options=customerList selected=defaultCustomer searchField="namePinyin" noMatchesMessage="没有相关内容"
+                  allowClear=false onchange=(action "selectNursing" ) as |name|}}
+					        {{name.name}}
+					        {{/power-select}}
+									{{/bs-form-element}}
+										{{/if}}
+								{{else}}
+									<div class="input-group-content">{{nursing.nurscustomer.name}}</div>
+								{{/if}}
+		           </div>
+
+						</div>
+
+            <div class="col-xs-12 col-sm-6">
+              <div class="form-input-group">
+                <span class="input-group-addon">记&nbsp;录&nbsp;&nbsp;人：</span>
+                {{#if detailEdit}}
+                  <!-- {{input class="input-group-content" value=nursing.caller.name}} -->
+                {{#if flagEdit}}
+								{{#bs-form-element class="inline-block form-input-group" controlType="recordUser"  property="recordUser" }}
+								{{#power-select class="inline-block input-group-content" placeholder="必填项" options=employeeList selected=defaultEmployee searchField="recordPinyin" noMatchesMessage="没有相关内容"
+								allowClear=false onchange=(action "selectEmployee" ) as |name|}}
+								{{name.name}}
+								{{/power-select}}
+								{{/bs-form-element}}
+                  {{else}}
+                  {{#bs-form-element class="inline-block form-input-group" controlType="recordUser"  property="recordUser" }}
+                  {{#power-select class="inline-block input-group-content" placeholder="必填项" options=employeeList selected=defaultEmployee searchField="recordPinyin" noMatchesMessage="没有相关内容"
+                  allowClear=false onchange=(action "selectEmployee" ) as |name|}}
+                  {{name.name}}
+                  {{/power-select}}
+                  {{/bs-form-element}}
+                    {{/if}}
+                {{else}}
+                  <div class="input-group-content">{{nursing.recordUser.name}}</div>
+                {{/if}}
+               </div>
+
+            </div>
+
+
+						<div class="col-xs-12 col-sm-6">
+              <div class="form-input-group">
+                <span class="input-group-addon">创&nbsp;建&nbsp;&nbsp;人：</span>
+                {{#if detailEdit}}
+								<div class="input-group-content">{{nursing.createUser.name}}</div>
+
+                {{else}}
+                  <div class="input-group-content">{{nursing.createUser.name}}</div>
+                {{/if}}
+               </div>
+
+            </div>
+
+
+
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">护理日期：</span>
+								{{#if detailEdit}}
+										{{ui/addon/bs-datetimepicker date=nursingModel.nursinglogDate placeholder="护理日期"
+											locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'
+											show="dpShowAction" change="changeNursinglogDateAction" }}
+								{{else}}
+									<div class="input-group-content">{{nursingModel.nursinglogDateString}}</div>
+								{{/if}}
+							</div>
+
+						</div>
+
+            <!-- <div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon" >记录时间：</span>
+								{{#if detailEdit}}
+									<div class="input-group-content" >{{nursingModel.recordTimeString}}</div>
+								{{/if}}
+							</div>
+
+						</div> -->
+						<div class="col-xs-12 col-sm-6">
+              <div class="form-input-group">
+                <span class="input-group-addon">日志状态：</span>
+                {{#if detailEdit}}
+									<div class="input-group-content" style="padding:0">
+										{{callbusi/dict-selector class="" curDict=nursingModel.logStatus
+										 groupCode=constants.nurseTag showName="选择日志的状态" dictSelect="statusSelect" preselected=false}}
+									</div>
+                {{else}}
+                  <div class="input-group-content">{{nursingModel.remarkTagString}}</div>
+                {{/if}}
+               </div>
+
+            </div>
+
+						<div class="col-xs-12 col-sm-12">
+		          <div class="form-input-group">
+		            <span class="input-group-addon">日志内容：</span>
+								{{#if detailEdit}}
+								{{textarea type="text" class="full-width inline-block form-input-group
+								 label-normal form-control" value=nursingModel.remarkContent placeholder='日志内容'}}
+									<!-- {{bs-form-element property="reason" class="inline-block form-input-group" controlType="reason" }} -->
+								{{else}}
+									<div class="input-group-content">{{{nursingModel.remarkContent}}}</div>
+								{{/if}}
+		            <!-- <input class="input-group-content" placeholder=""/> -->
+		          </div>
+
+		        </div>
+
+					</div>
+			</div>
+			<!-- 保存取消的按钮方法 -->
+			<div class="padding-top30 center">
+				<p class="text-center user-add-btn margin0auto inlineBlock">
+					{{#if detailEdit}}
+						{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check"  text='保存' clickParams=nursing clickAction="saveNursing" saveNursing="saveNursing"}}
+						{{/ui/mix-button}}
+						{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply"  text='取消'  clickAction="detailCancel" detailCancel="detailCancel" }}
+						{{/ui/mix-button}}
+					{{/if}}
+				</p>
+			</div>
+
+			{{/bs-form}}
+		</div>
+		<!-- /BOX-BODY -->
+	</div>
+</div>
+
+<!-- {{#if showpopInvitePassModal}}
+	{{#bs-modal body=false footer=false header=false closedAction=(action "invitation")
+	submitAction=(action "cancelPassSubmit" nursing)}}
+		{{#bs-modal-header}}
+			<h3 class="modal-title">删除提示</h3>
+		{{/bs-modal-header}}
+		{{#bs-modal-body}}
+			<h4 class="modal-title">是否删除该条记录？</h4>
+		{{/bs-modal-body}}
+
+		{{#bs-modal-footer as |footer|}}
+			{{#bs-button action=(action "cancelPassSubmit" nursing) type="primary" disabled=prepaidDisabled}}确定{{/bs-button}}
+			{{#bs-button action=(action "invitation") type="default"}}取消{{/bs-button}}
+		{{/bs-modal-footer}}
+	{{/bs-modal}}
+{{/if}} -->

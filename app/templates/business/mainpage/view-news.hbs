@@ -1,0 +1,56 @@
+
+<div class="page-content row">
+  <!-- <div class="pointer hover backBtn" {{action 'back'  on="click"}}>
+    « 返回
+  </div> -->
+<div class="item-line padding10">
+    <div class="icon-init">
+      发私信给 <strong class="black">{{fromName}}</strong>
+        <!-- {{input type="text" value=content class="form-control" placeholder=""}} -->
+    </div>
+    {{log "name" fromUser}}
+    <div class="textarea">
+      {{textarea class="theTextarea"  data-toggle='tooltip' data-placement='bottom' disabled=isDisabled value=dialogue}}
+      <div class="btn btn-turquoise pull-right" {{action 'sendMessage' on="click"}}>
+          发送
+      </div>
+    </div>
+</div>
+
+<div class="item-line padding10">
+  {{#each messageMailAll as |message|}}
+  {{log "message is" message}}
+  {{log "messageMailAll is" messageMailAll}}
+  <div class="row item-line">
+    <div class="col-xs-12 col-sm-12 col-md-12">
+      <i class="inlineBlock floatLeft dropdown borderRadius">
+        {{#ui/img-intergration name="headImg"
+        imgSrc=message.fromUser.avatarUrl width=48 height=48
+        businessType=constants.uploadBusinessType_headimg}}
+        {{/ui/img-intergration}}
+      </i>
+      <ul class="inlineBlock width90">
+        <li class="weightbold">
+          {{#if (eq theSelf message.fromUser.id)}}
+          <span class="fontWeight icon-init">我发送给 <span class="weightbold black">{{message.toUser.name}}：</span></span>
+          {{else}}
+          <span>{{message.fromUser.name}}：</span>
+          {{/if}}
+          <span class="fontWeight">{{message.content}}</span></li>
+        <li class="icon-init padding-top10">{{message.definiteTime}}
+        </li>
+      </ul>
+    </div>
+  </div>
+  {{/each}}
+</div>
+
+<div class="row">
+  <div class="tight-row bk-color-white col-sm-5 width50 nopadding-horizontal margin15 padding5">
+    {{log 'taskList get in hbs' messageMail}}
+    {{#if messageMailAll}}
+    {{page-numbers content=messageMailAll showFL=true numPagesToShow=3}}
+    {{/if}}
+  </div>
+</div>
+</div>

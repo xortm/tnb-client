@@ -1,0 +1,461 @@
+<div class="col-md-12">
+    <div class="box panel-default col-sm-12 nomargin-bottom">
+        <!-- BOX-BODY -->
+        <div class="box-body">
+            <div class="busi-info top25">
+                {{#bs-form formLayout=formLayout model=consultModel action=(action "saveConsult") invalid=(action "invalid")}}
+                    <!-- 列表编辑-->
+                    <div class="col-xs-12 nopadding-left">
+                        <div class="user-add-btn">
+                            {{#if detailEdit}}
+                            {{else}}
+                                {{#ui/form-function editAction="detailEditClick" detailEditClick="detailEditClick" removeAction="delById" delById="delById" }}
+                                {{/ui/form-function}}
+                            {{/if}}
+                        </div>
+                    </div>
+                    <div class="padding-bottom10 sign col-sm-12 mt20 nopadding-left">
+                        <strong class="font-large">基本信息</strong>
+                    </div>
+                    <div class="col-xs-12 nopadding-horizontal ">
+                        <div class="line">
+                            <div class="col-xs-12 col-sm-6 nopadding-left">
+                                <div class="form-input-group label-normal">
+                                    <span class="input-group-addon">接待人：</span>
+                                    {{#if detailEdit}}
+                                        {{#bs-form-element class="inline-block form-input-group" controlType="receiveStaff" property="receiveStaff" }}
+                                            {{#power-select class="input-group-content" placeholder="必填项" options=employeeList selected=defaultStaff searchField="receivePinyin" noMatchesMessage="没有相关内容" allowClear=true onchange=(action "selectStaff" ) as |staff|}}
+                                                {{staff.name}}
+                                            {{/power-select}}
+                                        {{/bs-form-element}}
+                                    {{else}}
+                                        <div class="font-light input-group-content">{{consultModel.receiveStaff.name}}</div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-4">
+                                <div class="form-input-group label-normal">
+                                    <span class="input-group-addon">咨询人姓名：</span>
+                                    {{#if detailEdit}}
+                                        {{bs-form-element property="advName" class="inline-block form-input-group" controlType="advName" placeholder="必填"}}
+                                    {{else}}
+                                        <div class="font-light input-group-content">{{consult.advName}}</div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-2">
+                                <div class="form-input-group label-normal">
+                                    <span class="input-group-addon"></span>
+                                    {{#if detailEdit}}
+                                      {{#power-select class="input-group-content" placeholder="必填项" options=sexList selected=defaultSex noMatchesMessage="没有相关内容"
+                                       onchange=(action "selectSex" ) as |sex|}}
+                                          {{sex.name}}
+                                      {{/power-select}}
+                                    {{else}}
+                                        <div class="font-light input-group-content">{{consult.advGenderName}}</div>
+                                    {{/if}}
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="line">
+                            <div class="col-xs-12 col-sm-6 nopadding-left">
+                                <div class="form-input-group label-normal">
+                                    <span class="input-group-addon">咨询意向：</span>
+                                    {{#if detailEdit}}
+                                        {{#bs-form-element class="inline-block form-input-group" controlType="liveIntent" property="liveIntent" }}
+                                            {{callbusi/dict-selector curDict=consultModel.liveIntent sort=true groupCode=constants.liveIntent
+                                              showName="必填项" dictSelect="liveIntentSelect" value=consultModel.liveIntent preselected=false}}
+                                        {{/bs-form-element}}
+                                    {{else}}
+                                        <div class="font-light input-group-content">{{consultModel.liveIntent.typename}}</div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 ">
+                                <div class="form-input-group label-normal">
+                                    <span class="input-group-addon">咨询方式：</span>
+                                    {{#if detailEdit}}
+                                        {{#bs-form-element class="inline-block form-input-group" controlType="consultChannel" property="consultChannel" }}
+                                            {{callbusi/dict-selector curDict=consultModel.consultChannel groupCode=constants.consultChannel showName="必填项"
+                                             dictSelect="channelSelect" value=consultModel.consultChannel preselected=false}}
+                                        {{/bs-form-element}}
+                                    {{else}}
+                                        <div class="font-light input-group-content">{{consultModel.consultChannel.typename}}</div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="line">
+
+                            <div class="col-xs-12 col-sm-6 nopadding-left">
+                                <div class="form-input-group label-normal">
+                                    <span class="input-group-addon">与老人关系：</span>
+                                    {{#if detailEdit}}
+                                        {{#bs-form-element class="inline-block form-input-group" controlType="consultRelation" property="consultRelation" }}
+                                            {{callbusi/dict-selector curDict=consultModel.consultRelation groupCode=constants.relationType showName="" dictSelect="relationSelect" value=consultModel.consultRelation preselected=false}}
+                                        {{/bs-form-element}}
+                                    {{else}}
+                                        <div class="font-light input-group-content">{{consultModel.consultRelation.typename}}</div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 ">
+                                <div class="form-input-group label-normal">
+                                    <span class="input-group-addon">咨询时间：</span>
+                                    {{#if detailEdit}}
+                                        <div class="pull-left">
+                                            <div class="inline-block form-input-group">
+                                                {{#bs-form-element class="inline-block form-input-group" controlType="advDate" property="advDate" }}
+                                                    {{ui/addon/bs-datetimepicker date=consultModel.advDateComputed placeholder="必填项" locale="zh-CN"
+                                                    iconClasses="fa fa-calendar" show="dpShowAction" change="changeADVDateAction" format="YYYY-MM-DD HH:mm"}}
+                                                {{/bs-form-element}}
+                                            </div>
+                                        </div>
+                                    {{else}}
+                                        <div class="font-light input-group-content">{{consultModel.advDateStringDetail}}</div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="line">
+
+                            <div class="col-xs-12 col-sm-6 nopadding-left">
+                                <div class="form-input-group label-normal">
+                                    <span class="input-group-addon">预约参观时间：</span>
+                                    {{#if detailEdit}}
+                                        <div class="pull-left">
+                                            <div class="inline-block form-input-group">
+                                                {{ui/addon/bs-datetimepicker date=consultModel.appointmentDateComputed placeholder="" locale="zh-CN"
+                                                iconClasses="fa fa-calendar" format='YYYY-MM-DD HH:mm' show="dpShowAction" change="changeAppointmentAction" }}
+                                            </div>
+                                        </div>
+                                    {{else}}
+                                        <div class="font-light input-group-content">{{consultModel.appointmentDateString}}</div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 ">
+                                <div class="form-input-group label-normal">
+                                    <span class="input-group-addon">联系电话：</span>
+                                    {{#if detailEdit}}
+                                        {{bs-form-element property="advTel" class="inline-block form-input-group" controlType="advTel" placeholder="必填项"}}
+                                    {{else}}
+                                        <div class="font-light input-group-content">{{consult.advTel}}</div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="line">
+
+                            <div class="col-xs-12 col-sm-6 nopadding-left">
+                                <div class="form-input-group label-normal">
+                                    <span class="input-group-addon">预约接待人：</span>
+                                    {{#if detailEdit}}
+                                        {{#bs-form-element class="inline-block form-input-group" controlType="otherReceiveStaff" property="otherReceiveStaff" }}
+                                            {{#power-select class="input-group-content" placeholder="" options=employeeList selected=consultModel.otherReceiveStaff searchField="receivePinyin" noMatchesMessage="没有相关内容" allowClear=true onchange=(action "selectReceiveStaff" ) as |staff|}}
+                                                {{staff.name}}
+                                            {{/power-select}}
+                                        {{/bs-form-element}}
+                                    {{else}}
+                                        <div class="font-light input-group-content">{{consultModel.otherReceiveStaff.name}}</div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6">
+                                <div class="form-input-group label-normal">
+                                    <span class="input-group-addon">了解渠道：</span>
+                                    {{#if detailEdit}}
+                                        {{#bs-form-element class="inline-block form-input-group" controlType="advWay" property="advWay" }}
+                                            {{callbusi/dict-selector class="inline-block" curDict=consultModel.advWay.firstObject groupCode=constants.consultSource
+                                             showName="" preselected=false dictSelect="sourceSelect" preselected=false}}
+                                        {{/bs-form-element}}
+                                    {{else}}
+                                        <div class="font-light input-group-content">{{consultModel.advWayName}}</div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="line">
+                            <div class="col-xs-12 col-sm-12 nopadding-left">
+                                <div class="form-input-group label-normal">
+                                    <span class="input-group-addon">详细情况：</span>
+                                    {{#if detailEdit}}
+                                        {{textarea type="text" class="full-width inline-block form-input-group label-normal form-control details" value=consultModel.remark}}
+                                    {{else}}
+                                        <div class="font-light input-group-content" style="{{if consultModel.remark 'overflow-y:scroll;height:60px' ''}};">{{consultModel.remark}}</div>
+                                    {{/if}}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="padding-bottom10 sign col-sm-12 nopadding-left mt20">
+                        <strong class="font-large">老人信息</strong>
+                    </div>
+                        <div class="line">
+                            <div class="col-xs-12 col-sm-6 nopadding-left">
+                                <div class="form-input-group label-normal">
+                                    <span class="input-group-addon">老人性别：</span>
+                                    {{#if detailEdit}}
+                                        {{#bs-form-element class="inline-block form-input-group" controlType="customerGender" property="customerGender" }}
+                                            {{callbusi/dict-selector curDict=consultModel.customerGender groupCode=constants.sexType showName="" dictSelect="customerSexSelect" value=consultModel.customerGender preselected=false}}
+                                        {{/bs-form-element}}
+                                    {{else}}
+                                        <div class="font-light input-group-content">{{consultModel.customerGender.typename}}</div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6">
+                              <div class="form-input-group label-normal">
+                                  <span class="input-group-addon">自理能力：</span>
+                                  {{#if detailEdit}}
+                                      {{#bs-form-element class="inline-block form-input-group" controlType="customerSelfCareAbility" property="customerSelfCareAbility" }}
+                                          {{callbusi/dict-selector curDict=consultModel.customerSelfCareAbility groupCode=constants.selfCareLevel showName="" dictSelect="abilitySelect" value=consultModel.customerSelfCareAbility preselected=false}}
+                                      {{/bs-form-element}}
+                                  {{else}}
+                                      <div class="font-light input-group-content">{{consultModel.customerSelfCareAbility.typename}}</div>
+                                  {{/if}}
+                              </div>
+                            </div>
+                        </div>
+                        <div class="line">
+                            <div class="col-xs-12 col-sm-6 nopadding-left">
+                                <div class="form-input-group label-normal">
+                                    <span class="input-group-addon">老人年龄：</span>
+                                    {{#if detailEdit}}
+                                        <div class="inline-block form-input-group">
+                                            {{bs-form-element property="customerBrith" class="inline-block form-input-group" controlType="customerBrith" placeholder=""}}
+                                        </div>
+                                    {{else}}
+                                        <div class="font-light input-group-content">{{consultModel.customerBrith}}</div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </div>
+                    <div class="padding-bottom10 sign col-sm-12 nopadding-left mt20">
+                        <strong class="font-large">关心内容</strong>
+                    </div>
+                    <div class="col-xs-12 nopadding-horizontal ">
+                        <div class="line">
+                            <div class="col-xs-12 col-sm-6 nopadding-left">
+                                <div class="form-input-group label-normal">
+                                    <span class="input-group-addon">入住偏好：</span>
+                                    {{#if detailEdit}}
+                                        {{#bs-form-element class="inline-block form-input-group" controlType="inPreference" property="inPreference" }}
+                                            {{callbusi/dict-selector class="inline-block" curDict=consultModel.inPreference groupCode=constants.inPreference showName="" chooseMany=true preselected=false dictSelect="inPreferenceSelect" value=consultModel.inPreference preselected=false}}
+                                        {{/bs-form-element}}
+                                    {{else}}
+                                        <div class="font-light input-group-content">{{consultModel.inPreferenceName}}</div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 ">
+                                <div class="form-input-group label-normal">
+                                    <span class="input-group-addon">特别关心：</span>
+                                    {{#if detailEdit}}
+                                        {{bs-form-element property="care" class="inline-block form-input-group" controlType="care" placeholder=""}}
+                                    {{else}}
+                                        <div class="font-light input-group-content">{{consultModel.care}}</div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="line">
+                            <div class="col-xs-12 col-sm-6 nopadding-left">
+                                <div class="form-input-group label-normal">
+                                    <span class="input-group-addon">餐饮要求：</span>
+                                    {{#if detailEdit}}
+                                        {{bs-form-element property="dietRequirements" class="inline-block form-input-group" controlType="dietRequirements" placeholder=""}}
+                                    {{else}}
+                                        <div class="font-light input-group-content">{{consultModel.dietRequirements}}</div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 ">
+                                <div class="form-input-group label-normal">
+                                    <span class="input-group-addon">房间要求：</span>
+                                    {{#if detailEdit}}
+                                        {{bs-form-element property="roomRequirements" class="inline-block form-input-group" controlType="roomRequirements" placeholder=""}}
+                                    {{else}}
+                                        <div class="font-light input-group-content">{{consultModel.roomRequirements}}</div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="line">
+                            <div class="col-xs-12 col-sm-6 nopadding-left">
+                                <div class="form-input-group label-normal">
+                                    <span class="input-group-addon">照护要求：</span>
+                                    {{#if detailEdit}}
+                                        {{bs-form-element property="serviceRequirements" class="inline-block form-input-group" controlType="serviceRequirements" placeholder=""}}
+                                    {{else}}
+                                        <div class="font-light input-group-content">{{consultModel.serviceRequirements}}</div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6">
+                                <div class="form-input-group label-normal">
+                                    <span class="input-group-addon">其他要求：</span>
+                                    {{#if detailEdit}}
+                                        {{bs-form-element property="otherRequirements" class="inline-block form-input-group" controlType="otherRequirements" placeholder=""}}
+                                    {{else}}
+                                        <div class="font-light input-group-content">{{consultModel.otherRequirements}}</div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="line">
+                            <div class="col-xs-12 col-sm-6 nopadding-left">
+                                <div class="form-input-group label-normal">
+                                    <span class="input-group-addon">心理价位：</span>
+                                    {{#if detailEdit}}
+                                        {{bs-form-element property="psychologicalPrice" class="inline-block form-input-group" controlType="psychologicalPrice" placeholder=""}}
+                                    {{else}}
+                                        <div class="font-light input-group-content">{{consultModel.psychologicalPrice}}</div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 ">
+                                <div class="form-input-group label-normal">
+                                    <span class="input-group-addon">不满意的地方：</span>
+                                    {{#if detailEdit}}
+                                        {{bs-form-element property="discontent" class="inline-block form-input-group" controlType="discontent" placeholder=""}}
+                                    {{else}}
+                                        <div class="font-light input-group-content">{{consultModel.discontent}}</div>
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 列表编辑 -->
+                {{/bs-form}}
+                <!--跟进记录  -->
+                <div class="padding-bottom10 sign col-sm-12 nopadding-left mt20">
+                    <strong class="font-large margin-right-40">跟进记录</strong>
+                    <div class="inlineBlock font16 margin-right-40">共{{consult.backVistInfos.length}}条</div>
+                    <!-- <div class="inlineBlock font-large pointer mouseHover" {{action "addBackvist"  on="click"}}>添加记录</div> -->
+                    <div class="user-add-btn inlineBlock pull-right button0" style="margin-bottom:-8px;">
+                        {{#ui/mix-button class="user-btn" iconClass="fa-plus" text='添加记录' clickAction="addBackvist" addBackvist="addBackvist" }}
+                        {{/ui/mix-button}}
+                    </div>
+                </div>
+                <!--跟进列表  -->
+                {{#if detailEdit}}
+                    <div class="line">
+                        <div>这里可添加"跟进记录"！</div>
+                    </div>
+                {{else}}
+                    <div class="line">
+                        <div class="col-sm-12  nopadding-left">
+                            <table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable mt15" aria-describedby="datatable1_info">
+                                <thead>
+                                    <tr role="row">
+                                        <th class="center" rowspan="1" colspan="1" width="">记录类别</th>
+                                        <th class="center" rowspan="1" colspan="1" width="">日期</th>
+                                        <th class="center" rowspan="1" colspan="1" width="">跟进人</th>
+                                        <th class="center" rowspan="1" colspan="1" width="">详细情况</th>
+                                        <th class="center" rowspan="1" colspan="1" width="">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+                                    {{#each consult.backVistInfos as |backvist|}}
+                                        {{#if (eq backvist.delStatus 1)}}
+                                        {{else}}
+                                            <tr class="gradeA odd" style="cursor:default;">
+                                                <td class="center ellipsis sorting_1">{{backvist.accessType.typename}}</td>
+                                                <td class="center ellipsis">{{backvist.createDateTimeString}}</td>
+                                                <td class="center ellipsis">{{backvist.vistUser.name}}</td>
+                                                <td class="center ellipsis" style="max-width:200px;">
+                                                    <div class="nowrap">{{backvist.remark}}</div>
+                                                </td>
+                                                <td class="center ellipsis "><a class="pointer" {{action "editBackvist" backvist on="click"}}>编辑</a>&nbsp;&nbsp;&nbsp;&nbsp;<a class="pointer" {{action "deleteBackvist" backvist on="click"}}>删除</a></td>
+                                            </tr>
+                                        {{/if}}
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {{/if}}
+            </div>
+        </div>
+
+        <div class="center">
+            <p class="text-center user-add-btn padding-top30 inlineBlock margin0auto">
+                {{#if detailEdit}}
+                    {{#ui/mix-button class="user-btn edit-btn pull-left" iconClass="fa fa-check" text='保存' clickAction="saveConsult" saveConsult="saveConsult" clickActParams=consult}}
+                    {{/ui/mix-button}}
+                    {{#ui/mix-button class="user-btn times-btn pull-left" iconClass="fa fa-mail-reply" text='取消' clickAction="detailCancel" detailCancel="detailCancel" }}
+                    {{/ui/mix-button}}
+                {{/if}}
+            </p>
+        </div>
+        <!-- /BOX-BODY -->
+    </div>
+</div>
+
+<!--新增跟进记录-->
+{{#if showBackvist}}
+    {{#bs-modal body=false footer=false header=false}}
+        {{#bs-modal-body}}
+            {{#bs-form formLayout=formLayout model=backvistModel invalid=(action "invalid")}}
+                <div class="col-sm-12 col-sm-6 nopadding-left">
+                    <div class="form-input-group">
+                        <span class="input-group-addon">跟进类别:</span>
+                        {{#bs-form-element class="inline-block form-input-group" controlType="accessType" property="accessType" }}
+                            {{callbusi/dict-selector curDict=backvistModel.accessType groupCode=constants.accessType showName="必填项" dictSelect="accessTypeSelect" value=backvistModel.accessType preselected=false}}
+                        {{/bs-form-element}}
+
+                    </div>
+
+                </div>
+                <div class="col-xs-12 col-sm-6 nopadding-left">
+                    <div class="form-input-group label-normal">
+                        <span class="input-group-addon">咨询意向：</span>
+                        {{#bs-form-element class="inline-block form-input-group" controlType="liveIntent" property="liveIntent" }}
+                            {{callbusi/dict-selector curDict=backvistModel.liveIntent sort=true groupCode=constants.liveIntent showName="" dictSelect="visitLiveIntentSelect" value=backvistModel.liveIntent preselected=false}}
+                        {{/bs-form-element}}
+                    </div>
+                </div>
+                <div class="col-sm-12 nopadding-left">
+                    <div class="form-input-group">
+                        <span class="input-group-addon">客户姓名:</span> {{bs-form-element property="customerName" class="form-input-group full-width" controlType="customerName" placeholder=''}}
+
+                    </div>
+                </div>
+                <div class="col-sm-12 nopadding-left">
+                    <div class="form-input-group">
+                        <span class="input-group-addon">跟进人:</span>
+                        {{#bs-form-element class="inline-block form-input-group" controlType="vistUser" property="vistUser" }}
+                            {{#power-select class="input-group-content" placeholder="必填项" options=employeeList selected=defaultVisitStaff searchField="receivePinyin" noMatchesMessage="没有相关内容" allowClear=true onchange=(action "selectVisitStaff" ) as |staff|}}
+                                {{staff.name}}
+                            {{/power-select}}
+                        {{/bs-form-element}}
+                    </div>
+                </div>
+                <div class="col-sm-12 nopadding-left">
+                    <div class="form-input-group">
+                        <span class="input-group-addon">跟进日期:</span>
+                        {{#bs-form-element class="inline-block form-input-group" controlType="createDateTime" property="createDateTime" }}
+                            {{ui/addon/bs-datetimepicker date=backvistModel.createDate placeholder="必填项" locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD' show="dpShowAction" change="changeDateAction" }}
+                        {{/bs-form-element}}
+                    </div>
+                </div>
+                <div class="col-sm-12 nopadding-left">
+                    <div class="form-input-group">
+                        <span class="input-group-addon">详细情况:</span>
+                        <!-- {{bs-form-element property="remark" class="form-input-group full-width" controlType="remark" placeholder=''}} -->
+                        {{textarea type="text" class="full-width inline-block form-input-group label-normal form-control visit-remark" value=backvistModel.remark placeholder=''}}
+                    </div>
+                </div>
+            {{/bs-form}}
+        {{/bs-modal-body}}
+        {{#bs-modal-footer class="user-add-btn" }}
+            {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check" text='确定' clickAction="saveBackvist" saveBackvist="saveBackvist" }}
+            {{/ui/mix-button}}
+            {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply" text='取消' clickAction="invitation" invitation="invitation" }}
+            {{/ui/mix-button}}
+        {{/bs-modal-footer}}
+    {{/bs-modal}}
+{{/if}}

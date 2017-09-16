@@ -1,0 +1,63 @@
+<div class="col-sm-12">
+    <!-- BOX -->
+    <div class="box">
+        <div class="box-body">
+            <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+                <div class="row">
+                    <div class="col-sm-9">
+                        <!--搜索-->
+                        <div class="col-sm-5 nopadding-left">
+                            <div class="input-group">
+                                {{input class="form-control" type="text" placeholder="搜索 方案名称" value=queryCondition enter="search"}}
+                                <span class="input-group-btn">
+                        		      <button class="btn btn-primary btn-reduce" type="button" style="touch-action: manipulation; -ms-touch-action: manipulation;" {{action "searchdevice" on="click"}}>
+                                    <i class="fa fa-search"></i>
+                                  </button>
+      	                        </span>
+                            </div>
+                        </div>
+                        <!--搜索-->
+                    </div>
+                    <div class="user-add-btn col-sm-3 nopadding-right">
+                        {{#ui/mix-button class="user-btn pull-right" iconClass="fa-plus" text='新增硬件方案' clickAction="toDetailPage" toDetailPage="toDetailPage" }}
+                        {{/ui/mix-button}}
+                    </div>
+                </div>
+                <table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+                    <thead>
+                        <tr role="row">
+                            <th rowspan="1" colspan="1">方案名称</th>
+                            <th rowspan="1" colspan="1">厂家名称</th>
+                            <th rowspan="1" colspan="1" class="center">参考价格(元)</th>
+                            <th rowspan="1" colspan="1">使用情况</th>
+                            <th rowspan="1" colspan="1">方案描述</th>
+                            <th rowspan="1" colspan="1">类型编号</th>
+                        </tr>
+                    </thead>
+                    {{#if deviceList}}
+                    <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+                            {{#each deviceList as |device|}}
+                                <tr {{action "toDetailPage" device on="click"}}>
+                                    <td class="ellipsis">{{device.deviceName}}</td>
+                                    <td class="ellipsis ">{{device.vender}}</td>
+                                    <td class="ellipsis center">{{device.price}}</td>
+                                    <td class="ellipsis ">{{device.status}}</td>
+                                    <td class="ellipsis ">{{device.remark}}</td>
+                                    <td class="ellipsis ">{{device.code}}</td>
+                                </tr>
+                            {{/each}}
+                    </tbody>
+                    {{else}}
+                    <div class="nodate">暂无数据</div>
+                    {{/if}}
+                </table>
+                {{#if deviceList }}
+                    {{page-numbers content=deviceList showFL=true numPagesToShow=5}}
+                {{else}}
+                    <h1 class="col-sm-12 center unTask"></h1>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+    <!-- /BOX -->
+</div>

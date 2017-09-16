@@ -1,0 +1,58 @@
+  <!-- 头部信息 -->
+  <div class="nhead">
+    <!-- 头像及信息 -->
+    {{#if customerSelected}}
+      {{ui/img-intergration name="headImg" hasUploader=false
+        imgSrc=customerSelected.avatarUrl height=28 width=28 class="pull-left top4"}}
+    {{else}}
+      <div class="pull-left" style="line-height:35px;color:#fff;padding-right:5px;text-align:right;width:50%;">
+        选择老人
+      </div>
+    {{/if}}
+    <!-- 展开收起按钮 -->
+    {{#if expandMode}}
+    <div class="pull-left left4" {{action "switchShrink" on="tap"}} style="width:185px;">
+      <div class="font-big text-left color-white top2">{{customerSelected.name}}</div>
+      <div class="font-small text-left color-white width100B extend">{{customerSelected.bed.allBedName}}</div>
+    </div>
+      {{#ui/icon-button iconClass="fa-angle-up font-large color-white top8 customer-picker-icon"
+          clickAction="switchShrink" switchShrink="switchShrink" }}
+      {{/ui/icon-button}}
+    {{else}}
+    <div class="pull-left left4" {{action "switchExpand" on="tap"}} style="width:185px;">
+      <div class="font-big text-left color-white top2">{{customerSelected.name}}</div>
+      <div class="font-small text-left color-white width100B extend">{{customerSelected.bed.allBedName}}</div>
+    </div>
+      {{#ui/icon-button iconClass="fa-angle-down font-large color-white top8 customer-picker-icon"
+          clickAction="switchExpand" switchExpand="switchExpand" }}
+      {{/ui/icon-button}}
+    {{/if}}
+    {{#if (eq isSquare 7)}}
+      <div class="pull-right padding-top5" style="position: absolute;top: 0;right: 3px;">
+          {{#if queryCustomer}}
+            <div class="pull-right color-white select-warning bk-color-ccc" {{action 'queryCustomer' on='click'}}>
+              <div class="pull-left padding-right-3">个人</div>
+              <div class=" pull-left select-backg-true" style=""></div>
+            </div>
+          {{else}}
+            <div class="pull-right color-white select-warning bk-color-ccc" {{action 'queryCustomer' on='click'}}>
+              <div class="pull-left select-backg-true" style=""></div>
+              <div class="pull-left padding-left-3">全部</div>
+            </div>
+          {{/if}}
+      </div>
+    {{/if}}
+
+  </div>
+  <!-- 扩展信息 -->
+  {{#if expandMode}}
+  <div class="ehead clear top14">
+    {{#each allCustomers as |customer|}}
+    <div class="col-xs-2 padding-bottom5 nopadding-horizontal" {{action "choiceCustomer" customer.id on="click"}}>
+    {{ui/img-intergration name="headImg" hasUploader=false
+      imgSrc=customer.avatarUrl height=28 width=28 }}
+      <div class="font12 color-white padding-top3">{{customer.name}}</div>
+    </div>
+    {{/each}}
+  </div>
+  {{/if}}

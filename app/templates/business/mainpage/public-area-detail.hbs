@@ -1,0 +1,171 @@
+
+<div class="col-sm-12">
+	<div class="box margin-middle max-width">
+		<!-- BOX-BODY -->
+		<div class="box-body">
+			{{#bs-form formLayout=formLayout model=roomModel invalid=(action "invalid")}}
+			<div class="row clear">
+				<div class="col-xs-12">
+					<p class="user-add-btn">
+						{{#if detailEdit}}
+							<!-- {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='保存' clickParams=roomInfo clickAction="saveArea" saveArea="saveArea"}}
+							{{/ui/mix-button}}
+							{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="detailCancel" detailCancel="detailCancel" }}
+							{{/ui/mix-button}} -->
+						{{else}}
+							{{#ui/icon-button class="user-btn trash-btn pull-right incon-button-font" iconClass="fa fa-trash-o"
+							 text='删除'  clickAction="delById" delById="delById" clickActParams=buildingInfo}}
+							 {{bs-tooltip title="删除" class="light-tooltip"}}
+							{{/ui/icon-button}}
+							{{#ui/icon-button class="user-btn edit-btn pull-right incon-button-font" iconClass="fa fa-edit"
+							 text='编辑'  clickAction="detailEditClick" detailEditClick="detailEditClick"}}
+							 {{bs-tooltip title="编辑" class="light-tooltip"}}
+			        {{/ui/icon-button}}
+						{{/if}}
+					</p>
+				</div>
+				<!-- 列表详细介绍 -->
+				<div class="col-xs-12 nopadding-left">
+					<div class="col-xs-12 nopadding-horizontal mt20">
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">公共区域 类型/用途：</span>
+								{{#if detailEdit}}
+									{{#if id}}
+										{{#bs-form-element class="inline-block form-input-group" controlType="publicType"  property="publicType"   placeholder='公共区域类型(必选)'}}
+										{{callbusi/dict-selector class="inline-block" curDict=roomInfo.publicType groupCode=constants.publicType
+											showName='公共区域 类型/用途(必选)' value=roomModel.publicType preselected=false}}
+										{{/bs-form-element}}
+									{{else}}
+											{{#bs-form-element class="inline-block form-input-group" controlType="publicType"  property="publicType"   placeholder='公共区域类型'}}
+											{{callbusi/dict-selector class="inline-block" curDict=roomInfo.publicType groupCode=constants.publicType
+												showName='公共区域 类型/用途(必选)' value=roomModel.publicType preselected=false}}
+											{{/bs-form-element}}
+									{{/if}}
+								{{else}}
+									<div class="input-group-content">{{roomInfo.publicType.typename}}</div>
+								{{/if}}
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">公共区域 编号：</span>
+								{{#bs-form-element class="inline-block form-input-group" controlType="name"  property="name" }}
+								{{#if detailEdit}}
+									{{#if id}}
+										{{input value=roomModel.name class="input-group-content" placeholder='公共区域名称'}}
+									{{else}}
+										{{input value=roomModel.name class="input-group-content" placeholder='公共区域名称'}}
+									{{/if}}
+								{{else}}
+									<div class="input-group-content">{{roomModel.name}}</div>
+								{{/if}}
+								{{/bs-form-element}}
+							</div>
+
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">所属楼宇：</span>
+
+								{{#if detailEdit}}
+								{{#bs-form-element class="inline-block form-input-group" controlType="build"  property="build" }}
+								{{#power-select class="input-group-content" placeholder='楼宇名称' options=buildingList  selected=defaultBuilding searchField="namePinyin"
+								noMatchesMessage="没有相关内容"	allowClear=false onchange=(action "selectBuilding" ) as |building|}}
+									{{building.name}}
+								{{/power-select}}
+								{{/bs-form-element}}
+								{{else}}
+									<div class="input-group-content">{{roomInfo.floor.building.name}}</div>
+								{{/if}}
+
+							</div>
+
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">所属楼层：</span>
+								{{#bs-form-element class="inline-block form-input-group" controlType="floor"  property="floor" }}
+								{{#if detailEdit}}
+								{{#power-select class="input-group-content" placeholder='楼层名称' options=floorList  selected=roomInfo.floor searchField="allName"
+								noMatchesMessage="没有相关内容"	allowClear=false onchange=(action "selectFloor" ) as |floor|}}
+									{{floor.name}}
+								{{/power-select}}
+								{{else}}
+									<div class="input-group-content">{{roomInfo.floor.name}}</div>
+								{{/if}}
+								{{/bs-form-element}}
+							</div>
+
+						</div>
+
+						{{#if id}}
+							<div class="col-xs-12 col-sm-6">
+								<div class="form-input-group">
+									<span class="input-group-addon">华米扫描器：</span>
+										{{#if detailEdit}}
+											{{#power-select class="inline-block input-group-content" placeholder="" options=deviceList selected=roomInfo.scanner searchField="seq"
+												 allowClear=false onchange=(action "selectScanner") as |scanner|}}
+												 {{scanner.seq}}
+										 	{{/power-select}}
+										{{else}}
+											<div class="input-group-content">{{roomInfo.scanner.seq}}</div>
+										{{/if}}
+								</div>
+							</div>
+						{{/if}}
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：</span>
+								{{#if detailEdit}}
+									{{#if id}}
+									{{bs-form-element property="remark" class="inline-block form-input-group label-normal" controlType="remark" placeholder='备注'}}
+									{{else}}
+									{{bs-form-element property="remark" class="inline-block form-input-group label-normal" controlType="remark" placeholder='备注'}}
+									{{/if}}
+								{{else}}
+									<div class="input-group-content">{{roomInfo.remark}}</div>
+								{{/if}}
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+				<!-- 列表详细介绍 -->
+			</div>
+			<div class="padding-top30 center">
+				<p class="text-center user-add-btn margin0auto inlineBlock">
+					{{#if detailEdit}}
+						{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check"  text='保存' clickParams=roomInfo clickAction="saveArea" saveArea="saveArea"}}
+						{{/ui/mix-button}}
+						{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply"  text='取消'  clickAction="detailCancel" detailCancel="detailCancel" }}
+						{{/ui/mix-button}}
+					{{/if}}
+				</p>
+			</div>
+			{{/bs-form}}
+		</div>
+		<!-- /BOX-BODY -->
+	</div>
+</div>
+{{#if showpopInvitePassModal}}
+	{{#bs-modal body=false footer=false header=false closedAction=(action "invitation")
+	submitAction=(action "cancelPassSubmit" roomInfo)}}
+		{{#bs-modal-header}}
+			<h3 class="modal-title">删除提示</h3>
+		{{/bs-modal-header}}
+		{{#bs-modal-body}}
+			<h4 class="modal-title">是否删除该条记录？</h4>
+		{{/bs-modal-body}}
+		{{#bs-modal-footer as |footer|}}
+			{{#bs-button action=(action "cancelPassSubmit" roomInfo) type="primary" disabled=prepaidDisabled}}确定{{/bs-button}}
+			{{#bs-button action=(action "invitation") type="default"}}取消{{/bs-button}}
+		{{/bs-modal-footer}}
+	{{/bs-modal}}
+{{/if}}

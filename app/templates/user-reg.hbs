@@ -1,0 +1,172 @@
+{{#if global_curStatus.isMobile}}
+<div id="userRegContainer" class="mainContent">
+  <div class="wrapperInner">
+    <div class="col-md-4 col-sm-6 col-xs-12 col-md-offset-4 col-sm-offset-3 top80 nopadding-horizontal">
+      <div class="col-sm-12 col-xs-12 center nopadding-horizontal">
+        <div class="logo col-sm-12 col-xs-12 nopadding-horizontal">
+          <img src="assets/images/logo3.png" width="200" alt=""/>
+        </div>
+      </div>
+      <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+        <form class="form-horizontal reduce-spacing" role="form">
+          {{#if mailLogin}}
+          <div class="col-sm-7 col-xs-7 top15 nopadding-horizontal text height45 border-radius-left input-border-color">
+            <i class="el-lock input-icon"></i>
+            {{input type="email" class="form-control padding0 small-input" value=emailAddress focus-in="changeInfo" placeholder="邮箱" enter='validateMCode'}}
+          </div>
+          <div class="col-sm-5 col-xs-5 top15 nopadding-horizontal">
+            {{#if isSend}}
+            <input type="button" class="btn send-bgcolor border-radius-right btn-block height45 font-em15" disabled=true value="{{second}}秒后重试">
+            {{else}}
+            <input type="button" class="btn send-bgcolor border-radius-right btn-block height45 font-em15" {{action 'sendMCode'}} disabled={{sendDisabled}} value="发送邮件">
+            {{/if}}
+          </div>
+          {{#if success}}
+          <div class="text-color-success left4 top15">{{responseMMess}}</div>
+          {{else}}
+          <div class="text-color-danger left4 top15">{{responseMMess}}</div>
+          {{/if}}
+          {{/if}}
+          {{#if phoneLogin}}
+          <div class="col-sm-7 col-xs-7 top15 nopadding-horizontal text height45 border-radius-left input-border-color">
+            <i class="el-lock input-icon"></i>
+            {{input type="tel" class="form-control padding0 small-input" value=mobileNum maxlength="11" focus-in="changeInfo" placeholder="手机号码" enter='validateMCode'}}
+          </div>
+          <div class="col-sm-5 col-xs-5 top15 nopadding-horizontal">
+            {{#if isSSend}}
+            <input type="button" class="btn send-bgcolor border-radius-right btn-block height45 font-em15" disabled=true value="{{secondS}}秒后重试">
+            {{else}}
+            <input type="button" class="btn send-bgcolor border-radius-right btn-block height45 font-em15" {{action 'sendSCode'}} disabled={{sendSDisabled}} value="发送短信">
+            {{/if}}
+          </div>
+          {{#if success}}
+          <div class="text-color-success left4 top15">{{responseMess}}</div>
+          {{else}}
+          <div class="text-color-danger left4 top15">{{responseMess}}</div>
+          {{/if}}
+          {{/if}}
+          <div class="col-sm-12 col-xs-12 top15 text height45 border-radius input-border-color nopadding-horizontal padding-top4">
+            <i class="fa-qrcode input-icon"></i>
+            {{input type="text" class="form-control padding0 normal-input" value=mcode focus-in="changeInfo" placeholder="验证码" enter='validateMCode'}}
+          </div>
+          <div class="col-sm-12 col-xs-12 top15 text height45 border-radius input-border-color nopadding-horizontal padding-top4">
+            <i class="fa-key input-icon"></i>
+            {{input type="password" class="form-control padding0 normal-input" value=password focus-in="changeInfo" placeholder="密码（6位以上字符）" enter='validateMCode'}}
+          </div>
+          <!-- {{#if phoneLogin}}
+          <div class="col-sm-12 col-xs-12 top15 text height45 border-radius input-border-color nopadding-horizontal">
+          <i class="linecons-user input-icon"></i>
+          {{input type="text" class="form-control padding0 normal-input" value=inviter placeholder="邀请人手机号或姓名" enter='validateMCode'}}
+        </div>
+        {{/if}} -->
+        {{#if success}}
+        <div class="text-color-success left4 top15">{{responseInfo}}</div>
+        {{else}}
+        <div class="text-color-danger left4 top15">{{responseInfo}}</div>
+        {{/if}}
+        <div class="col-sm-12 col-xs-12 top15 center">
+          <!-- <a class="no-decoration hovertype text-muted pull-right" {{action 'gotoLogin'}}>返回登录</a> -->
+          <input type="button" class="text-muted pull-right bground-ccc" {{action "gotoLogin"}} value="返回登录">
+        </div>
+        <div class="col-sm-12 col-xs-12 top15 nopadding-horizontal">
+          {{#if mailLogin}}
+          <input type="button" class="btn send-bgcolor border-radius btn-block height45 font-em15" {{action "validateMCode"}} disabled={{deterDisabled}} value="企业注册(内测中)">
+          {{/if}}
+          {{#if phoneLogin}}
+          <input type="button" class="btn send-bgcolor border-radius btn-block height45 font-em15" {{action "validateMCode"}} disabled={{deterSDisabled}} value="客服注册">
+          {{/if}}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+{{ui/container/infinite-scroll moniteData="userReg" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}
+{{else}}
+<div class="page-container">
+  <div class="col-md-4 col-sm-6 col-xs-12 col-md-offset-4 col-sm-offset-3 ver-center top30 nopadding-horizontal">
+    <div class="col-sm-12 col-xs-12 center nopadding-horizontal">
+      <div class="logo col-sm-12 col-xs-12 nopadding-horizontal">
+        <img src="assets/images/logo3.png" width="200" alt=""/>
+      </div>
+      <!-- <div class="col-sm-12 col-xs-12 top30">
+      <a href="javascript:void(0)" class="right4 {{if mailLogin 'text-muted'}} no-decoration" {{action 'loginType' 'phone'}}>客服注册</a>
+      <span class="right4 text-muted">|</span>
+      <a href="javascript:void(0)" class="{{if phoneLogin 'text-muted'}} no-decoration" {{action 'loginType' 'mail'}}>企业注册(内测中)</a>
+      <span class="text-muted">企业注册(待开放)</span>
+    </div> -->
+  </div>
+  <div class="col-sm-10 col-sm-offset-1 col-xs-12 top10">
+    <form class="form-horizontal reduce-spacing" role="form">
+      {{#if mailLogin}}
+      <div class="col-sm-7 col-xs-7 top15 nopadding-horizontal">
+        {{input type="email" class="form-control" value=emailAddress focus-in="changeInfo" placeholder="请输入邮箱" enter='validateMCode'}}
+        {{#if success}}
+        <div class="text-color-success left4 top2">{{responseMMess}}</div>
+        {{else}}
+        <div class="text-color-danger left4 top2">{{responseMMess}}</div>
+        {{/if}}
+      </div>
+      <div class="col-sm-5 col-xs-5 top15 nopadding-horizontal">
+        {{#if isSend}}
+        <input type="button" class="btn send-bgcolor btn-block" disabled=true value="{{second}}秒后重试">
+        {{else}}
+        <input type="button" class="btn send-bgcolor btn-block" {{action 'sendMCode'}} disabled={{sendDisabled}} value="发送邮件">
+        {{/if}}
+      </div>
+      {{/if}}
+      {{#if phoneLogin}}
+      <div class="col-sm-7 col-xs-7 top15 nopadding-horizontal">
+        {{input type="tel" class="form-control" value=mobileNum maxlength="11" focus-in="changeInfo" placeholder="请输入手机号码" enter='validateMCode'}}
+        {{#if success}}
+        <div class="text-color-success left4 top2">{{responseMess}}</div>
+        {{else}}
+        <div class="text-color-danger left4 top2">{{responseMess}}</div>
+        {{/if}}
+      </div>
+      <div class="col-sm-5 col-xs-5 top15 nopadding-horizontal">
+        {{#if isSSend}}
+        <input type="button" class="btn send-bgcolor btn-block" disabled=true value="{{secondS}}秒后重试">
+        {{else}}
+        <input type="button" class="btn send-bgcolor btn-block" {{action 'sendSCode'}} disabled={{sendSDisabled}} value="发送短信">
+        {{/if}}
+      </div>
+      {{/if}}
+      <div class="col-sm-12 col-xs-12 top15 nopadding-horizontal">
+        {{input type="text" class="form-control" value=mcode focus-in="changeInfo" placeholder="请输入验证码" enter='validateMCode'}}
+      </div>
+      <div class="col-sm-12 col-xs-12 top15 nopadding-horizontal">
+        {{input type="password" class="form-control" value=password focus-in="changeInfo" placeholder="请输入密码（6位以上字符）" enter='validateMCode'}}
+      </div>
+      <!-- {{#if phoneLogin}}
+      <div class="col-sm-12 col-xs-12 top15 nopadding-horizontal">
+      {{input type="text" class="form-control" value=inviter placeholder="请输入邀请人在平台的注册手机号或者姓名" enter='validateMCode'}}
+    </div>
+    {{/if}} -->
+    <div class="col-sm-12 col-xs-12 top2 nopadding-horizontal">
+      {{#if success}}
+      <div class="text-color-success left4">{{responseInfo}}</div>
+      {{else}}
+      <div class="text-color-danger left4">{{responseInfo}}</div>
+      {{/if}}
+      {{#if mailLogin}}
+      <input type="button" class="btn send-bgcolor btn-block top10" {{action "validateMCode"}} disabled={{deterDisabled}} value="企业注册(内测中)">
+      {{/if}}
+      {{#if phoneLogin}}
+      <input type="button" class="btn send-bgcolor btn-block top10" {{action "validateMCode"}} disabled={{deterSDisabled}} value="客服注册">
+      {{/if}}
+    </div>
+    <div class="col-sm-12 col-xs-12 top2 text-muted center">点击注册，表明你同意我们的<a {{action 'gotoRegTerms'}} class="no-decoration hovertype">《服务条款》</a></div>
+  </form>
+</div>
+<div class="col-sm-12 col-xs-12 top30 center">
+  <a class="no-decoration hovertype" {{action 'gotoLogin'}}>返回登录</a>
+</div>
+<footer class="col-sm-12 col-xs-12 top60 center">
+  <span> 黑ICP备12001443号-1</span>
+  <br>
+  <img src="assets/images/备案图标.png" width="15" alt=""/><span> 京公网安备11010802021689号</span>
+</footer>
+</div>
+</div>
+{{/if}}

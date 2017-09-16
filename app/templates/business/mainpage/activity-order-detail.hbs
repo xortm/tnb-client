@@ -1,0 +1,99 @@
+<div class="col-md-12">
+	<div class="box margin-middle max-width">
+		<!-- BOX-BODY -->
+		<div class="box-body">
+			{{#bs-form formLayout=formLayout model=activityOrderModel action=(action "saveActivityPlan") invalid=(action "invalid")}}
+				<!-- 列表编辑-->
+				<div class="row">
+					<div class="col-xs-12">
+							<p class="user-add-btn">
+									{{#if detailEdit}}
+									{{else}}
+											{{#ui/form-function editNone=true removeAction="delById" delById="delById" }}
+											{{/ui/form-function}}
+									{{/if}}
+							</p>
+					</div>
+					<div class="col-xs-12 nopadding-horizontal mt20">
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">预约用户：</span>
+								{{#if detailEdit}}
+                {{#bs-form-element class="inline-block form-input-group" controlType="customer"  property="customer" }}
+                {{#power-select class="inline-block input-group-content" placeholder="必填项" options=customerList selected=activityOrderModel.customer searchField="customerPinyin" noMatchesMessage="没有相关用户"
+                allowClear=false onchange=(action "selectCustomer" ) as |customer|}}
+                {{customer.name}}
+                {{/power-select}}
+                {{/bs-form-element}}
+								{{else}}
+									<div class="input-group-content">{{activityOrderModel.customer.name}}</div>
+								{{/if}}
+							</div>
+						</div>
+
+            <div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">服务人员：</span>
+								{{#if detailEdit}}
+                {{#bs-form-element class="inline-block form-input-group" controlType="employee"  property="employee" }}
+                {{#power-select class="inline-block input-group-content" placeholder="必填项" options=employeeList selected=activityOrderModel.employee searchField="employeePinyin" noMatchesMessage="没有相关服务人员"
+                allowClear=false onchange=(action "selectEmployee" ) as |employee|}}
+                {{employee.name}}
+                {{/power-select}}
+                {{/bs-form-element}}
+								{{else}}
+									<div class="input-group-content">{{activityOrderModel.employee.name}}</div>
+								{{/if}}
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">活动名称：</span>
+								{{#if detailEdit}}
+								{{#bs-form-element class="inline-block form-input-group" controlType="activity"  property="activity" }}
+								{{#power-select class="inline-block input-group-content" placeholder="必填项" options=activityList selected=activitySelect searchField="activityPinyin" noMatchesMessage="没有相关活动"
+								allowClear=false onchange=(action "selectActivity" ) as |activity|}}
+								{{activity.title}}
+								{{/power-select}}
+								{{/bs-form-element}}
+								{{else}}
+								<div class="input-group-content">{{activityOrderModel.activityPlan.activity.title}}</div>
+								{{/if}}
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">活动时间：</span>
+								{{#if detailEdit}}
+								{{#bs-form-element class="inline-block form-input-group" controlType="activityPlan"  property="activityPlan" }}
+								{{#power-select class="inline-block input-group-content" placeholder="必填项" options=activityPlanList selected=activityOrderModel.activityPlan searchField="activityPlanPinyin" noMatchesMessage="没有相关活动"
+								allowClear=false onchange=(action "selectActivityPlan" ) as |activityPlan|}}
+								{{activityPlan.day.typename}}
+								{{/power-select}}
+								{{/bs-form-element}}
+								{{else}}
+									<div class="input-group-content">{{activityOrderModel.activityPlan.day.typename}}</div>
+								{{/if}}
+							</div>
+						</div>
+
+				</div>
+				</div>
+				<!-- 列表编辑 -->
+				<div class="padding-top30 center">
+					<p class="text-center user-add-btn margin0auto inlineBlock">
+						{{#if detailEdit}}
+							{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check" text='保存' }}
+							{{/ui/mix-button}}
+							{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply" text='取消' clickAction="detailCancel" detailCancel="detailCancel" }}
+							{{/ui/mix-button}}
+						{{/if}}
+					</p>
+				</div>
+			{{/bs-form}}
+		</div>
+		<!-- /BOX-BODY -->
+	</div>
+</div>

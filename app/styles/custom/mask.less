@@ -1,0 +1,77 @@
+.mask-background{
+	mask-image:linear-gradient(top, rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.3) 100%);
+	-webkit-mask-image:-webkit-linear-gradient(top, rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.3) 100%);
+	-moz-mask-image:linear-gradient(top, rgba(0,0,0,0.3) 0%,rgba(0,0,0,0.3) 100%);
+}
+.mask {
+	opacity: 0.45 !important;
+	clip-path: inset(10px 20px 30px 40px);
+}
+.maskShow {
+	opacity: 1 !important;
+}
+.maskContent {
+	position: absolute;
+	background: transparent;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	z-index: 999;
+}
+.maskContent .arrow{
+	position: absolute;
+}
+.maskContent .arrow img{
+	position: absolute;
+}
+.maskContent .text{
+	position: relative;
+	font-size:16px;
+	color:white;
+	font-weight:normal;
+	text-shadow:none !important;
+}
+.maskContent .image{
+	position: absolute;
+}
+.maskContent .image img{
+	width:64px;
+	height:64px;
+}
+.maskContent .maskUp{
+	width:100%;
+	background:rgba(0,0,0,.9);
+	position: absolute;
+}
+.maskContent .maskDown{
+	width:100%;
+	background:rgba(0,0,0,.9);
+	position: absolute;
+}
+.maskContent .maskDown .image{
+	position: relative;
+	margin-top:0px;
+}
+.maskContent .maskDown .text{
+	position: relative;
+	margin-top:8px;
+}
+.maskContent .maskInner{
+	width:100%;
+	position: relative;
+}
+.maskContent .maskInner .left{
+	background:rgba(0,0,0,.7);
+	height:100%;
+}
+.maskContent .maskInner .item{
+	float:left;
+	background:transparent;
+	height:100%;
+}
+.maskContent .maskInner .itemCircle{
+	float:left;
+	background:-webkit-radial-gradient(circle closest-side, transparent 90%,rgba(0,0,0,.7));
+	height:32px;
+}

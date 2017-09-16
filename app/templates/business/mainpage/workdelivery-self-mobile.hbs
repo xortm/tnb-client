@@ -1,0 +1,79 @@
+{{#ui/mobile/inner-tabbar menus=tabFuncs switchTab="switchTab" serviceListFlag=serviceListFlag clickActFlag=clickActFlag itemXs="col-xs-6" positionClass="abs-top-44 service-care" theme="block-mode" showLoadingImgIn=showLoadingImgIn}}
+{{/ui/mobile/inner-tabbar}}
+{{#if (eq curTabCode 'sendTab')}}
+    {{#ui/mobile/gestures-container}}
+        <div id="{{infiniteContainerName}}" class="mainContent border-top-1 {{if global_pageConstructure.showLoader 'hide' ''}}">
+            <div class="wrapperInner padding-bottom50" style="padding-top:50px;background:#ffffff;">
+                {{#if workdeliverySendList}}
+                    <div class="bgcolor-white line-item-task col-sm-6 col-xs-12 height-auto bottom-border-plan1">
+                        {{#each workdeliverySendList as |dataDetail|}}
+                            <div itemId="{{item.id}}" name="listContainer" class="contentArea contentAreaList width100B">
+                              {{#if  dataDetail.status}}
+                                  <div class="finish-tag" style="right:-62px;font-size:12px;">状态:{{dataDetail.status.typename}}</div>
+                              {{else}}
+                                  <div class="detail extend color999999"></div>
+                              {{/if}}
+                                <!-- <div class="col-xs-middle time-content nopadding-horizontal width100B clearfix position-relative" id="item_{{item.id}}" > -->
+                                <div class="col-xs-middle time-content nopadding-horizontal width100B clearfix position-relative" id="item_{{dataDetail.id}}" {{action "gotoWorkdeliveryDetail" "send" dataDetail on="tap"}}>
+                                    <div class="title pull-left" style="width:110px;">
+                                        <div class="time-label color2FA7FD" style="font-size:14px;">{{dataDetail.createDateString}}</div>
+                                    </div>
+                                    <div class="item-split" style="margin: 16px 0; height: 46px;"></div>
+                                    <div class="content clearfix padding-left-114 width100B position_absolute" style="float:none;">
+                                        <div class="user-info font16" style="margin-top:0;"> <span class="font12 color999999">交班人：</span>{{dataDetail.sender.name}}</div>
+                                        <div class="user-info font16" style="margin-top:0;"> <span class="font12 color999999">接班人：</span>{{dataDetail.receiver.name}}</div>
+                                        <div class="user-info font16" style="margin-top:0;"> <span class="font12 color999999">交接内容：</span>{{dataDetail.remarkString}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        {{/each}}
+                    </div>
+                {{else}}
+                    <div class="nodate">暂无数据</div>
+                {{/if}}
+            </div>
+            <div class="detail-dynamicsbtn bottom40" id="addWorkdelivery" {{action 'addWorkdelivery' on="tap"}}> 
+                <img class="bottom2" width='15' src="assets/images/mobile/add.png" alt="">
+                <span class="padding-left-10">添加交班信息</span>
+            </div>
+        </div>
+    {{/ui/mobile/gestures-container}}
+    {{ui/container/infinite-scroll moniteData=infiniteContentPropertyName didRenderAction="didRender" didInsertElementAction="didInsertElement"}}
+{{/if}}
+{{#if (eq curTabCode 'receiveTab')}}
+    {{#ui/mobile/gestures-container}}
+        <div id="{{infiniteContainerName}}" class="mainContent border-top-1 {{if global_pageConstructure.showLoader 'hide' ''}}">
+            <div class="wrapperInner padding-bottom50" style="padding-top:50px;background:#ffffff;">
+                <div id="scrollFlagId" style="height:1px; width:100%;"></div>
+                {{#if workdeliveryReceiveList}}
+                <div class="bgcolor-white line-item-task col-sm-6 col-xs-12 height-auto bottom-border-plan1">
+                    {{#each workdeliveryReceiveList as |dataDetail|}}
+                        <div itemId="{{item.id}}" name="listContainer" class="contentArea contentAreaList width100B">
+                          {{#if  dataDetail.status}}
+                              <div class="finish-tag" style="right:-62px;font-size:12px;">状态:{{dataDetail.status.typename}}</div>
+                          {{else}}
+                              <div class="detail extend color999999"></div>
+                          {{/if}}
+                            <!-- <div class="col-xs-middle time-content nopadding-horizontal width100B clearfix position-relative" id="item_{{item.id}}" > -->
+                            <div class="col-xs-middle time-content nopadding-horizontal width100B clearfix position-relative" id="item_{{dataDetail.id}}" {{action "gotoWorkdeliveryDetail" "receive" dataDetail on="tap"}}>
+                                <div class="title pull-left" style="width:110px;">
+                                    <div class="time-label color2FA7FD" style="font-size:14px;">{{dataDetail.createDateString}}</div>
+                                </div>
+                                <div class="item-split" style="margin: 16px 0; height: 46px;"></div>
+                                <div class="content clearfix padding-left-114 width100B position_absolute" style="float:none;">
+                                    <div class="user-info font16" style="margin-top:0;"> <span class="font12 color999999">交班人：</span>{{dataDetail.sender.name}}</div>
+                                    <div class="user-info font16" style="margin-top:0;"> <span class="font12 color999999">接班人：</span>{{dataDetail.receiver.name}}</div>
+                                    <div class="user-info font16" style="margin-top:0;"> <span class="font12 color999999">交接内容：</span>{{dataDetail.remarkString}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+                {{else}}
+                    <div class="nodate">暂无数据</div>
+                {{/if}}
+            </div>
+        </div>
+    {{/ui/mobile/gestures-container}}
+    {{ui/container/infinite-scroll moniteData=infiniteContentPropertyName didRenderAction="didRender" didInsertElementAction="didInsertElement"}}
+{{/if}}

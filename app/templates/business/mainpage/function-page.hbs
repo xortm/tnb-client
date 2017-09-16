@@ -1,0 +1,33 @@
+{{#ui/mobile/gestures-container}}
+<div class="center padding-top40">
+  <img src="assets/images/logo/Bitmap.png" width="140" alt="">
+</div>
+<div class="center font24 color666666 top5">天年宝</div>
+<div class="font16 color666666 top30 text-indent10 padding-bottom10 padding-top10 bk-color-white border-bottom-1 center">请选择您要使用的功能区:</div>
+<ul class="profile">
+  {{#if csUser}}
+    <li class="carousel color666 border-bottom-1" id="service-care" {{action 'switchPage' 'service-care' 'service-care' 'cs-user' on="tap"}}>
+      <i class="profile-i"><img class="a-img" src="assets/images/mobile/nursingIcon.png"/></i>
+      <span class="profile-span">{{csUserName}} </span>
+      <i class="fa-angle-right font20 my-right color-ccc"></i>
+    </li>
+  {{/if}}
+
+  {{#if manager}}
+    <li class="carousel color666 border-bottom-1" id="attendance-check" {{action 'switchPage' 'attendance-check' 'attendance-check' 'manager' on="tap"}}>
+      <i class="profile-i"><img class="a-img" src="assets/images/mobile/managerIcon.png"/></i>
+      <span class="profile-span">{{managerName}} </span>
+      <i class="fa-angle-right font20 my-right color-ccc"></i>
+    </li>
+  {{/if}}
+
+  {{#if leader}}
+    <li class="carousel color666 border-bottom-1" id="consultation-management-mobile" {{action 'switchPage' 'consultation-management-mobile' 'consultation-management-mobile' 'leader' on="tap"}}>
+      <i class="profile-i"><img class="a-img" src="assets/images/mobile/leaderIcon.png"/></i>
+      <span class="profile-span">{{leaderName}} </span>
+      <i class="fa-angle-right font20 my-right color-ccc"></i>
+    </li>
+  {{/if}}
+</ul>
+<p class="center font14 color2FA7FD top15">(您可以通过主页面中左上角按钮切换到此页面)</p>
+{{/ui/mobile/gestures-container}}

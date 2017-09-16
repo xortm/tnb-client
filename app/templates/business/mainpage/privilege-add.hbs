@@ -1,0 +1,77 @@
+<div class="col-md-12">
+	<div class="box">
+		<!-- BOX-BODY -->
+		<div class="box-body">
+			<!-- 列表编辑-->
+			<div class="row">
+				<div class="col-xs-12">
+					<p class="user-add-btn">
+							{{#ui/mix-button class="user-btn" iconClass="fa fa-save" text='添加' clickAction="addPrivilege" addPrivilege="addPrivilege" clickActParams=testParams}}
+							{{/ui/mix-button}}
+							{{#ui/mix-button class="user-btn" iconClass="fa fa-times" text='取消' clickAction="cancelAdd" cancelAdd="cancelAdd" clickActParams=testParams}}
+							{{/ui/mix-button}}
+					</p>
+				</div>
+				<div class="marginLR-100">
+					<div class="col-xs-12 nopadding-horizontal mt20">
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">&emsp;权限名称：</span> {{input class="input-group-content" value=showName type="text" placeholder="权限名称"}}
+							</div>
+						</div>
+						
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">上&emsp;级&emsp;权&emsp;限&nbsp;&nbsp;&nbsp;：</span>
+								{{#power-select class="input-group-content" searchField="namePinyin" placeholder="上级权限" options=privilegeList selected=parent allowClear=true onchange=(action "selectParent" ) as |privilegeT|}}
+									{{privilegeT.showName}}
+								{{/power-select}}
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">权限名称(移动端)：</span> {{input class="input-group-content" value=mobileMenuName type="text" placeholder="权限名称(移动端)"}}
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">权限类型：</span> {{input class="input-group-content" value=type type="text" placeholder="权限类型"}}
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;url：</span> {{input class="input-group-content" value=code type="text" placeholder="url"}}
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">移&nbsp;&nbsp;动&nbsp;&nbsp;端&nbsp;&nbsp;图&nbsp;&nbsp;标&nbsp;&nbsp;：</span> {{input class="input-group-content" value=mobileIcon type="text" placeholder="移动端图标"}}
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">&emsp;&emsp;&emsp;&nbsp;&nbsp;序号：</span>
+								{{input class="input-group-content" value=order type="text" placeholder="排序编码"}}
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">&emsp;&emsp;&emsp;&nbsp;&nbsp;权限类别:：</span>
+								{{input class="input-group-content" value=systemType type="text" placeholder="1机构2居家"}}
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<!-- 列表编辑 -->
+		</div>
+		<!-- /BOX-BODY -->
+	</div>
+</div>

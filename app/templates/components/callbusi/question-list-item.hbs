@@ -1,0 +1,75 @@
+{{#unless question.hasSelected}}
+
+  <div class="content">
+
+    {{realSeq}}、{{question.content}}
+  </div>
+{{else}}
+  {{#if detailEdit}}
+  {{#unless edit}}
+  <div class="part-func" {{action "upOrder" on="click"}}>
+    <span class="question-icon">
+      <i class="fa-arrow-up"></i>
+    </span>
+    {{bs-tooltip title="提升顺序" class="light-tooltip"}}
+  </div>
+  <div class="part-func" {{action "delQuestion" on="click"}}>
+    <span class="question-icon">
+      <i class="fa-minus"></i>
+    </span>
+    {{bs-tooltip title="删除问题" class="light-tooltip"}}
+  </div>
+  <div class="part-func" {{action "toAddAnswer" on="click"}}>
+    <span class="question-icon">
+      <i class="fa-plus"></i>
+    </span>
+    {{bs-tooltip title="添加答案" class="light-tooltip"}}
+  </div>
+  <div class="part-func" {{action "toedit" on="click"}}>
+    <span class="question-icon">
+      <i class="fa-pencil"></i>
+    </span>
+    {{bs-tooltip title="编辑问题" class="light-tooltip"}}
+  </div>
+
+  {{/unless}}
+  <div class="inline-block pull-left">
+    {{#unless question.hasSelected}}
+      <i class="{{if question.hasChoosed 'fa-check-square-o' 'fa-square-o'}}"></i>
+    {{/unless}}
+    {{realSeq}}、</div>
+  <div class="col-sm-8 nopadding-left nopadding-right">
+    {{#if edit}}
+      {{input type="text" name=name class="input-group-content question-input" placeholder="请填写问题内容" value=question.content  }}
+      <div class="inline-block" {{action "saveNewQuestion" on="click"}}>
+        <span class="question-icon">
+          <i class="fa-check">
+              {{bs-tooltip title="确定" class="light-tooltip"}}
+          </i>
+        </span>
+
+      </div>
+      <div class="inline-block" {{action "cancel" on="click"}}>
+        <span class="question-icon">
+          <i class="fa-undo">
+            {{bs-tooltip title="取消" class="light-tooltip"}}
+          </i>
+        </span>
+
+      </div>
+    {{else}}
+    {{question.content}}
+    {{/if}}
+  </div>
+
+  {{else}}
+
+  <div class="content">
+    {{#if edit}}
+      <i class="{{if question.hasSelected 'fa-check-square-o' 'fa-square-o'}}"></i>
+    {{/if}}
+    {{realSeq}}、{{question.content}}
+  </div>
+  {{/if}}
+
+{{/unless}}

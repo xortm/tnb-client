@@ -1,0 +1,57 @@
+
+<div class="col-sm-12">
+  <div class="box">
+    <div class="box-body">
+    <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+    	<div class="row">
+        <!--搜索-->
+          <div class="col-sm-2 ">
+          {{#power-select class="inline-block" placeholder="选择会员姓名" options=customerList selected=customer searchField="namePinyin" noMatchesMessage="没有相关会员信息"
+          allowClear=true onchange=(action "selectCustomer" ) as |customer|}}
+          {{customer.name}}
+          {{/power-select}}
+          </div>
+          <div class="col-sm-6 nopadding-right">
+            {{callbusi/time-search class="inline-block" text='按通知时间搜索' dateShow=dateShow chooseDate=chooseDate search="search"
+            submmit="submmit" emptied='emptied' changeBeginDateAction='changeBeginDateAction' changeEndDateAction='changeEndDateAction'}}
+      	  </div>
+          <div class="user-add-btn col-sm-3 pull-right nopadding-right">
+              {{#ui/mix-button class=" user-btn pull-right" iconClass="fa-plus" text='新增通知消息' clickAction="toDetailPage" toDetailPage="toDetailPage" style="padding-right:0px;margin-right:0px;" }}
+              {{/ui/mix-button}}
+          </div>
+    	  <!--搜索-->
+    	</div>
+      <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable mt15" aria-describedby="datatable1_info">
+        <thead>
+          <tr role="row">
+            <th rowspan="1" colspan="1" width="">会员姓名</th>
+            <th rowspan="1" colspan="1" width="">通知时间</th>
+            <th rowspan="1" colspan="1" width="">通知类型</th>
+            <th rowspan="1" colspan="1" width="">通知内容</th>
+          </tr>
+        </thead>
+        {{#if messageList}}
+      <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+          {{#each messageList as |message|}}
+          <tr class="gradeA odd" {{action "toDetailPage" message on="click"}}>
+            <td class="width10B ellipsis sorting_1">{{message.toUser.name}}</td>
+            <td class="width20B ellipsis sorting_1">{{message.createTimeStr}}</td>
+            <td class="width20B ellipsis ">{{message.businessType.typename}}</td>
+            <td class="width50B ellipsis">{{message.content}}</td>
+      	  </tr>
+          {{/each}}
+       </tbody>
+       {{else}}
+       <div class="nodate">暂无数据</div>
+       {{/if}}
+        </table>
+        {{#if messageList }}
+            {{page-numbers content=messageList showFL=true numPagesToShow=5}}
+            {{else}}
+                <h1 class="col-sm-12 center unTask"></h1>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+  <!-- /BOX -->
+</div>

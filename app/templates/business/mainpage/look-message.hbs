@@ -1,0 +1,41 @@
+
+<div id="lookMessageContainer" class="mainContent">
+<div class="wrapperInner">
+  <div class="itemLine2 paddinglrb bk-color-white padding-bottom20">
+    {{log "lookMessage is" lookMessage}}
+    {{#each lookMessage as |message|}}
+    <div class="clear padding-5-10">
+      <div class="">
+        <div class="pull-left top20 width18B center">
+          <i class="inlineBlock font20 {{iconClass}}"></i>
+        </div>
+        <ul class="nopadding-left inlineBlock width82B">
+          <li class="center clear">{{message.createTimeString}}</li>
+          {{#if (eq message.typeNum 1)}}
+            <li class="position-relative backColor padding4 border-radius5">
+              {{message.content}}
+              <div class="messageArrow"></div>
+            </li>
+          {{/if}}
+          {{#if (eq message.typeNum 2)}}
+          <li class="position-relative backColor padding4 border-radius5">
+            {{message.contentShow}}
+            <div class="messageArrow"></div>
+          </li>
+          {{/if}}
+        </ul>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+
+</div>
+</div>
+<!-- <div class="positionFixFooter width1">
+    {{input type="text" value=content class="inlineBlock talkMessage" placeholder=""}}
+    {{#ui/the-button  theClass="btn btn-turquoise pull-right sendMessage"
+    clickAction="sendMessage" sendMessage="sendMessage" text="发送"}}
+    {{/ui/the-button}}
+</div> -->
+{{ui/container/infinite-scroll moniteData="lookMessage" didRenderAction="didRender"
+ didInsertElementAction="didInsertElement"}}

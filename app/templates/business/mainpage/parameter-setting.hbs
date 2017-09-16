@@ -1,0 +1,35 @@
+
+<div class="col-sm-12">
+	<div class="box margin-middle max-width">
+		<!-- BOX-BODY -->
+		<div class="box-body">
+			<div class="row">
+				<div class="col-xs-12">
+					<p class="center">
+            您可以手动设置以下参数，方便您的使用
+					</p>
+				</div>
+				<!-- 列表详细介绍 -->
+				<div class="col-xs-12 nopadding-left">
+					<div class="col-xs-12 nopadding-horizontal mt20">
+            {{#each confList as |conf|}}
+						<div class="col-xs-12 col-sm-6 nopadding-left">
+							<div class="form-input-group">
+								<span class="input-group-addon">{{conf.name}}({{conf.unit}})：</span>
+								{{#if conf.choosed}}
+									{{input type="text" class="full-width inline-block form-input-group label-normal form-control" value=conf.value focusOut=(action "saveConf" conf)}}
+								{{else}}
+									<div class="input-group-content pointer" {{action 'chooseConf' conf on="click"}}>{{conf.value}}</div>
+								{{/if}}
+							</div>
+							<div class="divide-10"></div>
+						</div>
+            {{/each}}
+						</div>
+					</div>
+				</div>
+				<!-- 列表详细介绍 -->
+		</div>
+		<!-- /BOX-BODY -->
+	</div>
+</div>

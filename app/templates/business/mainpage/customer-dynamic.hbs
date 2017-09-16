@@ -1,0 +1,16 @@
+<div id="customerDynamicContainer" class="mainContent border-top-1 {{if global_pageConstructure.showLoader 'hide' ''}}">
+  <div class="wrapperInner">
+    {{#if customerdynamicList}}
+      {{log "customerdynamicList:" customerdynamicList}}
+      {{#each customerdynamicList as |customerdynamic|}}
+        {{#callbusi/mobile/dynamic-item customerdynamic=customerdynamic delItemAction="delItemAction" clickOfShowDelButFlag=false}}
+        {{/callbusi/mobile/dynamic-item}}
+      {{/each}}
+    {{else}}
+      <div class="nodate">暂无动态</div>
+    {{/if}}
+
+  </div>
+</div>
+{{ui/container/infinite-scroll moniteData="customerdynamicList"
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

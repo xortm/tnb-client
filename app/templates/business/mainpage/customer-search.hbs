@@ -1,0 +1,31 @@
+<div id="customerSearchContainer" class="mainContent">
+  <div class="wrapperInner">
+  {{#ui/mobile/gestures-container}}
+
+      <div class="border-bottom-1 margin-leftright10 height30 line-height-30" id="search_all" {{action 'queryAll' 'search_all' on="tap"}}>
+        <i class="fa-search-plus font16 inlineBlock center height20 width20"></i>
+        <span class="font12">点击查看全部老人</span>
+      </div>
+
+      <!-- {{#if (eq searchPrompt "搜索指定内容")}}
+        <div class="color999999 center top40 bottom20">{{searchPrompt}}</div>
+      {{else}}
+        <div class="color2FA7FD center top40 bottom20 font16">{{searchPrompt}}</div>
+      {{/if}} -->
+      <div class="color999999 center top40 bottom20">搜索指定内容</div>
+
+    <ul class="clear nopadding-left">
+      <li class="pull-left width50B" {{action 'searchType' 'room' 'searchtype_room' on="tap"}}>
+        <div class="center"><img src="assets/images/mobile/searchroom.png"/></div>
+        <div class="top8 fc-header center {{if roomFlag 'color2FA7FD'}}">房间搜索</div>
+      </li>
+      <li class="pull-left width50B" {{action 'searchType' 'name' 'searchtype_old' on="tap"}}>
+        <div class="center"><img src="assets/images/mobile/searchold.png"/></div>
+        <div class="top8 fc-header center {{if nameFlag 'color2FA7FD'}}">老人搜索</div>
+      </li>
+    </ul>
+
+    {{/ui/mobile/gestures-container}}
+  </div>
+</div>
+{{ui/container/infinite-scroll moniteData="customerSearch" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

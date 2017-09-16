@@ -1,0 +1,62 @@
+
+<div class="nodate font20 top150">
+  <span class="pointer dayHover padding10 border-radius5" {{action "editWork" on="click"}}>
+    要先选择需排班的人员呦！
+    <img src="assets/images/icon/customer_c.png" alt="选择排班人员" style="height:35px">
+  </span>
+</div>
+
+{{#if editStaff}}
+{{#bs-modal body=false footer=false header=false closedAction=(action "exitStaff")}}
+{{#bs-modal-header}}
+   <h4 class="modal-title">设置排班人员</h4>
+ {{/bs-modal-header}}
+{{#bs-modal-body}}
+<div class="staff-box">
+  <div class=" col-sm-5 nopadding-left nopadding-right" style="margin-left:5px;border:1px solid #ddd;border-radius:5px;padding-top:5px;">
+    <div>护理组和未编组员工</div>
+    <div class="choose-box">
+      {{#each allStaffList as |staff|}}
+        {{#if staff.hasSelected}}
+        {{else}}
+        <div class="pointer" {{action 'chooseStaff' staff on="click"}}>
+          {{#if staff.group}}
+          <span style="color:red;font-size:13px;">组</span>
+          {{else}}
+          <span style="display:inline-block;width:13px;height:13px;"></span>
+          {{/if}}
+          <span>{{staff.name}}</span>
+        </div>
+        {{/if}}
+      {{/each}}
+    </div>
+  </div>
+  <div class="col-sm-1 nopadding-left nopadding-right" style="height:225px;padding-top:25px;font-size:40px;">
+    <div style="line-height:100px;"><i class="fa fa-long-arrow-right"></i></div>
+    <div style="line-height:100px;"><i class="fa fa-long-arrow-left"></i></div>
+  </div>
+  <div class=" col-sm-5 nopadding-left nopadding-right"style="margin-left:5px;border:1px solid #ddd;border-radius:3px;padding-top:5px;">
+    <div>已选护理组或员工</div>
+    <div class="choose-box">
+      {{#each chooseStaffs as |staff|}}
+        <div class="pointer" {{action 'chooseStaffBack' staff on="click"}}>
+          {{#if staff.group}}
+          <span style="color:red;font-size:13px;">组</span>
+          {{else}}
+          <span style="display:inline-block;width:13px;height:13px;"></span>
+          {{/if}}
+          <span>{{staff.name}}</span>
+        </div>
+      {{/each}}
+    </div>
+  </div>
+</div>
+{{/bs-modal-body}}
+{{#bs-modal-footer class="user-add-btn"}}
+{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="come" come="come" }}
+{{/ui/mix-button}}
+{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消' clickAction="exitStaff" exitStaff="exitStaff"}}
+{{/ui/mix-button}}
+{{/bs-modal-footer}}
+{{/bs-modal}}
+{{/if}}

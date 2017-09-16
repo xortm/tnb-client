@@ -1,0 +1,12 @@
+{{#if theDelete}}
+{{#ui/icon-button class="user-btn edit-btn incon-button-font pull-right" iconClass="fa fa-trash-o"  text='删除'
+clickAction="deleteClick" deleteClick="deleteClick"}}
+  {{bs-tooltip title="删除" class="light-tooltip"}}
+{{/ui/icon-button}}
+{{/if}}
+{{#if edit}}
+{{#ui/icon-button class="user-btn edit-btn incon-button-font pull-right" iconClass="fa fa-edit"  text='编辑'
+clickAction="editClick" editClick="editClick"}}
+  {{bs-tooltip title="编辑" class="light-tooltip"}}
+{{/ui/icon-button}}
+{{/if}}

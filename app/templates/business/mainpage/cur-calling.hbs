@@ -1,0 +1,53 @@
+<div class="row">
+  {{#if model.inCalling}}
+      <div class="col-md-12">
+        {{#if model.customer}}
+            <!--如果有客户信息，则显示客户信息和工单-->
+          {{#callbusi/customer-workorder
+          customer=model.customer
+          workorderList=model.workorderList
+          saveCustomer="saveCustomer"
+          saveWorkorder="saveWorkorder" }}
+          {{/callbusi/customer-workorder}}
+        {{else}}
+            <!--如果没有客户信息，则显示工单录入-->
+          {{#callbusi/workorder-info editMode=true
+          curCall=model.curCall
+          phoneNumber=model.inCalling
+          customers=model.taskCustomers
+          saveWorkorder="saveWorkorder"}}
+          {{/callbusi/workorder-info}}
+        {{/if}}
+      </div>
+  {{else}}
+      <div class="col-md-6">
+          <div class="panel panel-default"><!-- Add class "collapsed" to minimize the panel -->
+              <div class="panel-heading">
+                  <h3 class="panel-title">当前没有正在进行的通话</h3>
+
+                  <div class="panel-options">
+                      <a href="#">
+                          <i class="linecons-cog"></i>
+                      </a>
+
+                      <a href="#" data-toggle="panel">
+                          <span class="collapse-icon">&ndash;</span>
+                          <span class="expand-icon">+</span>
+                      </a>
+
+                      <a href="#" data-toggle="reload">
+                          <i class="fa-rotate-right"></i>
+                      </a>
+
+                      <a href="#" data-toggle="remove">
+                          &times;
+                      </a>
+                  </div>
+              </div>
+
+
+          </div>
+      </div>
+  {{/if}}
+
+</div>

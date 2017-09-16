@@ -1,0 +1,125 @@
+<div class="col-sm-12">
+    <div class="box clearfix">
+        <div class="bottom12">
+            <ul class="nopadding-left border-bottom">
+                <li class="pull-left margin-right30 {{unless  inLeaving " jujia-select-bottom-border"}}" {{action "changeTab" false on="click"}} >
+                    <a href="#tab_1_1" data-toggle="tab" class="{{if inLeaving 'noselect-title'  'jujia-select-title' }} the-a">请假申请管理</a>
+                </li>
+                <li class="pull-left margin-right30  {{if inLeaving " jujia-select-bottom-border"}}" {{action "changeTab" true on="click"}}>
+                    <a href="#tab_1_2" data-toggle="tab" class="{{if inLeaving 'jujia-select-title'  'noselect-title' }} the-a">当前请假老人</a>
+                </li>
+            </ul>
+            <div class="clear"></div>
+        </div>
+        <div class="box">
+          <div class="box-body">
+            <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+                  <div class="row">
+                      <!--搜索-->
+                      <div class="col-sm-4">
+                        <div class="pull-left">
+                            <div class="input-group bottom8">
+                                {{input class="form-control" type="text" placeholder="搜索姓名/房间/床位号" value=queryStr enter="search"}}
+                                <span class="input-group-btn">
+                                      <button class="btn btn-primary btn-reduce" type="button" style="touch-action: manipulation; -ms-touch-action: manipulation;"
+                                       {{action "search" on="click"}}>
+                                        <i class="fa fa-search"></i>
+                                      </button>
+                                </span>
+                            </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-5 nopadding-right nopadding-left">
+                           {{callbusi/time-search class="inline-block" text='按请假日期搜索' dateShow=dateShow chooseDate=chooseDate search="search"
+                               submmit="submmit" emptied='emptied' changeBeginDateAction='changeBeginDateAction'
+                               changeEndDateAction='changeEndDateAction'}}
+                       </div>
+                      <!--搜索-->
+                      <div class="user-add-btn col-sm-3 pull-right nopadding-right">
+                          {{#ui/mix-button class=" user-btn pull-right" iconClass="fa-plus" text='新增请假申请' clickAction="toDetailPage"
+                           toDetailPage="toDetailPage" }}
+                          {{/ui/mix-button}}
+                      </div>
+                  </div>
+                  <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable"
+                         aria-describedby="datatable1_info">
+                    <thead>
+                      <tr role="row">
+                        <th rowspan="1" colspan="1" width="">老人</th>
+                        <th rowspan="1" colspan="1" width="">房间床位</th>
+                        <th rowspan="1" colspan="1" width="">请假日期</th>
+                        <th rowspan="1" colspan="1" width="">销假日期</th>
+                        <th rowspan="1" colspan="1" width="">状态</th>
+                        {{#unless inLeaving}}
+                            <th rowspan="1" colspan="1" width="">操作</th>
+                        {{/unless}}
+                      </tr>
+                    </thead>
+                    <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+                      {{#each leaveList as |leave|}}
+                      <tr >
+                        <td class="ellipsis" {{action "toDetailPage" leave on="click"}}>{{leave.customer.name}}</td>
+                        <td class="ellipsis" {{action "toDetailPage" leave on="click"}}>{{leave.customer.bed.allBedName}}</td>
+                        <td class="ellipsis" {{action "toDetailPage" leave on="click"}}>{{leave.startTimeStr}}</td>
+                        <td class="ellipsis" {{action "toDetailPage" leave on="click"}}>
+                          {{#if  leave.endTime}}
+                              {{leave.endTimeStr}}
+                          {{else}}
+                              {{leave.expectEndTimeStr}}
+                          {{/if}}
+                        </td>
+                        <td class="ellipsis" {{action "toDetailPage" leave on="click"}}>{{leave.statusStr}}</td>
+                        {{#unless inLeaving}}
+                          <td class="ellipsis">
+                            {{#if (eq leave.closeStatus 1)}}
+                              {{#unless leave.endTime}}
+                                  <a {{action "completeLeave" leave}}>销假</a>
+                              {{/unless}}
+                            {{else}}
+                              {{# if   (eq  leave.status 0)}}
+                                    <a {{action "deleteLeave" leave}}>删除</a>
+                              {{/if}}
+                              {{# if   (eq  leave.status 1)}}
+                                    <a {{action "completeLeave" leave}}>销假</a>
+                                    <a {{action "deleteLeave" leave}}>删除</a>
+                              {{/if}}
+                            {{/if}}
+                          </td>
+                        {{/unless}}
+                      </tr>
+                      {{/each}}
+                    </tbody>
+                  </table>
+                  {{#if leaveList }}
+                      {{page-numbers content=leaveList showFL=true numPagesToShow=10 }}
+                  {{else}}
+                          <h1 class="col-sm-12 center unTask"></h1>
+                  {{/if}}
+            </div>
+         </div>
+        </div>
+    </div>
+</div>
+<!-- 销假 -->
+{{#if showComplete}}
+    {{#bs-modal body=false footer=false header=false closedAction=(action "cancelCompleteLive")}}
+        {{#bs-modal-body}}
+                <div class="col-sm-12 nopadding-left">
+                    <div class="form-input-group">
+                        <span class="input-group-addon">销假日期:</span>
+                        {{#bs-form-element class="inline-block form-input-group" controlType="accessType" property="accessType" }}
+                            {{ui/addon/bs-datetimepicker date=selectLeave.endTimeDate placeholder="必填项"
+                              locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'
+                                show="doNothing" change="changeEndTime" }}
+                        {{/bs-form-element}}
+                    </div>
+                </div>
+        {{/bs-modal-body}}
+        {{#bs-modal-footer class="user-add-btn" }}
+            {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check" text='确定' clickAction="saveCompleteLive" saveCompleteLive="saveCompleteLive" }}
+            {{/ui/mix-button}}
+            {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply" text='取消' clickAction="cancelCompleteLive" cancelCompleteLive="cancelCompleteLive" }}
+            {{/ui/mix-button}}
+        {{/bs-modal-footer}}
+    {{/bs-modal}}
+{{/if}}

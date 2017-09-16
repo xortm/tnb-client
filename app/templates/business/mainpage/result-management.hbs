@@ -1,0 +1,32 @@
+{{#ui/mobile/gestures-container}}
+  <div id="resultManagementContainer" class="mainContent border-top-1 {{if global_pageConstructure.showLoader 'hide' ''}}" style="overflow:scroll;">
+  <div class="wrapperInner">
+  {{#if resultList}}
+    <div class="bgcolor-white">
+    {{#each resultList as |result|}}
+    <div class="line-item-task col-sm-6 col-xs-12 height-auto" {{action 'addNewEva' result on='tap'}}>
+      <div name="listContainer" class="contentArea contentAreaList width100B">
+        <div class="col-xs-middle time-content nopadding-horizontal width100B clearfix position-relative" >
+          <div class="title pull-left" style="width:110px;">
+            <div class="time-label color2FA7FD" style="font-size:14px;">{{result.createDateTimeString}}</div>
+          </div>
+          <div class="item-split"></div>
+          <div class="content clearfix padding-left-114 width100B position_absolute" style="float:none;">
+              <div class="detail extend color999999">名称:{{result.model.title}}</div>
+              <div class="detail extend color999999">得分:{{result.score}}</div>
+              <div class="detail extend color999999">评估人:{{result.user.name}}</div>
+              <span style="font-size:14px;color:#03BADD;" id="{{concat 'result-management-mobile-del-' result.id}}" {{action 'delById' result on='tap' bubbles=false}}>删除问卷</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{/each}}
+    </div>
+  {{else}}
+    <div class="nodate">暂无数据</div>
+  {{/if}}
+  </div>
+</div>
+{{/ui/mobile/gestures-container}}
+{{ui/container/infinite-scroll moniteData="resultList"
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

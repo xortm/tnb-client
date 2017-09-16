@@ -1,0 +1,148 @@
+<div class="busi-info ">
+    {{#bs-form formLayout=formLayout model=customerModel}}
+        <div style="clear:both" />
+        <div class="center" style="font-size:12px;">您可以填写一下老人的日常习惯，方便您为老人提供更优质的服务。</div>
+        <div class="row">
+      	  <div class="user-add-btn col-sm-3 nopadding-right pull-right">
+            {{#ui/mix-button class="user-btn pull-right" iconClass="fa-plus"  text='新增习惯' clickAction="editPreference" editPreference="editPreference"}}
+            {{/ui/mix-button}}
+          </div>
+      	</div>
+        <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+          <thead>
+            <tr role="row">
+              <th rowspan="1" colspan="1" width="15%">习惯时间</th>
+              <th rowspan="1" colspan="1" width="15%">生活习惯</th>
+              <th rowspan="1" colspan="1" width="60%">习惯描述</th>
+              <th rowspan="1" colspan="1" width="10%">操作</th>
+            </tr>
+          </thead>
+          {{#if preferenceList}}
+          <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+            {{#each preferenceList as |preference|}}
+            <tr {{action "editPreference" preference on="click"}}>
+              <td class="ellipsis" >{{preference.startStr}}</td>
+              <td class="ellipsis" >{{preference.name}}</td>
+              <td class="ellipsis" >{{preference.remark}}</td>
+              <td >
+                <a {{action 'delPrence' preference on="click" bubbles=false}}>删除</a>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+          {{else}}
+          <div class="nodate">暂无数据</div>
+          {{/if}}
+        </table>
+
+        {{#if showCustomer}}
+        {{else}}
+        <div class="col-sm-12">
+          <div class="text-center padding-top30 padding-bottom100">
+              <p class="text-center user-add-btn" style="display:inline-block;margin:0 auto!important ">
+                {{#if shortSave}}
+                {{#ui/mix-button class=" user-btn edit-btn " iconClass="fa-save" text='暂存' clickAction="shortSaveInfo" shortSaveInfo="shortSaveInfo" }}
+                {{/ui/mix-button}}
+                {{#ui/mix-button class=" user-btn edit-btn " iconClass="fa-check" text='下一步' clickAction="next" next="next" }}
+                {{/ui/mix-button}}
+                {{#ui/mix-button class=" user-btn times-btn " iconClass="fa fa-mail-reply" text='取消' clickAction="remove" remove="remove" }}
+                {{/ui/mix-button}}
+                {{else}}
+                  {{#if addMode}}
+                      {{#if detailModify}}
+                          {{#ui/mix-button class=" user-btn edit-btn " iconClass="fa-check" text='保存' }}
+                          {{/ui/mix-button}}
+                          {{#ui/mix-button class=" user-btn times-btn " iconClass="fa fa-mail-reply" text='取消' clickAction="cancelClick" cancelClick="cancelClick" }}
+                          {{/ui/mix-button}}
+                      {{else}}
+                      {{/if}}
+                  {{else}}
+                      {{#if detailModify}}
+                          {{#ui/mix-button class=" user-btn edit-btn " iconClass="fa-check" text='保存' }}
+                          {{/ui/mix-button}}
+                          {{#ui/mix-button class=" user-btn times-btn " iconClass="fa fa-mail-reply" text='取消' clickAction="cancelClick" cancelClick="cancelClick" }}
+                          {{/ui/mix-button}}
+                      {{else}}
+                      {{/if}}
+                  {{/if}}
+                  {{/if}}
+              </p>
+          </div>
+          </div>
+        {{/if}}
+    {{/bs-form}}
+</div>
+
+{{#if editModel}}
+{{#bs-modal body=false footer=false header=false closeAction=(action "cancelPre")}}
+    {{#bs-modal-body}}
+    {{#bs-form formLayout=formLayout model=preferenceModel }}
+    <div class="box">
+      <div class="box-body">
+        <div class="col-xs-12 nopadding-left">
+          <div class="col-xs-12">
+            <p class="user-add-btn">
+              {{#if detailEdit}}
+              {{else}}
+                {{#ui/form-function editAction="detailEditClick" detailEditClick="detailEditClick" deleteNone=true}}
+                {{/ui/form-function }}
+              {{/if}}
+            </p>
+          </div>
+          <div class="line ">
+              <div class="col-xs-12 col-sm-6 nopadding-left">
+                  <div class="form-input-group label-normal">
+                      <span class="input-group-addon">生活习惯：</span>
+                      {{#if detailEdit}}
+                          {{bs-form-element property="name" class="inline-block form-input-group" controlType="name" placeholder="必填"}}
+                      {{else}}
+                          <div class="font-light input-group-content">{{curPreference.name}}</div>
+                      {{/if}}
+                  </div>
+              </div>
+              <div class="col-xs-12 col-sm-6">
+                  <div class="form-input-group label-normal">
+                      <span class="input-group-addon">习惯时间：</span>
+                      {{#if detailEdit}}
+                          <div class="inline-block form-input-group">
+                            {{#bs-form-element class="inline-block form-input-group" controlType="startTime"  property="startTime" }}
+                              {{ui/addon/bs-datetimepicker date=curPreference.startDate placeholder="必填"
+                              locale="zh-CN" iconClasses="fa fa-calendar" format='HH:mm'
+                              show="dpShowAction" change="changeTimeAction" }}
+                            {{/bs-form-element}}
+                          </div>
+                      {{else}}
+                          <div class="font-light input-group-content">{{curPreference.startStr}}</div>
+                      {{/if}}
+                  </div>
+              </div>
+          </div>
+            <div class="col-xs-12 col-sm-12 nopadding-left nowrap">
+              <div class="form-input-group">
+                <span class="input-group-addon">习惯描述：</span>
+                {{#if detailEdit}}
+                  {{#bs-form-element class="inline-block form-input-group" controlType="remark"  property="remark" }}
+                      {{textarea type="text" class="full-width inline-block form-input-group label-normal form-control" value=preferenceModel.remark placeholder='必填'}}
+                  {{/bs-form-element}}
+                {{else}}
+                  <div class="input-group-content" style="text-overflow:ellipsis;width:89%;overflow:hidden;">{{curPreference.remark}}</div>
+                {{/if}}
+              </div>
+              <div class="divide-10"></div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    {{/bs-form}}
+    {{/bs-modal-body}}
+    {{#bs-modal-footer class="user-add-btn" }}
+      {{#if detailEdit}}
+        {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check" text='保存' clickAction="savePre" savePre="savePre"}}
+        {{/ui/mix-button}}
+        {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply" text='取消' clickAction="cancelPre" cancelPre="cancelPre"}}
+        {{/ui/mix-button}}
+      {{/if}}
+    {{/bs-modal-footer}}
+{{/bs-modal}}
+{{/if}}

@@ -1,0 +1,149 @@
+<div class="row">
+	<div class="col-sm-12">
+		<div class="page-header clearfix">
+			<ul class="breadcrumb floatRight">
+				<li>
+					<i class="fa fa-home"></i>
+					<a href="index.html">首页</a>
+				</li>
+				<li>
+					<a href="#">人员管理</a>
+				</li>
+				<li>护工管理</li>
+			</ul>
+			<!-- /BREADCRUMBS -->
+			<div class="clearfix floatLeft">
+				<h3 class="content-title pull-left">护工管理</h3>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="panel panel-default fullWidth">
+  {{#if model.curTask}}
+  {{log 'model.curTask.runStatus' model.curTask.runStatus}}
+  <div class="panel-heading">
+    <h3 class="panel-title">绑定号码：{{model.curTask.bindPhone}}</h3>
+    <div class="panel-options">
+      {{log 'eqeqeq' model.curTask.runStatus}}
+      {{#if (eq model.curTask.runStatus 1)}}
+        <div class="pull-left right4 top5 font-big">
+        <!-- {{#x-timer tagName='span' innerClass='light small'
+          autoStart=true format='HH:MM:SS' startTime=model.curTask.signSeconds stopRequired=false}}
+        {{/x-timer}} -->
+        {{model.curTask.signDatetime}}
+      </div>
+        <button type="button" class="btn btn-icon btn-turquoise btn-xs pull-right" {{action 'checkout'}}>
+          <i class="fa-sign-out"></i>
+          <span>签出</span>
+        </button>
+      {{/if}}
+      {{#if (eq model.curTask.runStatus 2)}}
+        <button type="button" class="btn btn-icon btn-turquoise btn-xs pull-right" {{action 'checkin'}}>
+          <i class="fa-sign-in"></i>
+          <span>签入</span>
+        </button>
+      {{/if}}
+  </div>
+</div>
+<div class="panel-body">
+  <div class="col-sm-7">
+    {{#if (eq model.curTask.runStatus 1)}}
+    <div>您当前已经签入了该任务</div>
+    {{/if}}
+    {{#if (eq model.curTask.runStatus 2)}}
+    <div>您当前还没有签入该任务，请抓紧签入！</div>
+    {{/if}}
+    {{#if (eq model.curTask.runStatus 3)}}
+      <div>任务未开始</div>
+    {{/if}}
+    <div class="spacer">
+      <dl class="dl-horizontal textleft">
+        <dt>任务描述:</dt>
+        <dd>{{model.curTask.task.desc}}</dd>
+      </dl>
+      <dl class="dl-horizontal textleft">
+        <dt>任务起止日期:</dt>
+        <dd>{{model.curTask.task.beginDateComp}}~{{model.curTask.task.endDateComp}}</dd>
+      </dl>
+      <dl class="dl-horizontal textleft">
+        <dt>任务周期:</dt>
+        <dd>{{model.curTask.task.durtypeStr}}</dd>
+      </dl>
+      <dl class="dl-horizontal textleft">
+        <dt>呼叫类型:</dt>
+        <dd>{{model.curTask.task.calltypeStr}}</dd>
+      </dl>
+      <dl class="dl-horizontal textleft">
+        <dt>任务发布者:</dt>
+        <dd>{{model.curTask.task.pubuser.entName}}</dd>
+      </dl>
+      <dl class="dl-horizontal textleft">
+        <dt>任务工作时段:</dt>
+        <dd>{{model.curTask.task.worktimeString}}</dd>
+      </dl>
+      {{#if model.curTask.task.onlinePay}}
+        <dl class="dl-horizontal textleft">
+          <dt>在线时长报酬:</dt>
+          <dd>{{model.curTask.task.onlinePay}}</dd>
+        </dl>
+      {{/if}}
+      {{#if model.curTask.task.callinPay}}
+        <dl class="dl-horizontal textleft">
+          <dt>接听报酬:</dt>
+          <dd>{{model.curTask.task.callinPay}}</dd>
+        </dl>
+      {{/if}}
+      {{#if model.curTask.task.calloutPay}}
+        <dl class="dl-horizontal textleft">
+          <dt>外呼报酬:</dt>
+          <dd>{{model.curTask.task.calloutPay}}</dd>
+        </dl>
+      {{/if}}
+      {{#if model.curTask.task.poPay}}
+        <dl class="dl-horizontal textleft">
+          <dt>成单报酬:</dt>
+          <dd>{{model.curTask.task.poPay}}</dd>
+        </dl>
+      {{/if}}
+    </div>
+  </div>
+  <div class="col-sm-5">
+    <!-- <div>
+      <i class="fa-calendar"></i>
+      <span>任务日历</span>
+      {{bootstrap-datepicker placeholder="点击显示日历" class="form-control"
+        format="yyyy-mm-dd" language="zh-cn" value=pickDate changeDate="changeDateAction"}}
+    </div> -->
+    <div>
+      {{log 'applyworktime get in hbs' model.curTask.applyWorktimes}}
+      {{#each model.applyWorktimes as |applyWorktime|}}
+      <div class="top16">
+        <div class="col-sm-3 top5 nopadding-horizontal">
+          <!-- applyWorktime.isRunning -->
+          {{log '------------------' applyWorktime.isRunning}}
+          <!-- <div {{bind-attr class="applyWorktime.isRunning:bk-color-brand:bk-color-concrete"}}>
+            {{applyWorktime.worktime.sectionHmString}}
+          </div> -->
+          <div class="text-align-type">
+            {{applyWorktime.worktime.sectionHmString}}
+          </div>
+        </div>
+        <div class="{{if applyWorktime.isRunning 'bk-color-brand' 'bk-color-concrete'}} col-sm-4 nopadding-horizontal">
+          {{log 'runstatusstring' model.curTask.runStatusString}}
+          <!-- ({{model.curTask.runStatusString}}) -->
+          <div class="rect-bar">{{applyWorktime.worktime.timeDurString}}</div>
+        </div>
+      </div>
+      <div style="clear:both"/>
+      {{/each}}
+    </div>
+  </div>
+</div>
+{{else}}
+<!-- <div class="panel-body center">
+  <h3>没有选择任务</h3>
+</div> -->
+<h1 class="center unTask">没有选择任务</h1>
+{{/if}}
+
+</div>

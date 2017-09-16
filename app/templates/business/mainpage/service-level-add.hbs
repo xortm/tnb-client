@@ -1,0 +1,195 @@
+{{outlet}}
+<div class="col-md-12">
+	<div class="box">
+		<!-- BOX-BODY -->
+		<div class="box-body">
+			<!-- 列表编辑-->
+			<div class="row">
+				<div class="col-xs-12">
+					<p class="user-add-btn">
+						<button class="btn btn-primary" type="button"><i class="fa fa-check icon-white"></i>&ensp;保存</button>
+						<button class="btn btn-light-grey" disabled=""><i class="fa fa-times"></i>&ensp;取消</button>
+					</p>
+				</div>
+				<div class="marginLR-100">
+					<div class="col-xs-12 nopadding-horizontal mt20">
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">等&nbsp;&nbsp;级&nbsp;&nbsp;名&nbsp;&nbsp;称&nbsp;：</span>
+								<input class="input-group-content" placeholder=""/>
+							</div>
+
+						</div>
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">价格标准(元/天)：</span>
+								<input class="input-group-content" placeholder=""/>
+							</div>
+
+						</div>
+		        <div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">照&nbsp;&nbsp;护&nbsp;&nbsp;对&nbsp;&nbsp;象&nbsp;：</span>
+								<select class="input-group-content">
+									<option value="必填项" selected="selected">必填项</option>
+		  						<option value="自理">自理</option>
+		              <option value="半自理">半自理</option>
+		              <option value="失能">失能</option>
+		              <option value="失智">失智</option>
+		              <option value="不明确">不明确</option>
+		            </select>
+							</div>
+
+						</div>
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">备&emsp;&emsp;&emsp;&emsp;&emsp;注：</span>
+		            <input class="input-group-content" value=""/>
+							</div>
+
+						</div>
+						<div class="col-xs-12 col-sm-12">
+							<div class="form-input-group">
+								<span class="input-group-addon">设置护理项目：</span>
+								<div>
+			            <input class="input-group-content"  readonly="true" value="" {{action "showSetLevel" on="click"}}/>
+								</div>
+							</div>
+
+						</div>
+						<div class="col-xs-12 col-sm-12">
+							<div class="set-level-list">
+								<!--搜索-->
+								<div class="set-level-list-search clearfix">
+									<div class="pull-left">
+										<div>
+											<label>护理类型：</label>
+											<label class="right15">
+												<select size="1" name="datatable1_length" aria-controls="datatable1" class="form-control input-sm" style="touch-action: manipulation; -ms-touch-action: manipulation;">
+													<option value=""></option>
+													<option value="生活照料">生活照料</option>
+													<option value="康复护理">康复护理</option>
+													<option value="生活照料">医疗护理</option>
+													<option value="生活照料">特殊护理</option>
+													<option value="生活照料">房间护理</option>
+												</select>
+											</label>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="input-group bottom8">
+											<input class="form-control" type="text" placeholder="搜索床位号/所属房间">
+											<span class="input-group-btn">
+												<button class="btn btn-primary btn-reduce" type="button" style="touch-action: manipulation; -ms-touch-action: manipulation;">
+													<i class="fa fa-search"></i>
+												</button>
+											</span>
+										</div>
+									</div>
+									<!--搜索-->
+								</div>
+								<div class="set-level-list-table">
+									<table class="table table-hover">
+										<thead>
+											<tr role="row">
+												<th rowspan="1" colspan="1" width=""><input type="checkbox"/></th>
+												<th rowspan="1" colspan="1" width="">项目名称</th>
+												<th rowspan="1" colspan="1" width="">所需时间</th>
+												<th rowspan="1" colspan="1" width="">频次</th>
+												<th rowspan="1" colspan="1" width="">护理类别</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td><input type="checkbox"/></td>
+												<td>炒菜</td>
+												<td>50分钟</td>
+												<td>1天/3次</td>
+												<td>康复护理</td>
+											</tr>
+											<tr>
+												<td><input type="checkbox"/></td>
+												<td>炒菜</td>
+												<td>50分钟</td>
+												<td>1天/3次</td>
+												<td>康复护理</td>
+											</tr>
+											<tr>
+												<td><input type="checkbox"/></td>
+												<td>炒菜</td>
+												<td>50分钟</td>
+												<td>1天/3次</td>
+												<td>康复护理</td>
+											</tr>
+											<tr>
+												<td><input type="checkbox"/></td>
+												<td>炒菜</td>
+												<td>50分钟</td>
+												<td>1天/3次</td>
+												<td>康复护理</td>
+											</tr>
+											<tr>
+												<td><input type="checkbox"/></td>
+												<td>炒菜</td>
+												<td>50分钟</td>
+												<td>1天/3次</td>
+												<td>康复护理</td>
+											</tr>
+											<tr>
+												<td><input type="checkbox"/></td>
+												<td>炒菜</td>
+												<td>50分钟</td>
+												<td>1天/3次</td>
+												<td>康复护理</td>
+											</tr>
+											<tr>
+												<td><input type="checkbox"/></td>
+												<td>炒菜</td>
+												<td>50分钟</td>
+												<td>1天/3次</td>
+												<td>康复护理</td>
+											</tr>
+											<tr>
+												<td><input type="checkbox"/></td>
+												<td>炒菜</td>
+												<td>50分钟</td>
+												<td>1天/3次</td>
+												<td>康复护理</td>
+											</tr>
+											<tr>
+												<td><input type="checkbox"/></td>
+												<td>炒菜</td>
+												<td>50分钟</td>
+												<td>1天/3次</td>
+												<td>康复护理</td>
+											</tr>
+											<tr>
+												<td><input type="checkbox"/></td>
+												<td>炒菜</td>
+												<td>50分钟</td>
+												<td>1天/3次</td>
+												<td>康复护理</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<!-- 保存取消按钮
+								<div class="col-xs-12 border-top-ccc">
+
+									<p class="user-add-btn text-center">
+										<button class="btn btn-primary" type="button" {{action "hideSetLevel" on="click"}}><i class="fa fa-check icon-white"></i>&ensp;保存</button>
+										<button class="btn btn-light-grey" {{action "hideSetLevel" on="click"}}><i class="fa fa-times"></i>&ensp;取消</button>
+									</p>
+								</div>
+								 保存取消按钮 -->
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 列表编辑 -->
+		</div>
+		<!-- /BOX-BODY -->
+	</div>
+</div>

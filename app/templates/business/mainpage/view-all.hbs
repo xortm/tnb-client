@@ -1,0 +1,62 @@
+<div class="page-content row">
+  <div style="padding-bottom:30px">
+    {{#each messageMail as |message|}}
+    {{log "message is" message}}
+    <div class="row item-line">
+      <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="dropdown width48">
+        <i class="inlineBlock floatLeft borderRadius">
+          {{#ui/img-intergration name="headImg"
+          imgSrc=message.fromUser.avatarUrl width=48 height=48
+          businessType=constants.uploadBusinessType_headimg
+          }}
+          {{/ui/img-intergration}}
+        {{#if message.num}}
+        <span class="positionAbs">{{message.num}}</span>
+        {{/if}}
+        </i>
+        </div>
+        <ul class="inlineBlock width90">
+          <li class="weightbold"><span>{{message.fromUser.name}}：</span>
+            <span class=" fontWeight extend">{{message.content}}</span></li>
+          <li class="icon-init padding-top10">{{message.definiteTime}}
+            <div class="pull-right">
+              <span  class="pointer hover" {{action 'compose' message.fromUser.id on="click"}}>查看对话 </span> <span class=" theLine">|</span>
+              <span class="pointer hover" {{action 'sendTheMessage' message.fromUser.id on="click"}}> 回复</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    {{/each}}
+    </div>
+
+    <!-- 发送消息弹层 -->
+    {{#if showsendMessageModel}}
+     {{#bs-modal body=false footer=false header=false submitAction=(action "sendMessage")
+        closedAction=(action "cancelSubmit")}}
+      {{#bs-modal-header}}
+         <div class="modal-title inline-block icon-init">发送消息给：</div>&nbsp;<strong class="platformProportion black">{{fromName}}</strong>
+       {{/bs-modal-header}}
+       {{#bs-modal-body}}
+         <!-- {{input type="text" value=dialogue class="form-control" placeholder=""}} -->
+         <div class="textarea">
+           {{textarea data-toggle='tooltip' data-placement='bottom' disabled=isDisabled value=dialogue}}
+         </div>
+       {{/bs-modal-body}}
+      {{#bs-modal-footer as |footer|}}
+        {{#bs-button action=(action "cancelSubmit") type="default"}}取消{{/bs-button}}
+        {{#bs-button action=(action "sendMessage") type="default" disabled=applyDisabled}}发送{{/bs-button}}
+      {{/bs-modal-footer}}
+       {{/bs-modal}}
+    {{/if}}
+
+    <div class="row">
+      <div class="tight-row bk-color-white col-sm-5 width50 nopadding-horizontal margin15 padding5">
+        {{log 'taskList get in hbs' messageMail}}
+        {{#if messageMail}}
+        {{page-numbers content=messageMail showFL=true numPagesToShow=3}}
+        {{/if}}
+      </div>
+    </div>
+</div>

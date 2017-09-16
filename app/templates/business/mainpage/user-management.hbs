@@ -1,0 +1,158 @@
+<div class="col-md-12">
+  <!-- BOX -->
+  <div class="box">
+    <div class="box-body">
+      <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+      	<div class="row">
+          <div class="col-md-9 top10">
+        	  <!--搜索-->
+            <div class="pull-left">
+							<div>
+	      				<label>按部门搜索：</label>
+	      				<label class="right15">
+									<select size="1" name="datatable1_length" aria-controls="datatable1" class="form-control input-sm">
+	                  <option value="护理部">护理部</option>
+	                  <option value="护士部">护士部</option>
+	                  <option value="护理部" selected="selected">护理部</option>
+	                  <option value="护士部">护士部</option>
+	                </select>
+	      				</label>
+	      			</div>
+            </div>
+            <div class="col-md-4">
+        	    <div class="input-group bottom8">
+            		<input class="form-control" type="text" placeholder="搜索姓名/电话">
+      	        <span class="input-group-btn">
+        		      <button class="btn btn-primary btn-reduce" type="button" style="touch-action: manipulation; -ms-touch-action: manipulation;">
+                    <i class="fa fa-search"></i>
+                  </button>
+      	        </span>
+        	    </div>
+        	  </div>
+        	  <!--搜索-->
+        </div>
+      	  <div class="col-sm-3 pull-right">
+      		  <a id="uploadExcel" class="btn btn-icon btn-turquoise btn-xs pull-right right10" {{action "toAddPage" on="click"}}>
+      		      <i class="el-plus"></i>
+      		      添加新护工
+      		  </a>
+      	  </div>
+      	</div>
+        <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+          <thead>
+            <tr role="row">
+              <th rowspan="1" colspan="1" width="8%">护工姓名</th>
+              <th rowspan="1" colspan="1" width="5%">性别</th>
+              <th rowspan="1" colspan="1" width="5%">民族</th>
+              <th rowspan="1" colspan="1" width="18%">户籍</th>
+              <th rowspan="1" colspan="1" width="*">邮箱</th>
+              <th rowspan="1" colspan="1" class="hidden-xs" width="18%">身份证号</th>
+          		<th rowspan="1" colspan="1" class="hidden-xs " width="10%">联系电话</th>
+              <th rowspan="1" colspan="1" class="hidden-xs" width="10%">所属部门</th>
+          		<th rowspan="1" colspan="1" class="hidden-xs text-center" width="10%">操作</th>
+            </tr>
+          </thead>
+          <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+            <tr>
+              <td>李丽</td>
+              <td class="ellipsis hidden-xs">女</td>
+              <td class="ellipsis">苗族</td>
+              <td class="ellipsis hidden-xs">北京市朝阳区xxxxxx</td>
+              <td class="ellipsis">1235588898@qq.com</td>
+              <td class="ellipsis hidden-xs">445281198803186624</td>
+        	    <td class="ellipsis">13355224466</td>
+
+              <td class="ellipsis">护理部</td>
+              <td class="operation ellipsis hidden-xs form-tools text-center">
+                <a class="pull-left" title="编辑" href="javascript:;" style="touch-action: manipulation; -ms-touch-action: manipulation;" {{action "toDetailPage" on="click"}}>
+                    <i class="fa fa-pencil"></i>
+                </a>
+                <a class="pull-left" title="删除" href="javascript:alert('确定删除吗？')" style="touch-action: manipulation; -ms-touch-action: manipulation;">
+                      <i class="fa fa-trash-o"></i>
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td>张英</td>
+              <td class="ellipsis">女</td>
+              <td class="ellipsis">汉族</td>
+              <td class="ellipsis">北京市朝阳区xxxxxx</td>
+              <td class="ellipsis">1235588898@qq.com</td>
+              <td class="ellipsis">445281198803186624</td>
+        	    <td class="ellipsis">13355224466</td>
+              <td class="ellipsis">护理部</td>
+              <td class="operation ellipsis hidden-xs form-tools text-center">
+                <a class="pull-left" title="编辑" href="javascript:;" style="touch-action: manipulation; -ms-touch-action: manipulation;" {{action "toDetailPage" on="click"}}>
+                    <i class="fa fa-pencil"></i>
+                </a>
+                <a class="pull-left" title="删除" href="javascript:alert('确定删除吗？')" style="touch-action: manipulation; -ms-touch-action: manipulation;">
+                      <i class="fa fa-trash-o"></i>
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td class="ellipsis">曹丽丽</td>
+              <td class="ellipsis">女</td>
+              <td class="ellipsis">汉族</td>
+              <td class="ellipsis">北京市朝阳区xxxxxx</td>
+              <td class="ellipsis">1235588898@qq.com</td>
+              <td class="ellipsis">445281198803186624</td>
+        	    <td class="ellipsis">13355224466</td>
+              <td class="ellipsis">护理部</td>
+              <td class="operation ellipsis hidden-xs form-tools text-center">
+                <a class="pull-left" title="编辑" href="javascript:;" style="touch-action: manipulation; -ms-touch-action: manipulation;" {{action "toDetailPage" on="click"}}>
+                    <i class="fa fa-pencil"></i>
+                </a>
+                <a class="pull-left" title="删除" href="javascript:alert('确定删除吗？')" style="touch-action: manipulation; -ms-touch-action: manipulation;">
+                      <i class="fa fa-trash-o"></i>
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="pull-left">
+              <div class="dataTables_info" id="datatable1_info">Showing 1 to 10 of 57 entries</div>
+            </div>
+            <div class="pull-right">
+              <div class="dataTables_paginate paging_bs_full" id="datatable1_paginate">
+                <ul class="pagination">
+                  <li class="disabled">
+                    <a tabindex="0" class="paginate_button first" id="datatable1_first" style="touch-action: manipulation; -ms-touch-action: manipulation;">首页</a>
+                  </li>
+                  <li class="disabled">
+                    <a tabindex="0" class="paginate_button previous" id="datatable1_previous" style="touch-action: manipulation; -ms-touch-action: manipulation;">第一页</a>
+                  </li>
+                  <li class="active">
+                    <a tabindex="0" style="touch-action: manipulation; -ms-touch-action: manipulation;">1</a>
+                  </li>
+                  <li>
+                    <a tabindex="0" style="touch-action: manipulation; -ms-touch-action: manipulation;">2</a>
+                  </li>
+                  <li>
+                    <a tabindex="0" style="touch-action: manipulation; -ms-touch-action: manipulation;">3</a>
+                  </li>
+                  <li>
+                    <a tabindex="0" style="touch-action: manipulation; -ms-touch-action: manipulation;">4</a>
+                  </li>
+                  <li>
+                    <a tabindex="0" style="touch-action: manipulation; -ms-touch-action: manipulation;">5</a>
+                  </li>
+                  <li>
+                    <a tabindex="0" class="paginate_button next" id="datatable1_next" style="touch-action: manipulation; -ms-touch-action: manipulation;">下一页</a>
+                  </li>
+                  <li>
+                    <a tabindex="0" class="paginate_button last" id="datatable1_last" style="touch-action: manipulation; -ms-touch-action: manipulation;">末页</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="clearfix"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /BOX -->
+</div>

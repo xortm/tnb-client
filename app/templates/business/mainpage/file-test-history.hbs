@@ -1,0 +1,22 @@
+<div id="fileTestHistoryContainer" class="mainContent">
+  <div class="wrapperInner jujia-Bd">
+{{#ui/mobile/gestures-container}}
+<div class="jujia-container healthy-file-test">
+  <section class="jujia-catalog">
+    <ul>
+      {{#each physicalReportList as |physicalReport|}}
+      <li class="account" id="physicalReportItem_{{physicalReport.id}}" {{action "goDetail" physicalReport on="tap"}}>
+        <i class="fa fa-info-circle prev"></i>
+        <span class="" style="text-indent:5px;">{{physicalReport.createTimeStr}}&nbsp;&nbsp;体检报告</span>
+        <i class="fa fa-angle-right next"></i>
+      </li>
+      {{/each}}
+    </ul>
+  </section>
+</div>
+
+
+{{/ui/mobile/gestures-container}}
+</div>
+</div>
+{{ui/container/infinite-scroll moniteData="physicalReportList" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

@@ -1,0 +1,78 @@
+
+<div class="col-md-12">
+	<div class="box">
+		<!-- BOX-BODY -->
+		<div class="box-body">
+			<!-- 列表编辑-->
+			<div class="row">
+				<div class="col-xs-12">
+					<p class="user-add-btn">
+						<button class="btn btn-primary" type="button" {{action 'saveBed' on='click'}}><i class="fa fa-check icon-white"></i>&ensp;保存</button>
+						<button class="btn btn-light-grey"  {{action 'cancelAdd' on='click'}}><i class="fa fa-times"></i>&ensp;取消</button>
+					</p>
+				</div>
+				<div class="marginLR-100">
+					<div class="col-xs-12 nopadding-horizontal mt20">
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">所属房间：</span>
+								{{#power-select class="input-group-content" placeholder="所属房屋" options=roomList  selected=parent
+									allowClear=true onchange=(action "selectParent" ) as |room|}}
+									{{room.name}}
+								{{/power-select}}
+							</div>
+							
+						</div>
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">床&emsp;位&emsp;名&emsp;称：</span>
+								{{input class="input-group-content" value=name placeholder=""}}
+							</div>
+							
+						</div>
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">床位类型：</span>
+								{{#power-select class="input-group-content" placeholder="床位类型" options=roomList  selected=parent
+									allowClear=true onchange=(action "selectParent" ) as |room|}}
+									{{room.name}}
+								{{/power-select}}
+							</div>
+							
+						</div>
+						<div class="col-xs-12 col-sm-6">
+		          <div class="form-input-group">
+		            <span class="input-group-addon">参考价格&emsp;(/月)：</span>
+								{{input class="input-group-content" value=price placeholder=""}}
+		          </div>
+		          
+		        </div>
+		        <div class="col-xs-12 col-sm-6">
+		          <div class="form-input-group">
+		            <span class="input-group-addon">所属楼宇：</span>
+								{{#power-select class="input-group-content" placeholder="所属楼宇" options=roomList  selected=parent
+									allowClear=true onchange=(action "selectParent" ) as |room|}}
+									{{room.name}}
+								{{/power-select}}
+		          </div>
+		          
+		        </div>
+		        <div class="col-xs-12 col-sm-6">
+		          <div class="form-input-group">
+		            <span class="input-group-addon">所&emsp;属&emsp;楼&emsp;层：</span>
+								{{#power-select class="input-group-content" placeholder="所属楼层" options=roomList  selected=parent
+									allowClear=true onchange=(action "selectParent" ) as |room|}}
+									{{room.name}}
+								{{/power-select}}
+		          </div>
+		          
+		        </div>
+
+					</div>
+				</div>
+			</div>
+			<!-- 列表编辑 -->
+		</div>
+		<!-- /BOX-BODY -->
+	</div>
+</div>

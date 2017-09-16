@@ -1,0 +1,9 @@
+<div id="footer" class="jujia-ui-footer {{unless service_PageConstrut.showFootBar 'hidden'}}">
+  {{#each menus as |menu|}}
+    {{ log 'menu in hbs:' menu }}
+    {{ui/footer-icon clickActParams=menu menu=menu selected=menu.selected
+      touchStartAction="menuClick" menuClick="menuClick" renderAction="menuChange"
+      menuChange="menuChange"
+    }}
+  {{/each}}
+</div>

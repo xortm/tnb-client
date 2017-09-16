@@ -1,0 +1,291 @@
+<div class="col-sm-12 nopadding-left nopadding-right padding-bottom100 bk-color-white" id="house-chart">
+  <!-- BOX -->
+  <div class="box nopadding-left nopadding-right">
+    <div class="box-body nopadding-left nopadding-right" >
+      <div class="col-sm-12 nopadding-left">
+        <div class="bottom12">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#box_tab1" data-toggle="tab" {{action 'chooseTab' "houseTab"}}>
+               <span class="hidden-inline-mobile">房态图</span></a>
+            </li>
+            <li class=""><a href="#box_tab2" data-toggle="tab" {{action 'chooseTab' "chargeTab"}} >
+             <span class="hidden-inline-mobile">收费标准</span></a>
+            </li>
+            <li class=""><a href="#box_tab3" data-toggle="tab" {{action 'chooseTab' "marketingTab"}} >
+              <span class="hidden-inline-mobile">营销话术</span></a>
+            </li>
+          </ul>
+            <div class="clear"></div>
+        </div>
+      </div>
+      {{#if houseTab}}
+      <div id="datatable1_wrapper" class="dataTables_wrapper form-inline col-sm-4" style="padding-left:20px;" role="grid">
+      	<div class="row">
+          <div class="col-sm-12">
+        	  <!--搜索-->
+            <div class="col-sm-12 nopadding-left nopadding-right">
+        	    <div class="input-group">
+                {{input class="form-control" type="text" placeholder="搜索楼宇名称" value=queryCondition enter="search"}}
+      	        <span class="input-group-btn">
+        		      <button class="btn btn-primary btn-reduce" type="button" style="touch-action: manipulation; -ms-touch-action: manipulation;" {{action "search" on="click"}} >
+                    <i class="fa fa-search"></i>
+                  </button>
+      	        </span>
+        	    </div>
+        	  </div>
+        	  <!--搜索-->
+          </div>
+      	</div>
+        <div class="col-sm-12" style="height:16px;"></div>
+        {{#if buildingList}}
+        {{#each buildingList as |building|}}
+          <div class="customer-drug-list col-sm-12 nopadding-left pointer {{if building.hasChoosed 'build-color' ''}}" style="font-size:14px;" {{action "selectBuild" building on="click"}}>
+            <div class="col-sm-9 nopadding-left nopadding-right" >
+              <span class="col-sm-2 nopadding-left nopadding-right" style="width:35px;height:35px;">{{ui/img-intergration name="avatarImg" imgSrc='assets/images/icon/building.png'}}</span>
+              <span class="col-sm-9 nopadding-right" style="padding-left:10px;">{{building.name}}</span>
+              <span class="col-sm-9 nopadding-right" style="padding-left:10px;font-size:13px;line-height：25px">{{building.floorNum}}层共{{building.roomNum}}个房间</span>
+            </div>
+            <div class="col-sm-3 nopadding-right nopadding-left" style="padding-left:8px;padding-top:8px;text-align:right;line-height:16px;">
+              <span style="color:green;font-size:16px;font-weight:blod;">{{building.bedInNum}}<span style="color:#333;">/{{building.bedAllNum}}</span></span>
+            </div>
+          </div>
+        {{/each}}
+        <div class="col-sm-12" style="height:16px;"></div>
+        {{else}}
+        <div class="col-sm-12 center nopadding-left" style="font-size:24px;">暂无数据</div>
+        {{/if}}
+        {{#if buildingList }}
+            {{page-numbers content=buildingList showFL=true numPagesToShow=3 export=true}}
+            {{else}}
+                <h1 class="col-sm-12 center unTask"></h1>
+        {{/if}}
+        <div class="col-sm-12" style="height:16px;"></div>
+      </div>
+      {{#if curbuilding}}
+      <div id="datatable1_wrapper" class="dataTables_wrapper form-inline col-sm-8 building-floor-list"  role="grid" >
+        <div class="col-sm-12" style="font-size:32px;color:#8d8d8d;line-height:75px;text-align:center;">{{curbuilding.name}}</div>
+        <!--当前楼层列表-->
+        <div class="col-sm-12 nopadding-left">
+            {{#each curbuilding.curfloors as |floor|}}
+              <div class="col-sm-12 floor nopadding-left nopadding-right">
+                <div class="center col-sm-12" style="border:1px solid #ddd;line-height:30px;font-size:16px;color:#fff;background-color:#6dadc6; ">{{floor.name}}</div>
+                <div class="room-list">
+                {{#each floor.rooms as |room|}}
+                    {{#if room.isPbulic}}
+                    <div class=" room pointer {{if room.hasSelected 'room-selected' ''}}" {{action 'selectRoom' room on="click"}}>
+                      <div class="nowrap room-info"><img class="public-img" src="assets/images/icon/public.png">{{room.name}}</div>
+                      <div class="nowrap public room-info" >{{room.publicType.typename}}</div>
+                      <div class="nowrap bed-num room-info">活动区</div>
+                    </div>
+                    {{else}}
+                    <div class=" room pointer {{if room.roomIn '' 'noroom'}} {{if room.roomFull 'room-full' ''}} {{if room.hasSelected 'room-selected' ''}}"
+                    {{action 'selectRoom' room on="mouseEnter"}} {{action 'noSelectRoom' room on="mouseLeave"}}>
+                      <div class="nowrap room-info">{{room.name}}</div>
+                      <div class="nowrap room-info">{{room.roomType.typename}}</div>
+                      {{#unless room.roomIn}}
+                        <div class="nowrap bed-num room-info">房间空闲</div>
+                      {{else}}
+                        {{#if room.roomFull}}
+                          <div class="nowrap bed-num room-info">房间已满</div>
+                        {{else}}
+                          <div class="nowrap bed-num room-info">剩余{{room.lastBedNum}}张床位</div>
+                        {{/if}}
+                      {{/unless}}
+
+                      {{#if room.hasSelected}}
+                      {{#if curRoom}}
+
+                          <div class="cur-bed shadow">
+
+                            <!-- {{#if curRoom.isPbulic}}
+                              <div class="col-sm-2  nopadding-right" style="padding-top:15px;padding-bottom:15px;">
+                                <span class="col-sm-3 nopadding-left nopadding-right">{{ui/img-intergration name="avatarImg" imgSrc='assets/images/icon/home.png'}}</span>
+                                  <span class="" style="margin-top:6px;">
+                                    <div style="font-size:15px;color:#333l;margin-left:56px;line-height:45px;">{{curRoom.publicType.typename}}</div>
+                                  </span>
+                              </div>
+                            {{else}}
+                              <div class="col-sm-3  nopadding-right" style="padding-top:15px;padding-bottom:15px;">
+                                <span class="col-sm-3 nopadding-left nopadding-right">{{ui/img-intergration name="avatarImg" imgSrc='assets/images/icon/home.png'}}</span>
+                                <span class=" nopadding-right" style="margin-top:6px;display:inline-block;margin-left:14px;">
+                                  <div style="font-size:15px;color:#333;">{{curRoom.name}}房间</div>
+                                  <div sytle="font-size:13px;">床位：{{curRoom.beds.length}}</div>
+                                </span>
+                                </div>
+                            {{/if}} -->
+                            <!--当前房间的床位-->
+                            <span class="col-sm-12  nopadding-right" >
+                              <div class="bed-list" id="bed-list">
+                                {{#if curRoom.beds}}
+                                {{#each curRoom.beds as |bed|}}
+                                <div class=" nopadding-left nopadding-right">
+                                  {{#if bed.hasIn}}
+                                  <span class=""><img src="assets/images/icon/customerbed.png"></span>
+                                  <span class="" style="width:60px;white-space:nowrap;">床位：{{bed.name}}</span>
+                                  <span class="" style="width:132px;">老人姓名：{{bed.customer.name}}</span>
+                                  <span class=" " style="width:56px;">性别：{{bed.customer.sex.typename}}</span>
+                                  <span class=" " style="width:72px;">年龄：{{bed.customer.age}}</span>
+                                  <span class=" ">入住时间：{{bed.customer.checkInDateString}}</span>
+                                  {{else}}
+                                  <span class=" "><img src="assets/images/icon/customerbed.png"></span>
+                                  <span class=" " style="width:60px;white-space:nowrap;">床位：{{bed.name}}</span>
+                                  <span style="color:red;">无入住信息</span>
+                                  {{/if}}
+                                </div>
+                                {{/each}}
+                                {{else}}
+                                {{#if curRoom.isPbulic}}
+                                  <div class="col-sm-12" style="font-size:18px;color:#111;line-height:75px;text-align:left;">{{curRoom.name}}:{{curRoom.remark}}</div>
+                                {{else}}
+                                  <div class="col-sm-12" style="font-size:35px;color:#111;line-height:75px;text-align:center;">当前房间无床位</div>
+                                {{/if}}
+                                {{/if}}
+                              </div>
+                            </span>
+                          </div>
+
+                      {{/if}}
+
+                      {{/if}}
+                    </div>
+                    {{/if}}
+                {{/each}}
+                </div>
+              </div>
+            {{/each}}
+        </div>
+      </div>
+      {{/if}}
+      {{/if}}
+      {{#if chargeTab}}
+          <div id="datatable1_wrapper" class="dataTables_wrapper form-inline col-sm-4" style="padding-left:20px;" role="grid">
+          	<div class="row">
+              <div class="user-add-btn col-sm-12 nopadding-right">
+                {{#ui/mix-button class="user-btn pull-left" iconClass="fa-plus"  text='新增标准' clickAction="add" add="add" clickActParams='charge' }}
+                {{/ui/mix-button}}
+              </div>
+          	</div>
+            <div class="col-sm-12" style="height:16px;"></div>
+            {{#if chargeList}}
+            {{#each chargeList as |charge|}}
+              <div class="customer-drug-list col-sm-12 nopadding-left pointer {{if charge.hasSelected 'drugcolor' ''}} " style="font-size:14px;"
+              {{action "readDetail" charge on="click"}} {{action 'chooseData' charge on="mouseEnter" bubbles=false}}
+              {{action 'leaveData' charge on="mouseLeave" bubbles=false}}>
+                {{#if charge.edited}}
+                  {{input class="form-control " value=charge.title type="text" focusOut=(action "saveTitle" charge) bubbles=false}}
+                {{else}}
+                  {{charge.title}}
+                {{/if}}
+                {{#if charge.hasChoosed}}
+                {{#unless charge.edited}}
+                <div class="pull-right">
+                  <i class="fa fa-edit" {{action 'edit' charge on="click" bubbles=false}}>
+                    {{bs-tooltip title="编辑" class="light-tooltip"}}
+                  </i>
+                  <i class="fa fa-times" {{action 'del' charge on="click" bubbles=false}}>
+                    {{bs-tooltip title="删除" class="light-tooltip"}}
+                  </i>
+                </div>
+                {{/unless}}
+                {{/if}}
+              </div>
+            {{/each}}
+            <div class="col-sm-12" style="height:16px;"></div>
+            {{else}}
+            <div class="col-sm-12 center nopadding-left" style="font-size:24px;">暂无数据</div>
+            {{/if}}
+            <div class="col-sm-12" style="height:16px;"></div>
+          </div>
+        <div class="col-sm-8">
+          {{#if editModel}}
+            {{#callbusi/froala-editor data=curData saveToRead="saveToRead" save="save"}}
+            {{/callbusi/froala-editor}}
+          {{else}}
+            {{#if curData}}
+              <div class="col-sm-12 pointer" id='data-content' {{action 'detailEditClick' on="click"}}></div>
+            {{else}}
+              <div class="col-sm-12 center" style="font-size:24px;">请选择</div>
+            {{/if}}
+          {{/if}}
+        </div>
+      {{/if}}
+      {{#if marketingTab}}
+      <div id="datatable1_wrapper" class="dataTables_wrapper form-inline col-sm-4" style="padding-left:20px;" role="grid">
+        <div class="row">
+            <div class="user-add-btn col-sm-12 nopadding-right">
+              {{#ui/mix-button class="user-btn pull-left" iconClass="fa-plus"  text='新增话术'  clickAction="add" add="add" clickActParams='market'}}
+              {{/ui/mix-button}}
+            </div>
+        </div>
+        <div class="col-sm-12" style="height:16px;"></div>
+        {{#if marketList}}
+        {{#each marketList as |market|}}
+          <div class="customer-drug-list col-sm-12 nopadding-left pointer {{if market.hasSelected 'drugcolor' ''}} " style="font-size:14px;"
+           {{action "readDetail" market on="click"}} {{action 'chooseData' market on="mouseEnter" bubbles=false}}
+           {{action 'leaveData' market on="mouseLeave" bubbles=false}}>
+             {{#if market.edited}}
+                {{input class="form-control " value=market.title type="text" focusOut=(action "saveTitle" market) bubbles=false}}
+             {{else}}
+              {{market.title}}
+             {{/if}}
+            {{#if market.hasChoosed}}
+            {{#unless market.edited}}
+              <div class="pull-right">
+                <i class="fa fa-edit" {{action 'edit' market on="click" bubbles=false}}>
+                  {{bs-tooltip title="编辑" class="light-tooltip"}}
+                </i>
+                <i class="fa fa-times" {{action 'del' market on="click" bubbles=false}}>
+                  {{bs-tooltip title="删除" class="light-tooltip"}}
+                </i>
+              </div>
+            {{/unless}}
+            {{/if}}
+          </div>
+        {{/each}}
+        <div class="col-sm-12" style="height:16px;"></div>
+        {{else}}
+        <div class="col-sm-12 center nopadding-left" style="font-size:24px;">暂无数据</div>
+        {{/if}}
+        <div class="col-sm-12" style="height:16px;"></div>
+      </div>
+        <div class="col-sm-8">
+          {{#if editModel}}
+            {{#callbusi/froala-editor data=curData saveToRead="saveToRead" save="save"}}
+            {{/callbusi/froala-editor}}
+          {{else}}
+            {{#if curData}}
+              <div class="col-sm-12 pointer " id="data-content" {{action 'detailEditClick' on="click"}}></div>
+            {{else}}
+              <div class="col-sm-12 center" style="font-size:24px;">请选择</div>
+            {{/if}}
+          {{/if}}
+        </div>
+      {{/if}}
+    </div>
+  </div>
+  <!-- /BOX -->
+</div>
+
+{{#if addModel}}
+	{{#bs-modal body=false footer=false header=false closeAction='invitation'}}
+		{{#bs-modal-header}}
+			<h3 class="modal-title">新增{{addData.type}}</h3>
+		{{/bs-modal-header}}
+		{{#bs-modal-body}}
+			<div class="col-xs-12 nopadding-horizontal">
+				<div class="col-xs-12 nopadding-left col-xs-6">
+					<div class="form-input-group">
+						<span class="input-group-addon">名称：</span>
+            {{input class="form-control " value=addData.title type="text" }}
+					</div>
+				</div>
+      </div>
+		{{/bs-modal-body}}
+		{{#bs-modal-footer class="user-add-btn"}}
+      {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="saveNew" saveNew="saveNew"}}
+      {{/ui/mix-button}}
+      {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="invitation" invitation="invitation"}}
+      {{/ui/mix-button}}
+		{{/bs-modal-footer}}
+	{{/bs-modal}}
+{{/if}}

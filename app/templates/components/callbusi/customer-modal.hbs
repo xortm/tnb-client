@@ -1,0 +1,116 @@
+
+<!--客户弹框-->
+{{#bs-modal body=false footer=false header=false closedAction=(action "cancelCustomerChange")}}
+{{#bs-modal-header}}
+<div class="modal-title">客户信息</div>
+{{/bs-modal-header}}
+{{#bs-modal-body}}
+<div class="row busi-info">
+  <div class="form-group col-sm-12">
+    <label for="name" class="col-sm-2 control-label top10">名字：<span class="text-danger">*</span></label>
+    <div class="col-sm-4">
+      {{input type="text" class="form-control" id="name" focus-in="changeInfo" value=customer.name disabled=isDisabled}}
+    </div>
+    <label for="weixin" class="col-sm-2 control-label top10">微信：</label>
+    <div class="col-sm-4">
+      {{input type="text" class="form-control" id="weixin" value=customer.weixin disabled=isDisabled}}
+    </div>
+  </div>
+  <div class="form-group col-sm-12">
+    <label for="phone" class="col-sm-2 control-label top10">电话：<span class="text-danger">*</span></label>
+    <div class="col-sm-4">
+      {{#if (eq curId '2')}}
+      {{input type="tel" class="form-control" value=customer.phoneHidden disabled=true}}
+      {{/if}}
+      {{#if (eq curId '1')}}
+      {{input type="tel" class="form-control" id="phone" focus-in="changeInfo" value=customer.phone}}
+      {{/if}}
+      <!-- {{input type="tel" class="form-control" id="phone" focus-in="changeInfo" value=customer.phone disabled=isDisabled}} -->
+    </div>
+    <label for="email" class="col-sm-2 control-label top10">邮箱：</label>
+    <div class="col-sm-4">
+      {{input type="email" class="form-control" id="email" focus-in="changeInfo" value=customer.email disabled=isDisabled}}
+    </div>
+  </div>
+  <div class="form-group col-sm-12">
+    <label for="enterprise" class="col-sm-2 control-label top10">公司：</label>
+    <div class="col-sm-4">
+      {{input type="text" class="form-control" id="enterprise" value=customer.enterprise disabled=isDisabled}}
+    </div>
+    <label for="position" class="col-sm-2 control-label top10">职位：</label>
+    <div class="col-sm-4">
+      {{input type="text" class="form-control" id="position" value=customer.position disabled=isDisabled}}
+    </div>
+  </div>
+  <div class="form-group col-sm-12">
+    <label for="qq" class="col-sm-2 control-label top10">QQ：</label>
+    <div class="col-sm-4">
+      {{input type="text" class="form-control" id="qq" value=customer.qq disabled=isDisabled}}
+    </div>
+    <label for="sex" class="col-sm-2 control-label top10">性别：</label>
+    <div class="col-sm-4">
+      {{#if isDisabled}}
+      {{input type="text" class="form-control" id="sex" value=customer.sexStr disabled=isDisabled}}
+      {{else}}
+      <select class="form-control" onchange={{action 'sexSelect' value="target.value"}}>
+        <!-- <select class="form-control"> -->
+        <option value="0" selected={{nosex}}>--请选择--</option>
+        <option value="1" selected={{sex1}}>男</option>
+        <option value="2" selected={{sex2}}>女</option>
+      </select>
+      {{/if}}
+      <!-- {{input type="text" class="form-control" id="sexStr" value=sexStr}} -->
+    </div>
+  </div>
+  <div class="form-group col-sm-12">
+    <label for="age" class="col-sm-2 control-label top10">年龄：</label>
+    <div class="col-sm-4">
+      {{#if isDisabled}}
+      {{input type="text" class="form-control" id="age" value=customer.age disabled=isDisabled}}
+      {{else}}
+      <select id="content" class="form-control" id="age" onchange={{action 'typeAge' value="target.value"}}>
+        {{#each numbers as |num| }}
+        {{#if (eq customer.age num)}}
+        <option value={{num}} selected=true>{{num}}</option>
+        {{else}}
+        <option value={{num}}>{{num}}</option>
+        {{/if}}
+        {{/each}}
+      </select>
+      {{/if}}
+    </div>
+    <label for="birthday" class="col-sm-2 control-label top10">生日：</label>
+    <div class="col-sm-4">
+      {{input type="date" class="form-control" id="birthday"  value=birthdayShow disabled=isDisabled}}
+    </div>
+  </div>
+  <div class="form-group col-sm-12">
+    <label for="desc" class="col-sm-2 control-label top10">描述：</label>
+    <div class="col-sm-10">
+      {{input type="text" class="form-control" id="desc" value=customer.desc disabled=isDisabled}}
+    </div>
+  </div>
+  <div class="form-group col-sm-12">
+    <label for="address" class="col-sm-2 control-label top10">地址：</label>
+    <div class="col-sm-10">
+      {{input type="text" class="form-control" id="address" value=customer.address disabled=isDisabled}}
+      {{#if isDisabled}}
+      {{else}}
+      <div class="text-danger top10">{{responseInfo}}</div>
+      <div class="text-danger top10">*为必填内容</div>
+      {{/if}}
+    </div>
+  </div>
+</div>
+{{/bs-modal-body}}
+<!-- {{bs-modal-footer closeTitle="取消" submitTitle="保存"}} -->
+
+{{#bs-modal-footer as |footer|}}
+{{#if isDisabled}}
+{{#bs-button action=(action "cancelCustomerChange") type="success"}}关闭{{/bs-button}}
+{{else}}
+{{#bs-button action=(action "cancelCustomerChange") type="default"}}取消{{/bs-button}}
+{{#bs-button action=(action "saveCustomer" customer) type="default" disabled=saveDisabled}}保存{{/bs-button}}
+{{/if}}
+{{/bs-modal-footer}}
+{{/bs-modal}}

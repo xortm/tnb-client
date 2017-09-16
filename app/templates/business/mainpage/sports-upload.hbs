@@ -1,0 +1,26 @@
+<div id="userSportsUploadContainer" class="mainContent">
+  <div class="wrapperInner jujia-Bd">
+{{#ui/mobile/gestures-container}}
+<div class="jujia-container sport-upload">
+  <section class="msg-box">
+    <div class="matter">
+      <span class="matter-span">事项：</span>
+      <div class="matter-select">
+        {{callbusi/dict-selector curDict=sportType groupCode=constants.sportType showName="事项" dictSelect="sportTypeSelect" value=sportType preselected=false}}
+      </div>
+    </div>
+    <div class="time">
+      <span class="time-pre">时长：</span>
+      {{input value=sportTime class="time-input"}}
+      <span class="time-next">分钟</span>
+    </div>
+    <button type="button" name="button" {{ action "saveItem"}}>确定上传</button>
+    <div class='tip'>{{tipInfo}}</div>
+  </section>
+</div>
+
+
+{{/ui/mobile/gestures-container}}
+</div>
+</div>
+{{ui/container/infinite-scroll moniteData="userJujiaMy" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

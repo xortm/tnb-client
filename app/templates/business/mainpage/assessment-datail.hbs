@@ -1,0 +1,138 @@
+<div class="col-sm-12">
+	<div class="box margin-middle max-width">
+		<!-- BOX-BODY -->
+		<div class="box-body">
+      {{#bs-form formLayout=formLayout model=assessmentModel invalid=(action "invalid")}}
+			<div class="row">
+				<div class="col-xs-12">
+					<p class="user-add-btn">
+						{{#if detailEdit}}
+						{{else}}
+							{{#ui/icon-button class="user-btn edit-btn incon-button-font pull-right" iconClass="fa fa-trash-o"  text='删除'
+									clickAction="deleteAction" deleteAction="deleteAction"}}
+							  	{{bs-tooltip title="删除" class="light-tooltip"}}
+							{{/ui/icon-button}}
+							{{#if allowEdit}}
+								{{#ui/icon-button class="user-btn edit-btn incon-button-font pull-right" iconClass="fa fa-edit"  text='编辑'
+										clickAction="editAction" editAction="editAction"}}
+								   {{bs-tooltip title="编辑" class="light-tooltip"}}
+								{{/ui/icon-button}}
+							{{/if}}
+						{{/if}}
+					</p>
+				</div>
+				<!-- 列表详细介绍 -->
+				<div class="col-xs-12 nopadding-left">
+					<div class="col-xs-12 nopadding-horizontal mt20">
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+							<span class="input-group-addon">考核对象：</span>
+								{{#if detailEdit}}
+									{{#bs-form-element class="inline-block form-input-group" controlType="examiner" property="examiner" }}
+									{{#power-select class="input-group-content" placeholder='必选项' options=employeeList  selected=assessmentModel.examiner searchField="name"
+										noMatchesMessage="没有相关考核对象信息"	allowClear=false	onchange=(action "examinerSelect" ) as |examiner|}}
+										{{examiner.name}}
+									{{/power-select}}
+									{{/bs-form-element}}
+								{{else}}
+									<div class="input-group-content">{{assessmentModel.examiner.name}}</div>
+								{{/if}}
+							</div>
+						</div>
+            <div class="col-xs-12 col-sm-6">
+              <div class="form-input-group">
+                <span class="input-group-addon">名称：</span>
+                {{#if detailEdit}}
+                  {{#if id}}
+                    {{bs-form-element property="name" class="inline-block form-input-group label-normal" placeholder='名称(必填)'}}
+                  {{else}}
+                   {{bs-form-element property="name" class="inline-block form-input-group label-normal" placeholder='名称'}}
+                  {{/if}}
+                {{else}}
+                      <div class="input-group-content">{{assessmentModel.name}}</div>
+                {{/if}}
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+              <div class="form-input-group">
+                <span class="input-group-addon">业务方向：</span>
+                {{#if detailEdit}}
+                    {{#bs-form-element class="inline-block form-input-group label-normal" controlType="businessDirection" property="businessDirection" }}
+                        {{callbusi/dict-selector curDict=assessmentModel.businessDirection groupCode=constants.businessDirection showName="护理类别"
+                        dictSelect="businessDirectionSelect" value=assessmentModel.businessDirection preselected=false}}
+                    {{/bs-form-element}}
+                {{else}}
+                      <div class="input-group-content">{{assessmentModel.businessDirection.codename}}</div>
+                {{/if}}
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+              <div class="form-input-group">
+                <span class="input-group-addon">周期：</span>
+                {{#if detailEdit}}
+                    {{#bs-form-element class="inline-block form-input-group label-normal" controlType="cycle" property="cycle" }}
+                        {{callbusi/dict-selector curDict=assessmentModel.cycle groupCode=constants.cycle showName="护理类别"
+                        dictSelect="cycleSelect" value=assessmentModel.cycle preselected=false}}
+                    {{/bs-form-element}}
+                {{else}}
+                      <div class="input-group-content">{{assessmentModel.cycle.codename}}</div>
+                {{/if}}
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+              <div class="form-input-group">
+                <span class="input-group-addon">分数：</span>
+                {{#if detailEdit}}
+                  {{#if id}}
+                    {{bs-form-element property="point" class="inline-block form-input-group label-normal" placeholder='分数(必填)'}}
+                  {{else}}
+                   {{bs-form-element property="point" class="inline-block form-input-group label-normal" placeholder='分数'}}
+                  {{/if}}
+                {{else}}
+                      <div class="input-group-content">{{assessmentModel.point}}</div>
+                {{/if}}
+              </div>
+            </div>
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">考核时间：</span>
+								{{#if detailEdit}}
+								{{#bs-form-element class="inline-block form-input-group" controlType="examTime" property="examTime" }}
+										{{ui/addon/bs-datetimepicker date=assessmentModel.examTimeDate placeholder="必填项"
+											locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'
+												show="doNothing" change="changeStartTime" }}
+								{{/bs-form-element}}
+								{{else}}
+									<div class="input-group-content">{{assessmentModel.examTimeStr}}</div>
+								{{/if}}
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-12">
+							<div class="form-input-group">
+								<span class="input-group-addon">备注：</span>
+								{{#if detailEdit}}
+									{{textarea type="text" class="full-width inline-block form-input-group label-normal form-control" value=assessmentModel.remark}}
+								{{else}}
+									<div class="input-group-content">{{assessmentModel.remark}}</div>
+								{{/if}}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="center">
+					<p class="text-center user-add-btn padding-top30 inlineBlock margin0auto">
+						{{#if detailEdit}}
+							{{#ui/mix-button class="user-btn edit-btn body-text-color" iconClass="fa fa-check"  text='保存' clickAction="saveAction" saveAction="saveAction"  clickActParams=leaveModel}}
+							{{/ui/mix-button}}
+							{{#ui/mix-button class="user-btn times-btn body-text-color" iconClass="fa fa-mail-reply"  text='取消'  clickAction="detailCancel" detailCancel="detailCancel" }}
+							{{/ui/mix-button}}
+						{{/if}}
+					</p>
+				</div>
+				<!-- 列表详细介绍 -->
+			</div>
+      {{/bs-form}}
+		</div>
+		<!-- /BOX-BODY -->
+	</div>
+</div>

@@ -1,0 +1,154 @@
+<!-- <li> -->
+  {{log 'worlorderitem in hbs' workOrder}}
+    <div class="panel panel-default bottom-buffer-little padding-bottom5" style="width:100%;">
+        <div class="row">
+            <div class="pull-right">
+
+            </div>
+        </div>
+        <div class="panel-body nopadding-vertical">
+          {{log 'child3' workOrder}}
+          {{#if editMode}}
+              <form class="form-horizontal reduce-spacing">
+                  <div class="form-group input-group-xs">
+                      <label class="col-xs-12 col-sm-12 control-label "><strong>工单标题:</strong></label>
+                      <div class="col-xs-12 col-sm-12">
+                        {{input type="text" value=workOrder.title class="form-control" placeholder="请输入工单主题"}}
+                      </div>
+                  </div>
+                  <div class="form-group input-group-xs">
+                      <label class="col-xs-3 col-sm-12 control-label"><strong>工单描述:</strong></label>
+                      <div class="col-xs-6 col-sm-12">
+                        {{textarea rows="3" value=workOrder.desc class="form-control" placeholder="请输入工单描述"}}
+                      </div>
+                  </div>
+              </form>
+          {{else}}
+              <form class="form-horizontal reduce-spacing form-control-static">
+                <div class="form-group input-group-xs panel-heading">
+                    <div class="col-xs-12 col-sm-12 fontBigger" style="color:black">
+                        <strong>{{workOrder.customer.name}}</strong>
+                    </div>
+                </div>
+                <div class="panel-body">
+                  <div class="form-group input-group-xs margin0lr">
+                      <div class="col-xs-6 col-sm-6">
+                          主题：{{workOrder.title}}
+                      </div>
+                      <div class="col-xs-6 col-sm-6">
+                          创建人：{{workOrder.creater.name}}
+                      </div>
+                  </div>
+                  <div class="form-group input-group-xs margin0lr">
+                    <div class="col-xs-6 col-sm-6">
+                      描述：{{workOrder.desc}}
+                    </div>
+                    <div class="col-xs-6 col-sm-6">
+                        修改时间：{{workOrder.updateTimeShow}}
+                    </div>
+                  </div>
+                  {{#if workOrder.completeTime}}
+                    <div class="form-group input-group-xs margin0lr">
+                      <div class="col-xs-6 col-sm-6">
+                      </div>
+                      <div class="col-xs-6 col-sm-6">
+                          成单时间：{{workOrder.completeTimeShow}}
+                      </div>
+                    </div>
+                  {{/if}}
+                <!-- <div class="form-group input-group-xs">
+                  <div class="row">
+                      <div class="col-xs-12 col-sm-12">
+                        <div class="row">
+                          <div class="col-sm-2 weight-bold">
+                            负责人：
+                          </div>
+                          <div class="col-sm-4">
+                            {{ui/img-intergration name="headImg"
+                            hasUploader=false
+                            imgSrc=workOrder.header.avatarUrl width=50 height=60
+                            uploadUrl=uploadUrl
+                            businessType=constants.uploadBusinessType_headimg
+                            }}
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                </div> -->
+                <div class="form-group input-group-xs margin0bottom10top">
+                {{#if isnotCheck}}
+                {{log 'here in kefu channel' workOrder.isSuccess}}
+                <!-- 客服端 -->
+                    {{#if (eq workOrder.isSuccess 0)}}
+                      <div class="col-xs-1 col-sm-1 pull-right margin-right15">
+                        <!-- <button class="btn btn-gray" {{action 'successOrder'}}>成单</button> -->
+                        {{#ui/common-button
+                        clickAction="successOrder" successOrder="successOrder" text="成单"}}
+                        {{/ui/common-button}}
+                      </div>
+                      <div class="col-xs-1 col-sm-1 pull-right">
+                        <!-- <button class="btn btn-gray" id="btntext" type="button" {{action 'popFollow'}}>追加</button> -->
+                        {{#ui/common-button
+                            clickAction="popFollow" popFollow="popFollow" text="追加" disabled=false}}
+                        {{/ui/common-button}}
+                      </div>
+                    {{/if}}
+                    {{#if (eq workOrder.isSuccess 1)}}
+                      <div class="col-xs-1 col-sm-1 pull-right margin-right15">
+                        {{#ui/common-button
+                         text="待确认" disabled=true}}
+                        {{/ui/common-button}}
+                      </div>
+                    {{/if}}
+                    {{#if (eq workOrder.isSuccess 2)}}
+                      <div class="col-xs-1 col-sm-1 pull-right margin-right15">
+                        {{#ui/common-button
+                         text="已确认" disabled=true}}
+                        {{/ui/common-button}}
+                      </div>
+                    {{/if}}
+                    {{#if (eq workOrder.isSuccess 3)}}
+                      <div class="col-xs-1 col-sm-1 pull-right margin-right15">
+                        {{#ui/common-button
+                         text="已冻结" disabled=true}}
+                        {{/ui/common-button}}
+                      </div>
+                    {{/if}}
+                {{else}}
+                {{log 'here in qiye channel' workOrder.isSuccess}}
+                  {{#if (eq workOrder.isSuccess 2)}}
+                    <div class="col-xs-1 col-sm-1 pull-right">
+                      {{#ui/common-button
+                        text="已确认成单" disabled=true}}
+                      {{/ui/common-button}}
+                    </div>
+                  {{/if}}
+                  {{#if (eq workOrder.isSuccess 1)}}
+                    <div class="col-xs-1 col-sm-1 pull-right">
+                      {{#ui/common-button
+                          clickAction="popSuccess" popSuccess="popSuccess" text="确认成单" disabled=false}}
+                      {{/ui/common-button}}
+                    </div>
+                    <div class="col-xs-1 col-sm-1 pull-right margin-right20">
+                      {{#ui/common-button
+                          clickAction="popfreezeOrder" popfreezeOrder="popfreezeOrder" text="冻结" disabled=false}}
+                      {{/ui/common-button}}
+                    </div>
+                  {{/if}}
+                  {{#if (eq workOrder.isSuccess 3)}}
+                    <div class="col-xs-1 col-sm-1 pull-right">
+                      {{#ui/common-button
+                        clickAction="popremovefreezeOrder" popremovefreezeOrder="popremovefreezeOrder" text="解除冻结" disabled=false}}
+                      {{/ui/common-button}}
+                    </div>
+                  {{/if}}
+                {{/if}}
+                </div>
+              </div>
+              </form>
+
+          {{/if}}
+        </div>
+
+    </div>
+<!-- </li> -->

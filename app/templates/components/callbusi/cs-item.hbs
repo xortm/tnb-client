@@ -1,0 +1,207 @@
+<!--头像图片部分-->
+<div class="col-md-2 col-sm-3">
+  <!-- {{ui/img-wrap url=csuser.avatarUrl width=100 height=100}} -->
+  {{#ui/img-intergration name="idcardImg"
+  hasUploader=false
+  imgSrc=csuser.avatarUrl height=100 width=100
+  uploadUrl=uploadUrl
+  businessType=constants.uploadBusinessType_idcard
+}}
+{{/ui/img-intergration}}
+
+</div>
+<!--详情信息部分-->
+<div class="col-md-7 col-sm-6">
+  <div class="row">
+    <!-- <div class="pull-left right20 csu-color">{{csuser.extendInfo.level.typename}}客服</div> -->
+    <div class="pull-left csu-color">擅长领域：</div>
+    {{log 'csuser.cstag' csuser.cstag}}
+    {{#each csuser.cstag as |cstag|}}
+    <div class="pull-left right20">{{cstag.typename}}</div>
+    {{/each}}
+  </div>
+  <div class="row top8">
+    <div class="pull-left right20"><strong>{{csuser.name}}</strong></div>
+    {{#if ageInfo}}
+    {{#if csuser.age}}
+    <div class="pull-left right20">{{csuser.age}}岁</div>
+    {{/if}}
+    {{/if}}
+    {{log 'csuser.language' csuser.language}}
+    {{#each csuser.language as |language|}}
+    <div class="pull-left right20">{{language.typename}}</div>
+    {{/each}}
+  </div>
+  <!--是否显示申请的任务-->
+  {{#if csuser.taskInfo}}
+  <div class="row top8">
+    {{#if csuser.audit}}
+    <div class="pull-left right20 text-muted">申请任务：{{curTask.title}}</div>
+    {{else}}
+    <div class="pull-left right20 text-muted">任务：{{curTask.title}}</div>
+    {{/if}}
+  </div>
+  {{/if}}
+  <div class="row top5">
+    <div class="text-muted">{{csuser.desc}}</div>
+  </div>
+  <div class="row text-muted top5">
+    <div class="pull-left right20"><span class="csu-color">
+      {{#if csuser.extendInfo.taskNumber}}
+      {{csuser.extendInfo.taskNumber}}
+      {{else}}
+      0
+      {{/if}}
+    </span>次任务</div>
+    <div class="pull-left right20 exCall"><span class="csu-color">
+      {{#if csuser.extendInfo.callNumber}}
+      {{csuser.extendInfo.callNumber}}
+      {{else}}
+      0
+      {{/if}}
+    </span>次呼叫</div>
+    <div class="pull-left right20 exExperience"><span class="csu-color">
+      {{#if csuser.extendInfo.workHour}}
+      {{csuser.extendInfo.workHour}}
+      {{else}}
+      0
+      {{/if}}
+    </span>小时客服经验</div>
+    <!-- <div class="pull-left right20 exExperience"><span class="csu-color"> </span>迟到率</div> -->
+  </div>
+</div>
+<!--打分及操作部分-->
+<div class="col-sm-3 pull-right">
+  <div class="row">
+    <!--是否显示状态标签-->
+    <!-- {{#if csuser.audit}}
+    <span class="pull-left label label-warning border-radius-sm disabled=true">申请任务</span>
+    {{/if}}
+    {{#if csuser.invitation}}
+    <span class="pull-left label label-info border-radius-sm disabled=true">邀请中</span>
+    {{/if}}
+    {{#if csuser.inWorkNoSeat}}
+    <span class="pull-left label bgcolor-r border-radius-sm disabled=true">已通过(未分配坐席)</span>
+    {{/if}}
+    {{#if csuser.inWork}}
+    <span class="pull-left label bgcolor-r border-radius-sm disabled=true">工作中</span>
+    {{/if}} -->
+
+    <!-- {{#if csuser.audit}}
+    <strong class="pull-right">申请任务</strong>
+    {{/if}} -->
+    <!-- {{#if csuser.invitation}}
+    <strong class="pull-right">邀请中</strong>
+    {{/if}} -->
+    <!-- {{#if csuser.inWorkNoSeat}}
+    <strong class="pull-right">已通过(未分配坐席)</strong>
+    {{/if}} -->
+    <!-- {{#if csuser.inWork}}
+    <strong class="pull-right">工作中</strong>
+    {{/if}} -->
+
+    <!-- {{#if csuser.inMine}}
+    <strong class="pull-right">已在我的客服</strong>
+    {{/if}} -->
+    <strong class="pull-right">{{csuser.csStatus}}</strong>
+    <!-- <div class="pull-right score-font">{{csuser.extendInfo.score}}分</div> -->
+  </div>
+  <div class="row top-spacer">
+    <!--待审核列表-->
+    {{#if csuser.csAudit}}
+    {{#if csuser.changeStatus}}
+    {{#ui/common-button clickActParams=csuser
+    clickAction="refuseApply" refuseApply="refuseApply" disabled=csuser.disabled text="拒绝"}}
+    {{/ui/common-button}}
+    <span class="pull-right">&nbsp;&nbsp;</span>
+    {{#ui/common-button clickActParams=csuser
+    clickAction="agreeApply" agreeApply="agreeApply" disabled=csuser.disabled text="同意"}}
+    {{/ui/common-button}}
+    <!-- <button class="btn btn-success border-radius-sm" {{action 'agreeApply' csuser}}>同意</button>
+    <button class="btn btn-danger border-radius-sm" {{action 'refuseApply' csuser}}>拒绝</button> -->
+    {{else}}
+    {{#ui/common-button clickActParams=csuser disabled="true" text=csuser.statusName}}
+    {{/ui/common-button}}
+    <!-- <button class="btn border-radius-sm" disabled="true">{{csuser.statusName}}</button> -->
+    {{/if}}
+    {{/if}}
+    <!--邀请-->
+    {{#if csuser.inviteInfo}}
+    {{#if csuser.isInvite}}
+    {{#ui/common-button clickActParams=csuser disabled="true" text=csuser.inviteStatus}}
+    {{/ui/common-button}}
+    <!-- <button class="btn border-radius" disabled=true>{{csuser.inviteStatus}}</button> -->
+    {{else}}
+    {{#ui/common-button clickActParams=curUser iconClass="el-plus"
+    clickAction="popInvitePass" popInvitePass="popInvitePass" text="邀请"}}
+    {{/ui/common-button}}
+    <!-- <button class="btn border-radius" {{action 'popInvitePass' curUser}}>邀请</button> -->
+    {{/if}}
+    {{/if}}
+    <!--关注-->
+    <!-- <button class="btn bgcolor-p border-radius">关注</button> -->
+
+
+  </div>
+</div>
+<!--邀请弹框-->
+{{#if showpopInvitePassModal}}
+{{#bs-modal body=false footer=false header=false submitAction=(action "invitation" csuser)
+closedAction=(action "cancelPassSubmit")}}
+{{#bs-modal-header}}
+<h4 class="modal-title">请确认信息</h4>
+{{/bs-modal-header}}
+{{#bs-modal-body}}
+<div class="row">
+  <div class="col-sm-12">
+    <label class="col-sm-3 col-sm-offset-1 control-label top5"><strong>客服:</strong></label>
+    <div class="col-sm-6">
+      {{csuser.name}}
+    </div>
+  </div>
+  <div class="col-sm-12 top10">
+    <label class="col-sm-3 col-sm-offset-1 control-label top5"><strong>任务:</strong></label>
+    <div class="col-sm-6">
+      {{curTask.title}}
+    </div>
+  </div>
+  <div class="col-sm-12 top10">
+    <label for="remark" class="col-sm-3 col-sm-offset-1 control-label top5"><strong>备注:</strong></label>
+    <div class="col-sm-6">
+      {{input type="text" class="form-control" id="remark" value=remark}}
+    </div>
+  </div>
+</div>
+{{/bs-modal-body}}
+{{bs-modal-footer closeTitle="关闭" submitTitle="提交邀请"}}
+{{/bs-modal}}
+{{/if}}
+
+{{#if confirmIdModal}}
+{{#bs-modal body=false footer=false header=false closedAction=(action "closeConfirm")}}
+{{#bs-modal-header}}
+<h4 class="modal-title">认证</h4>
+{{/bs-modal-header}}
+{{#bs-modal-body}}
+您还没有完成企业认证，确定现在进行认证？
+{{/bs-modal-body}}
+{{#bs-modal-footer as |footer|}}
+{{#bs-button action=(action "switchStatus") type="success"}}确定{{/bs-button}}
+{{#bs-button action=(action "closeConfirm") type="warning"}}取消{{/bs-button}}
+{{/bs-modal-footer}}
+{{/bs-modal}}
+{{/if}}
+
+{{#if alertModal}}
+{{#bs-modal body=false footer=false header=false closedAction=(action "closeAlert")}}
+{{#bs-modal-header}}
+<h4 class="modal-title">确认信息</h4>
+{{/bs-modal-header}}
+{{#bs-modal-body}}
+{{alertInfo}}
+{{/bs-modal-body}}
+{{#bs-modal-footer as |footer|}}
+{{#bs-button action=(action "closeAlert") type="warning"}}确定{{/bs-button}}
+{{/bs-modal-footer}}
+{{/bs-modal}}
+{{/if}}

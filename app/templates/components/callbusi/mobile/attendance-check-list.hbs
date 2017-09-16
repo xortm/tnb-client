@@ -1,0 +1,16 @@
+<div itemId="{{item.id}}" name="listContainer" class="contentArea contentAreaList width100B">
+  {{#if (eq item.remark constants.leave)}}
+    <div class="finish-tag" style="right:-63px;font-size:12px;">请假</div>
+  {{/if}}
+  <div class="col-xs-middle time-content nopadding-horizontal width100B clearfix position-relative" id="item_{{item.id}}">
+    <div class="title pull-left" style="width:105px;">
+      <div class="time-label color2FA7FD font14">{{item.employee.name}}</div>
+      <div class="task-title extend color333333 font14">{{item.attendanceTimeStr}}</div>
+    </div>
+    <div class="item-split"></div>
+    <div class="content clearfix padding-left-114 width100B position_absolute" style="float:none;">
+      <div class="detail extend color666666 font14 line-height-20 margin-top-8">排班时间:{{item.startTime}} - {{item.endTime}}</div>
+      <div class="detail extend color666666 font14 line-height-20">工作时间:{{item.startWorkTimeStr}} - {{item.endWorkTimeStr}}</div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,162 @@
+
+<div class="col-sm-12">
+	<div class="box margin-middle max-width">
+		<!-- BOX-BODY -->
+		<div class="box-body">
+				{{#bs-form formLayout=formLayout model=bedModel invalid=(action "invalid")}}
+			<div class="row">
+				<div class="col-xs-12">
+					<p class="user-add-btn">
+						{{#if detailEdit}}
+
+						{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='保存' clickAction="detailSaveClick" detailSaveClick="detailSaveClick" clickActParams=bedInfo}}
+						{{/ui/mix-button}}
+							{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="detailCancel" detailCancel="detailCancel" }}
+			        {{/ui/mix-button}}
+						{{else}}
+							{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-edit"  text='编辑'  clickAction="detailEditClick" detailEditClick="detailEditClick" clickActParams=bedInfo}}
+			        {{/ui/mix-button}}
+							{{#ui/mix-button class="user-btn trash-btn" iconClass="fa fa-trash-o"  text='删除'  clickAction="delById" delById="delById"}}
+			        {{/ui/mix-button}}
+						{{/if}}
+					</p>
+				</div>
+				<!-- 列表详细介绍 -->
+				<div class="col-xs-12 nopadding-left">
+					<div class="col-xs-12 nopadding-horizontal mt20">
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+							<span class="input-group-addon">所属房间：</span>
+
+								{{#if detailEdit}}
+									{{#bs-form-element class="inline-block form-input-group" controlType="room"  property="room" }}
+										{{#power-select class="input-group-content" placeholder='房间名称' options=roomList  selected=defaultRoom searchField="namePinyin"
+										noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "selectRoom" ) as |room|}}
+											{{room.allName}}
+										{{/power-select}}
+									{{/bs-form-element}}
+								{{else}}
+									<div class="input-group-content">{{bedInfo.room.name}}</div>
+								{{/if}}
+
+							</div>
+
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+							<span class="input-group-addon">床位名称：</span>
+								{{#if detailEdit}}
+									{{#if id}}
+										{{bs-form-element property="name" class="inline-block form-input-group label-normal" controlType="name" placeholder='床位名称(必填)'}}
+									{{else}}
+										{{bs-form-element property="name" class="inline-block form-input-group label-normal" controlType="name" placeholder='床位名称(必填)'}}
+									{{/if}}
+								{{else}}
+									<div class="input-group-content">{{bedInfo.name}}</div>
+								{{/if}}
+							</div>
+
+						</div>
+
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+							<span class="input-group-addon">床位类型：</span>
+								{{#if detailEdit}}
+									{{#if id}}
+										{{#bs-form-element class="inline-block form-input-group" controlType="bedType"  property="bedType" }}
+											{{callbusi/dict-selector class="inline-block" curDict=bedModel.bedType groupCode=constants.bedType isTenant=true
+												showName=bedModel.bedType.typename value=bedModel.bedType}}
+										{{/bs-form-element}}
+									{{else}}
+										{{#bs-form-element class="inline-block form-input-group" controlType="bedType"  property="bedType" }}
+											{{callbusi/dict-selector class="inline-block" curDict=bedInfo.bedType groupCode=constants.bedType isTenant=true
+												showName='床位类型' value=bedModel.bedType preselected=false}}
+										{{/bs-form-element}}
+									{{/if}}
+								{{else}}
+									<div class="input-group-content">{{bedInfo.bedType.typename}}</div>
+								{{/if}}
+							</div>
+
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+							<span class="input-group-addon">价格(元/天)：</span>
+								{{#if detailEdit}}
+									{{#if id}}
+										{{bs-form-element property="price" class="inline-block form-input-group label-normal" controlType="price" placeholder='价格(必填)'}}
+									{{else}}
+											{{bs-form-element property="price" class="inline-block form-input-group label-normal" controlType="price" placeholder='价格(必填)'}}
+									{{/if}}
+								{{else}}
+
+									<div class="input-group-content">{{bedInfo.price}}</div>
+								{{/if}}
+							</div>
+
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+							<span class="input-group-addon">所属楼宇：</span>
+									<div class="input-group-content">{{bedInfo.room.floor.building.name}}</div>
+							</div>
+
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">所属楼层：</span>
+								{{#if bedInfo.room.floor.building.name}}
+									<div class="input-group-content">{{bedInfo.room.floor.building.name}}-{{bedInfo.room.floor.name}}</div>
+								{{/if}}
+							</div>
+
+						</div>
+
+						<div class="col-xs-12 col-sm-12">
+							<div class="form-input-group">
+								<span class="input-group-addon">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：</span>
+								{{#if detailEdit}}
+									{{#if id}}
+										{{textarea type="text" class="full-width inline-block form-input-group label-normal form-control" value=bedInfo.remark}}
+									{{else}}
+											{{textarea type="text" class="full-width inline-block form-input-group label-normal form-control" value=bedInfo.remark placeholder='备注'}}
+									{{/if}}
+								{{else}}
+									<div class="input-group-content">{{bedInfo.remark}}</div>
+								{{/if}}
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+				<!-- 列表详细介绍 -->
+			</div>
+{{/bs-form}}
+
+		</div>
+		<!-- /BOX-BODY -->
+	</div>
+</div>
+
+
+{{#if showpopInvitePassModal}}
+	{{#bs-modal body=false footer=false header=false}}
+		{{#bs-modal-header}}
+			<h3 class="modal-title">删除提示</h3>
+		{{/bs-modal-header}}
+		{{#bs-modal-body}}
+			<h4 class="modal-title">是否删除该条记录？</h4>
+		{{/bs-modal-body}}
+
+		{{#bs-modal-footer as |footer|}}
+			{{#bs-button action=(action "cancelPassSubmit" bedInfo) type="primary" disabled=prepaidDisabled}}确定{{/bs-button}}
+			{{#bs-button action=(action "invitation") type="default"}}取消{{/bs-button}}
+		{{/bs-modal-footer}}
+	{{/bs-modal}}
+{{/if}}

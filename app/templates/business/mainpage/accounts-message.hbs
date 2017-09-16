@@ -1,0 +1,65 @@
+{{#ui/mobile/gestures-container}}
+<div id="theCustomerContainer" class="mainContent {{if global_pageConstructure.showLoader 'hide' ''}}">
+  <div class="wrapperInner">
+    <div class="height97 top10">
+      <div class="pull-left business-mine-img padding-left-20 padding-top10 width30B">
+        {{#ui/img-intergration name="headImg"
+        imgSrc=customer.avatarUrl height=70 width=70
+        businessType=constants.uploadBusinessType_headimg
+        }}
+        {{/ui/img-intergration}}
+      </div>
+      <div class="pull-left padding-left-10 padding-top28 width69B">
+        <div class="font-black font16">{{customer.name}}</div>
+        <div class="color666666 font12 padding-top8">房间床位：{{customer.bed.allBedName}}</div>
+      </div>
+    </div>
+    <ul class="padding-0-10 bk-color-white top10">
+      <li class="height44 line-height-44" id="accounts-info" {{action 'switchPage' 'accounts-info' 'accounts-info' on="tap"}}>
+        <i class="pull-left padding-left-10 line-height-44"><img class="a-img" src="assets/images/mobile/accountsinfo.png"/></i>
+        <span class="padding-left-10 color666666 font14 pull-left">老人信息 </span>
+        <i class="fa-angle-right font20 color-ccc pull-right line-height-44"></i>
+      </li>
+      <li class="border-bottom-1"></li>
+      <li class="height44 line-height-44" id="customer-feedback" {{action 'switchPage' 'customer-feedback' 'customer-feedback' on="tap"}}>
+        <i class="pull-left padding-left-10 line-height-44"><img class="a-img" src="assets/images/mobile/feedback.png"/></i>
+        <span class="padding-left-10 color666666 font14 pull-left">建议反馈 </span>
+        <i class="fa-angle-right font20 color-ccc pull-right line-height-44"></i>
+      </li>
+      <li class="border-bottom-1"></li>
+      <li class="height44 line-height-44" id="score-question" {{action 'switchPage' 'score-question' 'score-question' on="tap"}}>
+        <i class="pull-left padding-left-10 line-height-44"><img class="a-img" src="assets/images/mobile/score-question.png"/></i>
+        <span class="padding-left-10 color666666 font14 pull-left">评分问卷 </span>
+        <i class="fa-angle-right font20 color-ccc pull-right line-height-44"></i>
+      </li>
+      <li class="border-bottom-1"></li>
+      <li class="height44 line-height-44" id="customer-dynamic" {{action 'switchPage' 'customer-dynamic' 'customer-dynamic' on="tap"}}>
+        <i class="pull-left padding-left-10 line-height-44"><img class="a-img" src="assets/images/mobile/customerdynamicspic.png"/></i>
+        <span class="padding-left-10 color666666 font14 pull-left">老人动态 </span>
+        <i class="fa-angle-right font20 color-ccc pull-right line-height-44"></i>
+      </li>
+    </ul>
+    <!-- <ul class="padding-0-10 bk-color-white">
+      <li class="height44 line-height-44">
+        <span class="padding-left-10 font-black font16">账户余额</span>
+        <span class="color666666 font14 pull-right width60B">{{eWallet}} (元)</span>
+      </li>
+      <li class="border-bottom-1"></li>
+      <li class="height44 line-height-44">
+        <span class="padding-left-10 font-black font16">保证金余额</span>
+        <span class="color666666 font14 pull-right width60B">{{deposit}} (元)</span>
+      </li>
+    </ul> -->
+
+      <!-- <div class="top20 bindBtn center" {{action "recharge" customer.id on="tap"}} >
+        充值
+      </div> -->
+      <div class="top20 bindBtn center pointer" id="sign_out" {{action "signOut" "sign_out" on="tap"}} >
+        退出
+      </div>
+  </div>
+</div>
+{{/ui/mobile/gestures-container}}
+
+{{ui/container/infinite-scroll moniteData="theCustomerList" didRenderAction="didRender"
+didInsertElementAction="didInsertElement"}}

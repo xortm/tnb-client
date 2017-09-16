@@ -1,0 +1,75 @@
+<div class="col-sm-12">
+  <!-- BOX -->
+  <div class="box">
+    <div class="box-body">
+      <div id="datatable1_wrapper" class="dataTables_wrapper form-inline " role="grid">
+      	<div class="row">
+          <div class="col-sm-9">
+        	  <!--搜索-->
+            <div class="col-sm-3 nopadding-left">
+							<div>
+                {{callbusi/dict-selector groupCode=constants.roomDirection
+                  showName="房间朝向" dictSelect="orientationSelect" preselected=false allowClear=true}}
+	      			</div>
+            </div>
+            <div class="col-sm-3 nopadding-left">
+              <div>
+                {{callbusi/dict-selector groupCode=constants.roomType
+                  showName="房间类型" dictSelect="roomSelect" preselected=false allowClear=true}}
+	      			</div>
+            </div>
+            <div class="col-sm-5 nopadding-left">
+        	    <div class="input-group">
+                {{input class="form-control" type="text" placeholder="搜索房间名称/楼宇名称/楼层名称" value=queryCondition enter="search"}}
+      	        <span class="input-group-btn">
+        		      <button class="btn btn-primary btn-reduce" type="button" style="touch-action: manipulation; -ms-touch-action: manipulation;" {{action "search" on="click"}}>
+                    <i class="fa fa-search"></i>
+                  </button>
+      	        </span>
+        	    </div>
+        	  </div>
+        	  <!--搜索-->
+          </div>
+      	  <div class="user-add-btn col-sm-3 nopadding-right">
+            {{#ui/mix-button class="user-btn pull-right" iconClass="fa-plus"  text='新增房间'  clickAction="toDetailPage" toDetailPage="toDetailPage"}}
+            {{/ui/mix-button}}
+          </div>
+      	</div>
+        <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+          <thead>
+            <tr role="row">
+              <th rowspan="1" colspan="1" width="">所属楼宇</th>
+              <th rowspan="1" colspan="1" width="">所属楼层</th>
+              <th rowspan="1" colspan="1" width="">房间编号</th>
+              <th rowspan="1" colspan="1" width="">房间朝向</th>
+              <th rowspan="1" colspan="1" width="">房间类型</th>
+							<th rowspan="1" colspan="1" width="">床位数量</th>
+            </tr>
+          </thead>
+          {{#if roomList}}
+          <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+            {{#each roomList as |room|}}
+            <tr {{action "toDetailPage" room on="click"}}>
+              <td class="ellipsis" >{{room.floor.building.name}}</td>
+              <td class="ellipsis" >{{room.floor.name}}</td>
+              <td class="ellipsis" >{{room.name}}</td>
+              <td >{{room.orientation.typename}}</td>
+              <td class="ellipsis" >{{room.roomType.typename}}</td>
+              <td class="ellipsis" >{{room.bedNum}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+          {{else}}
+          <div class="nodate">暂无数据</div>
+          {{/if}}
+        </table>
+        {{#if roomList }}
+            {{page-numbers content=roomList showFL=true numPagesToShow=5 memoryPage="memoryPage"}}
+            {{else}}
+                <h1 class="col-sm-12 center unTask"></h1>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+  <!-- /BOX -->
+</div>

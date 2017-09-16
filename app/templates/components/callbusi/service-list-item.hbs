@@ -1,0 +1,182 @@
+{{#if service.hasPlan}}
+    <div class="panel panel-default nopadding-left nopadding-right service-list-item {{if service.ent.valueAdd 'service-value-color' 'service-color'}}">
+        <div class="panel-heading nopadding-bottom nopadding-top {{if service.ent.valueAdd 'service-value-color' 'service-color'}}">
+            <div class="panel-title ">
+                <span class="service-name" title={{service.ent.name}}>{{service.ent.name}}</span>
+                <span class="inline-block">
+                  {{service.ent.serviceType.typename}}
+                  {{#if service.recommend}}
+                  <i class="fa fa-star"></i>
+                  {{/if}}
+                </span>
+                {{#if detailEdit}}
+                    <i class="fa  pull-right fa-check" style="color:#000"></i>
+                {{else}}
+                    {{#if service.hasChoosed}}
+                        <i class="fa fa-check pull-right"></i>
+                    {{/if}}
+                {{/if}}
+            </div>
+        </div>
+        <div class="panel-body col-sm-12 nopadding-vertical nopadding-right ">
+            <!--类别-->
+            <div class="col-sm-6 nopadding-left">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">类别:</span>
+                    <div class="input-group-content nowrap">{{service.ent.countType.typename}}</div>
+                </div>
+            </div>
+            <!--时长-->
+            <div class="col-sm-6 nopadding-left nopadding-right">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">时长:</span>
+                    <div class="input-group-content">{{service.ent.serviceTime}}</div>
+                </div>
+            </div>
+            {{#if count}}
+                {{#if detailEdit}}
+                    <!--周期-->
+                    <div class="col-sm-6 nopadding-left">
+                        <div class="form-input-group label-normal">
+                            <span class="input-group-addon">周期:</span>
+                            <div class="input-group-content">{{period.typename}}</div>
+                        </div>
+
+                    </div>
+                    <!--频次-->
+                    <div class="col-sm-6 nopadding-left nopadding-right">
+                        <div class="form-input-group label-normal">
+                            <span class="input-group-addon">频次:</span>
+                            <div class="input-group-content">{{frequency}}</div>
+                        </div>
+                    </div>
+                {{else}}
+                    <!--周期-->
+                    <div class="col-sm-6 nopadding-left">
+                        <div class="form-input-group label-normal">
+                            <span class="input-group-addon">周期:</span>
+                            <div class="input-group-content">{{period.typename}}</div>
+                        </div>
+                    </div>
+                    <!--频次-->
+                    <div class="col-sm-6 nopadding-left">
+                        <div class="form-input-group label-normal">
+                            <span class="input-group-addon label-normal">频次:</span>
+                            <div class="input-group-content">{{frequency}}</div>
+                        </div>
+                    </div>
+                {{/if}}
+            {{else}}
+            {{/if}}
+        </div>
+    </div>
+{{else}}
+    <div class="panel panel-default nopadding-left nopadding-right service-list-item {{if service.ent.valueAdd 'service-value-color' 'service-color'}}" >
+        <div class="panel-heading nopadding-bottom nopadding-top {{if service.ent.valueAdd 'service-value-color' 'service-color'}}">
+            <div class="panel-title ">
+                <span class="service-name" title={{service.ent.name}}>{{service.ent.name}}</span>
+                <span class="inline-block">
+                  {{service.ent.serviceType.typename}}
+                  {{#if service.recommend}}
+                  <i class="fa fa-star"></i>
+                  {{/if}}
+                </span>
+                {{#if detailEdit}}
+                    <i class="fa  pull-right service-check {{if service.hasChoosed 'fa-check-square-o' 'fa-square-o'}}" {{action "chooseService" service on="click"  bubbles=false}}></i>
+                {{else}}
+                    {{#if service.hasChoosed}}
+                        <i class="fa fa-check pull-right"></i>
+                    {{/if}}
+                {{/if}}
+            </div>
+        </div>
+        <div class="panel-body col-sm-12 nopadding-vertical nopadding-right ">
+            <!--类别-->
+            <div class="col-sm-6 nopadding-left {{if havePrice 'hidden' ''}}">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">类别:</span>
+                    <div class="input-group-content nowrap">{{service.ent.countType.typename}}</div>
+                </div>
+            </div>
+            <!--时长-->
+            <div class="col-sm-6 nopadding-left nopadding-right">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">时长:</span>
+                    <div class="input-group-content">{{service.ent.serviceTime}}</div>
+                </div>
+            </div>
+            {{#if count}}
+                {{#if detailEdit}}
+                  {{#if havePrice}}
+                  <div class="col-sm-6 nopadding-left">
+                      <div class="form-input-group label-normal">
+                          <span class="input-group-addon">价格(元):</span> {{input class="form-control padding0 top0" type="text"  value=service.referencePrice}}
+                      </div>
+                  </div>
+                  {{else}}
+                    <!--周期-->
+                    <div class="col-sm-6 nopadding-left">
+                        <div class="form-input-group label-normal">
+                            <span class="input-group-addon">周期:</span>
+                            {{callbusi/dict-selector class="inline-block margin-top period" curDict=period groupCode=constants.period
+              showName=service.ent.period.typename value=service.period preselected=true}}
+                        </div>
+                    </div>
+                    <!--频次-->
+                    <div class="col-sm-6 nopadding-left nopadding-right">
+                        <div class="form-input-group label-normal">
+                            <span class="input-group-addon">频次:</span>
+                            <!-- <input class="form-control top0 frequency" type="text" value=service.frequency focusOut=(action "checkNum" service) onchang/> -->
+                            {{input class="form-control top0 frequency" id=service.id  type="text" value=service.frequency focusOut=(action "checkNum" service) }}
+                        </div>
+                    </div>
+                    {{/if}}
+                {{else}}
+                {{#if havePrice}}
+                <!--实际价格-->
+                <div class="col-sm-6 nopadding-left">
+                    <div class="form-input-group label-normal">
+                        <span class="input-group-addon label-normal">价格(元):</span>
+                        <div class="input-group-content">{{referencePrice}}</div>
+                    </div>
+                </div>
+                  {{else}}
+                    <!--周期-->
+                    <div class="col-sm-6 nopadding-left">
+                        <div class="form-input-group label-normal">
+                            <span class="input-group-addon">周期:</span>
+                            <div class="input-group-content">{{period.typename}}</div>
+                        </div>
+                    </div>
+                    <!--频次-->
+                    <div class="col-sm-6 nopadding-left">
+                        <div class="form-input-group label-normal">
+                            <span class="input-group-addon label-normal">频次:</span>
+                            <div class="input-group-content">{{frequency}}</div>
+                        </div>
+                    </div>
+                    {{/if}}
+                {{/if}}
+            {{else}}
+                {{#if havePrice}}
+                    {{#if detailEdit}}
+                        <div class="col-sm-6 nopadding-left">
+                            <div class="form-input-group label-normal">
+                                <span class="input-group-addon">价格(元):</span> {{input class="form-control padding0 top0" type="text"  value=service.referencePrice}}
+                            </div>
+                        </div>
+                    {{else}}
+                        <!--实际价格-->
+                        <div class="col-sm-6 nopadding-left">
+                            <div class="form-input-group label-normal">
+                                <span class="input-group-addon label-normal">价格(元):</span>
+                                <div class="input-group-content">{{referencePrice}}</div>
+                            </div>
+                        </div>
+                    {{/if}}
+                {{else}}
+                {{/if}}
+            {{/if}}
+        </div>
+    </div>
+{{/if}}

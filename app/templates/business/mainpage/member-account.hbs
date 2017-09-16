@@ -1,0 +1,44 @@
+<div id="userMemberAccountContainer" class="mainContent">
+  <div class="wrapperInner member-accountBd">
+{{#ui/mobile/gestures-container}}
+<div class="jujia-container member-account">
+  <section class="msg-box">
+    <div class="clearfix">
+      <div class="head-out glyphicon business-mine-img">
+        {{#ui/img-intergration name="headImg"
+        imgSrc=curCustomer.avatarUrl height=69 width=70
+        businessType=constants.uploadBusinessType_headimg}}
+        {{/ui/img-intergration}}
+      </div>
+    </div>
+    <p class="vip" style="background: url('../assets/images/kangyi/vip.png') no-repeat left center;">{{curCustomer.customerVipInfo.level.typename}}</p>
+    <!-- <p class="invitation-code">
+      邀请码：1234567891
+    </p>
+    <button>复制邀请码</button> -->
+    <p class="msg name">
+      <span>{{curCustomer.name}}</span>
+      <span>{{curCustomer.sex.typename}}</span>
+      <span>{{curCustomer.age}}岁</span>
+    </p>
+    <p class="msg">手机号：{{curCustomer.phone}}</p>
+    <p class="msg">家庭住址：{{curCustomer.address}}</p>
+    <p class="msg">联系人：{{curCustomer.guardianFirstName}}</p>
+    <p class="msg">关系：{{curCustomer.firstRelation.typename}}</p>
+    <p class="msg">手机号：{{curCustomer.guardianFirstContact}}</p>
+    <p class="msg">身份证：{{curCustomer.guardianFirstCardCode}}</p>
+    <p class="msg">会员编号：{{curCustomer.customerVipInfo.vipNum}}</p>
+    <p class="msg">会员等级：{{curCustomer.customerVipInfo.level.typename}}</p>
+    <p class="msg">会员活跃：{{curCustomer.customerVipInfo.active}}%</p>
+    <p class="msg">会员积分：{{curCustomer.customerVipInfo.points}}分</p>
+  </section>
+
+
+</div>
+
+
+{{/ui/mobile/gestures-container}}
+</div>
+</div>
+{{ui/container/infinite-scroll moniteData="scheduleItemArraylist"
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

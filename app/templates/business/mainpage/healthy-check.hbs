@@ -1,0 +1,40 @@
+<div id="userHealthyCheckContainer" class="mainContent">
+  <div class="wrapperInner healthy-fileBd">
+{{#ui/mobile/gestures-container}}
+<div class="jujia-container healthy-check">
+  <section class="jujia-catalog">
+    <ul>
+      <li class="blood-sugar" id="blood-sugar" {{action 'switchPage' 'blood-sugar' 'blood-sugar' on="tap"}}>
+        <i class="fa fa-stethoscope prev"></i>
+        <span class="">血糖</span>
+        <i class="fa fa-angle-right next"></i>
+      </li>
+      <li class="blood-press" id="blood-press" {{action 'switchPage' 'blood-press' 'blood-press' on="tap"}}>
+        <i class="fa fa-stethoscope prev"></i>
+        <span class="">血压</span>
+        <i class="fa fa-angle-right next"></i>
+      </li>
+      <li class="blood-oxygen" id="blood-oxygen" {{action 'switchPage' 'blood-oxygen' 'blood-oxygen' on="tap"}}>
+        <i class="fa fa-stethoscope prev"></i>
+        <span class="">血氧</span>
+        <i class="fa fa-angle-right next"></i>
+      </li>
+      <li class="body-pulse" id="body-pulse" {{action 'switchPage' 'body-pulse' 'body-pulse' on="tap"}}>
+        <i class="fa fa-stethoscope prev"></i>
+        <span class="">脉搏</span>
+        <i class="fa fa-angle-right next"></i>
+      </li>
+      <li class="body-weight" id="body-weight" {{action 'switchPage' 'body-weight' 'body-weight' on="tap"}}>
+        <i class="fa fa-stethoscope prev"></i>
+        <span class="">体重</span>
+        <i class="fa fa-angle-right next"></i>
+      </li>
+    </ul>
+  </section>
+</div>
+
+
+{{/ui/mobile/gestures-container}}
+</div>
+</div>
+{{ui/container/infinite-scroll moniteData="userJujiaMy" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

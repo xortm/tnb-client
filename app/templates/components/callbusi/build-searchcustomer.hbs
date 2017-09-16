@@ -1,0 +1,48 @@
+<div class="col-sm-12 position-absolute min-width-550 date-box {{customClass}}">
+  <div class="col-sm-12 nopadding-right">
+    <div class="pull-left width50B font14 bottom5 line-height-30">
+      <i class="{{if searchCustomer 'fa-dot-circle-o' 'fa-circle-o'}} pointer" {{action 'searchName' on='click'}}>
+      <span>&nbsp;按姓名搜索</span></i>
+      <i class="padding-left-5 {{unless searchCustomer 'fa-dot-circle-o' 'fa-circle-o'}} pointer" {{action 'searchRoom' on='click'}}>
+      <span>&nbsp;按房间搜索</span></i>
+    </div>
+    <div class="pull-left width50B font14 bottom5 line-height-30 center">
+      {{theMessage}}
+      <a class="pointer" {{action 'queryAll' on='click'}}>
+        查看全部老人
+      </a>
+      {{#ui/mix-button class="close-btn pull-right" iconClass="fa fa-times" clickAction="searchHide" searchHide="searchHide"}}
+      {{/ui/mix-button}}
+    </div>
+
+  </div>
+  {{#if searchCustomer}}
+  <div class="">
+    <div class="width50B padding-0-10 line-height-30 font13">
+      {{#power-select-multiple class="input-group-content" placeholder='姓名' options=theCustomerList  selected=customers searchField="name"
+      noMatchesMessage="没有相关内容"	allowClear=false onchange=(action (mut customers) ) oninput=(action "checkLength") as |customer|}}
+        {{customer.name}}
+      {{/power-select-multiple}}
+    </div>
+  </div>
+  {{else}}
+  <div class="clear">
+    <div class="pull-left width50B padding-0-10 line-height-30 font13">
+      {{#power-select class="input-group-content" placeholder='楼宇楼层' options=buildList  selected=curBuild searchField="namePinyin"
+      noMatchesMessage="没有相关内容"	allowClear=false onchange=(action "selectBuild" )as |build|}}
+        {{build.allName}}
+      {{/power-select}}
+    </div>
+    <div class="pull-left width50B padding-0-10 line-height-30 font13">
+      {{#power-select class="input-group-content" placeholder='房间' options=curBuild.currooms  selected=curRoom searchField="namePinyin"
+      noMatchesMessage="没有相关内容"	allowClear=false onchange=(action "selectRoom") as |room|}}
+        {{room.name}}
+      {{/power-select}}
+    </div>
+  </div>
+  {{/if}}
+  <div class="center top20">
+    <button class="btn btn-primary" {{action "come"  on="click"}}><i class="fa fa-check icon-white"></i>&ensp;确定</button>
+    <button class="btn btn-primary left16" {{action "searchHide"  on="click"}}><i class="fa fa-times icon-white"></i>&ensp;取消</button>
+  </div>
+</div>

@@ -1,0 +1,79 @@
+<!--图片部分-->
+<div class="row">
+<!-- <div class="col-sm-12" style="background-color:white; width:1200px;"> -->
+<div class="col-sm-2 ">
+  <div class="movS">
+    {{ui/img-intergration name="iconFile"
+    hasUploader=false
+    imgSrc=task.avatarUrl width=110 height=110
+    uploadUrl=uploadUrl
+    businessType=constants.uploadBusinessType_iconFile
+    }}
+  </div>
+</div>
+<div class="col-sm-10">
+  <div class="row">
+    <div class="panel-heading padding-bottom5">
+      <div class="col-sm-7 panel-title weight-bold">{{task.title}}&nbsp;&nbsp;<img src={{imgSrc}} width={{imgWidth}} title={{imgTitle}}/></div>
+      <div class="col-sm-5 pull-right font13 text-align-right">工作时段:{{task.worktimeString}}
+        <!-- {{#each task.taskTypes as |taskType|}}
+          <span class="font13">{{taskType.typename}}</span>
+        {{/each}} -->
+        </div>
+      </div>
+    </div>
+{{ log 'task in hbs:' task }}
+<!--详情信息部分-->
+<div class="col-sm-8 row-padding">
+  <div class="row row2">
+    <div class="fontBigger task-item-color">{{task.pubuser.entName}}</div>
+  </div>
+  <div class="row  fontBigger">
+      <div class="col-sm-4 pull-left task-item-color nopadding-horizontal">外呼报酬：<span class="item-gray-color">￥{{task.calloutPay}}/次</span></div>
+      <div class="col-sm-4 pull-left task-item-color">成单佣金：<span class="item-gray-color">￥{{task.poPay}}/单</span></div>
+      <div class="col-sm-4 pull-left task-item-color">需要客服：{{task.extendIfo.csNeed}} 名</div>
+  </div>
+  <div class="row fontBigger">
+      <div class="col-sm-4 pull-left task-item-color nopadding-horizontal">接听报酬：<span class="item-gray-color">￥{{task.callinPay}}/次</span></div>
+      <div class="col-sm-4 pull-left task-item-color">在线报酬：<span class="item-gray-color">￥{{task.onlinePay}}/时</span></div>
+      <div class="col-sm-4 pull-left task-item-color">剩余名额：{{task.extendIfo.csRemain}} 名</div>
+  </div>
+  <div class="row fontBigger">
+    <div class="nopadding-horizontal pull-left col-sm-6  worktimeprint task-item-color">任务日期：<span class="item-gray-color">{{task.beginDateComp}} ~ {{task.endDateComp}}</span></div>
+    <div class="pull-left task-item-color col-sm-4">结账方式：{{task.settleAccountWayString}}</div>
+    <!-- <div class="pull-left task-item-color col-sm-4">性别要求：<span class="item-gray-color">{{task.sexPreferenceStr}}</span></div> -->
+    <!-- <div class="pull-left task-item-color col-sm-8">语种要求：<span class="item-gray-color">{{taskLanguage}}</span></div> -->
+  </div>
+  <div class="row fontBigger">
+    <div class="nopadding-horizontal pull-left col-sm-12 task-item-color line-height-label">
+      {{task.desc}}
+    </div>
+  </div>
+  <div  class="row fontBigger line-height-label">
+    <span class="bgcolor-m padding-hor7 labletype">性别{{task.sexPreferenceStr}}</span>
+    {{#if taskLanguage}}<span class="bgcolor-m padding-hor7 labletype margin-right5">{{taskLanguage}}</span>{{/if}}
+    {{#each task.taskTypes as |taskType|}}
+      <span class="bgcolor-m padding-hor7 labletype inlineBlock padding-ver0">{{taskType.typename}}</span>
+    {{/each}}
+  </div>
+</div>
+<div class="col-sm-4 row-padding padding-top40">
+  <div class="row top8 right4">
+    <div class="pull-right apply-type">
+      {{#if (eq task.CRL_showStatus 1)}}未申请{{/if}}
+      {{#if (eq task.CRL_showStatus 2)}}已申请{{/if}}
+      {{#if (eq task.CRL_showStatus 3)}}已通过{{/if}}
+      {{#if (eq task.CRL_showStatus 4)}}企业审核未通过{{/if}}
+      {{#if (eq task.CRL_showStatus 5)}}企业邀请{{/if}}
+      {{#if (eq task.CRL_showStatus 6)}}已通过（未分配坐席）{{/if}}
+      {{#if (eq task.CRL_showStatus 7)}}已拒绝邀请{{/if}}
+      {{#if (eq task.CRL_showStatus 8)}}人数已满{{/if}}
+    </div></div>
+  <div class="row">
+    <div class="pull-right nopadding-horizontal margin-right15 apply-type">
+    {{statusShow}}
+    </div>
+  </div>
+</div>
+</div>
+</div>

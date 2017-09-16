@@ -1,0 +1,52 @@
+<div class="col-sm-12">
+  <!-- BOX -->
+  <div class="box">
+    <div class="box-body">
+      <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+      	<div class="row">
+          <div class="col-sm-9">
+        	  <!--搜索-->
+            <div class="col-sm-3 nopadding-left">
+              {{#power-select class="input-group-content" placeholder='员工' options=employeeList  selected=examiner searchField="name"
+              noMatchesMessage="没有相关内容"	allowClear=true	onchange=(action "employeeChange" ) as |employeeSelect|}}
+                {{employeeSelect.name}}
+              {{/power-select}}
+            </div>
+            <div class="col-sm-9 nopadding-right nopadding-left">
+              {{callbusi/time-search class="inline-block" text='按日期查询' dateShow=dateShow chooseDate=chooseDate search="search"
+                         submmit="submmit" emptied='emptied' changeBeginDateAction='changeBeginDateAction' changeEndDateAction='changeEndDateAction'}}
+            </div>
+        </div>
+      	</div>
+        <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+          <thead>
+            <tr role="row">
+              <th rowspan="1" colspan="1" width="">考核人</th>
+              <th rowspan="1" colspan="1" width="">分数</th>
+              <th rowspan="1" colspan="1" width="">考核时间</th>
+              <th rowspan="1" colspan="1" width="">考核类型</th>
+              <th rowspan="1" colspan="1" width="">备注</th>
+            </tr>
+          </thead>
+          <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+            {{#each assessmentList as |assessment|}}
+            <tr {{action 'toDetailPage' assessment on="click"}}>
+              <td class="ellipsis">{{assessment.examiner.name}}</td>
+              <td class="ellipsis">{{assessment.point}}</td>
+              <td class="ellipsis">{{assessment.examTimeStr}}</td>
+              <td class="ellipsis">{{assessment.type.typename}}</td>
+              <td style="max-width:200px;"><div  class="nowrap" title={{assessment.remark}}>{{assessment.remark}}</div></td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        {{#if assessmentList }}
+            {{page-numbers content=assessmentList showFL=true numPagesToShow=10}}
+        {{else}}
+                <h1 class="col-sm-12 center unTask"></h1>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+  <!-- /BOX -->
+</div>

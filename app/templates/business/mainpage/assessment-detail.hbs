@@ -1,0 +1,107 @@
+<div class="col-sm-12">
+	<div class="box margin-middle max-width">
+		<!-- BOX-BODY -->
+		<div class="box-body">
+			<div class="row">
+				<!-- 列表详细介绍 -->
+				<div class="padding-bottom10 sign col-sm-12 mt20 nopadding-left">
+						<strong class="font-large">考核信息</strong>
+				</div>
+				<div class="col-xs-12 nopadding-left">
+					<div class="col-xs-12 nopadding-horizontal mt20">
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+							<span class="input-group-addon">员工姓名：</span>
+							<div class="input-group-content">{{assessmentInfo.examiner.name}}</div>
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+							<span class="input-group-addon">考核时间：</span>
+							<div class="input-group-content">{{assessmentInfo.examTimeStr}}</div>
+							</div>
+						</div>
+
+            <div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+							<span class="input-group-addon">考核分数：</span>
+							<div class="input-group-content">{{assessmentInfo.point}}</div>
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+							<span class="input-group-addon">考核类型：</span>
+							<div class="input-group-content">{{assessmentInfo.type.typename}}</div>
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-12">
+							<div class="form-input-group">
+								<span class="input-group-addon">备注：</span>
+								<div class="input-group-content">{{assessmentInfo.remark}}</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<div class="padding-bottom10 sign col-sm-12 mt20 nopadding-left">
+						<strong class="font-large">考核项目详情</strong>
+				</div>
+				<div class="col-xs-12 nopadding-horizontal ">
+					<table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+						<thead>
+							<tr role="row">
+								<th rowspan="1" colspan="1" width="">项目名称</th>
+								<th rowspan="1" colspan="1" width="">满分</th>
+								<th rowspan="1" colspan="1" width="">实际得分</th>
+							</tr>
+						</thead>
+						{{#if assessmengList}}
+						<tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+							{{#each assessmengList as |assessment|}}
+							<tr style="font-weight:bold;">
+								<td class="ellipsis" >{{assessment.assessment.name}}</td>
+								<td class="ellipsis" >{{assessment.assessment.maxScore}}</td>
+								<td class="ellipsis" >{{assessment.score}}</td>
+							</tr>
+								{{#if assessment.children}}
+									{{#each assessment.children as |child|}}
+										<tr style="text-indent:10px;">
+											<td class="ellipsis" >{{child.assessment.name}}</td>
+											<td class="ellipsis" >{{child.assessment.maxScore}}</td>
+											<td class="ellipsis" >{{child.score}}</td>
+										</tr>
+									{{/each}}
+								{{/if}}
+							{{/each}}
+						</tbody>
+						{{else}}
+						<div class="nodate">暂无数据</div>
+						{{/if}}
+					</table>
+
+			  </div>
+				<!-- 列表详细介绍 -->
+			</div>
+		</div>
+		<!-- /BOX-BODY -->
+	</div>
+</div>
+<!--
+<div class="col-sm-12 question-box">
+	<div class="box nopadding-left nopadding-right nopadding-vertical border blue shadow">
+		<div class="box-title">
+			<div class="title">考核项目详情</div>
+		</div>
+		<div class="box-body overflow-hidden fullWidth">
+      {{#each assessmengList as |assessment|}}
+        <div class="">{{assessment.index}}、{{assessment.assessment.name}}({{assessment.score}}分)</div>
+        {{#each assessment.children as |child|}}
+          <div class="col-sm-12">{{child.index}}、{{child.assessment.name}}({{child.score}}分)</div>
+        {{/each}}
+      {{/each}}
+		</div>
+	</div>
+</div> -->

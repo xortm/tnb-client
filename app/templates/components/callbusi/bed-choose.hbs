@@ -1,0 +1,33 @@
+<span class="date-range pull-left col-sm-12 nopadding-left" style="padding-top:4px;">
+ <div class="btn-group">
+   <a class="js_update btn btn-default" href="#" {{action "showDate" on="click"}}>{{chooseBed}}&nbsp;<i class="fa fa-chevron-down"></i></a>
+ </div>
+  {{#if bedShow}}
+    <div class="date-box form-input-group col-sm-12 nopadding-right" style='position:absolute;min-width:550px;z-index:5;left:-120px;padding-top:0;'>
+      <!-- <i class="fa fa-times pointer" style="position:absolute;right:3px;top:1px;" {{action "hideDate" on="click"}}></i> -->
+      {{#ui/mix-button class="close-btn pull-right" iconClass="fa fa-times" clickAction="hideDate" hideDate="hideDate"}}
+      {{/ui/mix-button}}
+      <div class="col-sm-12 nopadding-right">
+        <div class="col-sm-6 form-input-group">
+          <span class="input-group-addon">楼宇楼层：</span>
+          {{#power-select class="form-input-group" placeholder='必填' options=buildList  selected=chooseBuild searchField="namePinyin"
+          noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "selectBuild" ) as |build|}}
+            {{build.name}}
+          {{/power-select}}
+        </div>
+        <div class="col-sm-6 form-input-group">
+          <span class="input-group-addon">房间床位：</span>
+          {{#power-select class="form-input-group" placeholder='必填' options=chooseList  selected=curBed searchField="namePinyin"
+          noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "selectBed" ) as |bed|}}
+            {{bed.roomBedName}}
+          {{/power-select}}
+        </div>
+      </div>
+      <div class="btn-row text-center">
+        <div  style="height:50px;"></div>
+        <button class="btn btn-primary" {{action "submmit"  on="click"}}><i class="fa fa-check icon-white"></i>&ensp;确定</button>
+      </div>
+    </div>
+  {{else}}
+  {{/if}}
+ </span>

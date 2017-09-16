@@ -1,0 +1,70 @@
+<div class="col-sm-12">
+  <!-- BOX -->
+  <div class="box">
+    <div class="box-body">
+      <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+      	<div class="row  ">
+          <div class="col-sm-9">
+        	  <!--搜索-->
+            <div class="col-sm-5 nopadding-left">
+        	    <div class="input-group">
+            		{{input class="form-control" type="text" placeholder="搜索楼宇名称" value=queryCondition enter="search"}}
+      	        <span class="input-group-btn">
+        		      <button class="btn btn-primary btn-reduce" type="button" style="touch-action: manipulation; -ms-touch-action: manipulation;" {{action "search" on="click"}}>
+                    <i class="fa fa-search"></i>
+                  </button>
+      	        </span>
+        	    </div>
+        	  </div>
+        	  <!--搜索-->
+          </div>
+      	  <div class="user-add-btn col-sm-3 nopadding-right pull-right">
+            {{#ui/mix-button class="user-btn pull-right " iconClass="fa-plus"  text='新增楼宇' clickAction="toBuildDetailPage" toBuildDetailPage="toBuildDetailPage" }}
+            {{/ui/mix-button}}
+      	  </div>
+      	</div>
+        <table id="datatable1" cellpadding="0" cellspacing="0" border="0" style="table-layout:fixed;" class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+          <thead>
+            <tr role="row">
+              <th rowspan="1" colspan="1" width="">楼宇名称</th>
+              <th rowspan="1" colspan="1" width="">楼宇编号</th>
+              <th rowspan="1" colspan="1" width="">地上层数</th>
+              <th rowspan="1" colspan="1" width="">地下层数</th>
+              <th rowspan="1" colspan="1" width="">房间数</th>
+            </tr>
+          </thead>
+          {{#if buildingList}}
+          <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+            {{#if buildingList}}
+            {{#each buildingList as |building|}}
+            <tr {{action "toBuildDetailPage" building on="click"}}>
+              <td class="ellipsis" >{{building.name}}</td>
+              <td >{{building.seq}}</td>
+              <td >{{building.upLandFloorNum}}</td>
+              <td >{{building.downLandFloorNum}}</td>
+              <td >{{building.roomNum}}</td>
+            </tr>
+            {{/each}}
+            {{else}}
+            <div class="center">
+              暂无楼宇
+            </div>
+            {{/if}}
+          </tbody>
+          {{else}}
+          <div class="nodate">暂无数据</div>
+          {{/if}}
+        </table>
+        {{#if buildingList }}
+            {{page-numbers content=buildingList showFL=true numPagesToShow=5
+            exportAllExcel="exportAllExcel" exportAll=exportAll}}
+            {{else}}
+                <h1 class="col-sm-12 center unTask"></h1>
+        {{/if}}
+
+      </div>
+    </div>
+  </div>
+
+  <!-- /BOX -->
+</div>

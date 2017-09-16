@@ -1,0 +1,45 @@
+{{#ui/mobile/gestures-container}}
+<div id="evaluateContainerDetail" class="mainContent border-top-1 {{if global_pageConstructure.showLoader 'hide' ''}}" style="background:#fff;overflow:scroll;">
+  <div id="health-area" class="wrapperInner">
+      {{#if evaluate}}
+        <div class="col-xs-12 nopadding-left nopadding-right">
+          <ul class="profile">
+              <li class=" carousel color666 border-top-1 border-bottom-1" id="chooseUser" {{action 'toChoose' 'user' "chooseUser" on="tap"}}>
+                  <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                  <span class="profile-span">评估人 </span>
+                  <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{user.name}}</span>
+                  <i class="fa-angle-right font20 my-right color-ccc"></i>
+              </li>
+              <li class=" carousel color666 border-top-1 border-bottom-1" id="chooseDate" {{action 'toChoose' 'date' "chooseDate" on="tap"}}>
+                  <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                  <span class="profile-span">评估日期 </span>
+                  <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{dateStr}}</span>
+                  <i class="fa-angle-right font20 my-right color-ccc"></i>
+              </li>
+              <li class=" carousel color666 border-top-1 border-bottom-1">
+                  <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                  <span class="profile-span">问卷内容 </span>
+              </li>
+
+          </ul>
+          <div class="col-xs-12" style="padding-top:10px;">
+            {{#each evaluate.curquestionList as |question|}}
+              <div style="font-size:15px;">{{question.curIndex}}.{{question.questionContent}}</div>
+              {{#each question.curanswers as |answer|}}
+                <div style="font-size:15px;margin:7px 0;" {{action "chooseAnswer" answer question on="tap"}} id="{{concat 'eva-tem-mobile-' answer.id}}">
+                  <div class="fontLogo choose-inline-block choose-box {{if answer.hasSelcted 'fa-check' ''}}" ></div>&nbsp;&nbsp;
+                  {{answer.curIndex}}.{{answer.answer.answerContent}}({{answer.answer.score}}分)
+                </div>
+              {{/each}}
+            {{/each}}
+          </div>
+        </div>
+      {{/if}}
+  </div>
+</div>
+<div class="detail-dynamicsbtn" id="eva-result-save"  style="bottom:0px;margin-left:10px;width:95%;" {{action 'saveEva' on="tap"}}>
+  <span class="padding-left-10">保存</span>
+</div>
+{{/ui/mobile/gestures-container}}
+{{ui/container/infinite-scroll moniteData="evaluate"
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

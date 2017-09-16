@@ -1,0 +1,121 @@
+<div class="col-md-12">
+	<div class="box">
+		<!-- BOX-BODY -->
+		<div class="box-body">
+			<!-- 列表编辑-->
+			<div class="row">
+				<div class="col-xs-12">
+					<p class="user-add-btn">
+						{{#if editModel}}
+							{{#ui/mix-button class="user-btn" iconClass="fa fa-times" text='返回' clickAction="cancelEdit" cancelEdit="cancelEdit" clickActParams=testParams}}
+							{{/ui/mix-button}}
+							{{#ui/mix-button class="user-btn" iconClass="fa-save" text='保存' clickAction="editPrivilege" editPrivilege="editPrivilege" clickActParams=testParams}}
+							{{/ui/mix-button}}
+						{{else}}
+							{{#ui/mix-button class="user-btn" iconClass="fa fa-edit" text='编辑' clickAction="editModelModify" editModelModify="editModelModify" clickActParams=testParams}}
+							{{/ui/mix-button}}
+							{{#ui/mix-button class="user-btn" iconClass="fa fa-trash-o" text='删除' clickAction="delPrivilege" delPrivilege="delPrivilege" clickActParams=testParams}}
+							{{/ui/mix-button}}
+						{{/if}}
+					</p>
+				</div>
+				<div class="marginLR-100">
+					<div class="col-xs-12 nopadding-horizontal mt20">
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">&emsp;权限名称：</span>
+								{{#if editModel}}
+									{{input class="input-group-content" value=privilege.showName required="required" type="text" placeholder="权限名称"}}
+								{{else}}
+									<div class="font-light input-group-content">{{privilege.showName}}</div>
+								{{/if}}
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">上&emsp;级&emsp;权&emsp;限&nbsp;&nbsp;&nbsp;：</span>
+								{{#if editModel}}
+									{{#power-select class="input-group-content" searchField="namePinyin" placeholder="上级权限" options=privilegeList selected=parent allowClear=true onchange=(action "selectParent" ) as |privilegeT|}}
+										{{privilegeT.showName}}
+									{{/power-select}}
+								{{else}}
+									<div class="font-light input-group-content">{{parent.showName}}</div>
+								{{/if}}
+							</div>
+
+
+						</div>
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">权限名称(移动端)：</span>
+								{{#if editModel}}
+									{{input class="input-group-content" value=privilege.mobileMenuName type="text" placeholder="权限名称(移动端)"}}
+								{{else}}
+									<div class="font-light input-group-content">{{privilege.mobileMenuName}}</div>
+								{{/if}}
+							</div>
+
+						</div>
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;权限类型：</span>
+								{{#if editModel}}
+									{{input class="input-group-content" value=privilege.type type="text" placeholder="权限类型"}}
+								{{else}}
+									<div class="font-light input-group-content">{{privilege.type}}</div>
+								{{/if}}
+							</div>
+
+						</div>
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">&emsp;&emsp;&emsp;&nbsp;&nbsp;&nbsp;&nbsp;&emsp;&emsp;&nbsp;url：</span>
+								{{#if editModel}}
+									{{input class="input-group-content" value=privilege.code type="text" placeholder="url"}}
+								{{else}}
+									<div class="font-light input-group-content">{{privilege.code}}</div>
+								{{/if}}
+							</div>
+
+						</div>
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">&nbsp;移动端图标：</span>
+								{{#if editModel}}
+									{{input class="input-group-content" value=privilege.mobileIcon type="text" placeholder="移动端图标"}}
+								{{else}}
+									<div class="font-light input-group-content">{{privilege.mobileIcon}}</div>
+								{{/if}}
+							</div>
+
+						</div>
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">&emsp;&emsp;&emsp;&nbsp;&nbsp;序号：</span>
+								{{#if editModel}}
+									{{input class="input-group-content" value=privilege.order type="text" placeholder="排序编码"}}
+								{{else}}
+									<div class="font-light input-group-content">{{privilege.order}}</div>
+								{{/if}}
+							</div>
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">&emsp;&emsp;&emsp;&nbsp;&nbsp;权限类别：</span>
+								{{#if editModel}}
+									{{input class="input-group-content" value=privilege.systemType type="text" placeholder="1机构2居家 "}}
+								{{else}}
+									<div class="font-light input-group-content">{{privilege.systemType}}</div>
+								{{/if}}
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<!-- 列表编辑 -->
+		</div>
+		<!-- /BOX-BODY -->
+	</div>
+</div>

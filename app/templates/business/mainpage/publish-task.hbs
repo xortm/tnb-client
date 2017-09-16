@@ -1,0 +1,403 @@
+<div class="page-content bgcolor-w col-sm-12">
+  <div class="col-sm-12 nopadding-horizontal top10">
+    <div class="col-md-2 col-sm-3 nopadding-right">
+      <div class="intergration_normal">
+        {{#ui/img-intergration name="iconFile"
+        hasUploader=true
+        imgSrc=task.avatarUrl width=110
+        uploadUrl=uploadUrl
+        uploadSucc="uploadSucc"
+        uploadFail="uploadFailImg"
+        businessType=constants.uploadBusinessType_iconFile
+      }}
+      {{/ui/img-intergration}}
+    </div>
+    <span class="col-sm-12 nopadding-horizontal">上传logo(&lt;1M)</span>
+    <br>
+    {{#if uploadError}}
+    <span class="text-danger">{{errorText}}</span>
+    {{/if}}
+  </div>
+  <div class="col-md-10 col-sm-9 nopadding-horizontal">
+    <div class="form-group col-sm-12 height30">
+      <label for="taskTitle" class="control-label col-md-3 col-sm-5 pull-left">
+        <strong class="t line-height30 col-sm-1 nopadding-horizontal">*</strong>
+        <strong class="line-height30 col-sm-11 nopadding-horizontal">任务名称：</strong>
+        <!-- <span class="text-danger">*</span> -->
+      </label>
+      <div class="col-md-4 col-sm-5 nopadding-horizontal">
+        {{input type="text" class="form-control" id="taskTitle" value=task.title}}
+      </div>
+      {{#if titleError}}
+      <div class="text-danger line-height30 pull-left left10">
+        <small class="">必填</small>
+      </div>
+      {{/if}}
+    </div>
+    <!-- <div class="form-group col-sm-12 height30 top5">
+      <label for="taskCode" class="control-label col-md-3 col-sm-5 pull-left">
+        <strong class="line-height30 col-sm-offset-1 col-sm-11 nopadding-horizontal">任务编码：</strong>
+      </label>
+      <div class="col-md-4 col-sm-5 nopadding-horizontal">
+        {{input type="text" class="form-control" id="taskCode" value=task.code}}
+      </div>
+    </div> -->
+    <div class="form-group col-sm-12 height80 top5">
+      <label for="taskDesc" class="control-label col-md-3 col-sm-5 pull-left">
+        <strong class="t line-height80 col-sm-1 nopadding-horizontal">*</strong>
+        <strong class="line-height80 col-sm-11 nopadding-horizontal">任务描述：</strong>
+        <!-- <span class="text-danger">*</span> -->
+      </label>
+      <div class="col-md-4 col-sm-5 nopadding-horizontal">
+        {{textarea id="taskDesc" class="form-control task-textarea" value=task.desc}}
+      </div>
+      {{#if descError}}
+      <div class="text-danger line-height80 pull-left left10">
+        <small class="">必填</small>
+      </div>
+      {{/if}}
+    </div>
+  </div>
+  <div class="form-group col-sm-12 border-top padding-top10 height30 top5">
+    <label for="explicitNum" class="control-label col-md-3 col-sm-5 pull-left">
+      {{#if needExplicitNum}}
+      <strong class="t line-height30 col-sm-1 nopadding-horizontal">*</strong>
+      {{/if}}
+      <strong class="line-height30 {{if needExplicitNum '' 'col-sm-offset-1'}} col-sm-11 nopadding-horizontal">外显号码：</strong>
+      <!-- {{#if needExplicitNum}}
+      <span class="text-danger">*</span>
+      {{/if}} -->
+    </label>
+    <div class="col-sm-7 nopadding-horizontal">
+      <div class="col-sm-6 nopadding-horizontal">
+        {{input type="text" class="form-control" id="explicitNum" value=task.explicitNum}}
+      </div>
+        {{#if showUpSucc}}
+        <div class="pull-left text-success left10 line-height30">文件上传成功</div>
+        {{/if}}
+        {{#if showUpError}}
+        <div class="pull-left text-danger left10 line-height30">文件上传失败</div>
+        {{/if}}
+        {{#if explicitNumError}}
+        <div class="pull-left text-danger left10 line-height30">
+          <small>必填</small>
+        </div>
+        {{/if}}
+      <div class="col-sm-12 nopadding-horizontal top10 z-index1">
+        <div class="left4 height30 pull-left">
+          <div class="btn btn-turquoise btn-xs">
+          <a href="/#/description-document" class="fa-inverse" target="_blank">查看说明文档</a>
+          <!-- <div class="btn btn-turquoise btn-xs"> -->
+            <!-- <a href="{{documentationUrl}}" class="fa-inverse" target="_blank">说明文档下载</a> -->
+          <!-- </div> -->
+        </div>
+        </div>
+        <div class="left4 height30 pull-left">
+          <div class="btn btn-turquoise btn-xs">
+            <a href="{{statementUrl}}" class="fa-inverse" target="_blank">声明书下载</a>
+          </div>
+        </div>
+        <div class="left4 height30 pull-left">
+          <div id="uploadFile" class="btn btn-turquoise btn-xs">
+            <a class="fa-inverse">上传</a>
+          </div>
+          {{#pl-uploader extensions="rar zip" for="uploadFile"
+          onfileadd="uploadFile" as |queue features|}}
+          {{/pl-uploader}}
+        </div>
+      </div>
+  </div>
+  </div>
+  <div class="col-sm-12">
+    <div class="col-md-offset-3 col-sm-offset-5 top40 bottom20">
+      请根据外显号码说明文档，提供相关材料（详见说明文档），打成一个压缩包（.rar或.zip格式）上传
+    </div>
+  </div>
+  <div class="col-sm-12 border-top-dashed border-bottom-dashed bottom10 top5">
+    <label for="" class="control-label col-md-3 col-sm-5 pull-left">
+      <strong class="t line-height30 col-sm-1 nopadding-horizontal">*</strong>
+      <strong class="line-height30 col-sm-11 nopadding-horizontal">任务类型(多选)：</strong>
+      <!-- <span class="text-danger">*</span> -->
+    </label>
+    <div class="col-md-9 col-sm-7 nopadding-horizontal padding-right30">
+      <div class="col-sm-12 pull-left nopadding-horizontal padding-ver10 border-bottom-dashed">
+        <!-- <span class="csu-color">外呼型：</span> -->
+        <strong>外呼型：</strong>
+        <div>
+          {{#each taskTypesOne as |taskType|}}
+          <label class="hovertype">
+            <input type="checkbox" class="hovertype" checked={{taskType.checked}} {{action "selectTypeOne" taskType preventDefault=false}}>
+            {{taskType.typename}}
+          </label>
+          {{/each}}
+        </div>
+      </div>
+      <div class="col-sm-12 pull-left nopadding-horizontal padding-ver10">
+        <!-- <span class="csu-color">综合型：</span> -->
+        <strong>综合型：</strong>
+        <!-- <div>
+          {{#each taskTypesTwo as |taskType|}}
+          <label class="hovertype">
+            <input type="checkbox" class="hovertype" checked={{taskType.checked}} {{action "selectTypeTwo" taskType preventDefault=false}}>
+            {{taskType.typename}}
+          </label>
+          {{/each}}
+        </div> -->
+        <div style="color:#838181;">
+          {{#each taskTypesTwo as |taskType|}}
+          <label>
+            <input type="checkbox" disabled="disabled">
+            {{taskType.typename}}
+          </label>
+          {{/each}}
+          <span class="left50 font-em12" style="color:#838181;">
+            即将开通，敬请期待
+          </span>
+        </div>
+
+      </div>
+    </div>
+    {{#if taskTypesError}}
+    <div class="col-md-7 col-sm-8">
+    </div>
+    <div class="text-danger line-height30 pull-left left110 bottom10">
+      <small>必选</small>
+    </div>
+    {{/if}}
+  </div>
+
+  <div class="form-group col-sm-12 height30 top5">
+    <label for="calloutPay" class="control-label col-md-3 col-sm-5 pull-left">
+      {{#if  (eq typeOne false)}}
+      <strong class="t line-height30 col-sm-1 nopadding-horizontal">*</strong>
+      {{/if}}
+      <strong class="line-height30 {{if typeOne 'col-sm-offset-1' ''}} col-sm-11 nopadding-horizontal">外呼报酬：</strong>
+    </label>
+    <div class="col-md-4 col-sm-3 nopadding-horizontal">
+      {{input type="text" class="form-control" id="calloutPay" disabled=typeOne value=task.calloutPay}}
+    </div>
+    <div class="line-height30 pull-left left10">元/次有效外呼</div>
+    {{#if  (eq typeOne false)}}
+    {{#if calloutPayError}}
+    <div class="text-danger line-height30 pull-left left10">
+      {{calloutPayErrorInfo}}
+    </div>
+    {{/if}}
+    {{/if}}
+  </div>
+  <div class="form-group col-sm-12 height30 top5">
+    <label for="poPay" class="control-label col-md-3 col-sm-5 pull-left">
+      {{#if  (eq typeOne false)}}
+      <strong class="t line-height30 col-sm-1 nopadding-horizontal">*</strong>
+      {{/if}}
+      <strong class="line-height30 {{if typeOne 'col-sm-offset-1' ''}} col-sm-11 nopadding-horizontal">成单报酬：</strong>
+      <!-- {{#if  (eq typeOne false)}}
+      <span class="text-danger">*</span>
+      {{/if}} -->
+    </label>
+    <div class="col-md-4 col-sm-3 nopadding-horizontal">
+      {{input type="text" class="form-control" id="poPay" disabled=typeOne value=task.poPay}}
+    </div>
+    <div class="line-height30 pull-left left10">元/成单</div>
+    {{#if  (eq typeOne false)}}
+    {{#if poPayError}}
+    <div class="text-danger line-height30 pull-left left50">
+      {{poPayErrorInfo}}
+    </div>
+    {{/if}}
+    {{/if}}
+  </div>
+  <div class="form-group col-sm-12 height30 top5">
+    <label for="callinPay" class="control-label col-md-3 col-sm-5 pull-left">
+      {{#if  (eq typeTwo false)}}
+      <strong class="t line-height30 col-sm-1 nopadding-horizontal">*</strong>
+      {{/if}}
+      <strong class="line-height30 {{if typeTwo 'col-sm-offset-1' ''}} col-sm-11 nopadding-horizontal">接听报酬：</strong>
+      <!-- {{#if  (eq typeTwo false)}}
+      <span class="text-danger">*</span>
+      {{/if}} -->
+    </label>
+    <div class="col-md-4 col-sm-3 nopadding-horizontal">
+      {{input type="text" class="form-control" id="callinPay" disabled=typeTwo value=task.callinPay}}
+    </div>
+    <div class="line-height30 pull-left left10">元/次有效接听</div>
+    {{#if  (eq typeTwo false)}}
+    {{#if callinPayError}}
+    <div class="text-danger line-height30 pull-left left10">
+      {{callinPayErrorInfo}}
+    </div>
+    {{/if}}
+    {{/if}}
+  </div>
+  <div class="form-group col-sm-12 height30 top5">
+    <label for="onlinePay" class="control-label col-md-3 col-sm-5 pull-left">
+      {{#if  (eq typeTwo false)}}
+      <strong class="t line-height30 col-sm-1 nopadding-horizontal">*</strong>
+      {{/if}}
+      <strong class="line-height30 {{if typeTwo 'col-sm-offset-1' ''}} col-sm-11 nopadding-horizontal">在线报酬：</strong>
+      <!-- {{#if  (eq typeTwo false)}}
+      <span class="text-danger">*</span>
+      {{/if}} -->
+    </label>
+    <div class="col-md-4 col-sm-3 nopadding-horizontal">
+      {{input type="text" class="form-control" id="onlinePay" disabled=typeTwo value=task.onlinePay}}
+    </div>
+    <div class="line-height30 pull-left left10">元/小时</div>
+    {{#if  (eq typeTwo false)}}
+    {{#if onlinePayError}}
+    <div class="text-danger line-height30 pull-left left50">
+      {{onlinePayErrorInfo}}
+    </div>
+    {{/if}}
+    {{/if}}
+  </div>
+
+  <!-- <div class="form-group col-sm-12 height30 top5">
+    <label for="settleAccountWay" class="control-label col-md-3 col-sm-5 pull-left">
+      <strong class="line-height30 col-sm-offset-1 col-sm-11 nopadding-horizontal">结账周期：</strong>
+    </label>
+    <div class="col-md-4 col-sm-3 nopadding-horizontal">
+      <select class="form-control" onchange={{action 'settleAccountWaySelect' value="target.value"}}>
+        <option value=0 selected={{settleAccountWay0}}>实时</option>
+        <option value=1 selected={{settleAccountWay1}}>任务结束后</option>
+      </select>
+    </div>
+  </div> -->
+
+  <div class="form-group col-sm-12 height30 top5">
+    <label class="control-label col-md-3 col-sm-5 pull-left">
+      <strong class="t line-height30 col-sm-1 nopadding-horizontal">*</strong>
+      <strong class="line-height30 col-sm-11 nopadding-horizontal">任务起始时间：</strong>
+      <!-- <span class="text-danger">*</span> -->
+    </label>
+    <div class="col-md-4 col-sm-3 nopadding-horizontal">
+      {{input type="date" value=task.beginDateComp class='choosedatetype' focus-out="choosetime"}} ~
+      {{input type="date" value=task.endDateComp class='choosedatetype' focus-out="choosetime"}}
+    </div>
+    <!-- <div class="pull-left text-danger top10 left14">
+      <small>{{durType}}</small>
+    </div> -->
+    {{#if chooseDateFromError}}
+    <div class="text-danger line-height30 pull-left left110">
+      <small>{{chooseDateFromErrorInfo}}</small>
+    </div>
+    {{/if}}
+  </div>
+
+  <!-- <div class="col-sm-12">
+    <label for="durType" class="control-label top15 col-md-2 col-sm-4 nopadding-horizontal"><strong>任务周期：</strong></label>
+    <div class="pull-left">
+      <select class="form-control top10" onchange={{action 'durTypeSelect' value="target.value"}}>
+        <option value=1 selected={{durType1}}>长期</option>
+        <option value=2 selected={{durType2}}>短期</option>
+      </select>
+    </div>
+  </div> -->
+
+  <div class="form-group col-sm-12 height30 top5">
+    <label class="control-label col-md-3 col-sm-5 pull-left">
+      <strong class="t line-height30 col-sm-1 nopadding-horizontal">*</strong>
+      <strong class="line-height30 col-sm-11 nopadding-horizontal">工作时段(多选)：</strong>
+      <!-- <span class="text-danger">*</span> -->
+    </label>
+    <div class="col-md-4 col-sm-3 nopadding-horizontal">
+      {{#each workTimes as |workTime|}}
+      <label class="pull-left hovertype right10">
+        <input type="checkbox" class="hovertype" checked={{workTime.checked}} {{action "selectEvent" workTime preventDefault=false}}>
+        {{workTime.timeDurString}}
+      </label>
+      {{/each}}
+    </div>
+    {{#if workTimesError}}
+    <div class="text-danger line-height30 pull-left left110">
+      <small>必选</small>
+    </div>
+    {{/if}}
+  </div>
+  <div class="form-group col-sm-12 height30 top5">
+    <label for="csNeed" class="control-label col-md-3 col-sm-5 pull-left">
+      <strong class="t line-height30 col-sm-1 nopadding-horizontal">*</strong>
+      <strong class="line-height30 col-sm-11 nopadding-horizontal">需要客服数量：</strong>
+      <!-- <span class="text-danger">*</span> -->
+    </label>
+    <div class="col-md-4 col-sm-3 nopadding-horizontal">
+      {{input type="text" class="form-control" id="csNeed" value=task.extendIfo.csNeed}}
+    </div>
+    <div class="line-height30 pull-left left10">人</div>
+    {{#if csNeedError}}
+    <div class="text-danger line-height30 pull-left left86">
+      <small>{{csNeedErrorInfo}}</small>
+    </div>
+    {{/if}}
+  </div>
+  <div class="form-group col-sm-12 height30 top5">
+    <label for="sex" class="control-label col-md-3 col-sm-5 pull-left">
+      <strong class="line-height30 col-sm-offset-1 col-sm-11 nopadding-horizontal">性别：</strong>
+    </label>
+    <div class="col-md-4 col-sm-3 nopadding-horizontal">
+      <select class="form-control" onchange={{action 'sexSelect' value="target.value"}}>
+        <option value=0  selected={{nosex}}>不限</option>
+        <option value=1 selected={{sex1}}>男</option>
+        <option value=2 selected={{sex2}}>女</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group col-sm-12 height30 top5">
+    <label class="control-label col-md-3 col-sm-5 pull-left" for="language">
+      <strong class="line-height30 col-sm-offset-1 col-sm-11 nopadding-horizontal">语种要求(多选)：</strong>
+    </label>
+    <div class="col-md-4 col-sm-3 nopadding-horizontal">
+      {{#each language as |language|}}
+      <label class="hovertype">
+        <input type="checkbox" class="hovertype" checked={{language.checked}} {{action "selectEvent" language preventDefault=false}}>
+        {{language.typename}}
+      </label>
+      {{/each}}
+    </div>
+  </div>
+
+</div>
+<div class="col-sm-6 col-sm-offset-3 nopadding-horizontal top30 center">
+  <div class="col-sm-6">
+    {{#ui/common-button clickActParams=task disabled=submitTaskDisa
+      clickAction="submitTask" submitTask="submitTask" text="提交审核"
+    }}
+    {{/ui/common-button}}
+  </div>
+  <div class="col-sm-6">
+    {{#ui/common-button clickActParams=task disabled=saveTaskDisa
+      clickAction="saveTask" saveTask="saveTask" text="保存草稿"
+    }}
+    {{/ui/common-button}}
+  </div>
+</div>
+</div>
+
+{{#if alertModal}}
+{{#bs-modal body=false footer=false header=false closedAction=(action "closeAlert")}}
+{{#bs-modal-header}}
+<h4 class="modal-title">提示</h4>
+{{/bs-modal-header}}
+{{#bs-modal-body}}
+{{alertInfo}}
+{{/bs-modal-body}}
+{{#bs-modal-footer as |footer|}}
+{{#bs-button action=(action "closeAlert") type="warning"}}确定{{/bs-button}}
+{{/bs-modal-footer}}
+{{/bs-modal}}
+{{/if}}
+
+{{#if confirmIdModal}}
+{{#bs-modal body=false footer=false header=false closedAction=(action "closeConfirm")}}
+{{#bs-modal-header}}
+<h4 class="modal-title">认证</h4>
+{{/bs-modal-header}}
+{{#bs-modal-body}}
+您还没有完成企业认证，该任务已保存到所有任务,认证成功后，您可再次编辑发布~确定现在进行认证？
+{{/bs-modal-body}}
+{{#bs-modal-footer as |footer|}}
+{{#bs-button action=(action "switchStatus") type="success"}}确定{{/bs-button}}
+{{#bs-button action=(action "closeConfirm") type="warning"}}取消{{/bs-button}}
+{{/bs-modal-footer}}
+{{/bs-modal}}
+{{/if}}

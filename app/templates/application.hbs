@@ -1,0 +1,5 @@
+{{partial 'setting'}}
+{{outlet}}
+{{#ember-notify closeAfter=3000 messageStyle='bootstrap' as |message close|}}
+   <div class='center'>{{message.text}}</div>
+ {{/ember-notify}}

@@ -1,0 +1,15 @@
+<img class="imgClass lecture" src="{{imgSrc}}" alt="" {{action "showModalAction" on="tap"}}>
+<!--  点击显示用户信息  -->
+{{#if showModal}}
+    {{#bs-modal body=false footer=false backdropClose=false header=false closedAction=(action "invitation") openedAction=(action "imageOpened")}}
+        {{#bs-modal-header}}
+            <h4 class="modal-title">大图显示</h4>
+        {{/bs-modal-header}}
+        {{#bs-modal-body}}
+            <div id="showBigImg" class="clearfix margin0auto">
+
+            </div>
+            <!--endprint-->
+        {{/bs-modal-body}}
+    {{/bs-modal}}
+{{/if}}

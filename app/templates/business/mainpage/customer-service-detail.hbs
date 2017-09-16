@@ -1,0 +1,41 @@
+<div class="box">
+  <div class="box-header">
+    <div class="btn-group">
+      {{ui/button-group defData=btnGroupData switchAction="switchAction"}}
+    </div>
+  </div>
+  <div class="box-body">
+  {{#if (eq showType "scheduler")}}
+  {{full-calendar viewName=excutionName allDayText="全天" buttonText=fullCalendarConfig.buttonText
+    header=fullCalendarConfig.header monthNames=fullCalendarConfig.monthNames
+    monthNamesShort=fullCalendarConfig.monthNamesShort dayNamesShort=fullCalendarConfig.dayNamesShort
+    dayNames=fullCalendarConfig.dayNames selectable=true selectHelper=true
+    select=(action 'calSelect') viewRender=(action 'viewRender')
+    events=curApplySectionData eventClick=(action 'eventClick')
+  }}
+  {{else}}
+    {{full-calendar viewName=excutionName allDayText="全天" buttonText=fullCalendarConfig.buttonText
+    header=fullCalendarConfig.header monthNames=fullCalendarConfig.monthNames
+    monthNamesShort=fullCalendarConfig.monthNamesShort dayNamesShort=fullCalendarConfig.dayNamesShort
+    dayNames=fullCalendarConfig.dayNames selectable=true selectHelper=true
+    select=(action 'calSelect') viewRender=(action 'viewRender')
+    events=curApplySectionWeekData eventClick=(action 'eventClick')
+    }}
+  {{/if}}
+  </div>
+</div>
+
+<!-- 追加弹层 -->
+{{#if showPopPasschangeModal}}
+ {{#bs-modal body=false footer=false header=false
+   submitAction=(action "saveServiceItem")
+    closedAction=(action "hideItemSelectModal")}}
+  {{#bs-modal-header}}
+     <h4 class="modal-title">{{serviceDateStr}}</h4>
+   {{/bs-modal-header}}
+  {{#bs-modal-body}}
+    {{callbusi/service-item-selection serviceList=curApplyData}}
+  {{/bs-modal-body}}
+  {{bs-modal-footer closeTitle="取消" submitTitle="确定"}}
+   {{/bs-modal}}
+{{/if}}

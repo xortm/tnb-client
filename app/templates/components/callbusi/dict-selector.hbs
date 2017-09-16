@@ -1,0 +1,13 @@
+{{#if chooseMany}}
+  {{#power-select-multiple class="choose-many" placeholder=showName options=dictList selected=currentDict searchField="typenamePinyin"
+    noMatchesMessage="没有相关内容" allowClear=allowClear
+    onchange=(action "dictSelect" ) oninput=(action "checkLength") as |dictItem|}}
+    {{dictItem.typename}}
+  {{/power-select-multiple}}
+{{else}}
+  {{#power-select placeholder=showName options=dictList selected=currentDict searchField="typenamePinyin"
+    noMatchesMessage="没有相关内容" allowClear=allowClear
+    onchange=(action "dictSelect") as |dictItem|}}
+    {{dictItem.typename}}
+  {{/power-select}}
+{{/if}}

@@ -1,0 +1,388 @@
+{{#if global_curStatus.isMobile}}
+<!--手机端-->
+{{#ui/mobile/inner-tabbar menus=tabFuncs switchTab="switchTab" clickActFlag=clickActFlag}}
+{{/ui/mobile/inner-tabbar}}
+<div id="customerContainer" class="mainContent">
+  <div class="wrapperInner top40">
+    <div class="conBd">
+    {{#if (eq curTabCode 'user')}}
+      <div class="userBd">
+        <p class="center">
+          <img src="assets/images/avatars/old3.jpg">
+        </p>
+        <p class="center">刘丽娜</p>
+        <p class="clearfix">
+          <span class="pull-left">性别：</span>
+          <span class="pull-left">女</span>
+        </p>
+        <p class="clearfix">
+          <span class="pull-left">年龄：</span>
+          <span class="pull-left">87</span>
+        </p>
+        <p class="clearfix">
+          <span class="pull-left">电话：</span>
+          <span class="pull-left">13125666789</span>
+        </p>
+        <p class="clearfix">
+          <span class="pull-left">近期身体状况：</span>
+          <span class="pull-left">正常</span>
+        </p>
+        <p class="clearfix">
+          <span class="pull-left">紧急联系人：</span>
+          <span class="pull-left">韩梅梅</span>
+        </p>
+        <p class="clearfix">
+          <span class="pull-left">紧急联系人电话：</span>
+          <span class="pull-left">13125648789</span>
+        </p>
+        <p class="clearfix">
+          <span class="pull-left">住址：</span>
+          <span class="pull-left">北京市昌平区昌平路</span>
+        </p>
+      </div>
+
+    {{/if}}
+    {{#if (eq curTabCode 'checkIn')}}
+    <div class="cheakInBd">
+      <p class="clearfix">
+        <span class="pull-left">2015-08-08 9:00</span>
+        <span class="pull-left left4">老人喂食，护工赵永利</span>
+      </p>
+      <p class="clearfix">
+        <span class="pull-left">2015-08-08 10:00</span>
+        <span class="pull-left left4">老人翻身，护工赵永利</span>
+      </p>
+      <p class="clearfix">
+        <span class="pull-left">2015-08-08 11:00</span>
+        <span class="pull-left left4">老人喂药，护士张丽影</span>
+      </p>
+      <p class="clearfix">
+        <span class="pull-left">2015-08-08 12:00</span>
+        <span class="pull-left left4">老人洗澡，护工赵永利、杨魏建</span>
+      </p>
+      <p class="clearfix">
+        <span class="pull-left">2015-08-08 13:00</span>
+        <span class="pull-left left4">老人喂食，护工赵永利</span>
+      </p>
+    </div>
+    {{/if}}
+    {{#if (eq curTabCode 'healthy')}}
+      <div class="healthyBd">
+        <div class="line-item clearfix">
+          <div class="pull-left nopadding-horizontal nopadding-vertical imgArea icon-big">
+            <a href="javascript:;"><i class="ic-motion"></i></a>
+          </div>
+          <div class="contentArea news-box">
+            <div class="col-xs-12">
+              <div class="clearfix">
+                <p class="title col-xs-8 ellipsis">运动（步数）</p>
+                <p class="col-xs-4 top10 bottom0 nopadding-right textRight">2015-10-31</p>
+              </div>
+              <div class="content">
+                <i class=""></i>
+                <p class="pull-left cur">1500步/天</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="line-item clearfix">
+          <div class="pull-left nopadding-horizontal nopadding-vertical imgArea icon-big">
+            <a href="javascript:;"><i class="ic-sleep"></i></a>
+          </div>
+          <div class="contentArea news-box">
+            <div class="col-xs-12">
+              <div class="clearfix">
+                <p class="title col-xs-8 ellipsis">睡眠</p>
+                <p class="col-xs-4 top10 bottom0 nopadding-right textRight">2015-10-31</p>
+              </div>
+              <div class="content">
+                <p class="pull-left cur">充足</p>
+                <p class="pull-left">不足</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="line-item clearfix">
+          <div class="pull-left nopadding-horizontal nopadding-vertical imgArea icon-big">
+            <a href="javascript:;"><i class="ic-blood-pressure"></i></a>
+          </div>
+          <div class="contentArea news-box">
+            <div class="col-xs-12">
+              <div class="clearfix">
+                <p class="title col-xs-8 ellipsis">血压（120/80）</p>
+                <p class="col-xs-4 top10 bottom0 nopadding-right textRight">2015-10-31</p>
+              </div>
+              <div class="content">
+                <p class="pull-left cur">正常</p>
+                <p class="pull-left">偏高</p>
+                <p class="pull-left">偏低</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="line-item clearfix">
+          <div class="pull-left nopadding-horizontal nopadding-vertical imgArea icon-big">
+            <a href="javascript:;"><i class="ic-heart"></i></a>
+          </div>
+          <div class="contentArea news-box">
+            <div class="col-xs-12">
+              <div class="clearfix">
+                <p class="title col-xs-8 ellipsis">心率（62次/分）</p>
+                <p class="col-xs-4 top10 bottom0 nopadding-right textRight">2015-10-31</p>
+              </div>
+              <div class="content">
+                <p class="pull-left cur">正常</p>
+                <p class="pull-left">偏高</p>
+                <p class="pull-left">偏低</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="line-item clearfix">
+          <div class="pull-left nopadding-horizontal nopadding-vertical imgArea icon-big">
+            <a href="javascript:;"><i class="ic-oxygen"></i></a>
+          </div>
+          <div class="contentArea news-box">
+            <div class="col-xs-12">
+              <div class="clearfix">
+                <p class="title col-xs-8 ellipsis">血氧（60%）</p>
+                <p class="col-xs-4 top10 bottom0 nopadding-right textRight">2015-10-31</p>
+              </div>
+              <div class="content">
+                <p class="pull-left">正常</p>
+                <p class="pull-left">偏高</p>
+                <p class="pull-left cur">偏低</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="line-item clearfix">
+          <div class="pull-left nopadding-horizontal nopadding-vertical imgArea icon-big">
+            <a href="javascript:;"><i class="ic-blood-sugar"></i></a>
+          </div>
+          <div class="contentArea news-box">
+            <div class="col-xs-12">
+              <div class="clearfix">
+                <p class="title col-xs-8 ellipsis">血糖</p>
+                <p class="col-xs-4 top10 bottom0 nopadding-right textRight">2015-10-31</p>
+              </div>
+              <div class="content">
+                <p class="pull-left cur">正常</p>
+                <p class="pull-left">偏高</p>
+                <p class="pull-left">偏低</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="line-item clearfix">
+          <div class="pull-left nopadding-horizontal nopadding-vertical imgArea icon-big">
+            <a href="javascript:;"><i class="ic-temperature"></i></a>
+          </div>
+          <div class="contentArea news-box">
+            <div class="col-xs-12">
+              <div class="clearfix">
+                <p class="title col-xs-8 ellipsis">体温（37℃）</p>
+                <p class="col-xs-4 top10 bottom0 nopadding-right textRight">2015-10-31</p>
+              </div>
+              <div class="content">
+                <p class="pull-left cur">正常</p>
+                <p class="pull-left">偏高</p>
+                <p class="pull-left">偏低</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="line-item clearfix">
+          <div class="pull-left nopadding-horizontal nopadding-vertical imgArea icon-big">
+            <a href="javascript:;"><i class="ic-weight"></i></a>
+          </div>
+          <div class="contentArea news-box">
+            <div class="col-xs-12">
+              <div class="clearfix">
+                <p class="title col-xs-8 ellipsis">体重</p>
+                <p class="col-xs-4 top10 bottom0 nopadding-right textRight">2015-10-31</p>
+              </div>
+              <div class="content">
+                <p class="pull-left cur">正常</p>
+                <p class="pull-left">偏高</p>
+                <p class="pull-left">偏低</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="line-item clearfix">
+          <div class="pull-left nopadding-horizontal nopadding-vertical imgArea icon-big">
+            <a href="javascript:;"><i class="fa fa-bell"></i></a>
+          </div>
+          <div class="contentArea news-box">
+            <div class="col-xs-12">
+              <div class="clearfix">
+                <p class="title col-xs-8 ellipsis">体重</p>
+                <p class="col-xs-4 top10 bottom0 nopadding-right textRight">2015-10-31</p>
+              </div>
+              <div class="content">
+                <p class="pull-left">正常</p>
+                <p class="pull-left">偏高</p>
+                <p class="pull-left">偏低</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="line-item clearfix">
+          <div class="pull-left nopadding-horizontal nopadding-vertical imgArea icon-big">
+            <a href="javascript:;"><i class="fa fa-bell"></i></a>
+          </div>
+          <div class="contentArea news-box">
+            <div class="col-xs-12">
+              <div class="clearfix">
+                <p class="title col-xs-8 ellipsis">体重</p>
+                <p class="col-xs-4 top10 bottom0 nopadding-right textRight">2015-10-31</p>
+              </div>
+              <div class="content">
+                <p class="pull-left">正常</p>
+                <p class="pull-left">偏高</p>
+                <p class="pull-left">偏低</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="line-item clearfix">
+          <div class="pull-left nopadding-horizontal nopadding-vertical imgArea icon-big">
+            <a href="javascript:;"><i class="fa fa-bell"></i></a>
+          </div>
+          <div class="contentArea news-box">
+            <div class="col-xs-12">
+              <div class="clearfix">
+                <p class="title col-xs-8 ellipsis">体重</p>
+                <p class="col-xs-4 top10 bottom0 nopadding-right textRight">2015-10-31</p>
+              </div>
+              <div class="content">
+                <p class="pull-left">正常</p>
+                <p class="pull-left">偏高</p>
+                <p class="pull-left">偏低</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="line-item clearfix">
+          <div class="pull-left nopadding-horizontal nopadding-vertical imgArea icon-big">
+            <a href="javascript:;"><i class="fa fa-bell"></i></a>
+          </div>
+          <div class="contentArea news-box">
+            <div class="col-xs-12">
+              <div class="clearfix">
+                <p class="title col-xs-8 ellipsis">体重</p>
+                <p class="col-xs-4 top10 bottom0 nopadding-right textRight">2015-10-31</p>
+              </div>
+              <div class="content">
+                <p class="pull-left">正常</p>
+                <p class="pull-left">偏高</p>
+                <p class="pull-left">偏低</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {{/if}}
+    </div>
+  </div>
+</div>
+{{else}}
+<!--pc端-->
+<div class="col-md-12">
+  <div class="box panel-default col-sm-12 nopadding-bottom">
+    <div class="box-body">
+      <div class="tabbable">
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#tab_3_1" data-toggle="tab">基本信息</a></li>
+          <!-- <li><a href="#tab_3_2" data-toggle="tab">动态信息</a></li>
+          <li><a href="#tab_3_3" data-toggle="tab">护理项目</a></li> -->
+          <!-- <li><a href="#tab_3_2" data-toggle="tab">入住信息</a></li> -->
+          <li><a href="#tab_3_4" data-toggle="tab">健康数据</a></li>
+        </ul>
+        <div class="tab-content fade in col-md-12 nopadding-left nopadding-right">
+          <div class="tab-pane fade in  active" id="tab_3_1">
+            {{#callbusi/customer-info customerInfo=customerInfo saveCustomer="saveCustomer" shortSave=shortSave showCustomer=showCustomer}}
+            {{/callbusi/customer-info}}
+          </div>
+          <!-- <div class="tab-pane fade in" id="tab_3_2">
+            {{callbusi/customer-feed customer=customer}}
+          </div> -->
+          <!-- <div class="tab-pane fade in padding-top8" id="tab_3_3">
+           <div class="pull-right">
+        		  <a id="uploadExcel" class="btn btn-icon btn-turquoise btn-xs pull-right right10" style="touch-action: manipulation; -ms-touch-action: manipulation;" data-ember-action="1480" {{action "csItemDetail" on="click"}}>
+        		      <i class="fa-clock-o"></i>&nbsp;查看详情
+        		  </a>
+        	  </div>
+            <table class="datatable table table-bordered table-hover dataTable mt20">
+              <thead>
+                <tr>
+                  <th>项目名称</th>
+                  <th>护理类别</th>
+                  <th>协助类型</th>
+                  <th>护理等级</th>
+                  <th>频次</th>
+                  <th>护理时间</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>洗澡</td>
+                  <td>按时</td>
+                  <td>需要多人</td>
+                  <td>普通</td>
+                  <td>周</td>
+                  <td>每周一下午5点</td>
+                </tr>
+                <tr>
+                  <td>翻身</td>
+                  <td>按时</td>
+                  <td>单人</td>
+                  <td>普通</td>
+                  <td>日</td>
+                  <td>每日10点，12点，15点</td>
+                </tr>
+                <tr>
+                  <td>按摩</td>
+                  <td>按时</td>
+                  <td>单人</td>
+                  <td>高级</td>
+                  <td>周</td>
+                  <td>每周二下午2点</td>
+                </tr>
+                <tr>
+                  <td>排便</td>
+                  <td>计次</td>
+                  <td>单人</td>
+                  <td>普通</td>
+                  <td>日</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>喂食</td>
+                  <td>按时</td>
+                  <td>单人</td>
+                  <td>普通</td>
+                  <td>日</td>
+                  <td>每日8点，12点，18点</td>
+                </tr>
+              </tbody>
+            </table>
+          </div> -->
+           <div class="tab-pane fade in " id="tab_3_2">
+             {{#callbusi/customer-live-info customerInComp=customer saveCustomer="saveCustomer" bedList=bedList }}
+             {{/callbusi/customer-live-info}}
+          </div>
+          <div class="tab-pane fade in padding-top8" id="tab_3_4">
+            <!-- {{#each healthList  as |health|}}
+            {{callbusi/customer-health-data health=health healthList=healthList}}
+            {{/each}} -->
+          {{callbusi/customer-health-data customerInComp=customer}}
+         </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{/if}}

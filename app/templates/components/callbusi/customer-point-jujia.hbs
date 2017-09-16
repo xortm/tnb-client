@@ -1,0 +1,182 @@
+<div class="busi-info ">
+    {{#bs-form formLayout=formLayout model=customerModel action=(action "detailSaveClick") invalid=(action "invalid")}}
+        <div class="sign col-sm-12  nopadding-horizontal top8 bottom12">
+            <div class="pull-right user-add-btn nopadding-left">
+                {{#if addMode}}
+                    {{#if detailModify}}
+                        <!-- {{#ui/mix-button class=" user-btn edit-btn" iconClass="fa-check" text='保存' }}
+                        {{/ui/mix-button}}
+                        {{#ui/mix-button class=" user-btn times-btn" iconClass="fa fa-mail-reply" text='取消' clickAction="cancelClick" cancelClick="cancelClick" }}
+                        {{/ui/mix-button}} -->
+                    {{else}}
+                    {{/if}}
+                {{else}}
+                    {{#if detailModify}}
+                        <!-- {{#ui/mix-button class=" user-btn edit-btn" iconClass="fa-check" text='保存' }}
+                        {{/ui/mix-button}}
+                        {{#ui/mix-button class=" user-btn times-btn" iconClass="fa fa-mail-reply" text='取消' clickAction="cancelClick" cancelClick="cancelClick" }}
+                        {{/ui/mix-button}} -->
+                    {{else}}
+                        <!-- {{#ui/icon-button iconClass="fa-trash-o pull-right incon-button-font"
+                        data-toggle="tooltip"  title="删除"  data-placement="top" data-original-title="删除"
+                        clickAction="delById" clickActParams=customerInComp delById="delById"}}
+                        {{/ui/icon-button}} -->
+                        {{#ui/icon-button iconClass="fa-edit pull-right incon-button-font"
+                        data-toggle="tooltip"  title="编辑"  data-placement="top" data-original-title="编辑"
+                        clickAction="detailModifyClick" detailModifyClick="detailModifyClick"}}
+                        {{/ui/icon-button}}
+                        <!-- {{#ui/form-function editAction="detailModifyClick" detailModifyClick="detailModifyClick"
+          							removeAction="delById" delById="delById" }}
+          							{{/ui/form-function}} -->
+                    {{/if}}
+                {{/if}}
+            </div>
+        </div>
+        <div style="clear:both" />
+        <div class="line">
+            <div class="col-xs-12 col-sm-6 nopadding-left ">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon nopadding-top">个人特点1：</span>
+                    {{#if detailModify}}
+                        {{input class="input-group-content" value=customerModel.customerExtend.remark0 type="text"}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.customerExtend.remark0}}</div>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">个人特点2：</span>
+                    {{#if detailModify}}
+                        {{input class="input-group-content" value=customerModel.customerExtend.remark1 type="text"}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.customerExtend.remark1}}</div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+        <div class="line">
+            <div class="col-xs-12 col-sm-6 nopadding-left ">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon nopadding-top">个人特点3：</span>
+                    {{#if detailModify}}
+                        {{input class="input-group-content" value=customerModel.customerExtend.remark2 type="text"}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.customerExtend.remark2}}</div>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">个人特点4：</span>
+                    {{#if detailModify}}
+                        {{input class="input-group-content" value=customerModel.customerExtend.remark3 type="text"}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.customerExtend.remark3}}</div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+        <div class="line">
+            <div class="col-xs-12 col-sm-6 nopadding-left ">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon nopadding-top">个人特点5：</span>
+                    {{#if detailModify}}
+                        {{input class="input-group-content" value=customerModel.customerExtend.remark4 type="text"}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.customerExtend.remark4}}</div>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">个人特点6：</span>
+                    {{#if detailModify}}
+                        {{input class="input-group-content" value=customerModel.customerExtend.remark5 type="text"}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.customerExtend.remark5}}</div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+        <div class="line">
+            <div class="col-xs-12 col-sm-6 nopadding-left ">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon nopadding-top">个人特点7：</span>
+                    {{#if detailModify}}
+                        {{input class="input-group-content" value=customerModel.customerExtend.remark6 type="text"}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.customerExtend.remark6}}</div>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">个人特点8：</span>
+                    {{#if detailModify}}
+                        {{input class="input-group-content" value=customerModel.customerExtend.remark7 type="text"}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.customerExtend.remark7}}</div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+        <div class="line">
+            <div class="col-xs-12 col-sm-6 nopadding-left ">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon nopadding-top">个人特点9：</span>
+                    {{#if detailModify}}
+                        {{input class="input-group-content" value=customerModel.customerExtend.remark8 type="text"}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.customerExtend.remark8}}</div>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">个人特点10：</span>
+                    {{#if detailModify}}
+                        {{input class="input-group-content" value=customerModel.customerExtend.remark9 type="text"}}
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.customerExtend.remark9}}</div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+        {{#if showCustomer}}
+        {{else}}
+        <div class="col-sm-12">
+          <div class="text-center padding-top30 padding-bottom100">
+              <p class="text-center user-add-btn" style="display:inline-block;margin:0 auto!important ">
+                {{#if shortSave}}
+                {{#ui/mix-button class=" user-btn edit-btn " iconClass="fa-save" text='暂存' clickAction="shortSaveInfo" shortSaveInfo="shortSaveInfo" }}
+                {{/ui/mix-button}}
+                {{#ui/mix-button class=" user-btn edit-btn " iconClass="fa-check" text='下一步' clickAction="next" next="next" }}
+                {{/ui/mix-button}}
+                {{#ui/mix-button class=" user-btn times-btn " iconClass="fa fa-mail-reply" text='取消' clickAction="remove" remove="remove" }}
+                {{/ui/mix-button}}
+                {{else}}
+                  {{#if addMode}}
+                      {{#if detailModify}}
+                          {{#ui/mix-button class=" user-btn edit-btn " iconClass="fa-check" text='保存' }}
+                          {{/ui/mix-button}}
+                          {{#ui/mix-button class=" user-btn times-btn " iconClass="fa fa-mail-reply" text='取消' clickAction="cancelClick" cancelClick="cancelClick" }}
+                          {{/ui/mix-button}}
+                      {{else}}
+                      {{/if}}
+                  {{else}}
+                      {{#if detailModify}}
+                          {{#ui/mix-button class=" user-btn edit-btn " iconClass="fa-check" text='保存' }}
+                          {{/ui/mix-button}}
+                          {{#ui/mix-button class=" user-btn times-btn " iconClass="fa fa-mail-reply" text='取消' clickAction="cancelClick" cancelClick="cancelClick" }}
+                          {{/ui/mix-button}}
+                      {{else}}
+                      {{/if}}
+                  {{/if}}
+                  {{/if}}
+              </p>
+          </div>
+          </div>
+        {{/if}}
+    {{/bs-form}}
+</div>

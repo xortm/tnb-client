@@ -1,0 +1,659 @@
+<div class="col-sm-12 nopadding-left nopadding-right" style="background:#fff;">
+  <!-- BOX -->
+  <div class="box nopadding-left nopadding-right">
+    <div class="box-body nopadding-left nopadding-right" >
+      <div id="datatable1_wrapper" class="dataTables_wrapper form-inline col-sm-4" style="padding-left:20px;" role="grid">
+      	<div class="row">
+          <div class="col-sm-12">
+        	  <!--搜索-->
+            <div class="col-sm-12 nopadding-left nopadding-right">
+        	    <div class="input-group">
+                {{input class="form-control" type="text" placeholder="搜索老人姓名" value=queryCondition enter="searchName"}}
+      	        <span class="input-group-btn">
+        		      <button class="btn btn-primary btn-reduce" type="button" style="touch-action: manipulation; -ms-touch-action: manipulation;" {{action "searchName" on="click"}}>
+                    <i class="fa fa-search"></i>
+                  </button>
+      	        </span>
+        	    </div>
+        	  </div>
+        	  <!--搜索-->
+          </div>
+      	</div>
+        <div class="col-sm-12" style="height:16px;"></div>
+        {{#if customerShowList}}
+        {{#each customerShowList as |customer|}}
+          <div class="customer-drug-list col-sm-12 nopadding-left pointer {{if customer.hasChoosed 'drugcolor' ''}}" style="font-size:14px;" {{action "chooseCustomer" customer on="click"}}>
+            <div class="col-sm-9 nopadding-left nopadding-right" >
+              <span class="col-sm-2 nopadding-left nopadding-right" style="width:35px;height:35px;">{{ui/img-intergration name="avatarImg" imgSrc=customer.avatarUrl}}</span>
+              <span class="col-sm-9 nopadding-right" style="padding-left:10px;">{{customer.name}}</span>
+              <span class="col-sm-9 nopadding-right" style="padding-left:10px;font-size:13px;line-height：25px">{{customer.bed.allBedName}}</span>
+            </div>
+            <div class="col-sm-3 nopadding-right nopadding-left" style="padding-left:8px;padding-top:8px;text-align:right;line-height:16px;">
+              <span style="color:green;font-size:16px;font-weight:blod;">{{customer.drugCount}}</span>&nbsp;种药品
+            </div>
+          </div>
+        {{/each}}
+        <div class="col-sm-12" style="height:16px;"></div>
+        {{else}}
+        <div class="col-sm-12 center nopadding-left" style="font-size:24px;">暂无数据</div>
+        {{/if}}
+        {{#if customerList }}
+            {{page-numbers content=customerList showFL=true numPagesToShow=3 export=true}}
+            {{else}}
+                <h1 class="col-sm-12 center unTask"></h1>
+        {{/if}}
+      </div>
+      {{#if curcustomer}}
+      <div id="datatable2_wrapper" class="dataTables_wrapper form-inline col-sm-8  curcustomer-drug-list"  role="grid" >
+        <div class="col-sm-12 nopadding-left nopadding-right" style="line-height:25px;">
+          <div class="col-sm-4 nopadding-left nopadding-right">
+            <div class="col-sm-2 nopadding-left nopadding-right" style="width:50px;height:50px;">
+              {{ui/img-intergration name="avatarImg" imgSrc=curcustomer.avatarUrl}}
+            </div>
+            <div class="col-sm-9 nopadding-right">
+              <span class="col-sm-12 nopadding-left nopadding-right title" style="font-size:18px;">{{curcustomer.name}}</span>
+              <span class="col-sm-12 nopadding-left nopadding-right text">{{curcustomer.bed.allBedName}}</span></div>
+          </div>
+          <div class="col-sm-8 nopadding-left nopadding-right">
+            <div class="col-sm-4 nopadding-left">
+              <div class="col-sm-6 nopadding-left nopadding-right title">年龄</div>
+              <div class="col-sm-6 nopadding-left nopadding-right text">{{curcustomer.age}}</div>
+            </div>
+            <div class="col-sm-8 nopadding-left nopadding-right">
+              <div class="col-sm-2 nopadding-left nopadding-right title">联系人</div>
+              <div class="col-sm-9 nopadding-left nopadding-right text">{{curcustomer.guardianFirstName}}&nbsp;&nbsp;{{curcustomer.guardianFirstContact}}</div>
+            </div>
+            <div class="col-sm-4 nopadding-left">
+              <div class="col-sm-6 nopadding-left title nopadding-right">护理等级</div>
+              <div class="col-sm-6 nopadding-left text nopadding-right">{{curcustomer.levelName}}</div>
+            </div>
+            <div class="col-sm-8 nopadding-left nopadding-right">
+              <div class="col-sm-3 nopadding-left nopadding-right title">自理能力</div>
+              <div class="col-sm-9 nopadding-left nopadding-right text">{{curcustomer.selfCareAbility.typename}}</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12 nopadding-left " style="margin-top:30px;">
+          <div class="bottom12">
+              <ul class=" border-bottom nopadding-left">
+                  <li class="pull-left margin-right90 {{if drugActive 'tabactive' ''}}" {{action 'chooseDrugTab' on="click"}}>
+                    <a href="#tab_1_1" data-toggle="tab">药品管理</a>
+                  </li>
+                  <li class="pull-left margin-right90 {{if projectActive 'tabactive' ''}}" {{action 'chooseDrugPlanTab' on="click"}}>
+                    <a href="#tab_1_2" data-toggle="tab">用药计划</a>
+                  </li>
+                  <li class="pull-left margin-right90 {{if projectexeActive 'tabactive' ''}}" {{action 'chooseDrugPlanexeTab' on="click"}}>
+                    <a href="#tab_1_3" data-toggle="tab">执行情况</a>
+                  </li>
+              </ul>
+              <div class="clear"></div>
+          </div>
+          <div id='drug-tab-content' class="tab-content fade in nopadding-left nopadding-right"  style="width:100%;">
+              <div class="tab-pane fade in active"  style="width:100%;" id="tab_1_1">
+                <div class='col-sm-12 border-bottom nopadding-left' style="height:42px;">
+                  <span class="pointer add-drug" {{action 'detailDrug' on='click'}}>+</span>
+                  <span style="font-size:14px;color:#555;">&nbsp;当前共有&nbsp;<b style="font-size:16px;color:#333;">{{customerdrugList.length}}</b>&nbsp;种药品</span>
+                </div>
+                  {{#each customerdrugList as |drug|}}
+                  <div class=" col-sm-12 nopadding-right nopadding-left {{if drug.hasSelected 'listcolor' ''}}" {{action 'selectCusDrug' drug on="click"}}
+                  style="border-bottom:1px solid #ddd;border-top:1px solid #ddd;padding-top:20px;padding-bottom:5px;line-height:20px;"
+
+                  {{action 'chooseDrug' drug on="mouseEnter"}} {{action 'noChooseDrug' drug on="mouseLeave"}}>
+                    <div class="col-sm-1 nopadding-left nopadding-right drug-icon" style="width:50px;margin-top:-4px;">
+                      {{ui/img-intergration name="avatarImg" imgSrc='assets/images/icon/u45.png'}}
+                    </div>
+                    <div class="col-sm-11 nopadding-left nopadding-right" style="font-size:13px;">
+                      <div class="col-sm-12 nopadding-left">
+                        <span style="font-size:14px;color:#555;font-weight:bold;">{{drug.drug.name}}&nbsp;</span>
+                        <span class="title">剂量单位：</span>
+                        <span class="text">{{drug.drug.drugSpec.typename}}</span>
+                      </div>
+                      <div class="col-sm-12 nopadding-left">
+                        <span class="title">当前数量：</span>
+                        <span class="text">{{drug.drugNum}}</span>
+                        <!-- <span class="title"><span style="display:inline-block;width:10px;"></span>缴存时间：</span>
+                        <span class="text">{{drug.gatherDate}}</span> -->
+                        <!-- <span class="title"><span style="display:inline-block;width:10px;"></span>操作人：</span>
+                        <span class="text">{{drug.gatherStaff}}</span> -->
+                      </div>
+                      {{#if drug.hasSelected}}
+                      <div class="pull-right user-add-btn inline-block" style="font-size:18px;">
+                        <span class="pointer" {{action 'detailDrug' drug on='click' bubbles=false}} style="margin:0 10px;"><i class="fa fa-edit">	{{bs-tooltip title="编辑" class="light-tooltip"}}</i></span>
+                        <span class="pointer" {{action 'delDrug' drug on='click' bubbles=false}}><i class="fa fa-trash-o">	{{bs-tooltip title="删除" class="light-tooltip"}}</i></span>
+                      </div>
+                      {{else}}
+                      <div class="col-sm-12" style="height:20px;"></div>
+                      {{/if}}
+                    </div>
+                  </div>
+                    {{#if drug.selected}}
+                    <div class='box' style="padding:0;">
+                      <div class="box-title mt5 pb5" style="padding-top:10px;margin-bottom:5px;">药品存取记录</div>
+                      <div class="box-body">
+                        {{#if drug.records}}
+                          {{#each drug.records as |record|}}
+                            <div class="col-sm-12 mt5 pb5">
+                              <span class="title">存取时间：</span>
+                              <span class="text">{{record.createDateTimeStr}}</span>
+                              <span class="title">存取类型：</span>
+                              <span class="text">{{record.addType.typename}}</span>
+                              <span class="title">存取数量：</span>
+                              <span class="text">{{record.addDrugNum}}</span>
+                              <span class="title">剩余数量：</span>
+                              <span class="text">{{record.drugNum}}</span>
+                              <span class="title">操作人：</span>
+                              <span class="text">{{record.gatherStaff}}</span>
+                            </div>
+                          {{/each}}
+                        {{else}}
+                          <div>暂无存取记录</div>
+                        {{/if}}
+                      </div>
+                    </div>
+                    {{/if}}
+                  {{/each}}
+                  {{#if customerdrugList }}
+                    <div class="col-sm-12 " style="height:16px;"></div>
+                    <div class="col-sm-12 drug-page">
+                        {{page-numbers content=customerdrugList numPagesToShow=3 export=true}}
+                    </div>
+
+                      {{else}}
+                          <h1 class="col-sm-12 center unTask"></h1>
+                  {{/if}}
+              </div>
+              <div class="tab-pane fade in nopadding-left nopadding-right" style="width:100%;" id="tab_1_2">
+                <div class='col-sm-12 border-bottom nopadding-left' style="height:42px;">
+                  <span class="pointer add-drug" {{action 'detailDrugProject' on='click'}}>+</span>
+                  <span style="font-size:14px;color:#555;">&nbsp;当前共有&nbsp;<b style="font-size:16px;color:#333;">{{customerdrugprojectList.length}}</b>&nbsp;个用药计划</span>
+                  <div class="user-add-btn col-sm-3 nopadding-right pull-right">
+                    {{#ui/mix-button class="user-btn pull-right" iconClass="fa fa-list" text='分药清单'  clickAction="lookDrug" lookDrug="lookDrug"}}
+                    {{/ui/mix-button}}
+                  </div>
+                </div>
+                {{#each customerdrugprojectList as |drug|}}
+                <div class="col-sm-12 nopadding-right nopadding-left {{if drug.hasSelected 'listcolor' ''}}"
+                style="border-bottom:1px solid #ddd;border-top:1px solid #ddd;padding-top:20px;padding-bottom:5px;line-height:20px;"
+                {{action 'chooseDrug' drug on="mouseEnter"}} {{action 'noChooseDrug' drug on="mouseLeave"}}>
+                  <div class="col-sm-1 nopadding-left nopadding-right drug-icon" style="width:50px;margin-top:-4px;">
+                    {{ui/img-intergration name="avatarImg" imgSrc='assets/images/icon/u45.png'}}
+                  </div>
+                  <div class="col-sm-11  nopadding-left" style="font-size:13px;">
+                  <div class="col-sm-12 nopadding-left">
+                    <span style="font-size:14px;color:#555;font-weight:bold;">{{drug.customerDrug.drug.name}}&nbsp;</span>
+                    <span class="title">剂量单位：</span>
+                    <span class="text">{{drug.customerDrug.drug.drugSpec.typename}}</span>
+                  </div>
+                  <div class="col-sm-12 nopadding-left">
+                    <span class="title">频次(次/天)：</span>
+                    <span class="text">{{drug.useDrugFreq}}</span>
+                    <span class="title"><span style="display:inline-block;width:15px;"></span>用药数量({{drug.customerDrug.drug.drugSpec.typename}}/次)：</span>
+                    <span class="text">{{drug.useDrugNum}}</span>
+                  </div>
+                  <div class="col-sm-12 nopadding-left">
+                    <span class="title">用药方法：</span>
+                    <span class="text">{{drug.useDrugWay}}</span>
+                    <span class="title"><span style="display:inline-block;width:15px;"></span>用药时间：</span>
+                    <span class="text">{{drug.useDrugDateStr}}</span>
+                  </div>
+                  {{#if drug.hasSelected}}
+                  <span class="pointer" {{action 'detailDrugProjectexe' drug on='click'}} ><a style="font-size:13px;color:blue;text-decoration:underline;" class="pointer">用药计划执行</a></span>
+                  <div class="pull-right user-add-btn inline-block" style="font-size:18px;">
+                    <span class="pointer" {{action 'detailDrugProject' drug on='click'}} style="margin:0 10px;"><i class="fa fa-edit">	{{bs-tooltip title="编辑" class="light-tooltip"}}</i></span>
+                    <span class="pointer" {{action 'delDrugProject' drug on='click'}}><i class="fa fa-trash-o">	{{bs-tooltip title="删除" class="light-tooltip"}}</i></span>
+                  </div>
+                  {{else}}
+                  <div class="col-sm-12" style="height:20px;"></div>
+                  {{/if}}
+                </div>
+              </div>
+                {{/each}}
+
+                {{#if customerdrugprojectList }}
+                    <div class="col-sm-12" style="height:16px;"></div>
+                    <div class="col-sm-12 drug-page">
+                      {{page-numbers content=customerdrugprojectList numPagesToShow=3 export=true}}
+                    </div>
+                    {{else}}
+                        <h1 class="col-sm-12 center unTask"></h1>
+                {{/if}}
+              </div>
+              <div class="tab-pane fade in " id="tab_1_3">
+                <div class="col-sm-9 nopadding-left pull-left nopadding-right">
+                   {{callbusi/time-search class="inline-block" text='执行时间' dateShow=dateShow chooseDate=chooseDate search="search"
+                   submmit="submmit" emptied='emptied' changeBeginDateAction='changeBeginDateAction' changeEndDateAction='changeEndDateAction'}}
+                </div>
+                <div class="col-sm-3 nopadding-left">
+                  <div class="input-group full-width">
+                    {{#power-select class="input-group-content full-width" placeholder='药品名称' options=customerdrugList selected=defaultCustomerDrug searchField="drug.name"
+                    noMatchesMessage="没有相关内容"	allowClear=true	onchange=(action "selectCustomerDrug" ) as |drug|}}
+                      {{drug.drug.name}}
+                    {{/power-select}}
+                  </div>
+                </div>
+                {{#each customerdrugprojectexeList as |drug|}}
+                  <div class="col-sm-12 nopadding-right nopadding-left" style="border-bottom:1px solid #ddd;padding-top:20px;padding-bottom:5px;line-height:20px;"
+                  {{action 'chooseDrug' drug on="mouseEnter"}} {{action 'noChooseDrug' drug on="mouseLeave"}}>
+                    <div class="col-sm-1 nopadding-left nopadding-right drug-icon" style="width:50px;margin-top:-4px;">
+                      {{ui/img-intergration name="avatarImg" imgSrc='assets/images/icon/u45.png'}}
+                    </div>
+                    <div class="col-sm-11  nopadding-left" style="font-size:13px;">
+                      <div class="col-sm-12 nopadding-left">
+                        <span style="font-size:14px;color:#555;font-weight:bold;">{{drug.customerDrug.drug.name}}&nbsp;</span>
+                        <span class="title">剂量单位：</span>
+                        <span class="text">{{drug.customerDrug.drug.drugSpec.typename}}</span>
+                      </div>
+                      <div class="col-sm-12 nopadding-left">
+                        <span class="title">频次(次/天)：</span>
+                        <span class="text">{{drug.project.useDrugFreq}}/1</span>
+                        <span class="title"><span style="display:inline-block;width:50px;"></span>用药数量({{drug.customerDrug.drug.drugSpec.typename}}/次)：</span>
+                        <span class="text">{{drug.project.useDrugNum}}</span>
+                      </div>
+                      <div class="col-sm-12 nopadding-left">
+                        <span class="title">执行时间：</span>
+                        <span class="text">{{drug.exeDateString}}</span>
+                        <span class="title"><span style="display:inline-block;width:30px;"></span>实际用药数量({{drug.customerDrug.drug.drugSpec.typename}})：</span>
+                        <span class="text">{{drug.drugNum}}</span>
+                        <span class="title"><span style="display:inline-block;width:30px;"></span>完成情况：</span>
+                        <span class="text">{{drug.resultName}}</span>
+                      </div>
+                      <div class="col-sm-12 nopadding-left">
+                        <span class="title">执行人：</span>
+                        <span class="text" style="width:100px;display:inline-block;">{{drug.lastUpdateUser.name}}</span>
+                        <span class="title">备注</span>
+                        <span class="text">{{drug.remarkString}}</span>
+                      </div>
+                      {{#if drug.couldDel}}
+                        {{#if drug.hasSelected}}
+                          <div class="pull-right user-add-btn inline-block" style="font-size:18px;">
+                            <span class="pointer" {{action 'delDrugProjectExe' drug on='click'}}><i class="fa fa-trash-o">	{{bs-tooltip title="撤销" class="light-tooltip"}}</i></span>
+                          </div>
+                        {{else}}
+                          <div class="col-sm-12" style="height:18px;"></div>
+                        {{/if}}
+                      {{/if}}
+                    </div>
+                </div>
+                {{/each}}
+                {{#if customerdrugprojectexeList }}
+                    <div class="col-sm-12" style="height:16px;"></div>
+                    <div class="col-sm-12 drug-page">
+                      {{page-numbers content=customerdrugprojectexeList showFL=true numPagesToShow=5 exportAll=true timeExport=true exportCurPage=true
+                        exportDayExcel="exportDayExcel" exportWeekExcel="exportWeekExcel" exportAllExcel="exportToAllExcel" exportCurPageExcel="exportCurPageExcel"}}
+                    </div>
+                    {{else}}
+                        <h1 class="col-sm-12 center unTask"></h1>
+                {{/if}}
+                {{#if exportList}}
+                <table id="datatable1" cellpadding="0" cellspacing="0" border="0" style="visibility:collapse;position: absolute;z-index: -999;"  class=".export-block datatable table table-bordered table-hover dataTable export-block" aria-describedby="datatable1_info">
+                  <thead>
+                    <tr >
+
+                        <th>老人姓名：{{curcustomer.name}} </th>
+                        <th>房间床位：{{curcustomer.bed.allBedName}}  </th>
+                        <th>年龄：{{curcustomer.age}} </th>
+                        <th>性别：{{curcustomer.sex.typename}} </th>
+
+                    </tr>
+                    <tr role="row">
+                      <th class="center" rowspan="1" colspan="1" width="">执行时间</th>
+                      <th class="center" rowspan="1" colspan="1" width="">药品名称</th>
+                      <th class="center" rowspan="1" colspan="1" width="">计划用药量</th>
+                      <th rowspan="1" colspan="1" width="">实际用药量</th>
+                      <th rowspan="1" colspan="1" >执行人</th>
+                      <th rowspan="1" colspan="1" >完成情况</th>
+                    </tr>
+                  </thead>
+                  <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+                    {{#each exportList as |drug|}}
+                    <tr >
+                      <td>{{drug.exeDateString}}</td>
+                      <td>{{drug.customerDrug.drug.name}}</td>
+                      <td>{{drug.project.useDrugNum}}({{drug.customerDrug.drug.drugSpec.typename}}/次)</td>
+                      <td>{{drug.drugNum}}({{drug.customerDrug.drug.drugSpec.typename}}/次)</td>
+                      <td>{{drug.lastUpdateUser.name}}</td>
+                      <td>{{drug.result.typename}}</td>
+                    </tr>
+                    {{/each}}
+                  </tbody>
+                </table>
+                {{/if}}
+              </div>
+
+          </div>
+
+        </div>
+      </div>
+      {{/if}}
+    </div>
+  </div>
+  <!-- /BOX -->
+</div>
+
+<!--新增和编辑用户药品弹层-->
+{{#if detailDrug}}
+  {{#bs-modal body=false footer=false header=false closedAction=(action "invitation")}}
+    {{#bs-modal-body}}
+      {{#bs-form formLayout=formLayout model=drugModel invalid=(action "invalid")}}
+      <div class="line">
+        <div class="col-sm-6 nopadding-left">
+          <div class="form-input-group">
+            <span class="input-group-addon">药品名称：</span>
+            {{#if drugInfo.drug}}
+            <div class="input-group-content">{{drugInfo.drug.name}}</div>
+            {{else}}
+            {{#bs-form-element class="inline-block form-input-group" controlType="drug"  property="drug" }}
+            {{#power-select class="input-group-content" placeholder='必填' options=drugList  selected=drugModel.drug searchField="name"
+            noMatchesMessage="没有相关内容"	allowClear=false onchange=(action "selectDrug" ) as |drug|}}
+              {{drug.name}}
+            {{/power-select}}
+            {{/bs-form-element}}
+            {{/if}}
+          </div>
+        </div>
+      	<div class="col-sm-6 nopadding-left">
+      		<div class="form-input-group">
+      			<span class="input-group-addon">药品数量：</span>
+      			<div class="input-group-content">{{drugInfo.drugNum}}</div>
+      		</div>
+      	</div>
+      </div>
+
+      <div class="line">
+      	<div class="col-sm-4 nopadding-left">
+      		<div class="form-input-group">
+      			<span class="input-group-addon">操作人：</span>
+      			{{bs-form-element property="gatherStaff" class="form-input-group full-width" controlType="gatherStaff" placeholder='必填'}}
+      		</div>
+      	</div>
+        <div class="col-sm-4 nopadding-left">
+      		<div class="form-input-group">
+      			<span class="input-group-addon">存取类型：</span>
+            {{#bs-form-element class="inline-block form-input-group" controlType="addFlag"  property="addFlag" }}
+              {{callbusi/dict-selector groupCode=constants.addDrugType curDict=drugModel.addFlag
+                showName='必填' dictSelect="addFlagSelect" preselected=false value=drugModel.addFlag}}
+            {{/bs-form-element}}
+      		</div>
+      	</div>
+        <div class="col-sm-4 nopadding-left">
+      		<div class="form-input-group">
+      			<span class="input-group-addon">存取数量：</span>
+      			{{bs-form-element property="addDrugNum" class="form-input-group full-width" controlType="addDrugNum" placeholder='必填'}}
+      		</div>
+      	</div>
+      </div>
+      	<div class="col-sm-12 nopadding-left">
+      		<div class="form-input-group">
+      			<span class="input-group-addon">备注说明：</span>
+            {{textarea type="text" class="full-width inline-block form-input-group label-normal form-control" value=drugModel.remark placeholder=''}}
+      		</div>
+      	</div>
+      {{/bs-form}}
+    {{/bs-modal-body}}
+    {{#bs-modal-footer class="user-add-btn"}}
+      {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="saveDrug" saveDrug="saveDrug"}}
+      {{/ui/mix-button}}
+      {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="invitation" invitation="invitation"}}
+      {{/ui/mix-button}}
+    {{/bs-modal-footer}}
+  {{/bs-modal}}
+{{/if}}
+
+<!--新增和编辑药品计划弹层-->
+{{#if detailDrugProject}}
+  {{#bs-modal body=false footer=false header=false closedAction=(action "invitation")}}
+    {{#bs-modal-body}}
+      {{#bs-form formLayout=formLayout model=projectModel invalid=(action "invalid")}}
+        <div class="col-sm-6 nopadding-left">
+          <div class="form-input-group">
+            <span class="input-group-addon">药品名称：</span>
+            {{#if projectModel.customerDrug}}
+            <div class="input-group-content">{{projectModel.customerDrug.drug.name}}</div>
+            {{else}}
+            {{#bs-form-element class="inline-block form-input-group" controlType="drug"  property="drug" }}
+            {{#power-select class="input-group-content" placeholder='必填' options=projectdrugList  selected=projectModel.drug searchField="name"
+            noMatchesMessage="没有相关内容"	allowClear=false onchange=(action "selectProjectDrug" ) as |drug|}}
+              {{drug.name}}
+            {{/power-select}}
+            {{/bs-form-element}}
+            {{/if}}
+          </div>
+        </div>
+      	<div class="col-sm-6 nopadding-left">
+      		<div class="form-input-group">
+      			<span class="input-group-addon">剂量单位：</span>
+            <div class="input-group-content">{{projectModel.customerDrug.drug.drugSpec.typename}}</div>
+      		</div>
+      	</div>
+        <div class="col-sm-6 nopadding-left">
+      		<div class="form-input-group">
+      			<span class="input-group-addon">用药方法：</span>
+      			{{bs-form-element property="useDrugWay" class="form-input-group full-width" controlType="useDrugWay" placeholder='必填'}}
+      		</div>
+      	</div>
+        <div class="col-sm-6 nopadding-left">
+      		<div class="form-input-group">
+      			<span class="input-group-addon">用药数量：</span>
+      			{{bs-form-element property="useDrugNum" class="form-input-group full-width" controlType="useDrugNum" placeholder='必填'}}
+      		</div>
+      	</div>
+      	<div class="col-sm-12 nopadding-left" style="min-height:170px;">
+      		<div class="form-input-group">
+      			<span class="input-group-addon col-sm-2">用药时间：</span>
+            <div class="input-group-content col-sm-10">
+              {{#each timeIconList as |time|}}
+              <div class="col-sm-2 nopadding-right pointer" >
+                <div class="{{if time.selected 'drug-time-color' ''}}" style="border:1px solid #ddd;margin-bottom:5px;" {{action 'chooseTime' time on="click"}}>
+                  <img src={{time.icon}} style="height:20px" />
+                  <span>{{time.name}}</span>
+                </div>
+              </div>
+              {{/each}}
+            </div>
+      		</div>
+      	</div>
+        <div class="col-sm-6 nopadding-left">
+      		<div class="form-input-group">
+      			<span class="input-group-addon">用药频次(次/天)：</span>
+            <div class="input-group-content">{{projectModel.useDrugFreq}}</div>
+      		</div>
+      	</div>
+      {{/bs-form}}
+    {{/bs-modal-body}}
+    {{#bs-modal-footer class="user-add-btn"}}
+      {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="saveDrugProject" saveDrugProject="saveDrugProject"}}
+      {{/ui/mix-button}}
+      {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="invitation" invitation="invitation"}}
+      {{/ui/mix-button}}
+    {{/bs-modal-footer}}
+  {{/bs-modal}}
+{{/if}}
+
+<!--计划执行弹层-->
+{{#if detailDrugProjectexe}}
+  {{#bs-modal body=false footer=false header=false closedAction=(action "invitation")}}
+    {{#bs-modal-body}}
+      <div class="drugprojectexe">
+        {{#bs-form formLayout=formLayout model=projectexeModel invalid=(action "invalid")}}
+        <div class="col-sm-6 nopadding-left">
+          <div class="form-input-group">
+            <span class="input-group-addon">药品名称：</span>
+            <div class="input-group-content">{{projectModel.customerDrug.drug.name}}</div>
+          </div>
+        </div>
+      	<div class="col-sm-6 nopadding-left">
+      		<div class="form-input-group">
+      			<span class="input-group-addon">剂量单位：</span>
+            <div class="input-group-content">{{projectModel.customerDrug.drug.drugSpec.typename}}</div>
+      		</div>
+      	</div>
+        <div class="col-sm-6 nopadding-left">
+      		<div class="form-input-group">
+      			<span class="input-group-addon">用药方法：</span>
+            <div class="input-group-content">{{projectModel.useDrugWay}}</div>
+      		</div>
+      	</div>
+      	<div class="col-sm-6 nopadding-left">
+      		<div class="form-input-group">
+      			<span class="input-group-addon">用药频次：</span>
+            <div class="input-group-content">1天{{projectModel.useDrugFreq}}次</div>
+      		</div>
+      	</div>
+      	<div class="col-sm-6 nopadding-left">
+      		<div class="form-input-group">
+      			<span class="input-group-addon">计划用药时间：</span>
+            {{#bs-form-element class="inline-block form-input-group" controlType="useDrug"  property="useDrug" }}
+            {{#power-select class="input-group-content" placeholder='必填' options=drugDateList  selected=projectexeModel.useDrug
+            noMatchesMessage="没有相关内容"	allowClear=false onchange=(action "selectUseDrugDate" ) as |drug|}}
+              {{drug.name}}
+            {{/power-select}}
+            {{/bs-form-element}}
+      		</div>
+      	</div>
+        <div class="col-sm-6 nopadding-left">
+      		<div class="form-input-group">
+      			<span class="input-group-addon">用药数量：</span>
+            <div class="input-group-content">{{projectModel.useDrugNum}}{{projectModel.useDrugSpec.typename}}</div>
+      		</div>
+      	</div>
+
+        <div class="col-sm-6 nopadding-left">
+      		<div class="form-input-group">
+      			<span class="input-group-addon">实际用药数量({{projectModel.useDrugSpec.typename}})：</span>
+            {{bs-form-element property="drugNum" class="form-input-group full-width" controlType="drugNum" placeholder='必填'}}
+      		</div>
+      	</div>
+        <div class="col-sm-6 nopadding-left">
+      		<div class="form-input-group">
+      			<span class="input-group-addon">完成情况：</span>
+              {{#bs-form-element class="inline-block form-input-group" controlType="finishLevel"  property="finishLevel" }}
+                {{#power-select class="input-group-content" placeholder='必填' options=finishLevelList  selected=projectexeModel.finishLevel
+                noMatchesMessage="没有相关内容" 	allowClear=false onchange=(action "selectFinishLevel" ) as |finishLevel|}}
+                  {{finishLevel.name}}
+                {{/power-select}}
+              {{/bs-form-element}}
+      		</div>
+      	</div>
+        <div class="col-sm-12 nopadding-left">
+          <div class="col-sm-6 nopadding-left">
+        		<div class="form-input-group">
+        			<span class="input-group-addon">实际用药时间：</span>
+              {{#bs-form-element class="inline-block form-input-group" controlType="exeDate"  property="exeDate" }}
+              {{ui/addon/bs-datetimepicker date=projectexeInfo.exeDateTime placeholder="实际用药时间"
+                locale="zh-CN" iconClasses="fa fa-calendar" format='HH:mm'
+                value=projectexeModel.exeDate show="dpShowAction" change="changeExeDate"}}
+              {{/bs-form-element}}
+        		</div>
+        	</div>
+          <div class="col-sm-6 nopadding-left">
+        		<div class="form-input-group">
+        			<span class="input-group-addon">执行人：</span>
+              {{#bs-form-element class="inline-block form-input-group" controlType="lastUpdateUser"  property="lastUpdateUser" }}
+                {{#power-select class="input-group-content" placeholder='必填' options=userList  selected=projectexeModel.lastUpdateUser
+                noMatchesMessage="没有相关内容"	allowClear=false onchange=(action "selectUser" ) as |user|}}
+                  {{user.name}}
+                {{/power-select}}
+              {{/bs-form-element}}
+        		</div>
+        	</div>
+        </div>
+
+        <div class="col-sm-12 nopadding-left">
+      		<div class="form-input-group">
+      			<span class="input-group-addon">备注说明：</span>
+      			{{bs-form-element property="remark" class="form-input-group full-width" controlType="remark" placeholder='必填'}}
+      		</div>
+      	</div>
+
+      {{/bs-form}}
+      </div>
+    {{/bs-modal-body}}
+    {{#bs-modal-footer class="user-add-btn"}}
+      {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="saveDrugProjectexe" saveDrugProjectexe="saveDrugProjectexe"}}
+      {{/ui/mix-button}}
+      {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="invitation" invitation="invitation"}}
+      {{/ui/mix-button}}
+    {{/bs-modal-footer}}
+  {{/bs-modal}}
+{{/if}}
+
+
+{{#if showpopInvitePassModal}}
+	{{#bs-modal body=false footer=false header=false closedAction=(action "invitation")
+	submitAction=(action "cancelPassSubmit" drug)}}
+		{{#bs-modal-header}}
+			<h3 class="modal-title">删除提示</h3>
+		{{/bs-modal-header}}
+		{{#bs-modal-body}}
+			<h4 class="modal-title">是否删除该条记录？</h4>
+		{{/bs-modal-body}}
+		{{#bs-modal-footer as |footer|}}
+			{{#bs-button action=(action "cancelPassSubmit" drug) type="primary" disabled=prepaidDisabled}}确定{{/bs-button}}
+			{{#bs-button action=(action "invitation") type="default"}}取消{{/bs-button}}
+		{{/bs-modal-footer}}
+	{{/bs-modal}}
+{{/if}}
+
+
+{{#if lookDrugModel}}
+{{#bs-modal body=false footer=false header=false closedAction="invitation"}}
+  {{#bs-modal-header}}
+    <h3 class="modal-title">分药清单
+      <div class="col-sm-8 nopadding-left nopadding-right pull-right" style="line-height:30px;font-size:13px;">
+          <span>分药类型：</span>
+          <i class="pointer {{if printModel 'fa-dot-circle-o' 'fa-circle-o'}}" {{action 'selectPrint' on="click"}}><span>普通</span></i>
+          <i class="pointer {{if printModelFirst 'fa-dot-circle-o' 'fa-circle-o'}}" {{action 'selectPrint' '1' on="click"}}><span>特殊</span></i>
+          <i class="pointer {{if printModelAll 'fa-dot-circle-o' 'fa-circle-o'}}" {{action 'selectPrint' 'all' on="click"}}><span>全部</span></i>
+      </div>
+    </h3>
+
+  {{/bs-modal-header}}
+  {{#bs-modal-body}}
+  <div class="">
+    <div class="box" style="max-height:500px;overflow-y:auto;">
+      <div class="box-body" id='look-drug'>
+        <!--startprint-->
+      <div class="col-sm-12 nopadding-left" style="margin-bottom:10px;">
+        <span style="font-size:22px;">{{curcustomer.name}}</span>
+        <span>{{curcustomer.bed.allBedName}}</span>
+      </div>
+      {{#if lookDrugList}}
+      <div id="datatable1_wrapper" class="dataTables_wrapper form-inline look-drug-list" role="grid">
+        <table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="center datatable table table-bordered dataTable" aria-describedby="datatable1_info">
+            <thead>
+                <tr role="row" >
+                    <th rowspan="1" colspan="1" width=""  class="center">频次(次/日)</th>
+                    <th rowspan="1" colspan="1" width="" class="center">药品</th>
+                    <th rowspan="1" colspan="1" width="" class="center">剂量</th>
+                    <th rowspan="1" colspan="1" width="" class="center">用药时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each lookDrugList as |lookDrug|}}
+                    <tr>
+                        <td >{{lookDrug.useDrugFreq}}/日</td>
+                        <td >{{lookDrug.customerDrug.drug.name}}</td>
+                        <td >{{lookDrug.useDrugNum}}{{lookDrug.customerDrug.drug.drugSpec.typename}}</td>
+                        <td >{{lookDrug.useDrugDateStr}}</td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+        </div>
+        {{else}}
+        <div class="col-sm-12 nopadding-left center" style="font-size:18px;">暂无数据</div>
+        {{/if}}
+        <!--endprint-->
+      </div>
+    </div>
+    <!-- /BOX -->
+  </div>
+  {{/bs-modal-body}}
+  {{#bs-modal-footer class="user-add-btn"}}
+    {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-print"  text='打印' clickAction="printImg" printImg="printImg"}}
+    {{/ui/mix-button}}
+    {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='返回' clickAction="invitation" invitation="invitation"}}
+    {{/ui/mix-button}}
+  {{/bs-modal-footer}}
+{{/bs-modal}}
+{{/if}}

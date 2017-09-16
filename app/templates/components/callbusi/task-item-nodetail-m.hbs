@@ -1,0 +1,48 @@
+<div class="line">
+  <div class="col-xs-12 panel-title weight-bold">{{task.title}}</div>
+</div>
+<div class="line fontcolor">
+  <div class="col-xs-9">
+    <div class="line">
+      企业：{{task.pubuser.entName}}
+    </div>
+    <div class="line">
+      {{task.beginDateComp}}--{{task.endDateComp}}
+    </div>
+    <div class="line">
+      需要人数：{{task.extendIfo.csNeed}}人（{{task.extendIfo.csHave}}人已领）
+    </div>
+    <div class="line">
+      <div><span class="bgcolor-m padding-hor7 labletype">性别{{task.sexPreferenceStr}}</span>&nbsp;&nbsp;&nbsp;{{#if taskLanguage}}<span class="bgcolor-m padding-hor7 labletype">{{taskLanguage}}</span>{{/if}}</div>
+    </div>
+  </div>
+  <div class="col-xs-3  nopadding-horizontal">
+    <div class="line center onlinepayshow">
+      <div>{{task.calloutPay}}元/单</div>
+    </div>
+    <div class="line center">
+      {{#if (eq task.CRL_showStatus 2)}}
+      <div>已申请</div>
+      {{/if}}
+      {{#if (eq task.CRL_showStatus 3)}}
+      <div>已通过</div>
+      {{/if}}
+      {{#if (eq task.CRL_showStatus 4)}}
+      <div>审核未通过</div>
+      {{/if}}
+      {{#if (eq task.CRL_showStatus 5)}}
+      <div>企业邀请</div>
+      {{/if}}
+      {{#if (eq task.CRL_showStatus 6)}}
+      <div>已通过</div>
+      {{/if}}
+      {{#if (eq task.CRL_showStatus 7)}}
+      <div>已拒绝邀请</div>
+      {{/if}}
+      {{#if (eq task.CRL_showStatus 8)}}
+      <div>人数已满</div>
+      {{/if}}
+    </div>
+  </div>
+</div>
+<!-- </div> -->

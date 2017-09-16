@@ -1,0 +1,209 @@
+<div class="busi-info ">
+    {{#bs-form formLayout=formLayout model=customerModel action=(action "detailSaveClick") invalid=(action "invalid")}}
+        <div class="sign col-sm-12 nopadding-left">
+            <div class="pull-right user-add-btn nopadding-left ">
+                {{#if addMode}}
+                    <!-- {{#ui/mix-button class=" user-btn edit-btn" iconClass="fa-check" text='保存' }}
+                        {{/ui/mix-button}}
+                        {{#ui/mix-button class=" user-btn times-btn" iconClass="fa fa-mail-reply" text='取消' clickAction="cancelClick" cancelClick="cancelClick" }}
+                        {{/ui/mix-button}} -->
+                {{else}}
+                    {{#if detailModify}}
+                        <!-- {{#ui/mix-button class=" user-btn edit-btn" iconClass="fa-check" text='保存' }}
+                        {{/ui/mix-button}}
+                        {{#ui/mix-button class=" user-btn times-btn" iconClass="fa fa-mail-reply" text='取消' clickAction="cancelClick" cancelClick="cancelClick" }}
+                        {{/ui/mix-button}} -->
+                    {{else}}
+                        {{#ui/form-function editAction="detailModifyClick" detailModifyClick="detailModifyClick" removeAction="delById" delById="delById" }}
+                        {{/ui/form-function}}
+                    {{/if}}
+                {{/if}}
+            </div>
+        </div>
+        <div style="clear:both" />
+        <div class="bottom12 top12 col-sm-12 nopadding-left">
+            <strong class="font16 font-black">服务信息</strong>
+        </div>
+        <div class="line">
+            <div class="col-xs-12 col-sm-6 nopadding-left ">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon s">合同编号：</span>
+                    <div class="font-light input-group-content">{{customerModel.contractNO}}</div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">入住状态：</span>
+                    {{#if detailModify}}
+                        <div class="font-light input-group-content">{{customerModel.customerStatus.typename}}</div>
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.customerStatus.typename}}</div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+        <div class="line">
+            <div class="col-xs-12 col-sm-6 nopadding-left">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon ">合同开始日期：</span>
+                    <div class="font-light input-group-content">{{customerModel.contractStartDateString}}</div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">合同截止日期：</span>
+                    <div class="font-light input-group-content">{{customerModel.contractEndDateString}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="line">
+            <div class="col-xs-12 col-sm-6 nopadding-left">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">护理组：</span>
+                    <div class="font-light input-group-content">{{customerInComp.groupsName}}</div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">护理人员：</span>
+                    <div class="font-light input-group-content">{{customerInComp.employeesName}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="line">
+            <div class="col-xs-12 col-sm-6 nopadding-left">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">护理方案：</span>
+                    <div class="font-light input-group-content pointer" {{action "nursingClick" on="click"}}><a href="#">点击可查看</a></div>
+                </div>
+            </div>
+        </div>
+        <div class="line">
+            <div class="col-xs-12 col-sm-6 nopadding-left">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">餐饮标准：</span>
+                    {{#if customerModel.diningStandard}}
+                    <div class="font-light input-group-content">{{customerModel.diningStandard.typename}}</div>
+                    {{else}}
+                    <div class="font-light input-group-content">无</div>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 ">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">餐饮价格(元/天)：</span>
+                    <div class="font-light input-group-content">{{customerModel.actualDiningPrice}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="line">
+            <div class="col-xs-12 col-sm-6 nopadding-left">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">护理等级：</span>
+                    <div class="font-light input-group-content">{{customerInComp.nursinglevelName}}</div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">护理价格(元/天)：</span>
+                        <div class="font-light input-group-content">{{customerModel.levelPrice}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="line">
+            <div class="col-xs-12 col-sm-6 nopadding-left">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">房间-床位信息：</span>
+                    {{#if customerInComp.bed}}
+                        <div class="font-light input-group-content">{{customerInComp.bed.allBedName}}</div>
+                    {{else}}
+                        <div class="font-light input-group-content">无</div>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">床位价格(元/天)：</span>
+                        <div class="font-light input-group-content">{{customerModel.actualBedPrice}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="line">
+            <div class="col-xs-12 col-sm-6 nopadding-left">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">参考价格(元/天)：</span>
+                    <div class="font-light input-group-content">{{customerModel.realreferencePrice}}</div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">实际价格(元/天)：</span>
+                    <div class="font-light input-group-content">{{customerModel.actualPrice}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="line">
+            <div class="col-xs-12 col-sm-6 nopadding-left">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">折&nbsp;&nbsp;扣&nbsp;&nbsp;率：</span>
+                    <div class="font-light input-group-content">{{customerModel.realDiscountRate}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="line">
+            <div class="col-xs-12 col-sm-6 nopadding-left">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">保&nbsp;&nbsp;证&nbsp;&nbsp;金(元)：</span>
+                    <div class="font-light input-group-content">{{actualDepositInfo.balance}}</div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">账户余额(元)：</span>
+                    <div class="font-light input-group-content">{{balanceInfo.balance}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="line">
+            <div class="col-xs-12 col-sm-6 nopadding-left">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：</span>
+                    {{#if customerModel.remark}}
+                    <div class="font-light input-group-content">{{customerModel.remark}}</div>
+                    {{else}}
+                    <div class="font-light input-group-content">无</div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+        <div class="bottom12 top12 col-sm-12 nopadding-left">
+            <strong class="font16 font-black">设备信息</strong>
+        </div>
+        <div class="line">
+            {{#each realDevicetypeList as |realDevicetype index|}}
+            {{#if realDevicetype.isShow}}
+                <div class="col-xs-12 col-sm-6 {{if (eq realDevicetype.number 0) 'nopadding-left' ''}}">
+                    <div class="form-input-group label-normal">
+                        <span class="input-group-addon">{{realDevicetype.deviceName}}：</span>
+                        <div class="font-light input-group-content">{{realDevicetype.deviceObj.seq}}</div>
+                    </div>
+                </div>
+                {{else}}
+                {{/if}}
+            {{/each}}
+        </div>
+        <div class="col-sm-12">
+            <div class="text-center padding-top30 padding-bottom100">
+                <p class="text-center user-add-btn" style="display:inline-block;margin:0 auto!important ">
+                    {{#if detailModify}}
+                        {{#ui/mix-button class=" user-btn edit-btn " iconClass="fa-check" text='保存' }}
+                        {{/ui/mix-button}}
+                        {{#ui/mix-button class=" user-btn times-btn " iconClass="fa fa-mail-reply" text='取消' clickAction="cancelClick" cancelClick="cancelClick" }}
+                        {{/ui/mix-button}}
+                    {{else}}
+                    {{/if}}
+                </p>
+            </div>
+        </div>
+    {{/bs-form}}
+</div>

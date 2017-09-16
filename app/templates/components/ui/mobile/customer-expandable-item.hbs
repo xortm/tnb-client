@@ -1,0 +1,46 @@
+<div class="item">
+  {{#if showRightFlag}}
+  {{log "customer in hbs:" customer}}
+    {{#if customer.expanded}}
+      <div class="title clearfix border-bottom-1 bk-color-white">
+        <!-- <div class="pull-left width7B" {{action 'showNursingLog' on='tap'}}>
+            <img class="a-img displayNone" src="assets/images/mobile/editred.png"/>
+        </div> -->
+        <div class="pull-left width100B"  {{action 'itemExpand' on='tap'}}>
+          <div class="pull-left">
+            {{customer.name}}<span class="colorCCC padding-left-10">{{customer.room}}</span>
+          </div>
+          <i class="fa-angle-up font30 pull-right top6"></i>
+        </div>
+      </div>
+    {{else}}
+    <div class="title clearfix border-bottom-1 bk-color-white" {{action 'itemExpand' on='tap'}}>
+      <!-- <div class="pull-left width7B"><img class="a-img displayNone" src="assets/images/mobile/edit.png"/></div> -->
+      <div class="pull-left">
+        {{customer.name}}<span class="colorCCC padding-left-10">{{customer.room}}</span>
+      </div>
+      <i class="fa-angle-down font30 pull-right top6"></i>
+    </div>
+    {{/if}}
+  {{/if}}
+
+  <!-- {{#if showFlag}}
+    <div class="counterDetail bk-color-FAFAF9 border-bottom-1 {{if customer.expanded '' 'hidden'}}">
+      {{textarea class="" placeholder="请输入今天老人的信息" value=detailContent}}
+      <div class="btnBox clearfix">
+        <div class="nursinglog-sure" id="{{customer.id}}_logSure" {{action "nursingLog" customer.id on="tap"}}>确定</div>
+      </div>
+    </div>
+  {{/if}} -->
+
+
+  {{log "customer11111" customer}}
+  <div class="clearfix font16 bk-color-FAFAF9 {{if customer.expanded '' 'hidden'}}">
+    {{#each customer.services  as |service|}}
+      {{#ui/mobile/expandable-item-line itemName=service.title detail=service.detailList
+        itemCount=service.itemExeLength itemExes=service.itemExes itemId=service.busiId finishSave="finishSave"
+        itemCntAdd="itemCntAdd" expanded=service.expanded serviceItem=service}}
+      {{/ui/mobile/expandable-item-line}}
+    {{/each}}
+  </div>
+  </div>

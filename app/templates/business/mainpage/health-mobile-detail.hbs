@@ -1,0 +1,69 @@
+<div id="healthMobileDetailContainer" class="mainContent">
+  <div class="wrapperInner bgcolor-white">
+    <div class="padding4 clearfix margin-top-10">
+      <div class="pull-left width50B line-height-30 padding-right-30 text-right">
+        体检时间
+      </div>
+      <div class="pull-left width50B">
+        {{input type="time" class="height30 width120 padding-0-5 border-radius3 border-1solid-ccc" value=date placeholder="健康数据测量时间"}}
+        <!-- <input type="datetime" class="height30 width120" value="2010-01-01 10:01:00" placeholder="健康数据测量时间"> -->
+        <!-- {{input type="datetime" class="height30 width120" format="yyyy-MM-dd hh:mm" placeholder="健康数据测量时间"}} -->
+      </div>
+    </div>
+    <div class="padding4 clearfix">
+      <div class="pull-left width50B line-height-30 padding-right-30 text-right">健康类型选项</div>
+      <div class="pull-left width120">
+        <select class="height30 width20" onchange={{action 'typeName' value="target.value"}} id="healthExamTypeSelector">
+          <option class="padding4" value="1" style="color: #b6b6b6" disabled selected>请选择</option>
+          {{#each healthExamTypeList as |healthExamType|}}
+            <option class="padding4" value="{{healthExamType.typecode}}">{{healthExamType.typename}}</option>
+          {{/each}}
+        </select>
+      </div>
+    </div>
+    <div class="padding4 clearfix" style="min-height: 75px;">
+      {{#if twoResult}}
+        <div class="">
+          <div class="pull-left width50B line-height-30 padding-right-30 text-right">
+            {{resultName}}
+          </div>
+          <div class="pull-left width50B">
+            {{input type="number" class="height30 width120 padding-0-5 border-radius3 border-1solid-ccc" value=result}}
+          </div>
+        </div>
+        <div class="clearfix">
+          <div class="padding-top5 pull-left width50B line-height-30 padding-right-30 text-right">
+            {{resultAddtionName}}
+          </div>
+          <div class="padding-top5 pull-left width50B">
+            {{input type="number" class="height30 width120 padding-0-5 border-radius3 border-1solid-ccc" value=resultAddtion}}
+          </div>
+        </div>
+      {{else}}
+        <div class="clearfix">
+          {{#if noChoose}}
+            <span class="pull-left width50B line-height-30 padding-right-30 text-right">体检结果</span>
+          {{else}}
+            <span class="pull-left width50B line-height-30 padding-right-30 text-right">{{resultName}}</span>
+          {{/if}}
+          <div class="pull-left width50B">
+            {{input type="number" class="height30 width120 padding-0-5 border-radius3 border-1solid-ccc" value=result}}
+          </div>
+        </div>
+      {{/if}}
+    </div>
+    <div class="hasError center" style="min-height:18px;">
+      {{#if noMessageShow}}
+        {{noMessage}}
+      {{/if}}
+    </div>
+    {{#ui/mobile/gestures-container}}
+      <!-- <div class="clearfix detail-tosure"  id="detail_tosure" {{action "saveHealth" on="tap"}}>
+        确定
+      </div> -->
+      {{ui/mobile/task-detail-button needDoubleClickPrevent=true touchStartAction="saveHealth" saveHealth="saveHealth" butContent="确定" outerClass="healthMobileDetailBut"}}
+    {{/ui/mobile/gestures-container}}
+  </div>
+</div>
+{{ui/container/infinite-scroll moniteData="healthMobileDetailList"
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

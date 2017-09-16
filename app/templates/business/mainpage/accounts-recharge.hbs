@@ -1,0 +1,21 @@
+<div id="theCustomerContainer" class="mainContent">
+  <div class="wrapperInner">
+    <div class="top10 position-relative border-none-input bk-color-white">
+      <img src="assets/images/recharge.png" alt="充值" class="iconRecharge">
+      {{input type="number" maxlength="11" class="height44 line-height-44 padding-left50 center" placeholder="请输入充值金额"}}
+      <span class="font16 font-black">元</span>
+    </div>
+
+    {{#ui/mobile/gestures-container}}
+      <div class="top20 bindBtn center" {{action "immediately" customer on="tap"}} >
+        立即充值
+      </div>
+    {{/ui/mobile/gestures-container}}
+    <div class="top10 center font12 bindBtnBcontent">
+      点击后自动跳转微信支付界面进行充值支付！
+    </div>
+  </div>
+</div>
+
+{{ui/container/infinite-scroll moniteData="theCustomerList" didRenderAction="didRender"
+didInsertElementAction="didInsertElement"}}

@@ -1,0 +1,91 @@
+
+<div class="row">
+  <div class=" {{if export 'col-sm-12' 'col-sm-8'}}">
+    <div class="inline-block">
+      <div class="dataTables_paginate paging_bs_full inline-block" id="datatable1_paginate">
+        <ul class="pagination">
+          {{#if canStepBackward}}
+            <li class="arrow prev enabled-arrow">
+              <a href="#" {{action "incrementPage" -1}}>&laquo;</a>
+            </li>
+          {{else}}
+            <li class="arrow prev disabled">
+              <a href="#" {{action "incrementPage" -1}}>&laquo;</a>
+            </li>
+          {{/if}}
+
+          {{#each pageItems as |item|}}
+            {{#if item.dots}}
+              <li class="dots disabled">
+                <span>...</span>
+              </li>
+            {{/if}}
+            {{#if item.current}}
+              <li class="active page-number">
+                <a>{{item.page}}</a>
+              </li>
+            {{else}}
+              <li class="page-number">
+                <a href="#" {{action "pageClicked" item.page}}>{{item.page}}</a>
+              </li>
+            {{/if}}
+          {{/each}}
+
+          {{#if canStepForward}}
+            <li class="arrow next enabled-arrow">
+              <a href="#" {{action "incrementPage" 1}}>&raquo;</a>
+            </li>
+          {{else}}
+            <li class="arrow next disabled">
+              <a href="#" {{action "incrementPage" 1}}>&raquo;</a>
+            </li>
+          {{/if}}
+        </ul>
+      </div>
+    </div>
+    <span class="pagination paging-entry">
+      共{{totalCount}}条
+    </span>
+  </div>
+  {{#if export}}
+
+  {{else}}
+  <div class="col-sm-4">
+    <div class="pull-right user-add-btn bottom-func">
+      <div class="pointer pull-left text-underline" {{action "exportToExcel" on="click"}}>
+        <i class="fa fa-file-excel-o">
+        </i>
+        导出本页到Excel
+      </div>
+      {{#if exportAll}}
+      <div class="pull-right">
+        {{#if allExlecl}}
+           <i class="fa-angle-double-up font18 padding-0-5 left10 pointer" {{action "showAllExlecl" on="click"}}></i>
+        {{else}}
+           <i class="fa-angle-double-down font18 padding-0-5 left10 pointer" {{action "showAllExlecl" on="click"}}></i>
+        {{/if}}
+      </div>
+      {{#if allExlecl}}
+        {{#if timeExport}}
+        <div class="pointer text-underline top30 margin-right-30" {{action "exportDayExcel" on="click"}}>
+          <i class="fa fa-file-excel-o">
+          </i>
+          导出本日到Excel
+        </div>
+        <div class="pointer text-underline top25 margin-right-30" {{action "exportWeekExcel" on="click"}}>
+          <i class="fa fa-file-excel-o">
+          </i>
+          导出最近7天到Excel
+        </div>
+        {{/if}}
+        <div class="pointer text-underline top25 margin-right-30" {{action "exportAllExcel" on="click"}}>
+          <i class="fa fa-file-excel-o">
+          </i>
+          导出全部到Excel
+        </div>
+      {{/if}}
+      {{/if}}
+    </div>
+  </div>
+  {{/if}}
+</div>

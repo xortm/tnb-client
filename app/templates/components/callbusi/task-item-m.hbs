@@ -1,0 +1,81 @@
+<div class="line">
+  <div class="col-xs-12 panel-title weight-bold">{{task.title}}</div>
+</div>
+<div class="line">
+  <div class="col-xs-12">
+    <div class="line">
+      企业：{{task.pubuser.entName}}
+    </div>
+    <div class="line">
+      需要人数：{{task.extendIfo.csNeed}}人（{{task.extendIfo.csHave}}人已领）
+      {{log '======-----=-=-=-=-=-=-=-=-=-==-=-==-=-' task.extendIfo}}
+    </div>
+    <div class="line">
+      日期：{{task.beginDateComp}}--{{task.endDateComp}}
+    </div>
+    <div class="line">
+      <div><span>工作时段:</span><span>{{task.worktimeString}}</span></div>
+      <!-- 工作时段： worktimeString.content-->
+    </div>
+    <div class="line">
+      <div><span>任务呼叫类型:</span><span>{{task.calltypeStr}}</span></div>
+    </div>
+    <div class="line">
+      <div><span>外呼电话量:</span><span>{{task.extendIfo.calloutNum}}</span></div>
+    </div>
+  </div>
+  <!-- <div class="col-xs-3">
+    <div class="line center">
+      <div>{{task.onlinePay}}元</div>
+    </div>
+    {{#if showApplyTip}}
+    <div class="line top8 center">
+      <div>已申请</div>
+    </div>
+    {{/if}}
+  </div> -->
+</div>
+
+<hr class="hrstyle"/>
+<div class="line">
+  <div class="col-xs-12 panel-title weight-bold">任务描述：</div>
+</div>
+<div class="line">
+  <div class="col-xs-12">
+    {{task.desc}}
+  </div>
+</div>
+
+<hr class="hrstyle"/>
+<div class="line">
+  <div class="col-xs-12 panel-title weight-bold">计费规则：</div>
+</div>
+<div class="col-xs-12">
+  <div class="line">
+    <!-- <div><span>在线报酬:</span><span>{{task.onlinePay}}元/小时</span></div> -->
+    在线报酬：{{task.onlinePay}}元/小时
+  </div>
+  <div class="line">
+    接听报酬：{{task.callinPay}}元/次
+  </div>
+  <div class="line">
+    成单报酬：{{task.poPay}}元/单
+  </div>
+  <div class="line">
+    外呼报酬：{{task.calloutPay}}元/单
+  </div>
+</div>
+<div class="col-xs-12">
+  <button class="btn btn-white btn-block btn-send"><span>发送消息</span></button>
+</div>
+
+<div class="col-xs-12">
+  {{#if source}}
+  {{#if showFunc}}
+    <button class="btn btn-white btn-block btn-send-position" {{action 'applyTask' 'applyTask' on="click"}}><span>申请领取</span></button>
+  {{/if}}
+  {{#if showApplyTip}}
+    <button class="btn btn-white btn-block btn-send-position" disabled="true"><span>已申请</span></button>
+  {{/if}}
+  {{/if}}
+</div>

@@ -1,0 +1,169 @@
+<div class="col-sm-12">
+  <!-- BOX -->
+  <div class="box">
+    <div class="box-body">
+      <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+      	<div class="row">
+          <div class="col-sm-8">
+
+        	  <!--搜索-->
+            <div class="col-sm-5 nopadding-left">
+        	    <div class="input-group">
+                {{input class="form-control" type="text" placeholder="搜索姓名/联系电话" value=queryCondition enter="search"}}
+      	        <span class="input-group-btn">
+        		      <button class="btn btn-primary btn-reduce" type="button" style="touch-action: manipulation; -ms-touch-action: manipulation;" {{action "search" on="click"}}>
+                    <i class="fa fa-search"></i>
+                  </button>
+      	        </span>
+        	    </div>
+        	  </div>
+            <div class="col-sm-6 nopadding-left pull-left nopadding-right">
+               {{callbusi/time-search class="inline-block" text='入住日期' dateShow=dateShow chooseDate=chooseDate search="search"
+               submmit="submmit" emptied='emptied' changeBeginDateAction='changeBeginDateAction' changeEndDateAction='changeEndDateAction'}}
+            </div>
+        	  <!--搜索-->
+          </div>
+          <div class="user-add-btn col-sm-2 nopadding-right nopadding-left">
+              {{#ui/mix-button class="user-btn pull-right" iconClass="fa-plus" text='预定转入住' clickAction="tryAndStay" tryAndStay="tryAndStay" }}
+              {{/ui/mix-button}}
+          </div>
+          <div class="user-add-btn col-sm-2 nopadding-right nopadding-left">
+              {{#ui/mix-button class="user-btn pull-right" iconClass="fa-plus" text='直接入住' clickAction="toStay" toStay="toStay" }}
+              {{/ui/mix-button}}
+          </div>
+      	</div>
+        <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+          <thead>
+            <tr role="row">
+              <th rowspan="1" colspan="1" width="">老人姓名</th>
+              <th rowspan="1" colspan="1" width="">电话</th>
+              <th rowspan="1" colspan="1" width="">床位信息</th>
+							<th rowspan="1" colspan="1" width="">经办人</th>
+              <th rowspan="1" colspan="1" width="">办理状态</th>
+              <th rowspan="1" colspan="1" width="">入住状态</th>
+              <th rowspan="1" colspan="1" width="">操作</th>
+            </tr>
+          </thead>
+          {{#if flowList}}
+          <tbody>
+            {{#each flowList as |flow|}}
+            <tr>
+              <td {{action "toDetail" flow on="click"}}>{{flow.customer.name}}</td>
+              <td {{action "toDetail" flow on="click"}}>{{flow.telphone}}</td>
+              <td {{action "toDetail" flow on="click"}}>{{flow.checkInBed.room.allName}}-{{flow.checkInBed.name}}</td>
+              <td {{action "toDetail" flow on="click"}}>{{flow.checkInStaff.name}}</td>
+              <td {{action "toDetail" flow on="click"}}>{{flow.tempFlagName}}</td>
+              <td {{action "toDetail" flow on="click"}}>{{flow.status.typename}}</td>
+              <td >
+                {{#if flow.tryed}}
+                  <a {{action 'toCheckIn' flow 'try' on="click"}}>转入住</a>
+                {{/if}}
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+          {{else}}
+          <div class="nodate">暂无数据</div>
+          {{/if}}
+        </table>
+        {{#if flowList }}
+            {{page-numbers content=flowList showFL=true numPagesToShow=5 exportAllExcel="exportToAllExcel" exportAll=exportAll}}
+            {{else}}
+                <h1 class="col-sm-12 center unTask"></h1>
+        {{/if}}
+      </div>
+    </div>
+    <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  style='visibility: collapse;position: absolute;z-index: -999;' class=" export-block datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+      <thead>
+        <tr role="row">
+          <th rowspan="1" colspan="1" width="">老人姓名</th>
+          <th rowspan="1" colspan="1" width="">电话</th>
+          <th rowspan="1" colspan="1" width="">床位信息</th>
+          <th rowspan="1" colspan="1" width="">经办人</th>
+          <th rowspan="1" colspan="1" width="">办理状态</th>
+          <th rowspan="1" colspan="1" width="">入住状态</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each exportList as |flow|}}
+        <tr>
+          <td {{action "toDetail" flow on="click"}}>{{flow.customer.name}}</td>
+          <td {{action "toDetail" flow on="click"}}>{{flow.telphone}}</td>
+          <td {{action "toDetail" flow on="click"}}>{{flow.checkInBed.room.allName}}-{{flow.checkInBed.name}}</td>
+          <td {{action "toDetail" flow on="click"}}>{{flow.checkInStaff.name}}</td>
+          <td {{action "toDetail" flow on="click"}}>{{flow.tempFlagName}}</td>
+          <td {{action "toDetail" flow on="click"}}>{{flow.status.typename}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+  <!-- /BOX -->
+</div>
+
+
+{{#if tryandstay}}
+{{#bs-modal body=false footer=false header=false closedAction="noTry" size='lg'}}
+  {{#bs-modal-header}}
+    <h3 class="modal-title">预定转入住</h3>
+  {{/bs-modal-header}}
+  {{#bs-modal-body}}
+  <div class="">
+    <div class="box" style="max-height:500px;overflow-y:auto;">
+      <div class="box-body">
+      <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+        <div class="row">
+          <!--搜索-->
+          <!-- 条件搜索 -->
+          <div class="col-sm-6 ">
+            <div class="pull-left">
+              <div class="input-group bottom8">
+                {{input class="form-control" type="text" placeholder="搜索姓名/电话" value=scheduled enter="searchScheduled"}}
+                <span class="input-group-btn">
+                  <button class="btn btn-primary btn-reduce" type="button" style="touch-action: manipulation; -ms-touch-action: manipulation;" {{action "searchScheduled" on="click"}}>
+                    <i class="fa fa-search"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+            <!--搜索-->
+          </div>
+          <!--搜索-->
+        </div>
+        <table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+            <thead>
+                <tr role="row">
+                    <th rowspan="1" colspan="1" width="">老人姓名</th>
+                    <th rowspan="1" colspan="1" width="">电话</th>
+                    <th rowspan="1" colspan="1" width="">预定床位</th>
+                    <th rowspan="1" colspan="1" width="">预定日期</th>
+                    <th rowspan="1" colspan="1" width="">操作</th>
+                </tr>
+            </thead>
+            {{#if scheduledList}}
+            <tbody>
+                {{#each scheduledList as |flow|}}
+                    <tr>
+                        <td >{{flow.customer.name}}</td>
+                        <td >{{flow.telphone}}</td>
+                        <td >{{flow.bed.room.floor.building.name}}{{flow.bed.room.floor.name}}:{{flow.bed.room.name}}-{{flow.bed.name}}</td>
+                        <th rowspan="1" colspan="1" width="" >{{flow.orderDateTimeString}}</th>
+                        <td>
+                          <a style="  text-decoration: underline;margin-right:5px;" {{action 'toCheckIn' flow 'scheduled' on="click"}}>转入住</a>
+                        </td>
+                    </tr>
+                {{/each}}
+            </tbody>
+            {{else}}
+            <div class="nodate">暂无数据</div>
+            {{/if}}
+        </table>
+        </div>
+      </div>
+    </div>
+    <!-- /BOX -->
+  </div>
+
+  {{/bs-modal-body}}
+{{/bs-modal}}
+{{/if}}

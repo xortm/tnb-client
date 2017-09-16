@@ -1,0 +1,26 @@
+<div id="footer" class="ui-footer border-top-1 {{unless service_PageConstrut.showFootBar 'hidden'}} {{if global_curStatus.isOrgMobile 'noicon'}}">
+  {{#each menus as |menu|}}
+    {{ log 'menu in hbs:' menu }}
+    {{#if isConsumer}}
+      <!-- 公众号使用图标 -->
+      {{ui/footer-icon clickActParams=menu menu=menu selected=menu.selected class="isConsumerFooter"
+        touchStartAction="menuClick" menuClick="menuClick" renderAction="menuChange"
+        menuChange="menuChange"
+      }}
+    {{else}}
+      <!-- 机构APP不使用图标 -->
+      {{#if menu.isMenuGroup}}
+        <!-- 分组菜单展示 -->
+        {{#ui/footer-icon-group menu=menu menus=menu.menus selected=menu.selected
+            renderAction="menuChange" menuClick="menuClick" menuChange="menuChange"}}
+        {{/ui/footer-icon-group}}
+      {{else}}
+        <!-- 单个菜单 -->
+        {{ui/footer-icon clickActParams=menu menu=menu selected=menu.selected noIcon=true
+          touchStartAction="menuClick" menuClick="menuClick" renderAction="menuChange"
+          menuChange="menuChange"
+        }}
+      {{/if}}
+    {{/if}}
+  {{/each}}
+</div>

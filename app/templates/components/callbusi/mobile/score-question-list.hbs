@@ -1,0 +1,42 @@
+<div name="listContainer" class="contentArea contentAreaList width100B">
+  <!-- {{#if item.hasReady}}
+  <div class="finish-tag" style="right:-71px;top:-28px;font-size:12px;">已评分</div>
+  {{/if}} -->
+  <div class="col-xs-middle time-content nopadding-horizontal width100B clearfix position-relative height40" id="score_{{item.employeeIdInloop}}" {{action "gotoDetail" on="tap"}}>
+    {{log item.employeeIdInloop}}
+    {{#if (eq item.employeeIdInloop "0")}}
+      {{#if item.averageScore}}
+        <div class="font18 line-height-40 padding-left-15 color333333 weightbold">养老院评分: <span class="color999999 font14 fontNormal">{{item.averageScore}}分</span></div>
+        <i class="fa-angle-right font20 my-right color-ccc pull-right"></i>
+      {{else}}
+        <div class="font18 line-height-40 padding-left-15 color333333 weightbold">养老院评分: <span class="color999999 font14 fontNormal">暂未评分</span></div>
+        <i class="fa-angle-right font20 my-right color-ccc pull-right"></i>
+      {{/if}}
+    {{else}}
+      {{#if item.averageScore}}
+        <div class="font16 line-height-40 padding-left-15 color666666">{{item.employee.name}}: <span class="color999999 font14">{{item.averageScore}}分</span></div>
+        <i class="fa-angle-right font20 my-right color-ccc pull-right"></i>
+      {{else}}
+        <div class="font16 line-height-40 padding-left-15 color666666">{{item.employee.name}}: <span class="color999999 font14">暂未评分</span></div>
+        <i class="fa-angle-right font20 my-right color-ccc pull-right"></i>
+      {{/if}}
+    {{/if}}
+  </div>
+</div>
+{{#if (eq item.employeeIdInloop "0")}}
+  {{#if hasEmployeeItemFlag}}
+    <div class="font18 color333333 line-height-50 padding-left-15 border-dddddd margin-bottom-f1 weightbold">员工评分: </div>
+  {{/if}}
+{{/if}}
+
+<!-- <li class="carousel color666" id="score_{{item.employeeIdInloop}}" {{action "gotoDetail" on="tap"}}>
+  <i class="profile-i"><img class="a-img" src="assets/images/mobile/Group@2x.png"/></i>
+  {{#if (eq item.employeeIdInloop "0")}}
+    <span class="profile-span">总体评分: 3分</span>
+    <i class="fa-angle-right font20 my-right color-ccc"></i>
+  {{else}}
+    <span class="profile-span">孙艳春: 2分</span>
+    <i class="fa-angle-right font20 my-right color-ccc"></i>
+  {{/if}}
+</li>
+<div class="margin-leftright10 border-bottom-1"></div> -->

@@ -1,0 +1,21 @@
+{{#if global_curStatus.isMobile}}
+  {{#if showModel}}
+    <h3 class="center unTask">没有此老人</h3>
+  {{else}}
+  {{#ui/mobile/inner-tabbar menus=tabFuncs switchTab="switchTab" btnFlag=btnFlag clickActFlag=clickActFlag positionClass="abs-top-44 customer-detail" theme="block-mode" customerDetailClass="customerDetailClass"}}
+  {{/ui/mobile/inner-tabbar}}
+
+  <div class={{unless (eq curTabCode "health") 'hidden' ''}}>
+    {{callbusi/mobile/customer-detail-health tabCode="health" curTabCode=curTabCode healthShowFlag=healthShowFlag queryHealth="queryHealth" otherChoose=otherChoose
+     customer=customer sourceFlag=sourceFlag addHealth="addHealth"}}
+  </div>
+  <div class={{unless (eq curTabCode "dynamics") 'hidden' ''}}>
+    {{callbusi/mobile/customer-detail-dynamics tabCode="dynamics" curTabCode=curTabCode dynamicsShowFlag=dynamicsShowFlag dynamicsShowFlagTrue=dynamicsShowFlagTrue
+     customer=customer edit="edit" addDynamics="addDynamics"}}
+  </div>
+  <div class={{unless (eq curTabCode "information") 'hidden' ''}}>
+    {{callbusi/mobile/customer-detail-information tabCode="information" curTabCode=curTabCode
+     customer=customer}}
+  </div>
+  {{/if}}
+{{/if}}

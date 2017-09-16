@@ -1,0 +1,55 @@
+<div class="title-area bk-color-FAFAF9 margin-0-10px border-bottom-1">
+  <div class="item-name pull-left">{{itemName}}</div>
+  <div class="pull-right">
+    <!-- {{ui/icon-button iconClass="" title="加一" clickAction="saveCountApply" saveCountApply="saveCountApply" class="tip-text-color font16"}} -->
+    <!-- {{ui/icon-button iconClass="" title="减一" clickAction="minusAction" minusAction="minusAction" class=""}} -->
+    {{#if itemCount}}
+      <span id="minus_{{itemId}}" {{action "minusAction" on="tap"}}><i class="fa-minus color999999 font16 right8"></i></span>
+    {{else}}
+      <span id="minus_{{itemId}}"><i class="fa-minus colorCCC font16 right8"></i></span>
+    {{/if}}
+    <span class="tip color2FA7FD">{{itemCount}}</span><span class="font12">  次</span>
+    <span id="save_{{itemId}}" {{action "saveCountApply" on="tap"}}><i class="fa-plus left8 color999999 font16"></i></span>
+
+
+
+
+  </div>
+  <!-- <div class="func pull-right right8">
+    {{ui/icon-button iconClass="el-plus" title="添加" clickAction="cntAddAction" cntAddAction="cntAddAction" class="tip-text-color font16"}}
+    {{#if expanded}}
+    {{ui/icon-button iconClass="el-down-open" class="light-text-color font12"}}
+    {{else}}
+    {{ui/icon-button iconClass="el-up-open" class="light-text-color font12"}}
+    {{/if}}
+  </div> -->
+</div>
+<!-- <div class="detail-area {{if expanded '' 'heddin'}}">
+  {{#if detail}}
+  {{#each detail as |detailItem|}}
+    <div class="detail">
+      <span class="weight-bold">{{detailItem.indexStr}}</span><span>{{detailItem.content}}</span>
+    </div>
+  {{/each}}
+  <div class="addImplementMessage">
+    <div class="sendBtnAddImplementMessage" id="AddImplement_message{{itemId}}" {{action "cntAddAction" itemId on="tap"}}>
+        +
+    </div>
+  </div>
+  {{else}}
+
+    <div class="addImplementMessage">
+      点击按钮添加内容
+      <div class="sendBtnAddImplementMessage" id="AddImplement_message{{itemId}}" {{action "cntAddAction" itemId on="tap"}}>
+          +
+      </div>
+    </div>
+  {{/if}}
+</div> -->
+<div class="clear"/>
+
+
+<!--  点击是否显示大图  -->
+<!-- {{#if showExesModal}}
+  {{ui/mobile/nursingplanexe-list invitation="invitation" minusAction="minusAction" itemExes=itemExes}}
+{{/if}} -->

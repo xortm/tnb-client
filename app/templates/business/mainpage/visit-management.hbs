@@ -1,0 +1,84 @@
+<div class="col-sm-12">
+  <div class="box">
+    <div class="box-body">
+    <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+    	<div class="row">
+        <!--搜索-->
+        <div class="col-sm-9 ">
+            <span class="date-range pull-left">
+              <div class="btn-group">
+                <a class="js_update btn btn-default" href="#" {{action "search" "today" on="click"}}>今天</a>
+                <a class="js_update btn btn-default" href="#" {{action "search" "seven" on="click"}}>最近7天</a>
+                <a class="js_update btn btn-default" href="#" {{action "search" "thirty" on="click"}}>最近一个月</a>
+
+                <a id="reportrange" class="btn reportrange" {{action "showDate" on="click"}}>
+                  <i class="fa fa-calendar"></i>
+                  <span>自定义日期</span>
+                  <i class="fa fa-angle-down"></i>
+                </a>
+              </div>
+             {{#if dateShow}}
+              <!-- 日期选择弹窗 -->
+              <div class="date-box form-input-group">
+                  <div class="row">
+                    <div class="col-xs-4 col-sm-4 org-title">开始时间：</div>
+                    <!-- <div class="col-xs-8 col-sm-8">{{input class="input-group-content" type="date" value=beginDate}}</div> -->
+                      <div class="col-xs-8 col-sm-8">
+                    {{ui/addon/bs-datetimepicker date=null placeholder="开始时间"
+											locale="zh-CN" iconClasses="fa fa-calendar"
+											 show="dpShowAction"  change="changeBeginDateAction"}}
+                      </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-xs-4 col-sm-4 org-title">结束时间：</div>
+                    <div class="col-xs-8 col-sm-8">
+                  {{ui/addon/bs-datetimepicker date=null placeholder="结束时间"
+                    locale="zh-CN" iconClasses="fa fa-calendar"
+                     show="dpShowAction"  change="changeEndDateAction"}}
+                    </div>
+                  </div>
+                  <div class="btn-row text-center">
+                    <button class="btn btn-primary"  {{action "hideDate"  on="click"}}><i class="fa fa-check icon-white"></i>&ensp;确定</button>
+                    <button class="btn btn-light-grey"  {{action "hideDate" on="click"}}><i class="fa fa-times"></i>&ensp;取消</button>
+                  </div>
+              </div>
+              <!-- End 日期选择弹窗 -->
+              {{else}}
+              {{/if}}
+            </span>
+          </div>
+          <div class="user-add-btn col-sm-3 pull-right nopadding-right">
+            {{#ui/mix-button class=" user-btn pull-right" iconClass="fa-plus"  text='添加回访信息'  clickAction="toDetailPage" toDetailPage="toDetailPage" style="padding-right:0px;margin-right:0px;"}}
+            {{/ui/mix-button}}
+      	  </div>
+
+    	  <!--搜索-->
+    	</div>
+      <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable mt15" aria-describedby="datatable1_info">
+        <thead>
+          <tr role="row">
+            <th rowspan="1" colspan="1" width="">回访时间</th>
+            <th rowspan="1" colspan="1" width="">类型</th>
+            <th rowspan="1" colspan="1" width="">回访人/接待人</th>
+          </tr>
+        </thead>
+      <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+          {{#each vistList as |vist|}}
+          <tr class="gradeA odd" {{action "toDetailPage" vist on="click"}}>
+            <td class=" ellipsis sorting_1">{{vist.createDateTimeString}}</td>
+            <td class=" ellipsis ">{{vist.backVistType.typename}}</td>
+            <td class=" ellipsis">{{vist.vistUser.name}}</td>
+      	  </tr>
+          {{/each}}
+       </tbody>
+        </table>
+        {{#if vistList }}
+            {{page-numbers content=vistList showFL=true numPagesToShow=5}}
+            {{else}}
+                <h1 class="col-sm-12 center unTask"></h1>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+  <!-- /BOX -->
+</div>

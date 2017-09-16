@@ -1,0 +1,5 @@
+{{#if (eq letter "#")}}
+  <li class="center {{if (eq letterAddClass "ALL") 'rightBarTap' ''}}" {{action "queryInitial" "ALL" on="tap"}}>{{letter}}</li>
+{{else}}
+  <li class="center {{if (eq letterAddClass letter) 'rightBarTap' ''}}" {{action "queryInitial" letter on="tap"}}>{{letter}}</li>
+{{/if}}

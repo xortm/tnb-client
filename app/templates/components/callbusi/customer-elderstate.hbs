@@ -1,0 +1,49 @@
+<div class="elderstate" id="customer_{{customer.id}}">
+  <div class="border-1-solid  border-radius5 height142 width120">
+    <div class="top10 left26">
+      {{#ui/img-intergration name="headImg"
+      imgSrc=customer.avatarUrl height=66 width=66
+      businessType=constants.uploadBusinessType_headimg
+      }}
+      {{/ui/img-intergration}}
+    </div>
+    <div class="top10 center min-height-18">
+      {{customer.name}}
+    </div>
+    <ul class="clear padding-left-20 top10">
+      <li class="pull-left pointer position-relative" {{action 'showelder' 'heart' on="click"}} id="heart_{{customer.id}}">
+        <!-- <i class="fa-heart"></i> -->
+        <img class="" src="assets/images/icon/heart.png" alt="">
+        <div class="elderH visiHidden" id="heartHover_{{customer.id}}">
+          <div class="elderArrow elderArrowheartBor"></div>
+          <div class="elderHover elderArrowheartBack">
+            {{heartNew}}
+          </div>
+        </div>
+      </li>
+
+      <li class="pull-left pointer left10 position-relative" {{action 'showelder' 'download' on="click"}} id="download_{{customer.id}}">
+        <!-- <i class="fa-download"></i> -->
+        <img class="" src="assets/images/icon/download.png" alt="">
+        <div class="elderH visiHidden" id="downloadHover_{{customer.id}}">
+          <div class="elderArrow elderArrowdownloadBor"></div>
+          <div class=" elderHover elderArrowdownloadBack">
+            {{downloadNew}}
+          </div>
+        </div>
+      </li>
+
+      <li class="pull-left pointer left10 position-relative" {{action 'showelder' 'warning' on="click"}} id="warning_{{customer.id}}">
+        <!-- <i class="fa-warning"></i> -->
+        <img class="" src="assets/images/icon/warning.png" alt="">
+        <div class="elderH visiHidden" id="warningHover_{{customer.id}}">
+          <div class="elderArrow elderArrowwarningBor"></div>
+          <div class=" elderHover elderArrowwarningBack">
+            {{warningNew}}
+          </div>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+</div>

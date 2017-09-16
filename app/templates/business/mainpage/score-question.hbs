@@ -1,0 +1,18 @@
+{{#ui/mobile/gestures-container}}
+<div id="scoreQuestionContainer" class="mainContent {{if global_pageConstructure.showLoader 'hide' ''}}">
+  <div class="wrapperInner bk-color-white">
+    <div class="font18 top15 line-height-30 font-black padding-left-15 center">{{appraiseName}}</div>
+    <div class="font13 line-height-18 color666666 padding-left-15 bottom15">请为我们的服务进行评分</div>
+    <!-- {{#if appraiseRemark}}
+    <div class="font13 line-height-18 color666666 padding-left-15 bottom15">{{appraiseRemark}}</div>
+    {{/if}} -->
+    <ul class="profile"  >
+    {{#each itemList as |item|}}
+      {{#callbusi/mobile/score-question-list item=item hasEmployeeItemFlag=hasEmployeeItemFlag outerClass="col-sm-6 col-xs-12 height-auto"}}
+      {{/callbusi/mobile/score-question-list}}
+    {{/each}}
+    </ul>
+</div>
+</div>
+{{/ui/mobile/gestures-container}}
+{{ui/container/infinite-scroll moniteData="" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

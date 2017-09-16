@@ -1,0 +1,228 @@
+<div class="col-sm-12">
+	<!-- BOX -->
+	<div class="box">
+		<div class="box-body">
+
+			<div class="row">
+				{{#bs-form formLayout=formLayout model=tenantModel action=(action "saveTenant") invalid=(action "invalid")}}
+					<div class="col-xs-12">
+						<p class="user-add-btn">
+							{{#if detailEdit}}
+								{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save" text='保存' }}
+								{{/ui/mix-button}}
+								{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo" text='取消' clickAction="detailCancel" detailCancel="detailCancel" }}
+								{{/ui/mix-button}}
+							{{else}}
+								{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-edit" text='编辑' clickAction="detailEditClick" detailEditClick="detailEditClick" }}
+								{{/ui/mix-button}}
+							<!-- {{#ui/mix-button class="user-btn trash-btn" iconClass="fa fa-trash-o" text='删除' clickAction="delById" delById="delById" clickActParams=tenantInfo}}
+								{{/ui/mix-button}} -->
+							{{/if}}
+						</p>
+					</div>
+					<div class="col-sm-6">
+						<div style="clear:both" />
+						<div class="padding-bottom10 sign col-md-12 top30 divider-border"><strong>基本信息</strong></div>
+						<div class="line">
+							<div class="col-xs-12 nopadding-horizontal mt20">
+								<div class="col-xs-12 col-sm-6 nopadding-left ">
+									<div class="form-input-group label-normal">
+										<span class="input-group-addon">&emsp;机构名称：</span>
+										{{#if detailEdit}}
+											{{bs-form-element property="orgName" class="inline-block form-input-group label-normal" controlType="orgName" placeholder="机构名称"}}
+										{{else}}
+											<div class="font-light input-group-content">{{tenantInfo.orgName}}</div>
+										{{/if}}
+									</div>
+
+								</div>
+								<div class="col-xs-12 col-sm-6 nopadding-left ">
+									<div class="form-input-group label-normal">
+										<span class="input-group-addon">&emsp;机构简称：</span>
+										{{#if detailEdit}}
+											{{input class="inline-block input-group-content" value=tenantInfo.orgShortName type="text" placeholder="机构简称"}}
+										{{else}}
+											<div class="font-light input-group-content">{{tenantInfo.orgShortName}}</div>
+										{{/if}}
+									</div>
+
+								</div>
+							</div>
+						</div>
+						<div class="line">
+							<div class="col-xs-12 col-sm-6 nopadding-left ">
+								<div class="form-input-group label-normal">
+									<span class="input-group-addon">&emsp;机构地址：</span>
+									{{#if detailEdit}}
+										{{bs-form-element property="address" class="inline-block form-input-group label-normal" controlType="address" placeholder="机构地址"}}
+									{{else}}
+										<div class="font-light input-group-content">{{tenantInfo.address}}</div>
+									{{/if}}
+								</div>
+
+							</div>
+							<div class="col-xs-12 col-sm-6 nopadding-left ">
+								<div class="form-input-group label-normal">
+									<span class="input-group-addon">&emsp;机构电话：</span>
+									{{#if detailEdit}}
+										{{bs-form-element property="orgTel" class="inline-block form-input-group label-normal" controlType="orgTel" placeholder="机构电话"}}
+									{{else}}
+										<div class="font-light input-group-content">{{tenantInfo.orgTel}}</div>
+									{{/if}}
+								</div>
+
+							</div>
+						</div>
+						<div class="line">
+							<div class="col-xs-12 col-sm-6 nopadding-left ">
+								<div class="form-input-group label-normal">
+									<span class="input-group-addon">&emsp;法人姓名：</span>
+									{{#if detailEdit}}
+										{{bs-form-element property="legalPerson" class="inline-block form-input-group label-normal" controlType="legalPerson" placeholder="法人姓名"}}
+									{{else}}
+										<div class="font-light input-group-content">{{tenantInfo.legalPerson}}</div>
+									{{/if}}
+								</div>
+
+							</div>
+							{{#if (eq editMode 'add')}}
+
+							{{else}}
+								<div class="col-xs-12 col-sm-6 nopadding-left ">
+									<div class="form-input-group label-normal">
+										<span class="input-group-addon">&emsp;租户状态：</span>
+
+										{{#if (eq addFlag '2')}}
+											<div class="font-light input-group-content">{{tenantInfo.status.typename}}</div>
+											{{else}}
+											{{#if detailEdit}}
+												{{#bs-form-element class="inline-block form-input-group" controlType="tenantStatus" property="tenantStatus" }}
+													{{callbusi/dict-selector class="inline-block" curDict=tenantInfo.status groupCode=constants.tenantStatus showName='租户状态' value=tenantInfo.status preselected=false}}
+												{{/bs-form-element}}
+											{{else}}
+												<div class="font-light input-group-content">{{tenantInfo.status.typename}}</div>
+											{{/if}}
+										{{/if}}
+
+									</div>
+
+								</div>
+							{{/if}}
+						</div>
+						<div class="line">
+							<div class="col-xs-12 col-sm-6 nopadding-left ">
+								<div class="form-input-group label-normal">
+									<span class="input-group-addon">&emsp;营业执照：</span>
+									<div class="col-sm-2 nopadding-left bott cccc img-top-padding50">
+										{{#ui/img-intergration name="licenseImg" hasUploader=true imgSrc=tenantInfo.avatarUrl height=190 width=190 margin-left=0 uploadUrl=uploadUrl uploadSucc="uploadSucc" uploadFail="uploadFailImg" businessType=constants.uploadBusinessType_headimg as |component|
+										    }}
+											<div class="pull-left photo-title {{if detailEdit '' 'hidden'}}">
+												<div class="photo-footer">
+													<div class="button pull-left photo-footer-color" {{action 'avatarUpload' target=component on="click"}}>
+														上传执照
+													</div>
+												</div>
+											</div>
+										{{/ui/img-intergration}}
+									</div>
+								</div>
+
+							</div>
+						</div>
+						<div class="line">
+							<div class="col-xs-12  nopadding-left ">
+								<div class="form-input-group label-normal">
+									<span class="input-group-addon">&emsp;机构简介：</span>
+									{{#if detailEdit}}
+										{{textarea rows="3" type="text" maxlength='300' class="full-width inline-block form-input-group label-normal form-control" value=tenantInfo.remark placeholder='备注(最多输入300字)'}}
+									{{else}}
+										<div class="font-light input-group-content-remark">{{tenantInfo.remark}}</div>
+									{{/if}}
+								</div>
+
+							</div>
+						</div>
+						<div style="clear:both" />
+
+						<div class="padding-bottom10 sign col-md-12 top30 divider-border"><strong>联系人信息</strong></div>
+						<div class="line">
+							<div class="col-xs-12 nopadding-horizontal mt20">
+								<div class="col-xs-12 col-sm-6 nopadding-left ">
+									<div class="form-input-group label-normal">
+										<span class="input-group-addon">&emsp;姓名：</span>
+										{{#if detailEdit}}
+											{{bs-form-element property="linkMan" class="inline-block form-input-group label-normal" controlType="linkMan" placeholder="姓名"}}
+										{{else}}
+											<div class="font-light input-group-content">{{tenantInfo.linkMan}}</div>
+										{{/if}}
+									</div>
+
+								</div>
+								<div class="col-xs-12 col-sm-6 nopadding-left ">
+									<div class="form-input-group label-normal">
+										<span class="input-group-addon">&emsp;电话：</span>
+										{{#if detailEdit}}
+											{{bs-form-element property="linkManTel" class="inline-block form-input-group label-normal" controlType="linkManTel" placeholder="电话"}}
+										{{else}}
+											<div class="font-light input-group-content">{{tenantInfo.linkManTel}}</div>
+										{{/if}}
+									</div>
+
+								</div>
+							</div>
+							<div class="line">
+								<div class="col-xs-12 col-sm-6 nopadding-left ">
+									<div class="form-input-group label-normal">
+										<span class="input-group-addon">&emsp;QQ：</span>
+										{{#if detailEdit}}
+											{{input class="inline-block input-group-content" value=tenantInfo.linkManQQ type="text" placeholder="QQ"}}
+										{{else}}
+											<div class="font-light input-group-content">{{tenantInfo.linkManQQ}}</div>
+										{{/if}}
+									</div>
+
+								</div>
+								<div class="col-xs-12 col-sm-6 nopadding-left ">
+									<div class="form-input-group label-normal">
+										<span class="input-group-addon">&emsp;邮箱：</span>
+										{{#if detailEdit}}
+											{{input class="inline-block input-group-content" value=tenantInfo.linkManMail type="text" placeholder="邮箱"}}
+										{{else}}
+											<div class="font-light input-group-content">{{tenantInfo.linkManMail}}</div>
+										{{/if}}
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+					{{#if (eq addFlag '0')}}
+						<div class="col-sm-6">
+							<div class="form-input-group label-normal">
+								<span class="input-group-addon">&emsp;权限类别：</span>
+								<select id="sysSelect" class="inline-block input-group-content ember-select" onchange= {{ action 'systemTypeChange' value="target.value"}}>
+									 {{#if (eq  feedBus.systemType 2)}}
+										 <option value="1" >机构</option>
+											<option value="2" selected>居家</option>
+											 {{else}}
+											 <option value="1" selected>机构</option>
+											 <option value="2">居家</option>
+									 {{/if}}
+
+								</select>
+								<p class="user-add-btn">
+									<button type="button"  class="btn btn-icon btn-turquoise btn-xs pull-right btn_xs_padding user-btn edit-btn {{paddingBorder}} "   {{action "allocateSysPrivilege" 1}} >分配全部机构权限</button>
+									<button type="button"  class="btn btn-icon btn-turquoise btn-xs pull-right btn_xs_padding user-btn edit-btn {{paddingBorder}}"   {{action "allocateSysPrivilege" 2}} >分配全部居家权限</button>
+									<button type="button"  class="btn btn-icon btn-turquoise btn-xs pull-right btn_xs_padding user-btn edit-btn {{paddingBorder}}"   {{action "allocatePublicPrivilege"}} >分配全部公众号权限</button>
+								</p>
+							</div>
+							{{callbusi/tenant-privileges currentTenant=currentTenant saveFlag=saveFlag detailEdit=detailEdit editMode=editMode systemType=systemType}}
+						</div>
+					{{/if}}
+				{{/bs-form}}
+			</div>
+		</div>
+
+	</div>
+	<!-- /BOX -->
+</div>

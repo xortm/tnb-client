@@ -1,0 +1,46 @@
+{{#if detailEdit}}
+  {{#if editMode}}
+  <div class="inline-block pull-left answer-seq">{{realSeq}}&nbsp;&nbsp;</div>
+  <div class="col-sm-8 nopadding-left nopadding-right">
+    {{input class="input-content question-input" value=content}}
+    <div class="inline-block" {{action "commit" on="click"}}>
+      <span class="question-icon">
+        <i class="fa-check">
+            {{bs-tooltip title="确定" class="light-tooltip"}}
+        </i>
+      </span>
+
+    </div>
+    <div class="inline-block" {{action "cancel" on="click"}}>
+      <span class="question-icon">
+        <i class="fa-undo">
+          {{bs-tooltip title="取消" class="light-tooltip"}}
+        </i>
+      </span>
+
+    </div>
+  </div>
+  {{else}}
+  <div class="pull-left" title="{{content}}">{{realSeq}} &nbsp;&nbsp;{{content}} &nbsp;&nbsp;
+
+  </div>
+  {{#if hasSelected}}
+  <div class="part-func inline-block pull-right" {{action "delAnswer" answer on="click"}}>
+    <span class="question-icon">
+      <i class="fa-minus"></i>
+    </span>
+    {{bs-tooltip title="删除答案" class="light-tooltip"}}
+  </div>
+  <div class="part-func inline-block pull-right" {{action "edit" on="click"}}>
+    <span class="question-icon">
+      <i class="fa-pencil"></i>
+    </span>
+    {{bs-tooltip title="编辑答案" class="light-tooltip"}}
+  </div>
+
+  {{/if}}
+  {{/if}}
+{{else}}
+  <div class="pull-left" title="{{content}}">{{realSeq}}&nbsp;&nbsp;{{content}} &nbsp;&nbsp;
+  </div>
+{{/if}}

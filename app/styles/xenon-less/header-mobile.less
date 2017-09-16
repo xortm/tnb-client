@@ -1,0 +1,171 @@
+@media screen and (max-width: @screen-sm) {
+
+  .logo-env {
+    top: 0;
+    position: fixed;
+    width:100%;
+    z-index:9;
+    padding-top: @base-padding;
+    padding-bottom: @base-padding;
+    padding-left: @base-margin;
+    padding-right: @base-margin;
+    background:@xe-navy;
+    .mobile-menu-toggle {
+      float: right;
+      position: relative;
+      a {
+        @s: 18px;
+
+        position: relative;
+        display: inline-block;
+        color: @main-text-color;
+        line-height: 1;
+        margin-left: @default-padding/2;
+
+        i {
+          line-height: 1;
+          font-size: @s;
+          position: relative;
+          top: 1px;
+        }
+
+        &:hover,
+        &:active,
+        &:focus {
+          color: @main-text-active-color;
+        }
+
+        .badge {
+          position: absolute;
+          right: -3px;
+          top: -8px;
+          font-size: 8px;
+          padding: 1px 2px;
+          min-width: 14px;
+        }
+      }
+    }
+
+    .logo {
+      float: left;
+      position: relative;
+      div {
+        margin-top:2px;
+        margin-left:2px;
+        color: @main-text-active-color;
+        font-size: 20px;
+      }
+    }
+  }
+	.page-container {
+		display: block;
+
+		.sidebar-menu, .main-content {
+			display: block;
+			width: 100%;
+			height: auto;
+		}
+
+		.sidebar-menu {
+			position: relative;
+
+			.sidebar-menu-inner {
+				position: relative;
+				.logo-env,
+				.main-menu {
+					padding-left: @base-margin;
+					padding-right: @base-margin;
+				}
+
+
+
+				.main-menu {
+					display: none;
+					margin-bottom: 0;
+
+					&.mobile-is-visible {
+						display: block;
+
+						&.both-menus-visible {
+							margin-top: 0;
+							padding-top: 0;
+						}
+					}
+
+					> li:last-child {
+
+						> a {
+							border-bottom: 0;
+						}
+					}
+				}
+			}
+		}
+
+		.main-content {
+
+			.navbar.user-info-navbar {
+				display: none;
+
+				&.mobile-is-visible {
+					display: block;
+				}
+
+				.user-info-menu {
+
+					> li {
+						min-height: 0 !important;
+
+						> a, > form {
+							padding-top: @base-margin;
+							padding-bottom: @base-margin;
+						}
+
+						&.user-profile {
+
+							> a > span {
+								display: none;
+							}
+						}
+
+						a > .badge {
+							top: 10px;
+						}
+					}
+				}
+			}
+
+			.main-footer {
+				position: relative;
+				left: 0;
+				right: auto;
+				margin-left: -@default-padding;
+				margin-right: -@default-padding;
+			}
+		}
+	}
+
+	// Chat
+	@chat-width-mobile: 340px;
+
+	.page-container {
+		position: relative;
+
+		#chat {
+			left: auto;
+			margin: 0;
+			width: @chat-width-mobile;
+
+			.chat-conversation {
+				bottom: auto;
+				position: absolute;
+				left: 0;
+				top: 0;
+			}
+		}
+	}
+
+	.chat-open .page-container {
+		left: -@chat-width-mobile;
+	}
+}

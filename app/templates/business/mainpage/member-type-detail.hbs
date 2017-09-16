@@ -1,0 +1,56 @@
+<div class="col-md-12">
+	<div class="box margin-middle max-width">
+		<!-- BOX-BODY -->
+		<div class="box-body">
+			{{#bs-form formLayout=formLayout model=dicttypeModel action=(action "savedicttype") invalid=(action "invalid")}}
+				<!-- 列表编辑-->
+				<div class="row">
+					<div class="col-xs-12">
+						<p class="user-add-btn">
+							<!-- <button class="btn btn-primary" type="button"><i class="fa fa-check icon-white"></i>&ensp;保存</button>
+						<button class="btn btn-light-grey"><i class="fa fa-times"></i>&ensp;取消</button> -->
+							{{#if detailEdit}}
+								<!-- {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='保存'   clickActParams=warning}}
+			        {{/ui/mix-button}}
+							{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="detailCancel" detailCancel="detailCancel" }}
+			        {{/ui/mix-button}} -->
+							{{else}}
+								<!-- {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-edit"  text='编辑'  clickAction="detailEditClick" detailEditClick="detailEditClick" clickActParams=warning}}
+			        {{/ui/mix-button}}
+							{{#ui/mix-button class="user-btn trash-btn" iconClass="fa fa-trash-o"  text='删除'  clickAction="delById" delById="delById" clickActParams=warning}}
+			        {{/ui/mix-button}} -->
+								{{#ui/form-function editAction="detailEditClick" detailEditClick="detailEditClick" removeAction="delById" delById="delById" }}
+								{{/ui/form-function}}
+							{{/if}}
+						</p>
+					</div>
+					<div class="col-xs-12 nopadding-horizontal mt20">
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">会员等级名称：</span>
+								{{#if detailEdit}}
+									{{bs-form-element property="typename" class="inline-block form-input-group" controlType="typename" placeholder="必填项" value=typename}}
+								{{else}}
+									<div class="input-group-content">{{dicttype.typename}}</div>
+								{{/if}}
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<!-- 列表编辑 -->
+				<div class="padding-top30 center">
+					<p class="text-center user-add-btn margin0auto inlineBlock">
+						{{#if detailEdit}}
+							{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check" text='保存' }}
+							{{/ui/mix-button}}
+							{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply" text='取消' clickAction="detailCancel" detailCancel="detailCancel" }}
+							{{/ui/mix-button}}
+						{{/if}}
+					</p>
+				</div>
+			{{/bs-form}}
+		</div>
+		<!-- /BOX-BODY -->
+	</div>
+</div>

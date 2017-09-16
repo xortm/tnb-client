@@ -1,0 +1,30 @@
+<div id="customerContainer" class="mainContent">
+  <div class="wrapperInner">
+    {{#if searchHas}}
+    {{#ui/mobile/gestures-container}}
+      <div class="padding-0-10 height30 line-height-30 color666666" style="background: #FFF3B7">
+        {{searchMessage}}
+        <i class="fa-close pull-right colorCCC font16 padding-top8" {{action 'closeSearchHas' on="tap"}}></i>
+      </div>
+    {{/ui/mobile/gestures-container}}
+    {{/if}}
+
+    {{#if customerList}}
+    {{#each customerList as |customer|}}
+      <div id="customerItem_{{customer.id}}" class="">
+        {{callbusi/mobile/customer-list-item customer=customer goDetail="goDetail"}}
+      </div>
+    {{/each}}
+    {{else}}
+      {{#if global_pageConstructure.showLoader}}
+        <div class="center top20">
+          <img class="width33" src="assets/images/logo/loading.gif" alt="">
+        </div>
+      {{else}}
+        <h3 class="center unTask">没有老人</h3>
+      {{/if}}
+
+    {{/if}}
+  </div>
+</div>
+{{ui/container/infinite-scroll moniteData="customerList" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

@@ -1,0 +1,104 @@
+<div class="col-sm-12">
+  <!-- BOX -->
+  <div class="box">
+    <div class="box-body">
+      <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+      	<div class="row">
+          <div class="col-sm-9 nopadding-left">
+        	  <!--搜索-->
+            <div class="col-sm-5">
+        	    <div class="input-group">
+            		{{input class="form-control" type="text" placeholder="名称" value=queryCondition enter="search"}}
+      	        <span class="input-group-btn">
+        		      <button class="btn btn-primary btn-reduce" type="button" style="touch-action: manipulation; -ms-touch-action: manipulation;" {{action "search" on="click"}}>
+                    <i class="fa fa-search"></i>
+                  </button>
+      	        </span>
+        	    </div>
+        	  </div>
+        	  <!--搜索-->
+          </div>
+      	  <div class="user-add-btn col-sm-3 nopadding-right">
+            {{#ui/mix-button class="user-btn pull-right" iconClass="fa-plus"  text='新增'  clickAction="toDetailPage" toDetailPage="toDetailPage"}}
+            {{/ui/mix-button}}
+      	  </div>
+      	</div>
+        <table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+          <thead>
+            <tr role="row">
+              <th rowspan="1" colspan="1" width="">名称</th>
+              <th rowspan="1" colspan="1" width="">描述</th>
+              <th rowspan="1" colspan="1" width="">操作</th>
+            </tr>
+          </thead>
+          <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+            {{#each riskList as |risk|}}
+            <tr {{action "toDetailPage" risk on="click"}}>
+              <td class="ellipsis" >{{risk.name}}</td>
+              <td class="ellipsis" >{{risk.remark}}</td>
+              <th rowspan="1" colspan="1" width="">
+                <a style="text-underline-position:under;text-decoration:underline;" {{action 'delById' risk on="click" bubbles=false}}>删除</a>&nbsp;&nbsp;
+                <a style="text-underline-position:under;text-decoration:underline;" {{action 'toLevel' risk on="click" bubbles=false}}>等级设置</a>&nbsp;&nbsp;
+                <a style="text-underline-position:under;text-decoration:underline;" {{action 'toRecord' risk on="click" bubbles=false}}>记录模板表设置</a>&nbsp;&nbsp;
+                <a style="text-underline-position:under;text-decoration:underline;" {{action 'toEvaluate' risk on="click" bubbles=false}}>评估模板设置</a>
+              </th>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        {{#if riskList }}
+            {{page-numbers content=riskList showFL=true numPagesToShow=5}}
+        {{else}}
+                <h1 class="col-sm-12 center unTask"></h1>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+  <!-- /BOX -->
+</div>
+
+{{#if addModel}}
+	{{#bs-modal body=false footer=false header=false closeAction="invitation"}}
+		{{#bs-modal-header}}
+			<h3 class="modal-title">{{modelName}}</h3>
+		{{/bs-modal-header}}
+		{{#bs-modal-body}}
+    {{#bs-form formLayout=formLayout model=riskModel }}
+			<div class="col-xs-12 nopadding-horizontal">
+				<div class="col-xs-12 nopadding-left col-xs-6">
+					<div class="form-input-group">
+						<span class="input-group-addon">名称：</span>
+            {{#bs-form-element class="inline-block form-input-group" controlType="name" property="name" }}
+              {{input type="text" class="full-width padding-left-8 inline-block form-input-group label-normal" value=riskModel.name placeholder='必填'}}
+            {{/bs-form-element}}
+					</div>
+				</div>
+        <div class="col-xs-12 nopadding-left col-xs-6">
+					<div class="form-input-group">
+						<span class="input-group-addon">编码：</span>
+            {{#bs-form-element class="inline-block form-input-group" controlType="code" property="code" }}
+              {{input type="text" class="full-width padding-left-8 inline-block form-input-group label-normal" value=riskModel.code placeholder='必填'}}
+            {{/bs-form-element}}
+					</div>
+				</div>
+      </div>
+      <div class="col-xs-12 nopadding-horizontal">
+				<div class="col-xs-12 nopadding-left">
+					<div class="form-input-group">
+						<span class="input-group-addon">描述：</span>
+            {{#bs-form-element class="inline-block form-input-group" controlType="remark" property="remark" }}
+              {{textarea type="text" class="full-width padding-left-8 inline-block form-input-group label-normal" value=riskModel.remark placeholder='必填'}}
+            {{/bs-form-element}}
+					</div>
+				</div>
+      </div>
+{{/bs-form}}
+		{{/bs-modal-body}}
+		{{#bs-modal-footer class="user-add-btn"}}
+      {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="saveNewRisk" saveNewRisk="saveNewRisk"}}
+      {{/ui/mix-button}}
+      {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="invitation" invitation="invitation"}}
+      {{/ui/mix-button}}
+		{{/bs-modal-footer}}
+	{{/bs-modal}}
+{{/if}}

@@ -1,0 +1,181 @@
+
+<div class="line col-sm-12 nopadding-right">
+	<div class="col-sm-2">
+		<div class="form-input-group">
+			<span class="input-group-addon">方案：</span>
+			{{#power-select  options=deviceProList selected=defaultDevPro
+				allowClear=false onchange=(action "deviceProSelect") as |deviceType|}}
+				{{deviceType.typename}}
+			{{/power-select}}
+		</div>
+	</div>
+	<div class="col-sm-2">
+		<div class="form-input-group full-width">
+			{{#power-select options=deviceTypeList selected=deviceTypeSearch placeholder='设备类型'
+				allowClear=true onchange=(action "deviceTypeSearchSelect") as |deviceType|}}
+				{{deviceType.item.typename}}
+			{{/power-select}}
+		</div>
+	</div>
+	<div class="col-sm-2">
+		<div class="form-input-group full-width">
+			{{#power-select  options=deviceStatusList selected=deviceStatusSearch placeholder='设备状态'
+				allowClear=true onchange=(action "deviceStatusSelect") as |deviceStatus|}}
+				{{deviceStatus.name}}
+			{{/power-select}}
+		</div>
+	</div>
+
+	<span class="date-range col-sm-6 " >
+	 <div class="btn-group pull-right">
+	   <a class="js_update btn btn-default" href="#" {{action "showDate" on="click"}}>{{chooseDate}}&nbsp;<i class="fa fa-chevron-down"></i></a>
+	 </div>
+	  {{#if dateShow}}
+	    <div class="date-box form-input-group col-sm-12 nopadding-right" style='position:absolute;z-index:5;padding-top:0'>
+	      {{#ui/mix-button class="close-btn pull-right" iconClass="fa fa-times" clickAction="hideDate" hideDate="hideDate"}}
+	      {{/ui/mix-button}}
+	      <div class="row col-sm-12 nopadding-right">
+	        <div class="btn-group col-sm-12 nopadding-right">
+	          <a class="js_update btn btn-default col-sm-6 {{if searchTypeName 'name' ''}}" href="#" {{action "selectSearchType" "name" on="click"}}>按绑定对象</a>
+						<a class="js_update btn btn-default col-sm-6 {{if searchTypeSeq 'name' ''}}" href="#" {{action "selectSearchType" "seq" on="click"}}>按设备编号</a>
+	        </div>
+	      </div>
+	      <div class="row col-sm-12 nopadding-right">
+					<div class=" col-sm-12 pull-right nopadding-left nopadding-right" style="margin-top:5px;">
+						<div class="col-sm-12 pull-right name-search-block nopadding-right" style="margin-bottom:1%;">
+							<div class="input-group col-sm-12">
+								{{#if searchTypeName}}
+				              {{input class="form-control" type="text" placeholder="搜索老人姓名" value=nameSearch enter="search"}}
+				              <span class="input-group-btn">
+				                <button class="btn btn-primary btn-reduce" type="button" style="touch-action: manipulation; -ms-touch-action: manipulation;" {{action "search" on="click"}}>
+				                  <i class="fa fa-search"></i>
+				                </button>
+				              </span>
+								{{else}}
+				              {{input class="form-control" type="text" placeholder="搜索设备编号" value=seqSearch enter="searchSeq"}}
+				              <span class="input-group-btn">
+				                <button class="btn btn-primary btn-reduce" type="button" style="touch-action: manipulation; -ms-touch-action: manipulation;" {{action "searchSeq" on="click"}}>
+				                  <i class="fa fa-search"></i>
+				                </button>
+				              </span>
+								{{/if}}
+							</div>
+						</div>
+					</div>
+	      </div>
+	    </div>
+	  {{else}}
+	  {{/if}}
+	 </span>
+
+
+
+</div>
+<div class="user-add-btn col-sm-12 add-device" >
+	{{#ui/mix-button class="user-btn pull-right" iconClass="fa-plus" paddingBorder="border-1-black" text='新增设备'  clickAction="toAddDevice" toAddDevice="toAddDevice"}}
+	{{/ui/mix-button}}
+</div>
+<div id="datatable1_wrapper" class="dataTables_wrapper">
+	<div class="col-sm-12 mt10" id="datatable1">
+		{{#each deviceList as |device|}}
+		<div class="col-sm-4 col-lg-3 col-md-3 nopadding-left"  {{action 'editDevice' device on="click" bubbles=false}}>
+			{{#callbusi/device-card device=device delDevice="delDevice"  unBind="unBind" bindUser="bindUser" allCustomerList=allCustomerList customerList=customerList
+			employeeList=employeeList allRoomList=allRoomList allBedList=allBedList reset="reset"}}
+			{{/callbusi/device-card}}
+		</div>
+		{{/each}}
+	</div>
+	<table id="datatable1" cellpadding="0" cellspacing="0" border="0" style="visibility:collapse;position: absolute;z-index: -999;"  class="datatable table table-bordered table-hover dataTable export-block" aria-describedby="datatable1_info">
+		<thead>
+			<tr role="row">
+				<th class="center" rowspan="1" colspan="1" width="">设备编号</th>
+				<th class="center" rowspan="1" colspan="1" width="">设备类型</th>
+				<th class="center" rowspan="1" colspan="1" width="">所属方案</th>
+				<th rowspan="1" colspan="1" width="">绑定对象</th>
+				<th rowspan="1" colspan="1" >设备状态</th>
+			</tr>
+		</thead>
+		<tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+			{{#each exportList as |device|}}
+			<tr >
+				<td>{{device.seq}}</td>
+				<td>{{device.deviceType.typename}}</td>
+				<td>{{defaultDevPro.typename}}</td>
+				<td>
+					{{#if device.hasBind}}
+						{{device.bindUser}}
+					{{else}}
+						空闲
+					{{/if}}
+				</td>
+				<td style="max-width:200px;"><div  class="nowrap">{{device.deviceStatusName}}</div></td>
+			</tr>
+			{{/each}}
+		</tbody>
+	</table>
+</div>
+{{#if deviceList }}
+		{{page-numbers content=deviceList showFL=true numPagesToShow=5 exportAllExcel="exportToAllExcel" exportAll=exportAll}}
+		{{else}}
+				<h1 class="col-sm-12 center unTask"></h1>
+{{/if}}
+
+{{#if addDevicePop}}
+	{{#bs-modal body=false footer=false header=false closedAction=(action "cancel")}}
+		{{#bs-modal-header}}
+			<h3 class="modal-title">{{devicePopName}}</h3>
+		{{/bs-modal-header}}
+		{{#bs-modal-body}}
+		{{#bs-form formLayout=formLayout model=deviceModel invalid=(action "invalid")}}
+		<div class="line ">
+				<div class="col-xs-12 col-sm-6 nopadding-left">
+						<div class="form-input-group label-normal">
+								<span class="input-group-addon">设备编号：</span>
+								{{#if detailEdit}}
+										{{bs-form-element property="seq" class="inline-block form-input-group" controlType="seq" placeholder="必填项"}}
+								{{else}}
+										<div class="font-light input-group-content">{{deviceModel.seq}}</div>
+								{{/if}}
+						</div>
+				</div>
+		</div>
+		<div class="line ">
+				<div class="col-xs-12 col-sm-6 nopadding-left">
+						<div class="form-input-group label-normal">
+								<span class="input-group-addon">设备类型：</span>
+								{{#if detailEdit}}
+									{{#bs-form-element class="inline-block form-input-group" controlType="deviceType"  property="deviceType"}}
+										{{#power-select placeholder="必填项" options=deviceTypeList selected=deviceType searchField="name" noMatchesMessage="没有相关内容"
+											allowClear=false onchange=(action "deviceTypeSelect") as |deviceType|}}
+											{{deviceType.item.typename}}
+										{{/power-select}}
+									{{/bs-form-element}}
+								{{else}}
+										<div class="font-light input-group-content">{{deviceModel.deviceType.typename}}</div>
+								{{/if}}
+						</div>
+				</div>
+		</div>
+		<div class="line ">
+				<div class="col-xs-12 col-sm-6 nopadding-left">
+						<div class="form-input-group label-normal">
+								<span class="input-group-addon">设备描述：</span>
+								{{textarea type="text" class="full-width inline-block form-input-group label-normal form-control" value=deviceModel.remark}}
+						</div>
+				</div>
+		</div>
+		{{/bs-form}}
+		{{/bs-modal-body}}
+		{{#bs-modal-footer class="user-add-btn"}}
+			{{#if detailEdit}}
+			{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="addDevice" addDevice="addDevice"}}
+			{{/ui/mix-button}}
+			{{else}}
+			{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="saveDevice" saveDevice="saveDevice"}}
+			{{/ui/mix-button}}
+			{{/if}}
+			{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="cancel" cancel="cancel"}}
+			{{/ui/mix-button}}
+		{{/bs-modal-footer}}
+	{{/bs-modal}}
+{{/if}}

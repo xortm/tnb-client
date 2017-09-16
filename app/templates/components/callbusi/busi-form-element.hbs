@@ -1,0 +1,5 @@
+<input class="input-group-content" value={{modelProperty}} placeholder={{placeholder}} onchange={{action "changed" value="target.value"}}/>
+{{#if errorText}}
+<span aria-hidden="true" class="help-block fa fa-times"></span>
+<span class="help-block">{{errorText}}</span>
+{{/if}}

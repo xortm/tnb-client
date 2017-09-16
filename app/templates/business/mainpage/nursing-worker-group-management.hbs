@@ -1,0 +1,85 @@
+<div class="col-sm-12">
+  <!-- BOX -->
+  <div class="box">
+    <div class="box-body">
+      <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+      	<div class="row  ">
+          <div class="col-sm-4">
+            <div class="input-group">
+              {{input class="form-control" type="text" placeholder="搜索姓名" value=queryCondition enter="search"}}
+              <span class="input-group-btn">
+                <button class="btn btn-primary btn-reduce" type="button" style="touch-action: manipulation; -ms-touch-action: manipulation;" {{action "search" on="click"}}>
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+
+            </div>
+          </div>
+          <div class="col-sm-3 nopadding-left nopadding-right" style="line-height:30px;font-size:13px;">
+              <i class="{{if queryStaff 'fa-dot-circle-o' 'fa-circle-o'}}" {{action 'searchType' 'staff' on='click'}}></i><span>搜索护工</span>
+              <i class="{{if queryCustomer 'fa-dot-circle-o' 'fa-circle-o'}}" {{action 'searchType' 'customer' on='click'}}></i><span>搜索老人</span>
+          </div>
+      	  <div class="user-add-btn col-sm-3 nopadding-right pull-right">
+            {{#ui/mix-button class="user-btn pull-right " iconClass="fa-plus"  text='新增护理组'  clickAction="toNurseGroupDetailPage" toNurseGroupDetailPage="toNurseGroupDetailPage"}}
+            {{/ui/mix-button}}
+      	  </div>
+      	</div>
+        <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+          <thead>
+            <tr role="row">
+              <th class="center" rowspan="1" colspan="1" width="">护理组名称</th>
+              <th class="center" rowspan="1" colspan="1" width="">组长</th>
+              <th class="center" rowspan="1" colspan="1" width="">组员</th>
+              <th rowspan="1" colspan="1" width="">备注</th>
+              <th rowspan="1" colspan="1" >护理老人</th>
+            </tr>
+          </thead>
+          {{#if nurseGroupList}}
+          <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+            {{#each nurseGroupList as |nurse|}}
+            <tr {{action "toNurseGroupDetailPage" nurse on="click"}}>
+              <td>{{nurse.name}}</td>
+              <td>{{nurse.leader.name}}</td>
+              <td style="max-width:200px;"><div  class="nowrap">{{nurse.member}}</div></td>
+              <td>{{nurse.remark}}</td>
+              <td style="max-width:200px;"><div  class="nowrap">{{nurse.customerName}}</div></td>
+            </tr>
+            {{/each}}
+          </tbody>
+          {{else}}
+            <div class="nodate">暂无数据</div>
+          {{/if}}
+        </table>
+        {{#if nurseGroupList }}
+            {{page-numbers content=nurseGroupList showFL=true numPagesToShow=5 exportAllExcel="exportToAllExcel" exportAll=exportAll}}
+            {{else}}
+                <h1 class="col-sm-12 center unTask"></h1>
+        {{/if}}
+
+      </div>
+    </div>
+  </div>
+  <table id="datatable1" cellpadding="0" cellspacing="0" border="0" style="visibility:collapse;position: absolute;z-index: -999;"  class="datatable table table-bordered table-hover dataTable export-block" aria-describedby="datatable1_info">
+    <thead>
+      <tr role="row">
+        <th class="center" rowspan="1" colspan="1" width="">护理组名称</th>
+        <th class="center" rowspan="1" colspan="1" width="">组长</th>
+        <th class="center" rowspan="1" colspan="1" width="">组员</th>
+        <th rowspan="1" colspan="1" width="">备注</th>
+        <th rowspan="1" colspan="1" >护理老人</th>
+      </tr>
+    </thead>
+    <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+      {{#each exportList as |nurse|}}
+      <tr >
+        <td>{{nurse.name}}</td>
+        <td>{{nurse.leader.name}}</td>
+        <td>{{nurse.member}}</td>
+        <td>{{nurse.remark}}</td>
+        <td style="max-width:200px;"><div  class="nowrap">{{nurse.customerName}}</div></td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  <!-- /BOX -->
+</div>

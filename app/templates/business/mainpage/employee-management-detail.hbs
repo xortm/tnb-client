@@ -1,0 +1,643 @@
+<div class="col-md-12">
+    <div class="box panel-default col-sm-12">
+        <div class="box-body">
+            <div class="busi-info">
+                <!-- 列表编辑-->
+                {{#bs-form formLayout=formLayout model=staffModel invalid=(action "invalid")}}
+                <div class="row col-sm-12 font24 user-add-btn nopadding-horizontal">
+                  {{#if operateFlag}}
+                      {{#if editModel}}
+                      {{else}}
+                          <!-- {{#ui/icon-button class="left16 user-btn trash-btn pull-right incon-button-font" iconClass="fa fa-trash-o" text='删除' clickAction="delById" delById="delById" clickActParams=staff}}
+                            {{bs-tooltip title="删除" class="light-tooltip"}}
+                          {{/ui/icon-button}}
+                          {{#ui/icon-button class="user-btn edit-btn pull-right incon-button-font" iconClass="fa fa-edit" text='编辑' clickAction="editModelModify" editModelModify="editModelModify" clickActParams=staff}}
+                            {{bs-tooltip title="编辑" class="light-tooltip"}}
+                          {{/ui/icon-button}} -->
+                          {{#ui/form-function editAction="editModelModify" editModelModify="editModelModify"
+                          removeAction="delById" delById="delById" clickActParams=staff}}
+                          {{/ui/form-function}}
+                      {{/if}}
+                  {{/if}}
+                </div>
+                <div class="row col-sm-12  padding-bottom30">
+                  <div class="nopadding-left bott cccc">
+                    {{#ui/img-intergration name="avatar" hasUploader=true imgSrc=staffModel.avatarUrl
+                    height=100 width=100 margin-left=0 uploadUrl=uploadUrl uploadSucc="uploadSuccHead"
+                    uploadFail="uploadFailImg" businessType=constants.uploadBusinessType_headimg as |component|}}
+
+                      {{#if operateFlag}}
+                        {{#if editModel}}
+                          <div class="pull-left photo-title padding-top20">
+                            <div class="tip photo-title-color">
+                              请上传员工的图片
+                            </div>
+                          <div class="photo-footer">
+                          <div class="button pull-left photo-footer-color" {{action 'avatarUpload' target=component on="click"}}>
+                            上传图片
+                          </div>
+                          </div>
+                          </div>
+                        {{/if}}
+                      {{else}}
+                        <div class="pull-left photo-title padding-top20">
+                          <div class="tip photo-title-color">
+                            请上传员工的图片
+                          </div>
+                        <div class="photo-footer">
+                        <div class="button pull-left photo-footer-color" {{action 'avatarUpload' target=component on="click"}}>
+                          上传图片
+                        </div>
+                        </div>
+                        </div>
+                      {{/if}}
+                    {{/ui/img-intergration}}
+
+                  </div>
+                </div>
+
+                <div class="line">
+                  <!-- <div class="col-xs-12 col-sm-6 nopadding-left">
+                      <div class="form-input-group label-normal">
+                          <span class="input-group-addon">挂接用户：</span>
+                          {{#if operateFlag}}
+                              {{#if editModel}}
+                                  {{#power-select placeholder='挂接用户' options=systemUserList selected=staffModel.systemUser searchField="name" noMatchesMessage="没有相关内容" allowClear=allowClear onchange=(action "systemUserSelect" ) as |systemUser|}}
+                                      {{systemUser.name}}
+                                  {{/power-select}}
+                              {{else}}
+                                  <div class="font-light input-group-content">{{staffModel.systemUser.name}}</div>
+                              {{/if}}
+                          {{else}}
+                            {{#power-select placeholder='挂接用户' options=systemUserList selected=staffModel.systemUser searchField="name" noMatchesMessage="没有相关内容" allowClear=allowClear onchange=(action "systemUserSelect" ) as |systemUser|}}
+                                {{systemUser.name}}
+                            {{/power-select}}
+                          {{/if}}
+                      </div>
+                  </div> -->
+                  <!-- <div class="col-xs-12 col-sm-6 nopadding-left">
+                      <div class="form-input-group label-normal">
+                          <span class="input-group-addon">对应岗位：</span>
+                          {{#if operateFlag}}
+                              {{#if editModel}}
+                                {{#bs-form-element class="inline-block form-input-group label-normal" controlType="careType" property="careType" }}
+                                    {{callbusi/dict-selector curDict=staffModel.careType groupCode=constants.careType showName="护理类别" dictSelect="careTypeSelect" value=staffModel.careType preselected=false}}
+                                {{/bs-form-element}}
+                              {{else}}
+                                  <div class="font-light input-group-content">{{staffModel.careType.typename}}</div>
+                              {{/if}}
+                          {{else}}
+                            {{#bs-form-element class="inline-block form-input-group label-normal" controlType="careType" property="careType" }}
+                                {{callbusi/dict-selector curDict=staffModel.staffSex groupCode=constants.careType showName="护理类别" dictSelect="careTypeSelect" value=staffModel.careType preselected=false}}
+                            {{/bs-form-element}}
+                          {{/if}}
+                      </div>
+                  </div> -->
+
+                </div>
+
+                    <div class="bottom12 sign col-sm-12 nopadding-left">
+                        <strong class="font16 font-black">个人资料</strong>
+                    </div>
+                    <div class="line">
+                        <div class="col-xs-12 col-sm-6 nopadding-left">
+                            <div class="form-input-group label-normal">
+                                <span class="input-group-addon">员工姓名：</span>
+                                {{#if operateFlag}}
+                                    {{#if editModel}}
+                                        {{bs-form-element property="name" class="inline-block form-input-group label-normal" controlType="name" placeholder="名称(必填)"}}
+                                        <!--  {{input class="input-group-content" value=staffModel.staffName required="required" type="text" placeholder="名称"}}-->
+                                    {{else}}
+                                        <div class="font-light input-group-content">{{staffModel.name}}</div>
+                                    {{/if}}
+                                {{else}}
+                                    {{bs-form-element property="name" class="inline-block form-input-group label-normal" controlType="name" placeholder="名称(必填)"}}
+                                {{/if}}
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-6 nopadding-left">
+                            <div class="form-input-group label-normal">
+                                <span class="input-group-addon">身份证号：</span>
+                                {{#if operateFlag}}
+                                    {{#if editModel}}
+                                        {{bs-form-element focus-out='leaveIdCard' leaveIdCard='leaveIdCard' property="staffCardCode" class="inline-block form-input-group label-normal" controlType="staffCardCode" placeholder="身份证号(必填)"}}
+                                    {{else}}
+                                        <div class="font-light input-group-content">{{staffModel.staffCardCode}}</div>
+                                    {{/if}}
+                                {{else}}
+                                    {{bs-form-element focus-out='leaveIdCard' leaveIdCard='leaveIdCard' property="staffCardCode" class="inline-block form-input-group label-normal" controlType="staffCardCode" placeholder="身份证号(必填)"}}
+                                {{/if}}
+                            </div>
+                        </div>
+
+                        <div class="line">
+                          <div class="col-xs-12 col-sm-6 nopadding-left">
+                              <div class="form-input-group label-normal">
+                                  <span class="input-group-addon">员工性别：</span>
+                                  {{#if operateFlag}}
+                                      {{#if editModel}}
+                                          <!-- {{log "employeeStatus" constants.sexType}}
+                                          {{#bs-form-element class="inline-block form-input-group label-normal" property="staffSex" }}
+                                              {{callbusi/dict-selector curDict=staffModel.staffSex groupCode=constants.sexType showName="性别(必填)" dictSelect="sexSelect" value=staffModel.staffSex preselected=false}}
+                                          {{/bs-form-element}} -->
+                                          <div class="font-light input-group-content">{{staffModel.staffSex.typename}}</div>
+                                      {{else}}
+                                          <div class="font-light input-group-content">{{staffModel.staffSex.typename}}</div>
+                                      {{/if}}
+                                  {{else}}
+                                      <!-- {{#bs-form-element class="inline-block form-input-group label-normal" controlType="staffSex" property="staffSex" }}
+                                          {{callbusi/dict-selector curDict=staffModel.staffSex groupCode=constants.sexType showName="性别(必填)" dictSelect="sexSelect" value=staffModel.staffSex preselected=false}}
+                                      {{/bs-form-element}} -->
+                                      {{#if staffModel.age}}
+                                        <div class="font-light input-group-content">{{staffModel.staffSex.typename}}</div>
+                                      {{else}}
+                                        <div class="font-light input-group-content">请正确填写身份证号码，填写后显示性别</div>
+                                      {{/if}}
+
+                                  {{/if}}
+                              </div>
+                          </div>
+
+                          <div class="col-xs-12 col-sm-6 nopadding-left">
+                              <div class="form-input-group label-normal">
+                                  <span class="input-group-addon">员工年龄：</span>
+                                  {{#if operateFlag}}
+                                      {{#if editModel}}
+                                      <div class="font-light input-group-content">{{staffModel.age}}  </div>
+                                      <!-- {{bs-form-element property="age" class="inline-block form-input-group label-normal" controlType="age" placeholder="年龄"}} -->
+                                      <!-- {{input class="font-light input-group-content padding-left-12" value=staffModel.age placeholder="请填写身份证号码，填写后将自动计算年龄" readonly="readonly"}} -->
+                                      {{else}}
+                                          <div class="font-light input-group-content">{{staffModel.age}} </div>
+                                      {{/if}}
+                                  {{else}}
+                                    {{#if staffModel.age}}
+                                      <div class="font-light input-group-content">{{staffModel.age}} </div>
+                                    {{else}}
+                                      <div class="font-light input-group-content">请填写身份证号码，填写后将自动计算年龄</div>
+                                    {{/if}}
+                                    <!-- {{bs-form-element property="age" class="inline-block form-input-group label-normal" controlType="age" placeholder="年龄"}} -->
+                                    <!-- {{input class="font-light input-group-content padding-left-12" value=staffModel.age placeholder="请填写身份证号码，填写后将自动计算年龄" readonly="readonly"}} -->
+                                  {{/if}}
+                              </div>
+                          </div>
+
+                        </div>
+
+                        <div class="line">
+                          <div class="col-xs-12 col-sm-6 nopadding-left">
+
+                          </div>
+
+                          <div class="col-xs-12 col-sm-6 nopadding-left">
+                              <div class="form-input-group label-normal">
+                                  <span class="input-group-addon">出生日期：</span>
+                                  {{#if operateFlag}}
+                                      {{#if editModel}}
+                                        {{#bs-form-element class="inline-block form-input-group" controlType="staffBirth"  property="staffBirth" }}
+                                            {{ui/addon/bs-datetimepicker date=staffModel.theStaffBirthDate  placeholder="请填写身份证号码，填写后将自动计算生日"
+                                            locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'
+                                            show="dpShowAction" change="birthAction" }}
+                                          {{/bs-form-element}}
+                                      {{else}}
+                                        <div class="font-light input-group-content">{{staffModel.staffBirthString}} </div>
+                                      {{/if}}
+                                  {{else}}
+                                    {{#bs-form-element class="inline-block form-input-group" controlType="staffBirth"  property="staffBirth" }}
+                                        {{ui/addon/bs-datetimepicker date=staffModel.theStaffBirthDate  placeholder="请填写身份证号码，填写后将自动计算生日"
+                                        locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'
+                                        show="dpShowAction" change="birthAction" }}
+                                      {{/bs-form-element}}
+                                    <!-- {{#if staffModel.staffBirth}}
+                                      <div class="font-light input-group-content">{{staffModel.staffBirthString}} </div>
+                                    {{else}}
+                                      <div class="font-light input-group-content">请填写身份证号码，填写后将自动计算生日</div>
+                                    {{/if}} -->
+                                  {{/if}}
+                              </div>
+                          </div>
+
+                        </div>
+
+                        <div class="line">
+
+                          <div class="col-xs-12 col-sm-6 nopadding-left">
+                              <div class="form-input-group label-normal">
+                                  <span class="input-group-addon">所属籍贯：</span>
+                                  {{#if operateFlag}}
+                                      {{#if editModel}}
+                                          {{#bs-form-element class="inline-block form-input-group" controlType="staffCensus" property="staffCensus" }}
+                                              {{callbusi/dict-selector curDict=staffModel.staffCensus groupCode=constants.nativePlace showName="户口所在地(必填)" dictSelect="nativeSelect" value=staffModel.staffCensus preselected=false}}
+                                          {{/bs-form-element}}
+                                      {{else}}
+                                          <div class="font-light input-group-content">{{staffModel.staffCensus.typename}}</div>
+                                      {{/if}}
+                                  {{else}}
+                                      {{#bs-form-element class="inline-block form-input-group" controlType="staffCensus" property="staffCensus" }}
+                                          {{callbusi/dict-selector curDict=staffModel.staffCensus groupCode=constants.nativePlace showName="户口所在地(必填)" dictSelect="nativeSelect" value=staffModel.staffCensus preselected=false}}
+                                      {{/bs-form-element}}
+                                  {{/if}}
+                              </div>
+                          </div>
+
+                          <div class="col-xs-12 col-sm-6 nopadding-left">
+                              <div class="form-input-group label-normal">
+                                  <span class="input-group-addon">联系电话：</span>
+                                  {{#if operateFlag}}
+                                      {{#if editModel}}
+                                          {{bs-form-element property="staffTel" class="inline-block form-input-group label-normal" controlType="staffTel" placeholder="联系电话(必填)"}}
+                                      {{else}}
+                                          <div class="font-light input-group-content">{{staffModel.staffTel}}</div>
+                                      {{/if}}
+                                  {{else}}
+                                      {{bs-form-element property="staffTel" class="inline-block inline-block form-input-group label-normal" controlType="staffTel" placeholder="联系电话(必填)"}}
+                                  {{/if}}
+                              </div>
+                          </div>
+
+                        </div>
+
+                        <div class="line">
+
+                          <div class="col-xs-12 col-sm-6 nopadding-left">
+                              <div class="form-input-group label-normal">
+                                  <span class="input-group-addon">所属民族：</span>
+                                  {{#if operateFlag}}
+                                      {{#if editModel}}
+                                          {{#bs-form-element class="inline-block form-input-group" controlType="staffNation" property="staffNation" }}
+                                              {{callbusi/dict-selector curDict=staffModel.staffNation groupCode=constants.nationality showName="民族(必填)" dictSelect="nationalitySelect" value=staffModel.staffNation preselected=false}}
+                                          {{/bs-form-element}}
+                                      {{else}}
+                                          <div class="font-light input-group-content">{{staffModel.staffNation.typename}}</div>
+                                      {{/if}}
+                                  {{else}}
+                                      {{#bs-form-element class="inline-block form-input-group" controlType="staffNation" property="staffNation" }}
+                                          {{callbusi/dict-selector curDict=staffModel.staffNation groupCode=constants.nationality showName="民族(必填)" dictSelect="nationalitySelect" value=staffModel.staffNation preselected=false}}
+                                      {{/bs-form-element}}
+                                  {{/if}}
+                              </div>
+                          </div>
+
+                          <div class="col-xs-12 col-sm-6 nopadding-left">
+                              <div class="form-input-group label-normal">
+                                  <span class="input-group-addon">婚姻状态：</span>
+                                  {{#if operateFlag}}
+                                      {{#if editModel}}
+                                          {{#bs-form-element class="inline-block form-input-group" controlType="staffMaritalStatus" property="staffMaritalStatus" }}
+                                              {{callbusi/dict-selector curDict=staffModel.staffMaritalStatus groupCode=constants.maritalStatus showName="婚姻状况" dictSelect="marrySelect" value=staffModel.staffMaritalStatus preselected=false}}
+                                          {{/bs-form-element}}
+                                      {{else}}
+                                          <div class="font-light input-group-content">{{staffModel.staffMaritalStatus.typename}}</div>
+                                      {{/if}}
+                                  {{else}}
+                                      {{#bs-form-element class="inline-block form-input-group" controlType="staffMaritalStatus" property="staffMaritalStatus" }}
+                                          {{callbusi/dict-selector curDict=staffModel.staffMaritalStatus groupCode=constants.maritalStatus showName="婚姻状况" dictSelect="marrySelect" value=staffModel.staffMaritalStatus preselected=false}}
+                                      {{/bs-form-element}}
+                                  {{/if}}
+                              </div>
+                          </div>
+                        </div>
+
+                        <div class="line">
+                          <div class="col-xs-12 col-sm-6 nopadding-left">
+                              <div class="form-input-group label-normal">
+                                  <span class="input-group-addon">家庭住址：</span>
+                                  {{#if operateFlag}}
+                                      {{#if editModel}}
+                                          {{bs-form-element property="curAddress" class="inline-block form-input-group label-normal" controlType="curAddress" placeholder="当前住址(必填)"}}
+                                      {{else}}
+                                          <div class="font-light input-group-content">{{staffModel.curAddress}}</div>
+                                      {{/if}}
+                                  {{else}}
+                                      {{bs-form-element property="curAddress" class="inline-block form-input-group label-normal" controlType="curAddress" placeholder="当前住址(必填)"}}
+                                  {{/if}}
+                              </div>
+                          </div>
+
+                          <div class="col-xs-12 col-sm-6 nopadding-left">
+                              <div class="form-input-group label-normal">
+                                  <span class="input-group-addon">文化程度：</span>
+                                  {{#if operateFlag}}
+                                      {{#if editModel}}
+                                          {{callbusi/dict-selector class="inline-block " curDict=staffModel.staffEducation groupCode=constants.educationLevel showName="学历" dictSelect="educationSelect" preselected=false}}
+                                      {{else}}
+                                          <div class="font-light input-group-content">{{staffModel.staffEducation.typename}}</div>
+                                      {{/if}}
+                                  {{else}}
+                                      {{callbusi/dict-selector class="inline-block " curDict=staffModel.staffEducation groupCode=constants.educationLevel showName="学历" dictSelect="educationSelect" preselected=false}}
+                                  {{/if}}
+                              </div>
+                          </div>
+
+                        </div>
+
+                        <div class="line">
+                            <div class="col-xs-12 col-sm-6 nopadding-left">
+                                <div class="form-input-group label-normal">
+                                    <span class="input-group-addon">毕业院校：</span>
+                                    {{#if operateFlag}}
+                                        {{#if editModel}}
+                                          {{bs-form-element property="schoolName" class="inline-block form-input-group label-normal" controlType="schoolName" placeholder="学校名称"}}
+                                        {{else}}
+                                            <div class="font-light input-group-content">{{staffModel.schoolName}}</div>
+                                        {{/if}}
+                                    {{else}}
+                                        {{bs-form-element property="schoolName" class="inline-block form-input-group label-normal" controlType="schoolName" placeholder="学校名称"}}
+                                    {{/if}}
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 nopadding-left">
+                                <div class="form-input-group label-normal">
+                                    <span class="input-group-addon">专业名称：</span>
+                                    {{#if operateFlag}}
+                                        {{#if editModel}}
+                                            {{bs-form-element property="profession" class="inline-block form-input-group label-normal" controlType="profession" placeholder="专业名称"}}
+                                        {{else}}
+                                            <div class="font-light input-group-content">{{staffModel.profession}}</div>
+                                        {{/if}}
+                                    {{else}}
+                                        {{bs-form-element property="profession" class="inline-block form-input-group label-normal" controlType="profession" placeholder="专业名称"}}
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="line">
+                          <div class="col-xs-12 col-sm-6 nopadding-left">
+                              <div class="form-input-group label-normal">
+                                  <span class="input-group-addon">职业资格：</span>
+                                  {{#if operateFlag}}
+                                      {{#if editModel}}
+                                          {{bs-form-element property="qualificationType" class="inline-block form-input-group label-normal" controlType="qualificationType" placeholder="国家承认职业资格"}}
+                                      {{else}}
+                                          <div class="font-light input-group-content">{{staffModel.qualificationType}}</div>
+                                      {{/if}}
+                                  {{else}}
+                                      {{bs-form-element property="qualificationType" class="inline-block form-input-group label-normal" controlType="qualificationType" placeholder="国家承认职业资格"}}
+                                  {{/if}}
+                              </div>
+                          </div>
+                            <div class="col-xs-12 col-sm-6 nopadding-left">
+                                <div class="form-input-group label-normal">
+                                    <span class="input-group-addon">技能特长：</span>
+                                    {{#if operateFlag}}
+                                        {{#if editModel}}
+                                            {{bs-form-element property="special" class="inline-block form-input-group label-normal" controlType="special" placeholder="简述几项重要技能特长"}}
+                                        {{else}}
+                                            <div class="font-light input-group-content">{{staffModel.special}}</div>
+                                        {{/if}}
+                                    {{else}}
+                                        {{bs-form-element property="special" class="inline-block form-input-group label-normal" controlType="special" placeholder="简述几项重要技能特长"}}
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="line">
+                            <div class="col-xs-12 col-sm-6 nopadding-left">
+                                <div class="form-input-group label-normal">
+                                    <span class="input-group-addon">雇佣类型：</span>
+                                    {{#if operateFlag}}
+                                        {{#if editModel}}
+                                            {{callbusi/dict-selector class="inline-block " curDict=staffModel.hireType groupCode=constants.hireType showName="请选择雇佣的类型" dictSelect="hireTypeSelect" preselected=false}}
+                                        {{else}}
+                                            <div class="font-light input-group-content">{{staffModel.hireType.typename}}</div>
+                                        {{/if}}
+                                    {{else}}
+                                        {{callbusi/dict-selector class="inline-block " curDict=staffModel.hireType groupCode=constants.hireType showName="请选择雇佣的类型" dictSelect="hireTypeSelect" preselected=false}}
+                                    {{/if}}
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 nopadding-left">
+                                <div class="form-input-group label-normal">
+                                    <span class="input-group-addon">工作状态：</span>
+                                    {{#if operateFlag}}
+                                        {{#if editModel}}
+                                              {{#bs-form-element class="inline-block form-input-group label-normal" property="staffStatus" controlType="staffStatus"}}
+                                                    {{callbusi/dict-selector class="inline-block " curDict=staffModel.staffStatus groupCode=constants.staffStatus showName="当前工作状态" dictSelect="statusSelect" preselected=false}}
+                                               {{/bs-form-element}}
+                                        {{else}}
+                                            <div class="font-light input-group-content">{{staffModel.staffStatus.typename}}</div>
+                                        {{/if}}
+                                    {{else}}
+                                        {{#bs-form-element class="inline-block form-input-group label-normal" property="staffStatus"  controlType="staffStatus"}}
+                                           {{callbusi/dict-selector class="inline-block " curDict=staffModel.staffStatus groupCode=constants.staffStatus showName="当前工作状态" dictSelect="statusSelect" preselected=false}}
+                                        {{/bs-form-element}}
+                                    {{/if}}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <!-- <div style="clear:both" />
+                    <div class="bottom12 sign col-sm-12 top30 nopadding-left margin-top50">
+                        <strong class="font16 font-black">职位信息</strong>
+                    </div>
+                    <div class="line">
+                        <div class="col-xs-12 col-sm-6 nopadding-left">
+                            <div class="form-input-group label-normal">
+                                <span class="input-group-addon">岗&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位：</span>
+                                {{#if operateFlag}}
+                                    {{#if editModel}}
+                                      {{#bs-form-element class="inline-block form-input-group label-normal" controlType="position" property="position" }}
+                                          {{callbusi/dict-selector curDict=staffModel.position groupCode=constants.postType showName="请选择所属岗位(必填)" dictSelect="positionSelect" value=staffModel.position preselected=false}}
+                                      {{/bs-form-element}}
+                                    {{else}}
+                                        <div class="font-light input-group-content">{{staffModel.position.typename}}</div>
+                                    {{/if}}
+                                {{else}}
+                                  {{#bs-form-element class="inline-block form-input-group label-normal" controlType="position" property="position" }}
+                                      {{callbusi/dict-selector curDict=staffModel.position groupCode=constants.postType showName="请选择所属岗位(必填)" dictSelect="positionSelect" value=staffModel.position preselected=false}}
+                                  {{/bs-form-element}}
+                                {{/if}}
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 nopadding-left">
+                            <div class="form-input-group label-normal">
+                                <span class="input-group-addon">所属部门：</span>
+                                {{#if operateFlag}}
+                                    {{#if editModel}}
+                                        {{#bs-form-element class="inline-block form-input-group" controlType="department" property="department" }}
+                                          {{#power-select class="input-group-content" placeholder='部门名称(必填)' options=departmentList  selected=staffModel.department searchField="department"
+                                          noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "departmentSelect" ) as |department|}}
+                                            {{department.name}}
+                                          {{/power-select}}
+                                        {{/bs-form-element}}
+                                    {{else}}
+                                        <div class="font-light input-group-content">{{staffModel.department.name}}</div>
+                                    {{/if}}
+                                {{else}}
+                                    {{#bs-form-element class="inline-block form-input-group" controlType="department" property="department" }}
+                                      {{#power-select class="input-group-content" placeholder='部门名称(必填)' options=departmentList  selected=staffModel.department searchField="department"
+                                      noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "departmentSelect" ) as |department|}}
+                                        {{department.name}}
+                                      {{/power-select}}
+                                    {{/bs-form-element}}
+                                {{/if}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="line">
+                      <div class="col-xs-12 col-sm-6 nopadding-left">
+                        <div class="form-input-group label-normal">
+                            <span class="input-group-addon">手&nbsp;&nbsp;环&nbsp;&nbsp;ID：</span>
+                            {{#if operateFlag}}
+                                {{#if editModel}}
+                                  {{#power-select class="input-group-content" placeholder='选择绑定手环ID' options=braceletList  selected=staffModel.bracelet searchField="bracelet"
+                                  noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "braceletSelect" ) as |bracelet|}}
+                                    {{bracelet.seq}}
+                                  {{/power-select}}
+                                {{else}}
+                                  <div class="font-light input-group-content">{{staffModel.bracelet.seq}} </div>
+                                {{/if}}
+                            {{else}}
+                              {{#power-select class="input-group-content" placeholder='选择绑定手环ID' options=braceletList  selected=staffModel.bracelet searchField="bracelet"
+                              noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "braceletSelect" ) as |bracelet|}}
+                                {{bracelet.seq}}
+                              {{/power-select}}
+                            {{/if}}
+                        </div>
+                      </div>
+
+                      <div class="col-xs-12 col-sm-6 nopadding-left">
+                          <div class="form-input-group label-normal">
+                              <span class="input-group-addon">是否为部门领导：</span>
+                              {{#if operateFlag}}
+                                  {{#if editModel}}
+                                    {{input type="checkbox" id="check1" checked=cbState}}
+                                  {{else}}
+                                    <div class="font-light input-group-content">{{staffModel.leaderFlagString}} </div>
+                                  {{/if}}
+                              {{else}}
+                                {{input type="checkbox" id="check1" checked=cbState}}
+                              {{/if}}
+                          </div>
+                      </div>
+
+                    </div>
+
+                    <div class="line">
+                        <div class="col-xs-12 col-sm-6 nopadding-left">
+                            <div class="form-input-group label-normal">
+                                <span class="input-group-addon">入职日期：</span>
+                                {{#if operateFlag}}
+                                    {{#if editModel}}
+                                    {{#bs-form-element class="inline-block form-input-group" controlType="toPositionDate"  property="toPositionDate" }}
+                                        {{ui/addon/bs-datetimepicker date=staffModel.theToPositionDate  placeholder="入职时间(必填)"
+                                        locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'
+                                        show="dpShowAction" change="changeAction" }}
+                                      {{/bs-form-element}}
+                                    {{else}}
+                                        <div class="font-light input-group-content">{{staffModel.toPositionDateString}}</div>
+                                    {{/if}}
+                                {{else}}
+                                {{#bs-form-element class="inline-block form-input-group" controlType="toPositionDate"  property="toPositionDate" }}
+                                    {{ui/addon/bs-datetimepicker date=staffModel.theToPositionDate  placeholder="入职时间(必填)"
+                                    locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'
+                                    show="dpShowAction" change="changeAction" }}
+                                  {{/bs-form-element}}
+                                {{/if}}
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 nopadding-left">
+                            <div class="form-input-group label-normal">
+                                <span class="input-group-addon">合同截止日期：</span>
+                                {{log "sfsafasfa" staffModel.theContractEndDateDate}}
+                                {{log "sfsafasfa" staffModel.contractEndDateString}}
+                                {{#if operateFlag}}
+                                    {{#if editModel}}
+                                    {{#bs-form-element class="inline-block form-input-group" controlType="contractEndDate"  property="contractEndDate" }}
+                                        {{ui/addon/bs-datetimepicker date=staffModel.theContractEndDateDate  placeholder="合同截止日期(必填)"
+                                        locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'
+                                        show="dpShowAction" change="contractAction" }}
+                                      {{/bs-form-element}}
+                                    {{else}}
+                                        <div class="font-light input-group-content">{{staffModel.contractEndDateString}}</div>
+                                    {{/if}}
+                                {{else}}
+                                {{#bs-form-element class="inline-block form-input-group" controlType="contractEndDate"  property="contractEndDate" }}
+                                    {{ui/addon/bs-datetimepicker date=staffModel.theContractEndDateDate  placeholder="合同截止日期(必填)"
+                                    locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'
+                                    show="dpShowAction" change="contractAction" }}
+                                  {{/bs-form-element}}
+                                {{/if}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="line">
+                        <div class="col-xs-12 col-sm-6 nopadding-left">
+                            <div class="form-input-group label-normal">
+                                <span class="input-group-addon">雇佣类型：</span>
+                                {{#if operateFlag}}
+                                    {{#if editModel}}
+                                        {{callbusi/dict-selector class="inline-block " curDict=staffModel.hireType groupCode=constants.hireType showName="请选择雇佣的类型" dictSelect="hireTypeSelect" preselected=false}}
+                                    {{else}}
+                                        <div class="font-light input-group-content">{{staffModel.hireType.typename}}</div>
+                                    {{/if}}
+                                {{else}}
+                                    {{callbusi/dict-selector class="inline-block " curDict=staffModel.hireType groupCode=constants.hireType showName="请选择雇佣的类型" dictSelect="hireTypeSelect" preselected=false}}
+                                {{/if}}
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 nopadding-left">
+                            <div class="form-input-group label-normal">
+                                <span class="input-group-addon">工作状态：</span>
+                                {{#if operateFlag}}
+                                    {{#if editModel}}
+                                          {{#bs-form-element class="inline-block form-input-group label-normal" property="staffStatus" controlType="staffStatus"}}
+                                                {{callbusi/dict-selector class="inline-block " curDict=staffModel.staffStatus groupCode=constants.staffStatus showName="当前工作状态" dictSelect="statusSelect" preselected=false}}
+                                           {{/bs-form-element}}
+                                    {{else}}
+                                        <div class="font-light input-group-content">{{staffModel.staffStatus.typename}}</div>
+                                    {{/if}}
+                                {{else}}
+                                    {{#bs-form-element class="inline-block form-input-group label-normal" property="staffStatus"  controlType="staffStatus"}}
+                                       {{callbusi/dict-selector class="inline-block " curDict=staffModel.staffStatus groupCode=constants.staffStatus showName="当前工作状态" dictSelect="statusSelect" preselected=false}}
+                                    {{/bs-form-element}}
+                                {{/if}}
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <div style="clear:both" />
+                    <div class="text-center padding-top30">
+                        <p class="text-center user-add-btn margin0auto inlineBlock">
+                            {{#if operateFlag}}
+                                {{#if editModel}}
+                                  {{#ui/mix-button class="user-btn times-btn body-text-color  pull-right" iconClass="fa fa-mail-reply" text='取消' clickAction="cancelEdit" cancelEdit="cancelEdit" clickActParams=testParams}}
+                                  {{/ui/mix-button}}
+                                  {{#ui/mix-button class="user-btn edit-btn body-text-color  pull-right" iconClass="fa-check" text='保存' clickAction="saveClick" saveClick="saveClick"}}
+                                  {{/ui/mix-button}}
+                                    <!-- {{#ui/mix-button class="user-btn edit-btn" iconClass="fa-save" text='保存' }}
+                                    {{/ui/mix-button}}
+                                    {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo" text='取消' clickAction="cancelEdit" cancelEdit="cancelEdit" clickActParams=testParams}}
+                                    {{/ui/mix-button}} -->
+                                {{/if}}
+                            {{else}}
+                                {{#ui/mix-button class="user-btn edit-btn body-text-color" iconClass="fa-check" text='保存'  clickAction="saveClick" saveClick="saveClick"}}
+                                {{/ui/mix-button}}
+                                {{#ui/mix-button class="user-btn times-btn body-text-color" iconClass="fa fa-mail-reply" text='返回' clickAction="cancelOperate" cancelOperate="cancelOperate" clickActParams=testParams}}
+                                {{/ui/mix-button}}
+                            {{/if}}
+                        </p>
+                    </div>
+                {{/bs-form}}
+                <!-- 列表编辑 -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{{#if showpopInvitePassModal}}
+    {{#bs-modal body=false footer=false header=false submitAction=(action "invitation") closedAction=(action "delStaff" )}}
+        {{#bs-modal-body}}
+            <h4 class="modal-title">是否删除</h4>
+        {{/bs-modal-body}}
+        {{bs-modal-footer closeTitle="确定" submitTitle="取消"}}
+    {{/bs-modal}}
+{{/if}}

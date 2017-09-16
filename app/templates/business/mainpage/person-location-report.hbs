@@ -1,0 +1,78 @@
+<div class="col-sm-12">
+  <!-- BOX -->
+  <div class="box">
+    <div class="box-body">
+      <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+      	<div class="row">
+          <div class="col-sm-12">
+        	  <!--搜索-->
+            <div class="col-sm-2 nopadding-left">
+              {{#power-select class="input-group-content" placeholder='员工' options=employeeList  selected=employee searchField="name"
+              noMatchesMessage="没有相关内容"	allowClear=true	onchange=(action "employeeChange" ) as |employeeSelect|}}
+                {{employeeSelect.name}}
+              {{/power-select}}
+            </div>
+            <div class="col-sm-2 nopadding-left">
+              {{#power-select class="input-group-content" placeholder='房间' options=roomList  selected=room searchField="name"
+              noMatchesMessage="没有相关内容"	allowClear=true	onchange=(action "roomChange" ) as |roomSelect|}}
+                {{roomSelect.name}}
+              {{/power-select}}
+            </div>
+            <div class="col-sm-3 nopadding-right nopadding-left">
+              {{callbusi/time-search class="inline-block" text='按日期查询' dateShow=dateShow chooseDate=chooseDate search="search"
+                         submmit="submmit" emptied='emptied' changeBeginDateAction='changeBeginDateAction' changeEndDateAction='changeEndDateAction'}}
+            </div>
+            <div class="col-sm-3 nopadding-left">
+              <span class="input-group-content">&emsp;是否统计班次：</span>
+              <select class="inline-block input-group-content ember-power-select-trigger" name="countWorkTime" onchange= {{ action 'countWorkTimeChange' value="target.value"}} >
+                <option value="0" >否</option>
+                <option value="1" selected>是</option>
+              </select>
+            </div>
+            {{#if  (eq countWorkTime 1)}}
+            <div class="col-sm-2 nopadding-left">
+              {{#power-select class="input-group-content" placeholder='班次' options=workTimeList  selected=workTime searchField="name"
+              noMatchesMessage="没有相关内容"	allowClear=true	onchange=(action "workTimeChange" ) as |workTimeSelect|}}
+                {{workTimeSelect.name}}
+              {{/power-select}}
+            </div>
+            {{/if}}
+        </div>
+      	</div>
+        <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+          <thead>
+            <tr role="row">
+              <th rowspan="1" colspan="1" width="">员工</th>
+              <th rowspan="1" colspan="1" width="">日期</th>
+              <th rowspan="1" colspan="1" width="">班次</th>
+              <th rowspan="1" colspan="1" width="">房间</th>
+              <th rowspan="1" colspan="1" width="">时长</th>
+            </tr>
+          </thead>
+          <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+            {{#each reportList as |report|}}
+            <tr>
+              <td class="ellipsis">{{report.employee.name}}</td>
+              <td class="ellipsis">{{report.generateTimeStr}}</td>
+              <td class="ellipsis">
+                {{#if (eq  countWorkTime 1)}}
+                  {{report.wortTimeSetting.name}}
+                {{/if}}
+              </td>
+              <td class="ellipsis">{{report.room.name}}</td>
+              <td class="ellipsis">{{report.timeStr}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        {{#if reportList }}
+            {{page-numbers content=reportList showFL=true numPagesToShow=10}}
+        {{else}}
+                <h1 class="col-sm-12 center unTask"></h1>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+  <!-- /BOX -->
+
+</div>

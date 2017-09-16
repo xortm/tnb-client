@@ -1,0 +1,45 @@
+<div id="userMemberConsumeContainer" class="mainContent">
+  <div class="wrapperInner member-consumeBd">
+{{#ui/mobile/gestures-container}}
+<div class="jujia-container member-consume">
+  <section class="msg-box">
+    <i class="head-out glyphicon business-mine-img">
+      {{#ui/img-intergration name="headImg"
+      imgSrc=curCustomer.avatarUrl height=69 width=70
+      businessType=constants.uploadBusinessType_headimg}}
+      {{/ui/img-intergration}}
+    </i>
+    <div class="msg">
+      <p class="name">{{curCustomer.name}}</p>
+      <p class="tell">手机号：{{curCustomer.phone}}</p>
+    </div>
+    <p class="vip" style="background: url('../assets/images/kangyi/vip.png') no-repeat left center;">{{curCustomer.customerVipInfo.level.typename}}</p>
+    <p class="integral" style="background: url('../assets/images/kangyi/integral.png') no-repeat left center; margin-top:0;">{{curCustomer.customerVipInfo.points}}</p>
+  </section>
+
+  {{#each nursingplanexeList as |nursingplanexe|}}
+  <section class="consume-out">
+    <div class="time">
+      <div class="time-left">{{nursingplanexe.planStartTimeString}}</div>
+      <div class="time-right" style="background: url('../assets/images/kangyi/time.png') no-repeat left center;">{{nursingplanexe.itemProject.item.serviceTime}}分钟</div>
+    </div>
+    <p class="name">{{nursingplanexe.itemProject.item.name}}</p>
+    <p class="money-out">
+      <span class="money">￥{{nursingplanexe.itemProject.referencePrice}}元</span>
+      <span class="integral">+{{nursingplanexe.pointIncrease}}积分</span>
+    </p>
+    <ul class="bars">
+      <li class="one" style="background: url('../assets/images/kangyi/bar-one.png') no-repeat 13px center;">{{nursingplanexe.exeStaff.name}}</li>
+      <li class="two" style="background: url('../assets/images/kangyi/bar-two.png') no-repeat 13px center;">{{nursingplanexe.recordUser.name}}</li>
+      <li class="three" style="background: url('../assets/images/kangyi/bar-three.png') no-repeat 13px center;">{{nursingplanexe.itemProject.item.referencePrice}}元</li>
+    </ul>
+  </section>
+  {{/each}}
+
+</div>
+
+
+{{/ui/mobile/gestures-container}}
+</div>
+</div>
+{{ui/container/infinite-scroll moniteData="nursingplanexeList" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

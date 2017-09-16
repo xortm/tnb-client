@@ -1,0 +1,62 @@
+<div class="col-sm-12">
+  <div class="box">
+    <div class="box-body">
+    <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+    	<div class="clear">
+        <!--搜索-->
+        <div class="col-sm-3 nopadding-left">
+          <div class="input-group full-width">
+            {{#power-select class="input-group-content full-width" placeholder='老人姓名' options=customerList selected=defaultCustomer searchField="sortName"
+            noMatchesMessage="没有相关内容"	allowClear=true	onchange=(action "selectCustomer" ) as |customer|}}
+              {{customer.name}}
+            {{/power-select}}
+          </div>
+        </div>
+
+        <!-- 按不同的时间进行查询 -->
+        <div class="col-sm-6 nopadding-left pull-left nopadding-right">
+           {{callbusi/time-search class="inline-block" text='执行时间' dateShow=dateShow chooseDate=chooseDate search="search"
+           submmit="submmit" emptied='emptied' changeBeginDateAction='changeBeginDateAction' changeEndDateAction='changeEndDateAction'}}
+        </div>
+        <div class="col-sm-3 user-add-btn">
+          {{#ui/mix-button class=" user-btn pull-right" iconClass="fa-plus"  text='新增护理日志'  clickAction="toDetailPage" toDetailPage="toDetailPage" style="padding-right:0px;margin-right:0px;"}}
+          {{/ui/mix-button}}
+        </div>
+      </div>
+
+          <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable mt15" aria-describedby="datatable1_info">
+            <thead>
+              <tr role="row">
+                <th rowspan="1" colspan="1" width="">老人姓名</th>
+                <th rowspan="1" colspan="1" width="">护理日期</th>
+                <th rowspan="1" colspan="1" width="">记录人</th>
+                <th rowspan="1" colspan="1" width="">日志内容</th>
+                <th rowspan="1" colspan="1" width="">日志状态</th>
+                <th rowspan="1" colspan="1" class="" width="">记录时间</th>
+              </tr>
+            </thead>
+          <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+              {{#each nursingList as |nursing|}}
+              {{log "111111111111111111" nursing}}
+              <tr class="gradeA odd" {{action "toDetailPage" nursing on="click"}}>
+                <td class=" ellipsis sorting_1">{{nursing.nurscustomer.name}}</td>
+                <td class=" ellipsis ">{{nursing.nursinglogDateString}}</td>
+                <td class=" ellipsis " >{{nursing.recordUser.name}}</td>
+                <td class=" ellipsis"><div style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px;">{{nursing.remarkContent}}</div></td>
+                <td class=" ellipsis">{{nursing.remarkTagString}}</td>
+                <td class=" ellipsis ">{{nursing.recordTimeString}}</td>
+          	  </tr>
+              {{/each}}
+           </tbody>
+            </table>
+            {{#if nursingList }}
+                {{page-numbers content=nursingList showFL=true numPagesToShow=5}}
+              {{else}}
+                <h1 class="col-sm-12 center unTask"></h1>
+            {{/if}}
+          </div>
+    	</div>
+
+    </div>
+  <!-- /BOX -->
+</div>

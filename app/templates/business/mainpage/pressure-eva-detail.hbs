@@ -1,0 +1,70 @@
+<div class="col-sm-12">
+    <div class="box panel-default col-sm-12 nomargin-bottom">
+        <div class="box-body">
+            <div class="busi-info top25">
+                    <div class="line">
+                        <div class="col-xs-12 col-sm-4 nopadding-left">
+                            <div class="form-input-group label-normal">
+                                <span class="input-group-addon">被评估人 ：</span>
+                                <div class="font-light input-group-content">{{evaluate.customer.name}}</div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-4">
+                            <div class="form-input-group label-normal">
+                                <span class="input-group-addon">评估人：</span>
+                                <div class="font-light input-group-content">{{evaluate.user.name}}</div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-4 nopadding-left">
+                            <div class="form-input-group label-normal">
+                                <span class="input-group-addon">评估日期：</span>
+                                <div class="font-light input-group-content">{{evaluate.lastUpdateDateTimeString}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="line">
+                        <div class="font-big color5 col-sm-2 top18 nopadding-left">问卷答题:</div>
+                        <div class="col-sm-12">
+                            <table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered  dataTable mt15" aria-describedby="datatable1_info">
+                                <thead>
+                                    <tr role="row">
+                                        <th class="center list-style" rowspan="1" colspan="1" width="">模板名称</th>
+                                        <th class="center list-style" rowspan="1" colspan="1" width="">问卷得分</th>
+                                    </tr>
+                                </thead>
+                                <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+                                        <tr class="gradeA odd {{if evaluate.hasShow 'backColor' ''}}" {{action "selectModel" evaluate on="click"}}>
+                                          <td class="center list-style ellipsis sorting_1 ">{{evaluate.title}}</td>
+                                          <td class="center list-style ellipsis ">{{evaluate.score}}</td>
+                                        </tr>
+                                        {{#if evaluate.hasShow}}
+                                        <tr style="cursor:default;">
+                                          <td colspan="5">
+                                        <div class="col-sm-12">
+                                            <!-- BOX BORDER-->
+                                            <div class="padding-left40">
+                                                {{#each evaluate.questionList as |question|}}
+                                                  <div style="font-size:16px;">{{question.curIndex}}.{{question.questionContent}}</div>
+                                                  {{#each question.answerList as |answer|}}
+                                                    <div style="font-size:14px;margin-top:5px;" {{action "chooseAnswer" answer question on="tap"}}>
+                                                      (<div class="fontLogo choose-inline-block {{if answer.hasSelcted 'fa-check' 'check-block'}}"></div>)&nbsp;&nbsp;
+                                                      {{answer.curIndex}}.{{answer.content}}({{answer.score}}分)
+                                                    </div>
+                                                  {{/each}}
+                                                {{/each}}
+                                            </div>
+                                            <!-- /BOX BORDER -->
+                                        </div>
+                                        </td>
+                                        </tr>
+                                        {{else}}
+                                        {{/if}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+<!-- BOX -->
+<div class="">
+  <div class="box-title">
+    <h4><i class="fa fa-sitemap"></i>权限分配</h4>
+  </div>
+  <div class="box-body">
+    <div class="tree tree-selectable">
+    {{#each privilegesCombine as |child|}}
+    {{callbusi/privilege-tree privilegeCheck="privilegeCheck" isRoot=true privilege=child detailEdit=detailEdit saveFlag=saveFlag editMode=editMode}}
+    {{/each}}
+    </div>
+  </div>
+</div>
+<!-- /BOX -->

@@ -1,0 +1,76 @@
+<div class="col-sm-12">
+    <!-- BOX -->
+    <div class="box">
+        <div class="box-body">
+            <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+            	<div class="row">
+            		<div class="col-sm-9">
+            			<!--搜索-->
+									<div class="col-sm-5 nopadding-left">
+										<div class="input-group">
+											{{input class="form-control" type="text" placeholder="搜索 姓名/挂接员工" value=queryCondition enter="searchUser"}}
+											<span class="input-group-btn">
+												<button type="button" class="btn btn-primary btn-reduce" style="touch-action: manipulation; -ms-touch-action: manipulation;" {{action "searchUser" on="click"}}>
+													<i class="fa fa-search"></i>
+												</button>
+											</span>
+										</div>
+									</div>
+                  <div class="col-sm-3 nopadding-left">
+                    <div class="input-group full-width">
+                            <!-- {{callbusi/dict-selector class="inline-block " showName='用户状态' curDict=constants.staffStatusIn groupCode=staffStatusList showName="工作状态" dictSelect="statusSelect" preselected=false}} -->
+                            {{#power-select class="input-group-content" placeholder='用户状态' options=staffStatusList  selected=staffStatus searchField="namePinyin"
+                            noMatchesMessage="没有相关内容"	allowClear=false onchange=(action "statusSelect" ) as |staffStatus|}}
+                              {{staffStatus.typename}}
+                            {{/power-select}}
+                    </div>
+                  </div>
+            		</div>
+
+								<div class="user-add-btn col-sm-3 nopadding-right">
+									{{#ui/mix-button class="user-btn pull-right" iconClass="fa-plus" text="新增用户" clickAction="addUser" addUser="addUser"}}
+									{{/ui/mix-button}}
+								</div>
+            	</div>
+							<table id="datatable1" cellpadding="0" cellspacing="0" boeder="0" class="datatable table table-bordered table-hover dataTable" aria-desribedby="datatable1_info">
+								<thead>
+									<tr role="row">
+										<th rowspan="1" colspan="1">用户姓名</th>
+										<th rowspan="1" colspan="1">系统角色</th>
+										<th rowspan="1" colspan="1">状态</th>
+										<th class="center" rowspan="1" colspan="1">对应员工</th>
+									</tr>
+								</thead>
+								<tbody role="alert" aria-live="polite" aria-relevant="all">
+									{{#if userList}}
+										{{#each userList as |user|}}
+										<tr {{action "toDetail" user.id on="click"}}>
+											<td class="ellipsis">{{user.name}}</td>
+											<td class="ellipsis">{{user.role.name}}</td>
+											<td class="ellipsis">{{user.staffStatus.typename}}</td>
+											<td class="ellipsis center">
+												{{#if user.employee}}
+													{{user.employee.name}}
+												{{else}}
+													无
+												{{/if}}
+											</td>
+										</tr>
+										{{/each}}
+                    {{else}}
+                    <div class="nodate">
+                      暂无用户
+                    </div>
+									{{/if}}
+								</tbody>
+							</table>
+							{{#if userList}}
+								{{page-numbers content=userList showFL=true numPagesToShow=5
+                exportAllExcel="exportAllExcel" exportAll=exportAll}}
+							{{/if}}
+            </div>
+
+        </div>
+    </div>
+    <!-- /BOX -->
+</div>

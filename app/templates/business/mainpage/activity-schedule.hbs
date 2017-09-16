@@ -1,0 +1,21 @@
+<div id="activityContainer" class="mainContent">
+  <div class="wrapperInner jujia-Bd">
+{{#ui/mobile/gestures-container}}
+<div class="jujia-container activity-schedule">
+  <p>本周活动：</p>
+  <section class="schedule-catalog">
+    <ul>
+      {{#each activityList as |activity|}}
+      <li class="account" id="activityItem_{{activity.id}}" {{action "goDetail" activity on="tap"}}>
+        <img src="{{activity.picUrl}}" alt="{{activity.title}}">
+      </li>
+      {{/each}}
+    </ul>
+  </section>
+</div>
+
+
+{{/ui/mobile/gestures-container}}
+</div>
+</div>
+{{ui/container/infinite-scroll moniteData="activityList" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

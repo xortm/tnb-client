@@ -1,0 +1,90 @@
+<div class="col-sm-12">
+  <!-- BOX -->
+  <div class="box">
+    <div class="box-body">
+      <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+      	<div class="row">
+          <div class="col-sm-9">
+        	  <!--搜索-->
+            <div class="col-sm-5 nopadding-left">
+        	    <div class="input-group">
+            		{{input class="form-control" type="text" placeholder="搜索老人姓名/床位名称" value=queryCondition enter="search"}}
+      	        <span class="input-group-btn">
+        		      <button class="btn btn-primary btn-reduce" type="button" style="touch-action: manipulation; -ms-touch-action: manipulation;" {{action "search" on="click"}}>
+                    <i class="fa fa-search"></i>
+                  </button>
+      	        </span>
+        	    </div>
+        	  </div>
+        	  <!--搜索-->
+          </div>
+      	  <div class="user-add-btn col-sm-3 nopadding-right">
+            {{#ui/mix-button class="user-btn pull-right" iconClass="fa-plus"  text='新增护理方案'  clickAction="addProject" addProject="addProject"}}
+            {{/ui/mix-button}}
+      	  </div>
+      	</div>
+        <table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+          <thead>
+            <tr role="row">
+              <th rowspan="1" colspan="1" width="">姓名</th>
+              <th rowspan="1" colspan="1" width="">护理等级</th>
+              <th rowspan="1" colspan="1" width="">价格(元/天)</th>
+              <th rowspan="1" colspan="1" width="">创建人</th>
+            </tr>
+          </thead>
+          {{#if projectList}}
+          <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+            {{#each projectList as |project|}}
+            <tr {{action "toDetailPage" project on="click"}}>
+              <td class="ellipsis" >{{project.customer.name}}</td>
+              <td class="ellipsis" >{{project.level.name}}</td>
+              <td class="ellipsis" >{{project.price}}</td>
+              <td class="ellipsis" >{{project.createUser.name}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+          {{else}}
+          <div class="nodate">暂无数据</div>
+          {{/if}}
+        </table>
+        {{#if projectList }}
+            {{page-numbers content=projectList showFL=true numPagesToShow=5}}
+        {{else}}
+                <h1 class="col-sm-12 center unTask"></h1>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+  <!-- /BOX -->
+</div>
+
+{{#if addNewProject}}
+	{{#bs-modal body=false footer=false header=false}}
+		{{#bs-modal-header}}
+			<h3 class="modal-title">新增护理方案</h3>
+		{{/bs-modal-header}}
+		{{#bs-modal-body}}
+    {{#bs-form formLayout=formLayout model=newProModel action=(action "saveNewProject") invalid=(action "invalid")}}
+			<div class="col-xs-12 nopadding-horizontal">
+				<div class="col-xs-12 nopadding-left col-xs-6">
+					<div class="form-input-group">
+						<span class="input-group-addon">姓名：</span>
+            {{#bs-form-element class="inline-block form-input-group" controlType="customer" property="customer" }}
+            {{#power-select class="input-group-content" placeholder='姓名' options=customerList  selected=customer searchField="namePinyin"
+            noMatchesMessage="没有相关内容"	allowClear=false onchange=(action "selectCustomer" ) as |customer|}}
+              {{customer.name}}
+            {{/power-select}}
+            {{/bs-form-element}}
+					</div>
+				</div>
+      </div>
+{{/bs-form}}
+		{{/bs-modal-body}}
+		{{#bs-modal-footer class="user-add-btn"}}
+      {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="saveNewProject" saveNewProject="saveNewProject"}}
+      {{/ui/mix-button}}
+      {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="invitation" invitation="invitation"}}
+      {{/ui/mix-button}}
+		{{/bs-modal-footer}}
+	{{/bs-modal}}
+{{/if}}

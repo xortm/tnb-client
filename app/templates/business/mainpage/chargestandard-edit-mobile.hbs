@@ -1,0 +1,82 @@
+hargestandard-edit-mobile<div id="consultEditContainer" class="mainContent">
+  <div class="wrapperInner">
+    <div>
+      {{#if (eq editType 'input')}}
+      <ul class="nopadding-left bgcolor-white margin-0-10px">
+          <li class="input_noneborder top10 textarea">
+            {{#if (eq textType 'text')}}
+              {{input type="text"  class='edit fullWidth3 padding-left-8' value=edit placeholder=editPlaceholder autofocus=true bubbles=false }}
+            {{/if}}
+            {{#if (eq textType 'textarea')}}
+              {{textarea type="text"  class='edit fullWidth3 padding-left-8' value=edit placeholder=editPlaceholder autofocus=true bubbles=false }}
+            {{/if}}
+          </li>
+          <li class="top10 center"></li>
+      </ul>
+      {{ui/mobile/task-detail-button needDoubleClickPrevent=true touchStartAction="save" save="save" butContent="保存" outerClass="top40"}}
+      {{/if}}
+      {{#if (eq editType 'select')}}
+      <div class="padding-left-10 padding-right-10 height40 line-height-40 bottom10 bgcolor-white">
+        {{theChoose.typename}}
+        {{#if theChoose.typename}}
+        <span class="pull-right">已选中</span>
+        {{else}}
+        <span class="pull-right">请在下方选择</span>
+        {{/if}}
+      </div>
+      {{#ui/mobile/gestures-container}}
+      {{#each selfChooseList as |data|}}
+      <div class="padding-left-10 padding-right-10 height40 line-height-40 bgcolor-white" id="choose_{{data.id}}" {{action 'choose' data on="tap"}}>
+        {{data.typename}}
+        {{#if (eq theChoose.typename data.typename)}}
+        <span class="pull-right">已选中</span>
+        {{/if}}
+      </div>
+      <div class="border-bottom-1 margin-leftright10"></div>
+      {{/each}}
+      {{/ui/mobile/gestures-container}}
+      {{/if}}
+
+      <!-- {{#bs-form-element class="inline-block form-input-group" controlType="inPreference" property="inPreference" }}
+      {{callbusi/dict-selector class="inline-block" curDict=consultModel.inPreference groupCode=constants.inPreference showName="" chooseMany=true preselected=false dictSelect="inPreferenceSelect" value=consultModel.inPreference preselected=false}}
+      {{/bs-form-element}} -->
+
+      {{#if (eq editType 'staff')}}
+      <div class="padding-left-10 padding-right-10 height40 line-height-40 bottom10 bgcolor-white">
+        {{theChoose.name}}
+        {{#if theChoose.name}}
+        <span class="pull-right">已选中</span>
+        {{else}}
+        <span class="pull-right">请在下方选择</span>
+        {{/if}}
+      </div>
+      {{#ui/mobile/gestures-container}}
+      {{#each employeeList as |data|}}
+      <div class="padding-left-10 padding-right-10 height40 line-height-40 bgcolor-white" id="choose_staff_{{data.id}}" {{action 'chooseStaff' data on="tap"}}>
+        {{data.name}}
+        {{#if (eq theChoose.name data.name)}}
+        <span class="pull-right">已选中</span>
+        {{/if}}
+      </div>
+      <div class="border-bottom-1 margin-leftright10"></div>
+      {{/each}}
+      {{/ui/mobile/gestures-container}}
+      {{/if}}
+      {{#if (eq editType 'date')}}
+      <div id="selectDate" style="width:100%" class="font20 top10 text height45 border-radius input-border-color padding-top4 position-relative">
+        <div class="pull-left width50B">
+          <input type="datetime-local" placeholder="请输入日期" id="FromDate" value= {{nowDate}}
+          name="FromDate" formart="yyyy-mm-dd hh:mm" onfocus="Constants.LOF_inputDateFocus(this);"
+          class="date iosinput width220 height30 line-height-25 padding-left-5"
+          style="{{if global_curStatus.isIphone '-webkit-appearance: none;'}}"
+          onchange="Constants.LOF_inputDateChange(this);" />
+        </div>
+      </div>
+      {{/if}}
+      <center class="center-edit3">
+        <p>{{succeed}}</p>
+      </center>
+    </div>
+  </div>
+</div>
+{{ui/container/infinite-scroll moniteData=infiniteContentPropertyName didRenderAction="didRender" didInsertElementAction="didInsertElement"}}
