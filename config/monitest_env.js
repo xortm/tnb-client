@@ -51,7 +51,54 @@ module.exports = function(environment) {
       // when it is created
     }
   };
-
+  if (environment === 'public') {
+    ENV.isMinify = true;
+    ENV['ember-faker'] = {
+      enabled: true
+    };
+    ENV.SRI = {
+      enabled: false
+    };
+    ENV.baseURL = null;
+    ENV.resourceHost = "http://resource.tnb99.net";
+    ENV.socketHost = "http://101.200.143.200:7070";
+    ENV.host = "http://api.tnb99.net";
+    ENV.imgHost = "http://img.tnb99.net";
+    ENV.wxScanurl = "http://pub.tnb99.net/index.html";
+    ENV.locationType = 'none';
+  }
+  if (environment === 'development') {
+    ENV.isMinify = false;
+    ENV['ember-faker'] = {
+      enabled: true
+    };
+    ENV.SRI = {
+      enabled: false
+    };
+    ENV.baseURL = null;
+    ENV.resourceHost = "http://resource.tnb99.net";
+    ENV.socketHost = "http://101.200.143.200:7070";
+    ENV.host = "http://api.tnb99.net";
+    ENV.imgHost = "http://img.tnb99.net";
+    ENV.wxScanurl = "http://web.tnb99.net/index.html";
+    ENV.locationType = 'none';
+  }
+  if (environment === 'android') {
+    ENV.isMinify = true;
+    ENV['ember-faker'] = {
+      enabled: true
+    };
+    ENV.SRI = {
+      enabled: false
+    };
+    ENV.baseURL = null;
+    ENV.resourceHost = "http://resource.tnb99.net";
+    ENV.socketHost = "http://101.200.143.200:7070";
+    ENV.host = "http://api.tnb99.net";
+    ENV.imgHost = "http://img.tnb99.net";
+    ENV.wxScanurl = "http://web.tnb99.net/index.html";
+    ENV.locationType = 'none';
+  }
   if (environment === 'production') {
     ENV.isMinify = true;
     ENV['ember-faker'] = {

@@ -1,0 +1,31 @@
+{{#ui/mobile/gestures-container}}
+  {{#if serviceCheckItem}}
+  <div id="fullSelectContainer" class="mainContent" >
+    <div class="wrapperInner">
+      <div class="padding-left-10 padding-right-10 height40 line-height-40 bottom10 bgcolor-white">
+        <span class="pull-left">请选择检查内容</span>
+      </div>
+      {{#each serviceCheckItemList as |serviceCheckItem index|}}
+        <div class="padding-right-10 height40 line-height-40 bgcolor-white padding-left-20 font16" id={{concat "choose-type-" index }} {{action 'chooseType' serviceCheckItem index on="tap"}}>
+          {{serviceCheckItem.typename}}
+        </div>
+        <div class="border-bottom-1 margin-leftright10"></div>
+      {{/each}}
+    </div>
+  </div>
+  {{/if}}
+  {{#if remarkType}}
+    <div id="fullSelectContainer" class="mainContent" >
+      <div class="wrapperInner">
+        <div class="padding-left-10 padding-right-10 line-height-40 bottom10 " style="padding-bottom:20px">
+          <span class="pull-left">检查结果：</span>
+        </div>
+        {{#callbusi/mobile/text-textarea value=serviceCheckInfo.remark}}
+        {{/callbusi/mobile/text-textarea}}
+        {{ui/mobile/task-detail-button needDoubleClickPrevent=true touchStartAction="saveDetail" saveDetail="saveDetail" butContent="确定" outerClass="serviceCheckBut"}}
+      </div>
+    </div>
+  {{/if}}
+{{/ui/mobile/gestures-container}}
+{{ui/container/infinite-scroll moniteData="" didRenderAction="didRender"
+didInsertElementAction="didInsertElement"}}

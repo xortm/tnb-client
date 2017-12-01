@@ -23,7 +23,27 @@ export default BaseBusiness.extend(Pagination,{
     let allRoomList =this.getCurrentController().get('allRoomList');
     let allBedList = this.getCurrentController().get('allBedList');
     let publicRooms = this.getCurrentController().get('publicRooms');
+    let videoBindList = this.getCurrentController().get('videoBindList');
     deviceList.forEach(function(device){
+      if(videoBindList&&videoBindList.findBy('device.id',device.get('id'))){
+
+        let room = videoBindList.findBy('device.id',device.get('id')).get('room');
+        let bed = videoBindList.findBy('device.id',device.get('id')).get('bed');
+        if(room.get('id')){
+          device.set('bindName',room.get('allName'));
+          device.set('bindPeople',false);
+          let bindUser = '房间：' + room.get('allName');
+          device.set('bindUser',bindUser);
+        }else if(bed.get('id')){
+          console.log('*****',bed.get('id'),bed.get('allBedName'));
+
+          device.set('bindPeople',false);
+          let bindUser = '床位：' + bed.get('allBedName');
+          device.set('bindUser',bindUser);
+          device.set('bindName',bindUser);
+        }
+
+      }
       if(publicRooms&&publicRooms.findBy('scanner.id',device.get('id'))){
         let room = publicRooms.findBy('scanner.id',device.get('id'));
         device.set('bindName',room.get('name'));
@@ -87,6 +107,10 @@ export default BaseBusiness.extend(Pagination,{
         case 'deviceType6':
           device.set('isCard',true);
           break;
+        case 'deviceTypeVideo':
+          device.set('isVideo',true);
+          device.set('isBindRoom',true);
+          break;
         default:
       }
     });
@@ -105,6 +129,9 @@ export default BaseBusiness.extend(Pagination,{
         break;
       case code='03':
         typecode = "daerma";
+        break;
+      case code='04':
+        typecode = "video";
         break;
     }
     let filter={type:{codeInfo:typecode}};
@@ -167,21 +194,27 @@ export default BaseBusiness.extend(Pagination,{
       case '03':
         typecode = "daerma";
         break;
+      case '04':
+        typecode = "video";
+        break;
     }
     if(code){
       let deviceType;
       controller.set('newTem',true);
       this.store.query('customerdevice',{}).then(function(customerList){
         controller.set('customerList',customerList);
-        _self.store.query('employee',{filter:{staffStatus:{typecode:'staffStatusIn'}}}).then(function(employeeList){
-          controller.set('employeeList',employeeList);
-          let allRoomList = _self.get('global_dataLoader.allRoomList');
-          let allBedList = _self.get('global_dataLoader.allBedList');
-          _self.doQuery();
-          controller.set('deviceStatusSearch',null);
-          controller.set('deviceTypeSearch',null);
-        },function(err){
-          console.log('员工列表请求失败',err);
+        _self.store.query('devicebindmore',{}).then(function(videoBindList){
+          _self.store.query('employee',{filter:{staffStatus:{typecode:'staffStatusIn'}}}).then(function(employeeList){
+            controller.set('employeeList',employeeList);
+            controller.set('videoBindList',videoBindList);
+            let allRoomList = _self.get('global_dataLoader.allRoomList');
+            let allBedList = _self.get('global_dataLoader.allBedList');
+            _self.doQuery();
+            controller.set('deviceStatusSearch',null);
+            controller.set('deviceTypeSearch',null);
+          },function(err){
+            console.log('员工列表请求失败',err);
+          });
         });
       });
       this.store.query('deviceTypeItem',{filter:{type:{codeInfo:typecode}}}).then(function(deviceTypeList){

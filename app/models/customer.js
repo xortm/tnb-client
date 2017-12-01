@@ -47,7 +47,7 @@ var Customer = BaseModel.extend({
     customerPS: DS.attr("string"), //身体情况
     customerCustom: DS.attr("string"), //生活习惯
     customerCharacter: DS.attr("string"), //性格特点
-    customerHobby: DS.attr("string"), //个人爱好
+    customerHobby: DS.attr("string"), //个人喜好
     customerDiet: DS.attr("string"), //饮食偏好
     guardianFirstName: DS.attr("string"), //第一监护人姓名
     guardianFirstContact: DS.attr("string"), //第一监护人电话
@@ -103,6 +103,16 @@ var Customer = BaseModel.extend({
     town:DS.belongsTo('town'),//客户地址信息
     leaveStatus: DS.attr("number"), //是否请假中 0否1是
     customerExtend:DS.belongsTo('customer-extend'),//customer扩展表
+    flagRemark:DS.attr('string'),//任务标记
+    nursingLevel:DS.attr('string'),//护理等级名称
+    totalPrice: DS.attr("number"), //总价格
+    chargeType: DS.belongsTo('dicttype'), //账单计费类型
+    listFilterRemark:DS.attr('string'),//如果等于OnSetting  就是当天班次所护理来人
+    bedId:Ember.computed('bed',function(){//拼接bedId
+      let bedId = this.belongsTo("bed").id();
+      // console.log("bedId in customer:",bedId);
+      return bedId;
+    }),
     allTownName:Ember.computed('town',function(){//拼接所在地区
       let townName=this.get('town.name');
       let countyName=this.get('town.county.name');
@@ -122,9 +132,19 @@ var Customer = BaseModel.extend({
     }),
     //计算总的参考价格
     realreferencePrice:Ember.computed('bed','diningStandard','levelPrice',function(){
-      var bedPrice=this.get('bed.price');
-      var diningPrice=this.get('diningStandard.typeValue');
-      var levelPrice=this.get('levelPrice');
+      let chargeType = this.get('chargeType');
+      let bedPrice;
+      let diningPrice;
+      let levelPrice;
+      if(chargeType.get('typecode')=='chargeTypeY'){
+        bedPrice = this.get('bed.totalPrice');
+        diningPrice = this.get('diningStandard.totalPrice');
+        levelPrice = this.get('levelPrice');
+      }else{
+         bedPrice=this.get('bed.price');
+         diningPrice=this.get('diningStandard.typeValue');
+         levelPrice=this.get('levelPrice');
+      }
       if(!bedPrice){
         bedPrice=0;
       }
@@ -365,6 +385,53 @@ var Customer = BaseModel.extend({
         var obj={allBedName:'无床位'};
         return obj ;
       }
-    })
+    }),
+    flagRemarkObj:Ember.computed('flagRemark',function(){
+      let flagRemark = this.get('flagRemark');
+      let content = JSON.parse(flagRemark)[0];
+      let flagRemarkObj = {
+        detail:'未设置',
+        model:'未设置',
+        project:'未设置'
+      };
+      if(content.detail=='true'){
+        flagRemarkObj.detail = '已设置';
+      }
+      if(content.model=='true'){
+        flagRemarkObj.model = '已设置';
+      }
+      if(content.project=='true'){
+        flagRemarkObj.project = '已设置';
+      }
+      return flagRemarkObj;
+    }),
+    //老人生日习惯
+    birthdayFlag:Ember.computed('customerBirthdayHabit',function(){
+      let birthdayHabit = this.get('customerBirthdayHabit');
+      let birthdayFlag = {};
+      if(birthdayHabit){
+        if(birthdayHabit.get('typecode')=='birtydayTypeY'){
+          birthdayFlag.solar = true ;
+        }
+        if(birthdayHabit.get('typecode')=='birtydayTypeN'){
+          birthdayFlag.lunar = true ;
+        }
+      }
+      return birthdayFlag;
+    }),
+    //老人性别
+    sexFlag:Ember.computed('sex',function(){
+      let sex = this.get('sex');
+      let sexFlag = {};
+      if(sex){
+        if(sex.get('typecode')=='sexTypeFemale'){
+          sexFlag.woman = true;
+        }
+        if(sex.get('typecode')=='sexTypeMale'){
+          sexFlag.man = true;
+        }
+      }
+      return sexFlag;
+    }),
 });
 export default Customer;

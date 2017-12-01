@@ -1,0 +1,71 @@
+<div class="col-sm-12">
+    <div class="box">
+        <div class="box-body">
+            <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+                <div class="clear">
+                    <!-- 按不同的时间进行查询 -->
+                    <div class="col-sm-3 nopadding-left pull-left nopadding-right">
+                        {{callbusi/time-search class="inline-block" text='交班时间' dateShow=dateShow chooseDate=chooseDate search="search"
+           submmit="submmit" emptied='emptiedSend' changeBeginDateAction='changeSendBeginDateAction' changeEndDateAction='changeSendEndDateAction'}}
+                    </div>
+
+                    <div class="col-sm-3 nopadding-left pull-left nopadding-right">
+                        {{callbusi/time-search class="inline-block" text='接班时间' dateShow=dateShowR chooseDate=chooseDate2 search="search2"
+           submmit="submmit2" emptied='emptiedReceive' changeBeginDateAction='changeReceiveBeginDateAction' changeEndDateAction='changeReceiveEndDateAction'}}
+                    </div>
+                    <!--搜索-->
+                    <div class="col-sm-3 nopadding-left">
+                        <div class="input-group full-width">
+                            {{#power-select class="input-group-content full-width" placeholder='交班员工姓名' options=employeeList selected=defaultCustomer searchField="sortName" noMatchesMessage="没有相关内容" allowClear=true onchange=(action "selectSendStaff" ) as |staff|}}
+                                {{staff.name}}
+                            {{/power-select}}
+                        </div>
+                    </div>
+                    <div class="col-sm-3 nopadding-left">
+                        <div class="input-group full-width">
+                            {{#power-select class="input-group-content full-width" placeholder='接班员工姓名' options=employeeList selected=defaultCustomer2 searchField="sortName" noMatchesMessage="没有相关内容" allowClear=true onchange=(action "selectReceiveStaff" ) as |staff|}}
+                                {{staff.name}}
+                            {{/power-select}}
+                        </div>
+                    </div>
+
+                </div>
+
+                <table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable mt15" aria-describedby="datatable1_info">
+                    <thead>
+                        <tr role="row">
+                            <th rowspan="1" colspan="1" width="">交班人</th>
+                            <th rowspan="1" colspan="1" width="">交班日期</th>
+                            <th rowspan="1" colspan="1" width="">接班人</th>
+                            <th rowspan="1" colspan="1" width="">接班日期</th>
+                            <th rowspan="1" colspan="1" width="">注意事项</th>
+                            <th rowspan="1" colspan="1" width="">状态</th>
+                        </tr>
+                    </thead>
+                    <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+                        {{#each workdeliveryList as |dataDetail|}}
+                            {{log "111111111111111111" dataDetail}}
+                            <tr class="gradeA odd" {{action "toDetailPage" dataDetail on="click"}}>
+                                <td class=" ellipsis sorting_1">{{dataDetail.sender.name}}</td>
+                                <td class=" ellipsis ">{{dataDetail.createDateString}}</td>
+                                <td class=" ellipsis ">{{dataDetail.receiver.name}}</td>
+                                <td class=" ellipsis">{{dataDetail.receiveDateString}}</td>
+                                <td class=" ellipsis">
+                                    <div style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px;">{{dataDetail.specialRemarkString}}</div>
+                                </td>
+                                <td class=" ellipsis ">{{dataDetail.status.typename}}</td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+                {{#if workdeliveryList }}
+                    {{page-numbers content=workdeliveryList showFL=true numPagesToShow=5}}
+                {{else}}
+                    <h1 class="col-sm-12 center unTask"></h1>
+                {{/if}}
+            </div>
+        </div>
+
+    </div>
+    <!-- /BOX -->
+</div>

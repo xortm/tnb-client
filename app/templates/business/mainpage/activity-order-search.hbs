@@ -32,7 +32,7 @@
         {{#if activityOrderList}}
       <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
           {{#each activityOrderList as |activityOrder|}}
-          <tr class="gradeA odd" style="cursor:default;" {{action "toDetailPage" activityOrder on="click"}}>
+          <tr class="gradeA odd" {{action "toDetailPage" activityOrder on="click"}}>
             <td class=" ellipsis sorting_1">{{activityOrder.customer.name}}</td>
             <td class=" ellipsis sorting_1">{{activityOrder.activityTimeString}}</td>
             <td class=" ellipsis ">{{activityOrder.activityPlan.activity.title}}</td>

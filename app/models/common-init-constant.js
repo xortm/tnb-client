@@ -19,5 +19,7 @@ export default BaseModel.extend({
   nursingLevels:DS.hasMany('nursinglevel'),
   nursingLevelItems:DS.hasMany('nursinglevelitem'),
   // staffCustomers:DS.hasMany('staffcustomer')
-  staffCustomers:DS.hasMany('customer')
+  staffCustomers:DS.hasMany('customer'),
+  tenantEvaModelSources:DS.hasMany('tenantevamodelsource'),//租户拥有的规范列表
+  tenants:DS.hasMany('tenant'),//此用户属于租户列表
 });

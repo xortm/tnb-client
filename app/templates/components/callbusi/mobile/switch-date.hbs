@@ -1,0 +1,34 @@
+<div class="header-bar-switch" {{action "showSwitchListAction" on="tap"}}>
+  {{#if (eq switchDateFlag "all")}}
+    <img src="assets/images/mobile/all.png"/>
+  {{else if (eq switchDateFlag "jintian")}}
+    <img src="assets/images/mobile/jintian.png"/>
+  {{else if (eq switchDateFlag "yizhou")}}
+    <img src="assets/images/mobile/yizhou.png"/>
+  {{else if (eq switchDateFlag "yiyue")}}
+    <img src="assets/images/mobile/yiyue.png"/>
+  {{/if}}
+</div>
+<div class="header-bar-switch-shade {{if showSwitchList "" "hide"}}" {{action "switchAction" "close" on="tap"}}></div>
+<ul class="header-bar-switch-ul {{if showSwitchList "" "hide"}}">
+  <li {{action "switchAction" "all" on="tap"}}>
+    <img class="a-img before" src="assets/images/mobile/all.png"/>
+    <span>全部</span>
+    <img class="a-img after {{if (eq switchDateFlag "all") "" "hide"}}" src="assets/images/mobile/servicePoint.png"/>
+  </li>
+  <li {{action "switchAction" "jintian" on="tap"}}>
+    <img class="a-img before" src="assets/images/mobile/jintian.png"/>
+    <span>今天</span>
+    <img class="a-img after {{if (eq switchDateFlag "jintian") "" "hide"}}" src="assets/images/mobile/servicePoint.png"/>
+  </li>
+  <li {{action "switchAction" "yizhou" on="tap"}}>
+    <img class="a-img before" src="assets/images/mobile/yizhou.png"/>
+    <span>最近一周</span>
+    <img class="a-img after {{if (eq switchDateFlag "yizhou") "" "hide"}}" src="assets/images/mobile/servicePoint.png"/>
+  </li>
+  <li {{action "switchAction" "yiyue" on="tap"}}>
+    <img class="a-img before" src="assets/images/mobile/yiyue.png"/>
+    <span>最近一月</span>
+    <img class="a-img after {{if (eq switchDateFlag "yiyue") "" "hide"}}" src="assets/images/mobile/servicePoint.png"/>
+  </li>
+</ul>

@@ -9,6 +9,8 @@ export default Ember.Controller.extend(InfiniteScroll, {
     // infiniteModelName: "workdelivery",
     infiniteContainerName: "workdeliveryContainer",
     queryFlagInFlagT: 0,
+    queryFlagInFlagT1: 0,
+    queryFlagInFlagT2: 0,
     showLoadingImg: true,
     scrollFlag: false,
     isScrollToTop: false,
@@ -48,9 +50,10 @@ export default Ember.Controller.extend(InfiniteScroll, {
         });
     },
     houseObs: function() {
-        var _self = this;
+      var _self = this;
+      _self._showLoading();
 
-
+      _self.hideAllLoading();
     }.observes("queryFlagInFlagT").on("init"),
     standardObs: function() {
         var _self = this;
@@ -73,7 +76,7 @@ export default Ember.Controller.extend(InfiniteScroll, {
             _self.set("skillList", dataList);
             _self.hideAllLoading();
         });
-    }.observes("queryFlagInFlagT").on("init"),
+    }.observes("queryFlagInFlagT1").on("init"),
     priceObs: function() {
       var _self = this;
       this._showLoading();
@@ -94,9 +97,18 @@ export default Ember.Controller.extend(InfiniteScroll, {
             _self.set("standardList", dataList);
             _self.hideAllLoading();
         });
-    }.observes("queryFlagInFlagT").on("init"),
+    }.observes("queryFlagInFlagT2").on("init"),
     queryFlagIn() {
-        this.incrementProperty("queryFlagInFlagT");
+        console.log("yewutab ",this.get("curTabCode"));
+        if(this.get("curTabCode")==='houseTab'){
+            this.incrementProperty("queryFlagInFlagT");
+        }
+        if(this.get("curTabCode")==='skillTab'){
+            this.incrementProperty("queryFlagInFlagT1");
+        }
+        if(this.get("curTabCode")==='standardTab'){
+            this.incrementProperty("queryFlagInFlagT2");
+        }
     },
     /*通过event service监控顶部菜单的选择事件，并进行相关方法调用*/
     listenner: function() {
@@ -116,7 +128,7 @@ export default Ember.Controller.extend(InfiniteScroll, {
         switchTab(code) {
             console.log('switchTab in,code:' + code);
             this.set("curTabCode", code);
-        }, 
+        },
         switchShowAction() {
             this.incrementProperty("directInitScollFlag");
         },

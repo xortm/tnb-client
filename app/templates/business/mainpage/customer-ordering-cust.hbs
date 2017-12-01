@@ -1,0 +1,23 @@
+{{#ui/mobile/gestures-container}}
+<div id="customerOrderingCustContainer" class="mainContent {{if global_pageConstructure.showLoader 'hide' ''}}">
+  <div class="wrapperInner">
+  {{#if customerdayfoodplanList}}
+    <div class="bgcolor-white">
+    {{#each customerdayfoodplanList as |customerdayfoodplan|}}
+      {{#callbusi/mobile/customer-ordering-list item=customerdayfoodplan outerClass="col-sm-6 col-xs-12 height-auto" isConsumer=true currentDate=currentDate}}
+      {{/callbusi/mobile/customer-ordering-list}}
+    {{/each}}
+    </div>
+  {{else}}
+    <div class="nodate">暂无数据</div>
+  {{/if}}
+
+
+
+  </div>
+
+</div>
+{{/ui/mobile/gestures-container}}
+
+{{ui/container/infinite-scroll moniteData="customerdayfoodplanList"
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

@@ -6,7 +6,6 @@ export default Ember.Controller.extend(InfiniteScroll,{
   infiniteModelName: "executionReport",
   infiniteContainerName:"fileImplementHistoryContainer",
 
-  moment: Ember.inject.service(),
   service_PageConstrut:Ember.inject.service("page-constructure"),
   mainController: Ember.inject.controller('business.mainpage'),
   pathConfiger: Ember.inject.service("path-configer"),
@@ -28,6 +27,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
       // executionReportList = executionReportList.splice(1);
       console.log("executionReportList",executionReportList);
       _self.set("executionReportList",executionReportList);
+      _self.hideAllLoading();
     });
   },
 

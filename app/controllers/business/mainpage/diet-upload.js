@@ -6,7 +6,6 @@ export default Ember.Controller.extend(InfiniteScroll,{
   infiniteModelName: "",
   infiniteContainerName:"userDietUploadContainer",
 
-  moment: Ember.inject.service(),
   service_PageConstrut:Ember.inject.service("page-constructure"),
   mainController: Ember.inject.controller('business.mainpage'),
   pathConfiger: Ember.inject.service("path-configer"),
@@ -22,7 +21,12 @@ export default Ember.Controller.extend(InfiniteScroll,{
   uploadUrl: Ember.computed(function() {
       return this.get("pathConfiger").get("uploadUrl");
   }),
-  queryFlagIn: function(){return;},
+  init:function(){
+    this.hideAllLoading();
+  },
+  queryFlagIn(){
+    this.hideAllLoading();
+  },
 
   actions:{
     uploadSucc: function(response) {

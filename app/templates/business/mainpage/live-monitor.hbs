@@ -1,0 +1,73 @@
+<div class="col-sm-12">
+  <div class="box position-relative overflow-hidden">
+    <div id="#datatable1_wrapper" class="dataTables_wrapper form-inline bottom20" role="grid">
+      <div class="row clear font14">
+        <div class="col-sm-6 nopadding-left">（您最多可以选择四个监控设备同时播放）</div>
+        <div class="col-sm-3 pull-right nopadding-right">
+          {{#ui/mix-button class="user-btn pull-left font16" iconClass="fa fa-video-camera" paddingBorder="padding4 border-1-plantem" text='立即播放'  clickAction="playAction" playAction="playAction"}}
+          {{/ui/mix-button}}
+        </div>
+        <div class="col-sm-2 pull-right nopadding-right">
+          {{#ui/mix-button class="user-btn pull-left font16" iconClass="fa fa-mail-reply" paddingBorder="padding4 border-1-plantem" text='返回列表'  clickAction="backToList" backToList="backToList"}}
+          {{/ui/mix-button}}
+        </div>
+      </div>
+
+      <div id="" class="top15 dataTables_wrapper form-inline building-floor-list">
+        <!--当前楼层列表-->
+        {{#if videoList}}
+        {{#each videoList as |building|}}
+        <h2 class="">{{building.buildingSeq}}</h2>
+        <div class="col-sm-12 nopadding-left nopadding-right bottom20">
+            {{#each building.floors as |floor|}}
+              <div class="col-sm-12 floor nopadding-left nopadding-right" style="border-bottom: 1px solid #fff;">
+                <div class="padding-left-15 bk-color-32b7e8 font16 min-height-40 color-white">
+                  <div class="pull-left padding-top10">
+                    {{floor.floorSeq}}
+                  </div>
+                </div>
+
+                  {{#if floor.devices}}
+                    <div class="room-list bottom10 top10 position-relative ">
+                      {{#each floor.devices as |device|}}
+                        {{#if (eq device.type "room")}}
+                          <div class="width130 room pointer height110 pull-left margin-5px-3px-10px-3px {{if device.hasSelected 'room-selected' ''}}"
+                          {{action 'selectDevice' device on="click"}} id="device_{{device.deviceId}}">
+                            <div class="width20 height20 margin-5px-auto-0"><img class="width20 height20" src="assets/images/icon/roomIcon.png"></div>
+                            <div class="nowrap room-info top5 center">{{device.roomName}}房间</div>
+                          </div>
+                        {{else if (eq device.type "bed")}}
+                          <div class="width130 room pointer height110 pull-left margin-5px-3px-10px-3px {{if device.hasSelected 'room-selected' ''}}"
+                           {{action 'selectDevice' device on="click"}} id="device_{{device.deviceId}}">
+                            <div class="width20 height20 margin-5px-auto-0"><img class="width20 height20" src="assets/images/icon/bedIcon.png"></div>
+                            <div class="nowrap room-info top5 center" >{{device.roomName}}房间</div>
+                            <div class="nowrap room-info top5">{{device.bedName}}床位</div>
+                            <div class="nowrap room-info top5">{{device.customer.name}}</div>
+                          </div>
+
+                        {{/if}}
+                      {{/each}}
+                    </div>
+                  {{/if}}
+
+              </div>
+            {{/each}}
+        </div>
+        {{/each}}
+        {{else}}
+          <div class="col-sm-12 center nopadding-left" style="font-size:24px;">暂无绑定设备</div>
+        {{/if}}
+      </div>
+
+
+      <!-- <div id="" class="top15 dataTables_wrapper form-inline building-floor-list {{if deviceListFlag "hide" ""}}">
+        {{#callbusi/live-video-detail deviceObj=deviceObj deviceObjFlag=deviceObjFlag}}
+        {{/callbusi/live-video-detail}}
+      </div> -->
+
+
+    </div>
+
+
+  </div>
+</div>

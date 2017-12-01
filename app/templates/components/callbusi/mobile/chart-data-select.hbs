@@ -2,15 +2,15 @@
 <div class="line-height-44 center header-title" style="">健康数据</div>
 
 <div class="" style="position:absolute;top:8px;right:6px;">
-  {{#if chartShow}}
-    <div class="pull-right color-white select-warning bk-color-ccc" {{action 'chartShowAction' on='tap'}}>
-      <div class="pull-left padding-right-3">数据</div>
-      <div class=" pull-left select-backg-true" style=""></div>
-    </div>
-  {{else}}
-    <div class="pull-right color-white select-warning bk-color-ccc" {{action 'chartShowAction' on='tap'}}>
-      <div class="pull-left select-backg-true" style=""></div>
-      <div class="pull-left padding-left-3">图表</div>
-    </div>
-  {{/if}}
+  <div class="pull-right color-white select-warning bk-color-ccc {{if chartShow "" "hide"}}" {{action 'chartShowAction' on='tap'}}>
+    <div class="pull-left padding-right-3">图表</div>
+    <div class=" pull-left select-backg-true" style=""></div>
+  </div>
+  <div class="pull-right color-white select-warning bk-color-ccc {{if chartShow "hide" ""}}" {{action 'chartShowAction' on='tap'}}>
+    <div class="pull-left select-backg-true" style=""></div>
+    <div class="pull-left padding-left-3">数据</div>
+  </div>
 </div>
+<!-- <div style="position:absolute;top:7px;right:6px;">
+  {{bs-switch off-text='数据' on-text='图表' size='xs' on-color='info' checked=switchState on-switch-change="switchChanged"}}
+</div> -->

@@ -2,6 +2,7 @@ import DS from 'ember-data';
 import BaseModel from './base-model';
 
 var Serviceitem=BaseModel.extend({
+  pathConfiger: Ember.inject.service("path-configer"),
   name:DS.attr('string'),//护理项目名称
   referencePrice :DS.attr('string'),//参考价格
   // careType:DS.belongsTo('dicttype'),//护理类别
@@ -21,6 +22,19 @@ var Serviceitem=BaseModel.extend({
   serviceNum:DS.attr('string'),//数量单位
   serviceValueType:DS.belongsTo('dicttype'),//服务类型，增值服务或基础服务
   price:DS.attr('number'),
+  // 为居家养老添加的字段
+  serviceSource:DS.belongsTo('dicttype'), //机构服务jigou   居家服务jujia
+  picture: DS.attr('string'), //图片
+
+  avatarUrl: Ember.computed('picture', function() {
+    var avatar = this.get('picture');
+    if (!avatar) {
+        avatar = "drug-img.png";
+        return this.get("pathConfiger").getAvatarLocalPath(avatar);
+    }
+    return this.get("pathConfiger").getAvatarRemotePath(avatar);
+  }),
+
   valueAdd:Ember.computed('serviceValueType',function(){
     let serviceValueType = this.get('serviceValueType');
     if(serviceValueType.get('typecode')=='serviceValueTypeZZ'){

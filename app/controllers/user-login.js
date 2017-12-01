@@ -6,6 +6,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
   infiniteContentPropertyName: "userLogin",
   infiniteModelName: "user",
   infiniteContainerName:"userLoginContainer",
+  constants: Constants,
 
   mailLogin: Ember.computed(function() {
     console.log('loginType',this.get('loginType'));
@@ -40,6 +41,21 @@ export default Ember.Controller.extend(InfiniteScroll,{
       this.set('jujia',false);
     }
   },
+  mobileFalse:false,
+  pwdFalse:false,
+  mobileFalseObs:function(){
+    let mobileNum = this.get('mobileNum');
+    let password = this.get('password');
+    if(this.get('mobileFalse')||this.get('pwdFalse')){
+      if(mobileNum){
+        this.set('mobileFalse',false);
+      }
+      if(password){
+        this.set('pwdFalse',false);
+      }
+    }
+  }.observes('mobileNum','password'),
+  passShow:true,
   actions:{
     gotoReg: function()  {
       var queryParams;
@@ -56,15 +72,25 @@ export default Ember.Controller.extend(InfiniteScroll,{
     loginAction: function()  {
       $("#userLoginBtn").addClass("tapped");
       setTimeout(function(){$("#userLoginBtn").removeClass("tapped");},200);
-      // var mail = this.get('emailAddress');
-      var phone = this.get('mobileNum');
-      var psd = this.get('password');
+        this.get("global_ajaxCall").set("action",null);
+      let mobileValue = document.getElementById('mobile-value').value;
+      let passwordValue = document.getElementById('password').value;
+      var phone = this.get('mobileNum')||mobileValue;
+      var psd = this.get('password')||passwordValue;
       if(!phone){
-        this.set('responseInfo','请添写登录账号！');
+        this.set('mobileFalse',true);
+        this.set('mobileInfo','请填写登录账号');
+        if(!this.get('mobileFalse')){
+          this.set('responseInfo','请添写登录账号！');
+        }
         return;
       }
       if(!psd){
-        this.set('responseInfo','请添写登录密码！');
+        this.set('pwdFalse',true);
+        this.set('pwdInfo','请填写登录密码');
+        if(!this.get('pwdFalse')){
+          this.set('responseInfo','请添写登录密码！');
+        }
         return;
       }
       if(this.get('phoneLogin')&&(!(/^1\d{10}$/.test(phone)))) {
@@ -95,6 +121,9 @@ export default Ember.Controller.extend(InfiniteScroll,{
         _self.set('deterSDisabled',true);
         filter.loginName = phone;
       }
+      let oldUsers = _self.store.peekAll('localstorage/user');
+      // filter.oldToken = oldUser.get('token');
+      console.log('oldUsers:',oldUsers);
       console.log("phone1111111111",phone);
       console.log("phone1111111111 filter",filter);
       _self.store.query('userSession',{filter:filter}).then(function(userData) {
@@ -117,6 +146,8 @@ export default Ember.Controller.extend(InfiniteScroll,{
               userLocal.set("password",passMd5);
               userLocal.set("current",1);
               userLocal.set('token',user.get('token'));
+              // 保存本地租户id
+              localStorage.setItem(Constants.uickey_tenantId,user.get('tenant.id'));
               console.log("need save userlocal",userLocal);
               userLocal.save().then(function(){
                 console.log("save local ok");
@@ -162,6 +193,23 @@ export default Ember.Controller.extend(InfiniteScroll,{
     },
     changeInfo: function() {
       this.set('responseInfo','');
+    },
+    cleanText(text){
+      this.set(text,null);
+    },
+    showPassword(){
+      let pwd = $('#password');
+      console.log('showPassword',pwd[0].type);
+      if(pwd[0].type=='password'){
+        pwd[0].type='text';
+        this.set('passShow',false);
+      }else{
+        pwd[0].type='password';
+        this.set('passShow',true);
+      }
+    },
+    forgotPassword(){
+
     },
   }
 });

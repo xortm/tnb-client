@@ -82,6 +82,21 @@ export default BaseBusiness.extend(Pagination,{
       for(let i = 0 ; i<7;i++){
         newCustomerPlanList.pushObject(list.objectAt(i));
       }
+      console.log(list.get('firstObject.remark'));
+      let serviceName = list.get('firstObject.remark').split('@');
+      let allDayServiceName = serviceName[1];
+      let allWeekServiceName = serviceName[0];
+      if(allDayServiceName.length>0){
+        controller.set('allDayServiceName',allDayServiceName);
+      }else{
+        controller.set('allDayServiceName','暂无');
+      }
+      if(allWeekServiceName.length>0){
+        controller.set('allWeekServiceName',allWeekServiceName);
+      }else{
+        controller.set('allWeekServiceName','暂无');
+      }
+
       console.log('length:',newCustomerPlanList.get('length'));
       controller.set('newCustomerPlanList',newCustomerPlanList);
       controller.set('allPlanDetailList',list);

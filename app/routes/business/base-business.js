@@ -6,6 +6,7 @@ export default Ember.Route.extend({
   service_PageConstrut:Ember.inject.service("page-constructure"),
   pathConfiger: Ember.inject.service("path-configer"),
   tableSelector:"#datatable1_wrapper",
+  realTemplateName: null,
   routeShortName: Ember.computed('routeName', function() {
     //取得短名称
     var shortName = "";
@@ -22,16 +23,20 @@ export default Ember.Route.extend({
     return shortName;
   }),
   renderTemplate() {
-    console.log("renderTemplate in");
+    console.log("renderTemplate in:" + this.get("realTemplateName"));
+    console.log("backPath:" + this.get("service_PageConstrut.backPath"));
+    console.log("curRouteName:" + this.get("service_PageConstrut.curRouteName"));
     //只有移动端模式才使用自定义outlet
     if(!this.get("global_curStatus.isMobile")){
       this.render();
       return;
     }
+    let rname = this.get("routeShortName");
+    let outletName = this.get("service_PageConstrut").getRealTemplateName(rname);
     //定义本路由的out输出
     this.render({
           into: 'business.mainpage',
-          outlet: this.get("routeShortName")
+          outlet: outletName
     });
   },
   getCurrentController: function(){
@@ -44,6 +49,10 @@ export default Ember.Route.extend({
       console.log("ctr afterRender",_self.get("tableSelector"));
       var mainpageController = App.lookup('controller:business.mainpage');
       mainpageController.showTableLoading($(_self.get("tableSelector")));
+      //处理切换计算
+      if(_self.get("isBlankPage")){
+        _self.blankAfterRender();
+      }
     });
     console.log("controller tableSelector:" + this.get("tableSelector"));
     //设置加载标识
@@ -111,6 +120,10 @@ export default Ember.Route.extend({
     //监控下级页面的跳转事件
     didTransition: function() {
       console.log("currentPathDidChange in:" + this.get("routeShortName"));
+      //移动端的空白加载页面，不使用这个事件
+      if(this.get("routeShortName").indexOf("blank-page")===0){
+        return;
+      }
       var mainpageController = this.controllerFor("business.mainpage");
       //通知mainpage获取route实例,同时通知状态为已激活
       this.get("service_PageConstrut").dispatchRouteInst(this.get("routeShortName"),2);

@@ -15,6 +15,9 @@ export default {
   drugSpec:[
       validatePresence({ presence: true, message: '剂型不能为空' }),
   ],
+  drugType:[
+      validatePresence({ presence: true, message: '药品类型不能为空' }),
+  ],
   printTypeValue:[
       validatePresence({ presence: true, message: '分药类型不能为空' }),
   ],

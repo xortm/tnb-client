@@ -23,7 +23,7 @@
         </div> -->
                 <div class="col-sm-6 col-lg-6 text-center pt10 padding-bottom10">
                     {{#if global_curStatus.isJujia}}
-                        {{#if customer.customerVipInfo}}
+                        {{#if customer.customerVipInfo.level.typename}}
                             <p class="extend">{{customer.customerVipInfo.level.typename}}</p>
                         {{else}}
                             <p class="extend">未分配会员等级</p>

@@ -67,6 +67,7 @@ export default BaseBusiness.extend(Pagination,{
     if(dom){
       _self.getCurrentController().set('customerdrugList',null);
       App.lookup('controller:business.mainpage').showTableLoading(dom);
+      _self.getCurrentController().set('couldAddDrug',false);
     }
     var params=this.pagiParamsSet();
     params.perPage = 100;
@@ -81,8 +82,14 @@ export default BaseBusiness.extend(Pagination,{
           });
           customerdrug.set('records',list);
           customerdrug.set('selected',false);
-        })
+        });
         _self.getCurrentController().set('customerdrugList',customerdrugList);
+        _self.getCurrentController().set('couldAddDrug',true);
+        // if(customerdrugList.get('firstObject.customer.id')==_self.getCurrentController().get('curcustomer.id')){
+        //   _self.getCurrentController().set('customerdrugList',customerdrugList);
+        //   _self.getCurrentController().set('couldAddDrug',true);
+        // }
+
         if(dom){
           App.lookup('controller:business.mainpage').removeTableLoading(dom);
         }
@@ -105,6 +112,10 @@ export default BaseBusiness.extend(Pagination,{
     }
     let customerdrugList = this.findPaged('customerdrugproject',params).then(function(customerdrugList){
       _self.getCurrentController().set('customerdrugprojectList',customerdrugList);
+      // if(customerdrugList.get('firstObject.customerDrug.customer.id')==_self.getCurrentController().get('curcustomer.id')){
+      //   _self.getCurrentController().set('customerdrugprojectList',customerdrugList);
+      // }
+
       if(dom){
         App.lookup('controller:business.mainpage').removeTableLoading(dom);
       }
@@ -181,6 +192,10 @@ export default BaseBusiness.extend(Pagination,{
          });
       }
       _self.getCurrentController().set('customerdrugprojectexeList',customerdrugList);
+      // if(customerdrugList.get('firstObject.customerDrug.customer.id')==_self.getCurrentController().get('curcustomer.id')){
+      //   _self.getCurrentController().set('customerdrugprojectexeList',customerdrugList);
+      // }
+
       _self.getCurrentController().set('exportList',customerdrugList);
       if(dom){
         App.lookup('controller:business.mainpage').removeTableLoading(dom);

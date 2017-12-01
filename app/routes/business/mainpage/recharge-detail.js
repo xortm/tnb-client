@@ -31,7 +31,7 @@ export default BaseBusiness.extend({
             controller.set('recharge', this.store.createRecord('rechargerecord', {}));
         }
         this.store.query('customer',{filter:{
-               'addRemark':'normal'
+               'addRemark':'normal',customerStatus:{'typecode@$not':'customerStatusOut'}
         }}).then(function(customerList){
           customerList.forEach(function(customer){
                //customer.set('accountPinyin',pinyinUtil.getFirstLetter(customer.get("name")));

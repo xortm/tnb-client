@@ -1,0 +1,28 @@
+<div id="drugInformationContainer" class="mainContent border-top-1 {{if global_pageConstructure.showLoader 'hide' ''}}">
+  <div class="wrapperInner">
+    {{#if customerdrugprojectList}}
+      {{log "customerdrugprojectList:" customerdrugprojectList}}
+      <ul class="padding-0-10 bk-color-white top10">
+        {{#each customerdrugprojectList as |customerdrugproject|}}
+          <li class="border-bottom-1"></li>
+          <li class="padding-bottom5">
+            <div class="clearfix clear height40">
+              <i class="pull-left padding-left-10 margin-10px-0"><img class="a-img width20 height20" src="assets/images/mobile/drug.png"/></i>
+              <span class="padding-left-10 color666666 line-height-40 font16 pull-left weight-bold">{{customerdrugproject.customerDrug.drug.name}}</span>
+            </div>
+            <div class="color999999 padding-left-10 font14 line-height-25">剩余药量：{{customerdrugproject.customerDrug.drugNum}}{{customerdrugproject.customerDrug.drug.drugSpec.typename}}</div>
+            {{#if (gte customerdrugproject.littleDrugDetail 0)}}
+              <div class="color999999 padding-left-10 font14 line-height-25">缺药提醒：剩余药品可供{{customerdrugproject.littleDrugDetail}}天使用</div>
+            {{/if}}
+          </li>
+        {{/each}}
+        <li class="border-bottom-1"></li>
+      </ul>
+    {{else}}
+      <div class="nodate">暂无数据</div>
+    {{/if}}
+
+  </div>
+</div>
+{{ui/container/infinite-scroll moniteData="customerdrugprojectList"
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

@@ -64,7 +64,7 @@
 										{{#if id}}
 											{{#bs-form-element class="inline-block form-input-group" controlType="drugType"  property="drugType" }}
 												{{callbusi/dict-selector class="inline-block" groupCode=constants.drugType curDict=drugInfo.drugType
-													showName=drugInfo.drugType.typename dictSelect="drugTypeSelect"}}
+													showName=drugInfo.drugType.typename dictSelect="drugTypeSelect" preselected=false}}
 											{{/bs-form-element }}
 										{{else}}
 											{{#bs-form-element class="inline-block form-input-group" controlType="drugType"  property="drugType" }}
@@ -172,7 +172,7 @@
 								<div class="input-group-addon">分药类型：</div>
 									{{#if detailEdit}}
 										{{#bs-form-element class="inline-block form-input-group" controlType="printTypeValue"  property="printTypeValue" }}
-										{{#power-select class="input-group-content" placeholder='' options=printList  selected=drugModel.printTypeValue searchField="name"
+										{{#power-select class="input-group-content" placeholder='必填' options=printList  selected=drugModel.printTypeValue searchField="name"
 										noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "selectPrint" ) as |print|}}
 											{{print.name}}
 										{{/power-select}}

@@ -1,7 +1,5 @@
 import Ember from 'ember';
 import InfiniteScroll from '../../infinite-scroll';
-import Changeset from 'ember-changeset';
-import lookupValidator from 'ember-changeset-validations';
 
 export default Ember.Controller.extend(InfiniteScroll,{
   dataLoader: Ember.inject.service("data-loader"),

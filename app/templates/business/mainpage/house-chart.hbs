@@ -52,7 +52,6 @@
         {{/each}}
         <div class="col-sm-12" style="height:16px;"></div>
         {{else}}
-        <div class="col-sm-12 center nopadding-left" style="font-size:24px;">暂无数据</div>
         {{/if}}
         {{#if buildingList }}
             {{page-numbers content=buildingList showFL=true numPagesToShow=3 export=true}}
@@ -168,7 +167,7 @@
             <div class="col-sm-12" style="height:16px;"></div>
             {{#if chargeList}}
             {{#each chargeList as |charge|}}
-              <div class="customer-drug-list col-sm-12 nopadding-left pointer {{if charge.hasSelected 'drugcolor' ''}} " style="font-size:14px;"
+              <div class="customer-drug-list col-sm-12  pointer {{if charge.hasSelected 'drugcolor' ''}} " style="font-size:14px;padding-left:4px;"
               {{action "readDetail" charge on="click"}} {{action 'chooseData' charge on="mouseEnter" bubbles=false}}
               {{action 'leaveData' charge on="mouseLeave" bubbles=false}}>
                 {{#if charge.edited}}
@@ -182,7 +181,7 @@
                   <i class="fa fa-edit" {{action 'edit' charge on="click" bubbles=false}}>
                     {{bs-tooltip title="编辑" class="light-tooltip"}}
                   </i>
-                  <i class="fa fa-times" {{action 'del' charge on="click" bubbles=false}}>
+                  <i class="fa fa-trash-o" {{action 'del' charge on="click" bubbles=false}}>
                     {{bs-tooltip title="删除" class="light-tooltip"}}
                   </i>
                 </div>
@@ -198,11 +197,11 @@
           </div>
         <div class="col-sm-8">
           {{#if editModel}}
-            {{#callbusi/froala-editor data=curData saveToRead="saveToRead" save="save"}}
-            {{/callbusi/froala-editor}}
+            {{#callbusi/kind-editor value=curData.remark}}
+            {{/callbusi/kind-editor}}
           {{else}}
             {{#if curData}}
-              <div class="col-sm-12 pointer" id='data-content' {{action 'detailEditClick' on="click"}}></div>
+              <div class="col-sm-12 pointer" id='data-content' style="overflow:auto;" {{action 'detailEditClick' on="click"}}></div>
             {{else}}
               <div class="col-sm-12 center" style="font-size:24px;">请选择</div>
             {{/if}}
@@ -220,7 +219,7 @@
         <div class="col-sm-12" style="height:16px;"></div>
         {{#if marketList}}
         {{#each marketList as |market|}}
-          <div class="customer-drug-list col-sm-12 nopadding-left pointer {{if market.hasSelected 'drugcolor' ''}} " style="font-size:14px;"
+          <div class="customer-drug-list col-sm-12 pointer {{if market.hasSelected 'drugcolor' ''}} " style="font-size:14px;padding-left:4px;"
            {{action "readDetail" market on="click"}} {{action 'chooseData' market on="mouseEnter" bubbles=false}}
            {{action 'leaveData' market on="mouseLeave" bubbles=false}}>
              {{#if market.edited}}
@@ -234,7 +233,7 @@
                 <i class="fa fa-edit" {{action 'edit' market on="click" bubbles=false}}>
                   {{bs-tooltip title="编辑" class="light-tooltip"}}
                 </i>
-                <i class="fa fa-times" {{action 'del' market on="click" bubbles=false}}>
+                <i class="fa fa-trash-o" {{action 'del' market on="click" bubbles=false}}>
                   {{bs-tooltip title="删除" class="light-tooltip"}}
                 </i>
               </div>
@@ -250,11 +249,11 @@
       </div>
         <div class="col-sm-8">
           {{#if editModel}}
-            {{#callbusi/froala-editor data=curData saveToRead="saveToRead" save="save"}}
-            {{/callbusi/froala-editor}}
+            {{#callbusi/kind-editor value=curData.remark}}
+            {{/callbusi/kind-editor}}
           {{else}}
             {{#if curData}}
-              <div class="col-sm-12 pointer " id="data-content" {{action 'detailEditClick' on="click"}}></div>
+              <div class="col-sm-12 pointer " id="data-content" style="overflow:auto;" {{action 'detailEditClick' on="click"}}></div>
             {{else}}
               <div class="col-sm-12 center" style="font-size:24px;">请选择</div>
             {{/if}}

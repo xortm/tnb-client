@@ -2,10 +2,12 @@
     <div class="wrapperInner"> -->
 {{#ui/mobile/inner-tabbar menus=tabFuncs switchTab="switchTab" refreshFlag=refreshFlag serviceListFlag=serviceListFlag clickActFlag=clickActFlag itemXs="col-xs-4" positionClass="abs-top-44 service-care" theme="block-mode" }}
 {{/ui/mobile/inner-tabbar}}
-
-    {{#if (eq curTabCode 'tabInfo')}}
+{{log "consultinfoData hbs:" consultinfoData}}
+{{log "curTabCode hbs:" curTabCode}}
+{{#if consultinfoData}}
+  {{#if (eq curTabCode 'tabInfo')}}
     {{#ui/mobile/gestures-container}}
-        <div id="consultDetailContainer" class="mainContent {{if showLoadingImgIn 'hide'}}">
+        <div id="consultDetailContainer" class="mainContent {{if global_pageConstructure.showLoader 'hide' ''}}">
             <div class="wrapperInner" style="padding-top:44px;">
                 <ul class="profile">
                     <li class=" carousel color666 border-top-1 border-bottom-1" id="receiveStaff" {{action 'toSelfChoose' 'receiveStaff' 'receiveStaff' on="tap"}}>
@@ -22,19 +24,26 @@
                         <i class="fa-angle-right font20 my-right color-ccc"></i>
                     </li>
 
+                    <li class=" carousel color666 border-top-1 border-bottom-1" id="advGender" {{action 'toSelfChoose' 'advGender' 'advGender' on="tap"}}>
+                        <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                        <span class="profile-span">咨询人性别 </span>
+                        <span class="pull-right" style="line-height: 42px;margin-right: 10px;">
+                          {{#if (eq consultinfoData.advGender.typename '男')}}
+                              先生
+                          {{/if}}
+                          {{#if (eq consultinfoData.advGender.typename '女')}}
+                              女士
+                          {{/if}}
+                         </span>
+                        <i class="fa-angle-right font20 my-right color-ccc"></i>
+                    </li>
                     <li class=" carousel color666 border-top-1 border-bottom-1" id="liveIntent" {{action 'toSelfChoose' 'liveIntent' 'liveIntent' on="tap"}}>
                         <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
                         <span class="profile-span">咨询意向 </span>
                         <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{consultinfoData.liveIntent.typename}}</span>
                         <i class="fa-angle-right font20 my-right color-ccc"></i>
                     </li>
-                    <!--
-                    <li class=" carousel color666 border-top-1 border-bottom-1" id="advGender" {{action 'toSelfChoose' 'advGender' 'advGender' on="tap"}}>
-                        <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
-                        <span class="profile-span">咨询人性别 </span>
-                        <span class="pull-right"  style="line-height: 42px;margin-right: 10px;">{{consultinfoData.advGender.typename}}</span>
-                        <i class="fa-angle-right font20 my-right color-ccc"></i>
-                    </li> -->
+
                     <li class=" carousel color666 border-top-1 border-bottom-1" id="consultChannel" {{action 'toSelfChoose' 'consultChannel' 'consultChannel' on="tap"}}>
                         <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
                         <span class="profile-span">咨询方式 </span>
@@ -118,6 +127,12 @@
                         <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{consultinfoData.customerSelfCareAbility.typename}}</span>
                         <i class="fa-angle-right font20 my-right color-ccc"></i>
                     </li>
+                    <li class=" carousel color666 border-top-1 border-bottom-1" id="relationType" {{action 'toSelfChoose' 'relationType' 'relationType' on="tap"}}>
+                        <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                        <span class="profile-span">咨询形式</span>
+                        <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{consultinfoData.relationType.typename}}</span>
+                        <i class="fa-angle-right font20 my-right color-ccc"></i>
+                    </li>
                     <!-- <li class=" carousel color666 border-top-1 border-bottom-1" id="customerPS" {{action 'modification' 'customerPS' 'customerPS' on="tap"}}>
                         <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
                         <span class="profile-span">身体状况</span>
@@ -191,13 +206,13 @@
                 </ul>
             </div>
         </div>
-        {{/ui/mobile/gestures-container}}
-        {{ui/container/infinite-scroll moniteData=infiniteContentPropertyName didRenderAction="didRender" didInsertElementAction="didInsertElement"}}
-    {{/if}}
+    {{/ui/mobile/gestures-container}}
+    {{ui/container/infinite-scroll moniteData=infiniteContentPropertyName didRenderAction="didRender" didInsertElementAction="didInsertElement"}}
+  {{/if}}
 
 
 
-    {{#if (eq curTabCode 'tabCallBack')}}
+  {{#if (eq curTabCode 'tabCallBack')}}
     {{#ui/mobile/gestures-container}}
         <div id="consultDetailContainer" class="mainContent {{if global_pageConstructure.showLoader 'hide' ''}}">
             <div class="wrapperInner " style="padding-top:44px;">
@@ -217,9 +232,10 @@
             </div>
         </div>
         <div class="detail-dynamicsbtn bottom40" id="addBackvist" {{action 'addBackvist' on="tap"}}>
-          <img class="bottom2" width='15' src="assets/images/mobile/add.png" alt="">
-          <span class="padding-left-10">添加跟进信息</span>
+            <img class="bottom2" width='15' src="assets/images/mobile/add.png" alt="">
+            <span class="padding-left-10">添加跟进信息</span>
         </div>
-        {{/ui/mobile/gestures-container}}
-        {{ui/container/infinite-scroll moniteData=infiniteContentPropertyName didRenderAction="didRender" didInsertElementAction="didInsertElement"}}
-    {{/if}}
+    {{/ui/mobile/gestures-container}}
+    {{ui/container/infinite-scroll moniteData=infiniteContentPropertyName didRenderAction="didRender" didInsertElementAction="didInsertElement"}}
+  {{/if}}
+{{/if}}

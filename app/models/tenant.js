@@ -16,7 +16,7 @@ export default DS.Model.extend({
   address: DS.attr('string'),
   remark: DS.attr('string'),
   legalPerson: DS.attr('string'),
-
+  domainName:DS.attr('string'),
   linkMan: DS.attr('string'),
   linkManTel: DS.attr('string'),
   linkManQQ: DS.attr('string'),

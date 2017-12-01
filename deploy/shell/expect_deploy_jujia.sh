@@ -1,4 +1,4 @@
-set ssh_string tiannianbao@101.200.143.200
+set ssh_string tiannianbao@60.205.226.66
 spawn ssh $ssh_string
 expect "~]$"
 send "cd webapp-jujia\r"

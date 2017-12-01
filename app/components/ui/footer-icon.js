@@ -6,7 +6,7 @@ export default CommonButton.extend({
   tagName: "div",
   classStatic: true,
   needDoubleClickPrevent: false,
-  classNameBindings: ['classStatic:footer-nav','isFourIcon:col-xs-3','isThreeIcon:col-xs-4','selected:selected','isDisabled:isDisabled'],
+  classNameBindings: ['classStatic:footer-nav','classStatic:col-xs-3','selected:selected','isDisabled:isDisabled'],
   menu: null,
   selected: false,
   touchStart: function(){
@@ -55,12 +55,16 @@ export default CommonButton.extend({
     this._super(...arguments);
     if (this.get('renderAction')&&this.get("selected")) {
       var renderAction = this.get('renderAction');
-      console.log("renderAction:" + renderAction);
+      console.log("renderAction is:" + renderAction);
       var _self = this;
-      Ember.run.next(this,function() {
-        console.log("_self.clickActParams",_self.clickActParams);
+      setTimeout(()=>{
+        console.log("_self.clickActParams is",_self.clickActParams);
         _self.sendAction(renderAction,_self.clickActParams);
-      });
+      },50);
+      // Ember.run.next(this,function() {
+      //   console.log("_self.clickActParams",_self.clickActParams);
+      //   _self.sendAction(renderAction,_self.clickActParams);
+      // });
     }
   },
 });

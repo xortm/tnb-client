@@ -41,7 +41,7 @@
 						</div>
 						<div class="col-xs-12 col-sm-6">
 							<div class="form-input-group">
-								<span class="input-group-addon">请假时间：</span>
+								<span class="input-group-addon">请假日期：</span>
 								{{#if detailEdit}}
 								{{#bs-form-element class="inline-block form-input-group" controlType="expectStartTime" property="expectStartTime" }}
 										{{ui/addon/bs-datetimepicker date=leaveModel.expectStartTimeDate placeholder="必填项"
@@ -55,7 +55,7 @@
 						</div>
             <div class="col-xs-12 col-sm-6">
               <div class="form-input-group">
-                <span class="input-group-addon">预计销假时间：</span>
+                <span class="input-group-addon">预计销假日期：</span>
                 {{#if detailEdit}}
                 {{#bs-form-element class="inline-block form-input-group" controlType="expectEndTime" property="expectEndTime" }}
                     {{ui/addon/bs-datetimepicker date=leaveModel.expectEndTimeDate  minDate=leaveModel.expectStartTimeDate
@@ -70,7 +70,7 @@
 						{{#unless detailEdit}}
             <div class="col-xs-12 col-sm-6">
               <div class="form-input-group">
-                <span class="input-group-addon">销假时间：</span>
+                <span class="input-group-addon">销假日期：</span>
                   <div class="input-group-content">{{leaveModel.realEndTimeStr}}</div>
               </div>
             </div>

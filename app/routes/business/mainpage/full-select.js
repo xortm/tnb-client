@@ -11,6 +11,12 @@ export default BaseBusiness.extend({
     },
     assessmentIndicatorId: {
       refreshModel: true
+    },
+    strType:{
+      refreshModel:true
+    },
+    assessmentId:{
+      refreshModel:true
     }
   },
   model(params){

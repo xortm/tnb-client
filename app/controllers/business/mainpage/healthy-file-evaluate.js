@@ -6,7 +6,6 @@ export default Ember.Controller.extend(InfiniteScroll,{
   infiniteModelName: "evaluateResult",
   infiniteContainerName:"userHealthyFileEvaluateContainer",
 
-  moment: Ember.inject.service(),
   statusService: Ember.inject.service("current-status"),
   service_PageConstrut:Ember.inject.service("page-constructure"),
   mainController: Ember.inject.controller('business.mainpage'),

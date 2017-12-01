@@ -12,19 +12,9 @@ var Question = BaseModel.extend({
   weight:DS.attr('number'),//权重
   seq:DS.attr('number'),//序号
   answers:DS.hasMany('evaluateanswer'),//
-  answerList:Ember.computed('answers',function(){
-    let answers = this.get('answers');
-    let list = new Ember.A();
-    let seq = ['A','B','C','D','E','F','G'];
-    answers.forEach(function(answer){
-      list.pushObject(answer);
-    });
-    for(let i=0;i<answers.get('length');i++){
-      list.objectAt(i).set('curIndex',seq[i]);
-    }
-    return list;
-  }),
+  code:DS.attr('string'),//问题编码
   questionContent:Ember.computed.alias('content'),
+
 });
 
 export default Question;

@@ -21,7 +21,7 @@ var CustomerDrugProject = BaseModel.extend({
     let strArr = useDrugDate.split(',');
     function sortNumber(a,b)
       {
-        return a - b
+        return a - b;
       }
     strArr.sort(sortNumber);
     for(let i=0;i<strArr.length;i++){

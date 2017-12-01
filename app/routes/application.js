@@ -9,23 +9,45 @@ export default Ember.Route.extend({
   },
 
   dataService: Ember.inject.service("date-service"),
+
+
   beforeModel:function(transition){
     // localStorage.clear();
     console.log("location first:" + window.location.href);
     var href = window.location.href;
+    //是否在加载的时候去掉loading
+    var close = CommonUtil.analysisParam(href,"close");
     //用户类型，包括公众号C端用户，B端用户
     var type = CommonUtil.analysisParam(href,"type");
     //系统类型，1机构2居家
     var systype = CommonUtil.analysisParam(href,"systype");
+    var homePage = CommonUtil.analysisParam(href,"homePage");
     console.log("type in params:"  + type);
+    if(close&&close.indexOf("#")>0){
+      close = close.substring(0,close.indexOf("#"));
+    }
     if(type&&type.indexOf("#")>0){
       type = type.substring(0,type.indexOf("#"));
     }
     if(systype&&systype.indexOf("#")>0){
       systype = systype.substring(0,systype.indexOf("#"));
     }
+    if(homePage&&homePage.indexOf("#")>0){
+      homePage = homePage.substring(0,homePage.indexOf("#"));
+    }
+    console.log("homePage in loader:",homePage);
+    if(homePage && homePage === "consumer-service" || homePage === "publichealth-data" || homePage === "customer-dynamic" || homePage === "accounts-message"){
+      localStorage.setItem(Constants.uickey_homePage,homePage);
+    }else{
+      localStorage.setItem(Constants.uickey_homePage,"");
+    }
     console.log("type in params after:"  + type);
     //如果类型是公众号，则设置到全局中
+    if(close==="yes"){
+      console.log("run in yes");
+      this.get("global_curStatus").set("isCloseLoadingPage",true);
+      console.log("isCloseLoadingPage in model:",this.get("global_curStatus.isCloseLoadingPage"));
+    }
     if(type==="consumer"){
       this.get("global_curStatus").set("isConsumer",true);
       //修改标题

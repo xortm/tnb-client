@@ -6,7 +6,6 @@ export default Ember.Controller.extend(InfiniteScroll,{
   infiniteModelName: "",
   infiniteContainerName:"healthyFileImplementContainer",
 
-  moment: Ember.inject.service(),
   service_PageConstrut:Ember.inject.service("page-constructure"),
   mainController: Ember.inject.controller('business.mainpage'),
   pathConfiger: Ember.inject.service("path-configer"),
@@ -31,6 +30,8 @@ export default Ember.Controller.extend(InfiniteScroll,{
       let executionReport = executionReportList.get("firstObject");
       console.log("executionReport",executionReport);
       _self.set("executionReport",executionReport);
+      _self.hideAllLoading();
+      _self.directInitScoll(true);
     });
   },
   checkScoreObject:Ember.computed('executionReport',function(){

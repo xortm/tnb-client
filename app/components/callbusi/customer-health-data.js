@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import BaseItem from '../ui/base-ui-item';
-import Echarts from "npm:echarts";
+
 import Changeset from 'ember-changeset';
 import HealthValidations from '../../validations/health';
 import lookupValidator from 'ember-changeset-validations';
@@ -29,6 +29,41 @@ export default Ember.Component.extend(HealthValidations,{
     dateService: Ember.inject.service("date-service"),
     pathConfiger: Ember.inject.service("path-configer"),
     dataLoader: Ember.inject.service("data-loader"),
+    today:Ember.computed(function(){
+      let timestamp = this.get("dateService").getTodayTimestamp();
+      var today = this.get("dateService").formatDate(timestamp, "yyyy-MM-dd");
+      return today;
+    }),
+    today_1:Ember.computed(function(){
+      let timestamp = this.get("dateService").getDaysBeforeTimestamp("1");
+      var today = this.get("dateService").formatDate(timestamp, "yyyy-MM-dd");
+      return today;
+    }),
+    today_2:Ember.computed(function(){
+      let timestamp = this.get("dateService").getDaysBeforeTimestamp("2");
+      var today = this.get("dateService").formatDate(timestamp, "yyyy-MM-dd");
+      return today;
+    }),
+    today_3:Ember.computed(function(){
+      let timestamp = this.get("dateService").getDaysBeforeTimestamp("3");
+      var today = this.get("dateService").formatDate(timestamp, "yyyy-MM-dd");
+      return today;
+    }),
+    today_4:Ember.computed(function(){
+      let timestamp = this.get("dateService").getDaysBeforeTimestamp("4");
+      var today = this.get("dateService").formatDate(timestamp, "yyyy-MM-dd");
+      return today;
+    }),
+    today_5:Ember.computed(function(){
+      let timestamp = this.get("dateService").getDaysBeforeTimestamp("5");
+      var today = this.get("dateService").formatDate(timestamp, "yyyy-MM-dd");
+      return today;
+    }),
+    today_6:Ember.computed(function(){
+      let timestamp = this.get("dateService").getDaysBeforeTimestamp("6");
+      var today = this.get("dateService").formatDate(timestamp, "yyyy-MM-dd");
+      return today;
+    }),
     healthModel:Ember.computed("health",function(){
       var model = this.get("health");
       if (!model) {
@@ -332,7 +367,7 @@ export default Ember.Component.extend(HealthValidations,{
                   _self.set('showpopInvitePassModal',true);
                     _self.send('addHealthSelect',type);
                   _self.set('url',url);
-                  console.log(i);
+                  console.log(i,'***********************************');
                   switch (i%5) {
                     case 0:
                       _self.set('health.minTime',new Date().setHours(0,0));
@@ -400,6 +435,7 @@ export default Ember.Component.extend(HealthValidations,{
                 _self.set('health',hitem);
                 _self.send('addHealthSelect',hitem.get('itemtype'));
                 _self.set('showpopInvitePassModalThree',true);
+                _self.set('showpopInvitePassModal',false);
                 _self.set('url',url);
               });
             });
@@ -1384,7 +1420,7 @@ export default Ember.Component.extend(HealthValidations,{
         this.set("hasInitChart", true);
         var pwBlood = ($("#health-area").width()) / 2;
         $("#myChartBlood").width(pwBlood);
-        var myChartBlood = Echarts.init(document.getElementById('myChartBlood'));
+        var myChartBlood = echarts.init(document.getElementById('myChartBlood'));
         this.set("myChartBlood", myChartBlood);
         //初始化图表-血氧
         if (this.get("hasInitChartOxygen")) {
@@ -1393,7 +1429,7 @@ export default Ember.Component.extend(HealthValidations,{
         this.set("hasInitChartOxygen", true);
         var pwOxygen = ($("#health-area").width()) / 2;
         $("#myChartOxygen").width(pwOxygen);
-        var myChartOxygen = Echarts.init(document.getElementById('myChartOxygen'));
+        var myChartOxygen = echarts.init(document.getElementById('myChartOxygen'));
         this.set("myChartOxygen", myChartOxygen);
         //初始化图表-呼吸频率
         if (this.get("hasInitChartBreath")) {
@@ -1402,7 +1438,7 @@ export default Ember.Component.extend(HealthValidations,{
         this.set("hasInitChartBreath", true);
         var pwBreath = ($("#health-area").width()) / 2;
         $("#myChartBreath").width(pwBreath);
-        var myChartBreath = Echarts.init(document.getElementById('myChartBreath'));
+        var myChartBreath = echarts.init(document.getElementById('myChartBreath'));
         this.set("myChartBreath", myChartBreath);
         //初始化图表-体重
         if (this.get("hasInitChartWeight")) {
@@ -1411,7 +1447,7 @@ export default Ember.Component.extend(HealthValidations,{
         this.set("hasInitChartWeight", true);
         var pwWeight = ($("#health-area").width()) / 2;
         $("#myChartWeight").width(pwWeight);
-        var myChartWeight = Echarts.init(document.getElementById('myChartWeight'));
+        var myChartWeight = echarts.init(document.getElementById('myChartWeight'));
         this.set("myChartWeight", myChartWeight);
         //初始化图表-空腹血糖
         if (this.get("hasInitChartEmpty")) {
@@ -1420,7 +1456,7 @@ export default Ember.Component.extend(HealthValidations,{
         this.set("hasInitChartEmpty", true);
         var pwEmpty = ($("#health-area").width()) / 2;
         $("#myChartEmpty").width(pwEmpty);
-        var myChartEmpty = Echarts.init(document.getElementById('myChartEmpty'));
+        var myChartEmpty = echarts.init(document.getElementById('myChartEmpty'));
         this.set("myChartEmpty", myChartEmpty);
         //初始化图表-餐前血糖
         if (this.get("hasInitChartBefore")) {
@@ -1429,7 +1465,7 @@ export default Ember.Component.extend(HealthValidations,{
         this.set("hasInitChartBefore", true);
         var pwBefore = ($("#health-area").width()) / 2;
         $("#myChartBefore").width(pwBefore);
-        var myChartBefore = Echarts.init(document.getElementById('myChartBefore'));
+        var myChartBefore = echarts.init(document.getElementById('myChartBefore'));
         this.set("myChartBefore", myChartBefore);
         //初始化图表-餐后血糖
         if (this.get("hasInitChartAfter")) {
@@ -1438,7 +1474,7 @@ export default Ember.Component.extend(HealthValidations,{
         this.set("hasInitChartAfter", true);
         var pwAfter = ($("#health-area").width()) / 2;
         $("#myChartAfter").width(pwAfter);
-        var myChartAfter = Echarts.init(document.getElementById('myChartAfter'));
+        var myChartAfter = echarts.init(document.getElementById('myChartAfter'));
         this.set("myChartAfter", myChartAfter);
         //初始化图表-脂肪数据
         if (this.get("hasInitChartFat")) {
@@ -1447,7 +1483,7 @@ export default Ember.Component.extend(HealthValidations,{
         this.set("hasInitChartFat", true);
         var pwFat = ($("#health-area").width()) / 2;
         $("#myChartFat").width(pwFat);
-        var myChartFat = Echarts.init(document.getElementById('myChartFat'));
+        var myChartFat = echarts.init(document.getElementById('myChartFat'));
         this.set("myChartFat", myChartFat);
         //初始化图表-心率数据
         if (this.get("hasInitChartHeart")) {
@@ -1456,7 +1492,7 @@ export default Ember.Component.extend(HealthValidations,{
         this.set("hasInitChartHeart", true);
         var pwHeart = ($("#health-area").width()) / 2;
         $("#myChartHeart").width(pwHeart);
-        var myChartHeart = Echarts.init(document.getElementById('myChartHeart'));
+        var myChartHeart = echarts.init(document.getElementById('myChartHeart'));
         this.set("myChartHeart", myChartHeart);
         //初始化图表-体温数据
         if (this.get("hasInitChartTemperature")) {
@@ -1465,7 +1501,7 @@ export default Ember.Component.extend(HealthValidations,{
         this.set("hasInitChartTemperature", true);
         var pwTemperature = ($("#health-area").width()) / 2;
         $("#myChartTemperature").width(pwTemperature);
-        var myChartTemperature = Echarts.init(document.getElementById('myChartTemperature'));
+        var myChartTemperature = echarts.init(document.getElementById('myChartTemperature'));
         this.set("myChartTemperature", myChartTemperature);
 
         //初始化图表-尿液分析数据
@@ -1475,7 +1511,7 @@ export default Ember.Component.extend(HealthValidations,{
         this.set("hasInitChartAnalysis", true);
         var pwAnalysis = ($("#health-area").width()) / 2;
         $("#myChartAnalysis").width(pwAnalysis);
-        var myChartAnalysis = Echarts.init(document.getElementById('myChartAnalysis'));
+        var myChartAnalysis = echarts.init(document.getElementById('myChartAnalysis'));
         this.set("myChartAnalysis", myChartAnalysis);
         //初始化图表-血脂数据
         if (this.get("hasInitChartBloodFat")) {
@@ -1484,7 +1520,7 @@ export default Ember.Component.extend(HealthValidations,{
         this.set("hasInitChartBloodFat", true);
         var pwBloodFat = ($("#health-area").width()) / 2;
         $("#myChartBloodFat").width(pwBloodFat);
-        var myChartBloodFat = Echarts.init(document.getElementById('myChartBloodFat'));
+        var myChartBloodFat = echarts.init(document.getElementById('myChartBloodFat'));
         this.set("myChartBloodFat", myChartBloodFat);
     },
     actions: {

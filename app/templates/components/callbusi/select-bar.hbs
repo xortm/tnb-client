@@ -1,32 +1,34 @@
-<div id="selectBarContainer" class="clear" style="position:fixed;top:44px;bottom:0;left:0;right:-10000px;background:#2FA7FD; overflow:hidden; z-index:999;width:100%;">
-  <ul id="selecterUl" class="wrapperInner" style="width:100%;height:auto;overflow:auto;padding:0px 20px 0px 10px;border-top:1px solid #cccccc;background:#2FA7FD;">
+<div id="{{humpRouteId}}selectBarContainer" class="clear" style="position:fixed;top:44px;bottom:0;left:0;right:-10000px;background:#FFFFFF; overflow:hidden; z-index:1001;width:100%;">
+  <div id="{{routeId}}-selecterUl" class="wrapperInner" style="width:100%;height:auto;overflow:auto;border-top:1px solid #E1E1E1;background:#FFFFFF;padding-left:0;padding-bottom:10px;">
+  <ul class="padding-left-0">
     {{#if (eq isSquare 7)}}
-      <li id="ALL" class="itemALL" style="width:100%;height:54px;border-bottom:1px solid #cccccc;white-space:nowrap; overflow:hidden;text-overflow:ellipsis;" {{action "choiceCustomer" "ALL" on="tap"}}>
+      <li id="{{routeId}}-ALL" class="{{routeId}}-itemALL" style="width:100%;height:54px;border-bottom:1px solid #E1E1E1;white-space:nowrap; overflow:hidden;text-overflow:ellipsis;padding:0px 20px 0px 10px;" {{action "choiceCustomer" "ALL" on="tap"}}>
         <div class="pull-left" style="margin:7px 10px 7px 0;">
           {{ui/img-intergration name="headImg" hasUploader=false
           imgSrc=allSrc height=40 width=40 }}
         </div>
-        <span class="font14 pull-left" style="color:#ffffff;line-height:54px; margin-right:10px; text-align:left;">全部老人</span>
+        <span class="font14 pull-left" style="color:#353535;line-height:54px; margin-right:10px; text-align:left;">全部老人</span>
       </li>
     {{/if}}
     {{#if (eq isSquare 12)}}
-      <li id="ALL" class="itemALL" style="width:100%;height:54px;border-bottom:1px solid #cccccc;white-space:nowrap; overflow:hidden;text-overflow:ellipsis;" {{action "choiceCustomer" "ALL" on="tap"}}>
+      <li id="{{routeId}}-ALL" class="{{routeId}}-itemALL" style="width:100%;height:54px;border-bottom:1px solid #E1E1E1;white-space:nowrap; overflow:hidden;text-overflow:ellipsis;padding:0px 20px 0px 10px;" {{action "choiceCustomer" "ALL" on="tap"}}>
         <div class="pull-left" style="margin:7px 10px 7px 0;">
           {{ui/img-intergration name="headImg" hasUploader=false
           imgSrc=allSrc height=40 width=40 }}
         </div>
-        <span class="font14 pull-left" style="color:#ffffff;line-height:54px; margin-right:10px; text-align:left;">全部员工</span>
+        <span class="font14 pull-left" style="color:#353535;line-height:54px; margin-right:10px; text-align:left;">全部员工</span>
       </li>
     {{/if}}
     {{#each allCustomersInBarEnd as |customer|}}
-      {{callbusi/customer-select-list isSquare=isSquare customer=customer choiceCustomer="choiceCustomer" didInsertAct="didInsertAct"}}
+      {{callbusi/customer-select-list isSquare=isSquare customer=customer choiceCustomer="choiceCustomer" didInsertAct="didInsertAct" routeId=routeId}}
     {{/each}}
   </ul>
+  </div>
 </div>
 
-<ul id="rightBar" class="filterUl" style="position:fixed;right:10000px;top:44px;z-index:1000;color:#ffffff; width:20px;font-size:14px;padding-left:0;line-height:17px;">
+<ul id="{{routeId}}-rightBar" class="filterUl" style="position:fixed;right:10000px;top:44px;z-index:1002;color:#575757; width:20px;font-size:14px;padding-left:0;line-height:17px;">
   {{callbusi/right-bar-letter letter="#" letterAddClass=letterAddClass queryInitial="queryInitial"}}
   {{#each letterArr as |letter|}}
-    {{callbusi/right-bar-letter isSquare=isSquare letter=letter letterAddClass=letterAddClass queryInitial="queryInitial"}}
+    {{callbusi/right-bar-letter isSquare=isSquare letter=letter letterAddClass=letterAddClass queryInitial="queryInitial" routeId=routeId}}
   {{/each}}
 </ul>

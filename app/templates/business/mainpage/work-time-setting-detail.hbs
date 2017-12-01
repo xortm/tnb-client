@@ -3,138 +3,184 @@
 		<!-- BOX-BODY -->
 		<div class="box-body">
 			{{#bs-form formLayout=formLayout model=workModel invalid=(action "invalid")}}
-			<div class="row">
-				<div class="col-xs-12">
-					<p class="user-add-btn">
-						{{#if detailEdit}}
-						{{else}}
-							{{#ui/form-function editAction="detailEditClick" detailEditClick="detailEditClick"
-							removeAction="delById" delById="delById" clickActParams=worktimesettingInfo}}
-							{{/ui/form-function}}
-						{{/if}}
-					</p>
-				</div>
-				<!-- 列表详细介绍 -->
-				<div class="col-xs-12">
-					<div class="col-xs-12 nopadding-horizontal mt20">
-            <div class="col-xs-12 col-sm-6">
-							<div class="form-input-group">
-								<span class="input-group-addon">班次名称：</span>
-								{{#if detailEdit}}
-									{{#if id}}
-										{{bs-form-element property="name" class="inline-block form-input-group label-normal" placeholder='班次名称(必填)'}}
-								{{else}}
-									{{bs-form-element property="name" class="inline-block form-input-group label-normal" placeholder='班次名称'}}
+				<div class="row">
+					<div class="col-xs-12">
+						<p class="user-add-btn">
+							{{#if detailEdit}}
+							{{else}}
+								{{#ui/form-function editAction="detailEditClick" detailEditClick="detailEditClick" removeAction="delById" delById="delById" clickActParams=worktimesettingInfo}}
+								{{/ui/form-function}}
+							{{/if}}
+						</p>
+					</div>
+					<!-- 列表详细介绍 -->
+					<div class="col-xs-12">
+						<div class="col-xs-5 nopadding-horizontal mt20">
+							<div class="col-xs-12 ">
+								<div class="form-input-group">
+									<span class="input-group-addon">班次名称：</span>
+									{{#if detailEdit}}
+										{{#if id}}
+											{{bs-form-element property="name" class="inline-block form-input-group label-normal" placeholder='班次名称(必填)'}}
+										{{else}}
+											{{bs-form-element property="name" class="inline-block form-input-group label-normal" placeholder='班次名称'}}
 										{{/if}}
 									{{else}}
-									<div class="input-group-content">{{worktimesettingInfo.name}}</div>
-								{{/if}}
+										<div class="input-group-content">{{worktimesettingInfo.name}}</div>
+									{{/if}}
+								</div>
 							</div>
-						</div>
+							<div class="col-xs-12 ">
+								<div class="form-input-group">
 
-						<div class="col-xs-12 col-sm-6">
-							<div class="form-input-group">
-
-								{{#if detailEdit}}
-								<span class="input-group-addon">班次颜色(可选)：</span>
-									<select class="{{workModel.colorName}} full-width" onchange={{action 'selectColor' value="target.value"}}>
+									{{#if detailEdit}}
+										<span class="input-group-addon">班次颜色(可选)：</span>
+										<select class="{{workModel.colorName}} full-width" onchange= {{action 'selectColor' value="target.value"}}>
 											{{#each colorList as |color|}}
 												<option value={{color.typecode}} class="{{color.colorName}}" style="line-height:30px;"><div class="{{color.colorName}}"></div></option>
 											{{/each}}
 									</select>
-								{{else}}
-								<span class="input-group-addon">班次颜色：</span>
-								<div class="input-group-content {{worktimesettingInfo.colorName}}"></div>
-								{{/if}}
-							</div>
-						</div>
-
-
-						<div class="col-xs-12 col-sm-6">
-							<div class="form-input-group">
-								<span class="input-group-addon">开始时间：</span>
-								{{#if detailEdit}}
-									{{#if id}}
-										{{#bs-form-element property="startTime" class="inline-block form-input-group label-normal"  placeholder=''}}
-										{{ui/addon/bs-datetimepicker placeholder='班次开始时间,格式例如8或8:30(必填)' date=workModel.startTimedateShow
-										locale="zh-CN" iconClasses="fa fa-calendar" format='HH:mm' value=worktimesettingInfo.startTime
-										change="startTimeAction" }}
-										{{/bs-form-element}}
 									{{else}}
-										{{#bs-form-element property="startTime" class="inline-block form-input-group label-normal"  placeholder=''}}
-										{{ui/addon/bs-datetimepicker placeholder='班次开始时间,格式例如8或8:30(必填)' date=worktimesettingInfo.startTime
-										locale="zh-CN" iconClasses="fa fa-calendar" format='HH:mm' value=worktimesettingInfo.startTime
-										change="startTimeAction"}}
-										{{/bs-form-element}}
+										<span class="input-group-addon">班次颜色：</span>
+										<div class="input-group-content {{worktimesettingInfo.colorName}}"></div>
 									{{/if}}
-								{{else}}
-									<div class="input-group-content">{{worktimesettingInfo.startTime}}</div>
-								{{/if}}
+								</div>
 							</div>
-
-						</div>
-
-						<div class="col-xs-12 col-sm-6">
-							<div class="form-input-group">
-								<span class="input-group-addon">结束时间：</span>
-								{{#if detailEdit}}
-									{{#if id}}
-										{{#bs-form-element property="endTime" class="inline-block form-input-group label-normal"  placeholder='格式例如18或18:30(必填)'}}
-										{{ui/addon/bs-datetimepicker placeholder='班次结束时间,格式例如18或18:30(必填)' date=workModel.endTimedateShow
-										locale="zh-CN" iconClasses="fa fa-calendar" format='HH:mm' value=worktimesettingInfo.endTime
-										change="endTimeAction"}}
-										{{/bs-form-element}}
+							<div class="col-xs-12 ">
+								<div class="form-input-group">
+									<span class="input-group-addon">开始时间：</span>
+									{{#if detailEdit}}
+										{{#if id}}
+											{{#bs-form-element property="startTime" class="inline-block form-input-group label-normal" placeholder='' }}
+												{{ui/addon/bs-datetimepicker placeholder='班次开始时间,格式例如8或8:30(必填)' date=workModel.startTimedateShow locale="zh-CN" iconClasses="fa fa-calendar" format='HH:mm' value=worktimesettingInfo.startTime change="startTimeAction" }}
+											{{/bs-form-element}}
+										{{else}}
+											{{#bs-form-element property="startTime" class="inline-block form-input-group label-normal" placeholder='' }}
+												{{ui/addon/bs-datetimepicker placeholder='班次开始时间,格式例如8或8:30(必填)' date=worktimesettingInfo.startTime locale="zh-CN" iconClasses="fa fa-calendar" format='HH:mm' value=worktimesettingInfo.startTime change="startTimeAction"}}
+											{{/bs-form-element}}
+										{{/if}}
 									{{else}}
-										{{#bs-form-element property="endTime" class="inline-block form-input-group label-normal"  placeholder='格式例如18或18:30(必填)'}}
-										{{ui/addon/bs-datetimepicker placeholder='班次结束时间,格式例如18或18:30(必填)' date=worktimesettingInfo.endTime
-										locale="zh-CN" iconClasses="fa fa-calendar" format='HH:mm' value=worktimesettingInfo.endTime
-										change="endTimeAction" }}
-										{{/bs-form-element}}
+										<div class="input-group-content">{{worktimesettingInfo.startTime}}</div>
 									{{/if}}
-								{{else}}
-									<div class="input-group-content">{{worktimesettingInfo.endTime}}</div>
-								{{/if}}
-							</div>
-						</div>
-						<div class="col-xs-12 col-sm-6">
-							<div class="form-input-group">
-								<span class="input-group-addon">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：</span>
-								{{#if detailEdit}}
-									{{#if id}}
-									{{bs-form-element property="remark" class="inline-block form-input-group label-normal" controlType="remark" placeholder='备注'}}
-									{{else}}
-									{{bs-form-element property="remark" class="inline-block form-input-group label-normal" controlType="remark" placeholder='备注'}}
-									{{/if}}
-								{{else}}
-									<div class="input-group-content">{{worktimesettingInfo.remark}}</div>
-								{{/if}}
-							</div>
-						</div>
+								</div>
 
+							</div>
+							<div class="col-xs-12">
+								<div class="form-input-group">
+									<span class="input-group-addon">结束时间：</span>
+									{{#if detailEdit}}
+										{{#if id}}
+											{{#bs-form-element property="endTime" class="inline-block form-input-group label-normal" placeholder='格式例如18或18:30(必填)' }}
+												{{ui/addon/bs-datetimepicker placeholder='班次结束时间,格式例如18或18:30(必填)' date=workModel.endTimedateShow locale="zh-CN" iconClasses="fa fa-calendar" format='HH:mm' value=worktimesettingInfo.endTime change="endTimeAction"}}
+											{{/bs-form-element}}
+										{{else}}
+											{{#bs-form-element property="endTime" class="inline-block form-input-group label-normal" placeholder='格式例如18或18:30(必填)' }}
+												{{ui/addon/bs-datetimepicker placeholder='班次结束时间,格式例如18或18:30(必填)' date=worktimesettingInfo.endTime locale="zh-CN" iconClasses="fa fa-calendar" format='HH:mm' value=worktimesettingInfo.endTime change="endTimeAction" }}
+											{{/bs-form-element}}
+										{{/if}}
+									{{else}}
+										<div class="input-group-content">{{worktimesettingInfo.endTime}}</div>
+									{{/if}}
+								</div>
+							</div>
+							<div class="col-xs-12">
+								<div class="form-input-group">
+									<span class="input-group-addon">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：</span>
+									{{#if detailEdit}}
+										{{#if id}}
+											{{bs-form-element property="remark" class="inline-block form-input-group label-normal" controlType="remark" placeholder='备注'}}
+										{{else}}
+											{{bs-form-element property="remark" class="inline-block form-input-group label-normal" controlType="remark" placeholder='备注'}}
+										{{/if}}
+									{{else}}
+										<div class="input-group-content">{{worktimesettingInfo.remark}}</div>
+									{{/if}}
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-7 nopadding-horizontal mt20">
+							<div class="col-sm-12 nopadding-left" style="font-size:14px;color:#333;">护理老人选择：<span style="font-size:13px;">当前已选择{{customerNum}}个老人,{{chooseBeds.length}}个床位</span></div>
+							<div class="col-sm-12  border mt10">
+								<div class="tree tree-selectable" id='tree'>
+									{{#each treeList as |build|}}
+										<div class="tree-folder">
+											<div class="tree-folder-header {{if build.hasSelected 'tree-selected'}}">
+												<i class="fa {{if build.checked 'fa-minus' 'fa-plus'}}" {{action 'checkbuild' build on="click"}}></i>
+												{{#if detailEdit}}
+													<i class="fa {{if build.hasSelected 'fa-check' 'fa-square-o'}}" {{action 'choosebuild' build on="click"}}></i>
+												{{/if}}
+												<div class="tree-folder-name">{{build.name}}</div>
+											</div>
+											{{#if build.checked}}
+												<div class="tree-folder-content">
+													{{#each build.children as |floor|}}
+														<div class="tree-folder">
+															<div class="tree-folder-header {{if floor.hasSelected 'tree-selected'}}">
+																<i class="fa {{if floor.checked 'fa-minus' 'fa-plus'}}" {{action 'checkfloor' floor on="click"}}></i>
+																{{#if detailEdit}}
+																	<i class="fa {{if floor.hasSelected 'fa-check' 'fa-square-o'}}" {{action 'choosefloor' floor on="click"}}></i>
+																{{/if}}
+																<div class="tree-folder-name">{{floor.name}}</div>
+															</div>
+															{{#if floor.checked}}
+																<div class="tree-folder-content">
+																	{{#each floor.children as |room|}}
+																		<div class="tree-folder">
+																			<div class="tree-folder-header {{if room.hasSelected 'tree-selected'}}">
+																				<i class="fa {{if room.checked 'fa-minus' 'fa-plus'}}" {{action 'checkroom' room on="click"}}></i>
+																				{{#if detailEdit}}
+																					<i class="fa {{if room.hasSelected 'fa-check' 'fa-square-o'}}" {{action 'chooseroom' room on="click"}}></i>
+																				{{/if}}
+																				<div class="tree-folder-name nowrap">{{room.name}}&nbsp;<span class="room-cusnames" title={{room.cusNames}}>{{room.cusNames}}</span></div>
+																			</div>
+																			{{#if room.checked}}
+																				<div class="tree-folder-content">
+																					{{#each room.children as |bed index|}}
+																						{{#if (eq bed.name 'PDD')}}
+																							{{log 'bed is:' bed}}
+																						{{/if}}
+																						<div class="tree-item {{if bed.hasSelected 'tree-selected' ''}}">
+																							{{#if detailEdit}}
+																								<i id= {{bed.order}} class="fa {{if bed.hasSelected 'fa-check' 'fa-square-o'}}" {{action 'checkbed' bed on="click"}}></i>
+																							{{/if}}
+																							<div class="tree-item-name">{{bed.name}}</div>
+																						</div>
+																					{{/each}}
+																				</div>
+																			{{/if}}
+																		</div>
+																	{{/each}}
+																</div>
+															{{/if}}
+														</div>
+													{{/each}}
+												</div>
+											{{/if}}
+										</div>
+									{{/each}}
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
-
-				<div class="center">
-					<p class="text-center user-add-btn padding-top30 inlineBlock margin0auto">
-						{{#if detailEdit}}
-							{{#ui/mix-button class="user-btn edit-btn body-text-color" iconClass="fa fa-check"  text='保存' clickParams=worktimesettingInfo clickAction="saveWork" saveWork="saveWork"}}
-							{{/ui/mix-button}}
-							{{#ui/mix-button class="user-btn times-btn body-text-color" iconClass="fa fa-mail-reply"  text='取消'  clickAction="detailCancel" detailCancel="detailCancel" }}
-							{{/ui/mix-button}}
-						{{/if}}
-					</p>
-				</div>
-				<!-- 列表详细介绍 -->
-			</div>
 			{{/bs-form}}
 		</div>
-		<!-- /BOX-BODY -->
+		<div class="center">
+			<p class="text-center user-add-btn padding-top30 inlineBlock margin0auto">
+				{{#if detailEdit}}
+					{{#ui/mix-button class="user-btn edit-btn body-text-color" iconClass="fa fa-check" text='保存' clickParams=worktimesettingInfo clickAction="saveWork" saveWork="saveWork" }}
+					{{/ui/mix-button}}
+					{{#ui/mix-button class="user-btn times-btn body-text-color" iconClass="fa fa-mail-reply" text='取消' clickAction="detailCancel" detailCancel="detailCancel" }}
+					{{/ui/mix-button}}
+				{{/if}}
+			</p>
+		</div>
+		<!-- 列表详细介绍 -->
 	</div>
 </div>
 
 {{#if showpopInvitePassModal}}
-	{{#bs-modal body=false footer=false header=false closedAction=(action "invitation")
-	submitAction=(action "cancelPassSubmit" worktimesettingInfo)}}
+	{{#bs-modal body=false footer=false header=false closedAction=(action "invitation") submitAction=(action "cancelPassSubmit" worktimesettingInfo)}}
 		{{#bs-modal-header}}
 			<h3 class="modal-title">删除提示</h3>
 		{{/bs-modal-header}}
@@ -143,7 +189,7 @@
 		{{/bs-modal-body}}
 		{{#bs-modal-footer as |worktimesetting|}}
 			{{#bs-button action=(action "cancelPassSubmit" worktimesettingInfo) type="primary" disabled=prepaidDisabled}}确定{{/bs-button}}
-			{{#bs-button action=(action "invitation") type="default"}}取消{{/bs-button}}
+			{{#bs-button action=(action "invitation") type="default" }}取消{{/bs-button}}
 		{{/bs-modal-footer}}
 	{{/bs-modal}}
 {{/if}}

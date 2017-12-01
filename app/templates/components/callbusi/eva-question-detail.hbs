@@ -2,7 +2,7 @@
     <div class="box panel-default col-sm-12 nomargin-bottom">
         <div class="box-body">
             <div class="busi-info top25">
-                {{#bs-form formLayout=formLayout model=evaModel action=(action "detailSaveClick") invalid=(action "invalid")}}
+                {{#bs-form formLayout=formLayout model=evaModel}}
                     <div class="col-xs-12 nopadding-left">
                         <div class="user-add-btn">
                             {{#if addMode}}
@@ -12,9 +12,11 @@
                             {{else}}
                                 {{#if detailModify}}
                                 {{else}}
-                                {{#ui/form-function editAction="detailModifyClick" detailModifyClick="detailModifyClick"
-                  							removeAction="delById" delById="delById" }}
-                  							{{/ui/form-function}}
+                                  {{#if evaluate}}
+                                    {{#ui/form-function editAction="detailModifyClick" detailModifyClick="detailModifyClick"
+                      							removeAction="delById" delById="delById" }}
+                      							{{/ui/form-function}}
+                                  {{/if}}
                                 {{/if}}
                             {{/if}}
                         </div>
@@ -24,7 +26,7 @@
                             <div class="form-input-group label-normal">
                                 <span class="input-group-addon">被评估人 ：</span>
                                 {{#if addMode}}
-                                <div class="font-light input-group-content">{{customerObj.name}}</div>
+                                <div class="font-light input-group-content">{{evaluate.customer.name}}</div>
                                 {{else}}
                                     <div class="font-light input-group-content">{{evaluate.customer.name}}</div>
                                 {{/if}}
@@ -56,19 +58,67 @@
                             <div class="form-input-group label-normal">
                                 <span class="input-group-addon">评估日期：</span>
                                 {{#if detailModify}}
+                                  {{#if evaluate}}
                                     <div class="inline-block form-input-group">
                                       {{#bs-form-element class="inline-block form-input-group" controlType="createDateTime" property="createDateTime" }}
                                         {{ui/addon/bs-datetimepicker date=evaModel.createDate placeholder="必填项" locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'  maxDate=today show="dpShowAction" change="changeCreateDateAction" }}
                                         {{/bs-form-element}}
                                     </div>
+                                  {{/if}}
                                 {{else}}
                                     <div class="font-light input-group-content">{{evaModel.createDateTimeString}}</div>
                                 {{/if}}
                             </div>
                         </div>
                     </div>
+                    {{#unless detailModify}}
+                      {{#if sourceType}}
+                        <div class="line">
+                          <div class=" col-sm-4 nopadding-left">
+                              <div class="form-input-group label-normal">
+                                  <span class="input-group-addon">自理等级：</span>
+                                  {{#if detailModify}}
+                                      {{bs-form-element property="remark" class="inline-block form-input-group" controlType="remark" placeholder=""}}
+                                  {{else}}
+                                      <div class="font-light input-group-content">
+                                        {{#if (eq evaluate.doneFlag 1)}}
+                                          {{#if evaluate.actionLevel}}
+                                            {{evaluate.actionLevel.typename}}&nbsp;<i class="fa fa-question-circle pointer" title="点击查看分级标准" {{action 'levelInfo' 'actionLevel' on="click"}}></i>
+                                          {{else}}
+                                            无法计算&nbsp;<i class="fa fa-question-circle pointer" title="点击查看分级标准" {{action 'levelInfo' 'actionLevel' on="click"}}></i>
+                                          {{/if}}
+                                        {{else}}
+                                          <span style="color:red;">未完成</span>
+                                        {{/if}}
+                                      </div>
+                                  {{/if}}
+                              </div>
+                          </div>
+                          <div class=" col-sm-4">
+                              <div class="form-input-group label-normal">
+                                  <span class="input-group-addon">护理等级：</span>
+                                  {{#if detailModify}}
+                                      {{bs-form-element property="remark" class="inline-block form-input-group" controlType="remark" placeholder=""}}
+                                  {{else}}
+                                      <div class="font-light input-group-content">
+                                        {{#if (eq evaluate.doneFlag 1)}}
+                                          {{#if evaluate.level}}
+                                            {{evaluate.level.name}}&nbsp;<i class="fa fa-question-circle pointer" title="点击查看分级标准" {{action 'levelInfo' 'nursingLevel' on="click"}}></i>
+                                          {{else}}
+                                            无法计算&nbsp;<i class="fa fa-question-circle pointer" title="点击查看分级标准" {{action 'levelInfo' 'nursingLevel' on="click"}}></i>
+                                          {{/if}}
+                                        {{else}}
+                                          <span style="color:red;">未完成</span>
+                                        {{/if}}
+                                      </div>
+                                  {{/if}}
+                              </div>
+                          </div>
+                        </div>
+                      {{/if}}
+                    {{/unless}}
                     <div class="line">
-                        <div class="col-xs-12 col-sm-6 nopadding-left">
+                        <div class="col-xs-12 col-sm-12 nopadding-left">
                             <div class="form-input-group label-normal">
                                 <span class="input-group-addon">问卷备注：</span>
                                 {{#if detailModify}}
@@ -81,26 +131,36 @@
                     </div>
                     <br />
                     <div class="line">
-                        <div class="font-big color5 col-sm-2 top18 nopadding-left">问卷答题:</div>
-                        <div class="col-sm-10 changeTable">
+                        <div class="font-big color5 col-sm-1 top18 nopadding-left nopadding-right">问卷答题:</div>
+                        <div class="col-sm-11">
                             <table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered  dataTable mt15" aria-describedby="datatable1_info">
                                 <thead>
                                     <tr role="row">
-                                        <th class="center list-style" rowspan="1" colspan="1" width="">模板名称</th>
+                                        <th class="center list-style" rowspan="1" colspan="1" width="">问卷名称</th>
                                         <th class="center list-style" rowspan="1" colspan="1" width="">问卷得分</th>
-                                        <th class="center list-style" rowspan="1" colspan="1" width="">对应等级</th>
-                                        <th class="center list-style" rowspan="1" colspan="1" width="">模板备注</th>
-                                        <th class="center list-style" rowspan="1" colspan="1" width="">问卷选择</th>
+                                        <th class="center list-style" rowspan="1" colspan="1" width="">
+                                          {{#if sourceType}}
+                                          对应自理等级
+                                          {{else}}
+                                          对应护理等级
+                                          {{/if}}
+                                        </th>
+                                        <th class="center list-style" rowspan="1" colspan="1" width="">备注</th>
                                     </tr>
                                 </thead>
                                 <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
-                                    {{#each useModelList as |useModel|}}
+                                    {{#each evaluate.results as |useModel|}}
                                         <tr class="gradeA odd {{if useModel.hasShow 'backColor' ''}}" {{action "selectModel" useModel on="click"}}>
-                                            <td class="center list-style ellipsis sorting_1 {{if useModel.errorClass 'hasError' ''}}">{{useModel.title}}</td>
-                                            <td class="center list-style ellipsis {{if useModel.errorClass 'hasError' ''}}">{{useModel.scores}}</td>
-                                            <td class="center list-style ellipsis {{if useModel.errorClass 'hasError' ''}}">{{useModel.level}}</td>
-                                            <td class="center list-style ellipsis {{if useModel.errorClass 'hasError' ''}}">{{useModel.remark}}</td>
-                                            <td class="center ellipsis {{if useModel.errorClass 'hasError' ''}}"><i class="fontLogo {{if useModel.hasShow 'fa-circle' ''}}"></i></td>
+                                            <td class="center list-style ellipsis sorting_1 {{if useModel.errorClass 'hasError' ''}}">{{useModel.model.title}}</td>
+                                            <td class="center list-style ellipsis {{if useModel.errorClass 'hasError' ''}}">{{useModel.score}}</td>
+                                            <td class="center list-style ellipsis {{if useModel.errorClass 'hasError' ''}}">
+                                              {{#if (eq useModel.doneFlag 0)}}
+                                                <span style="color:red;">{{useModel.levelName}}</span>
+                                              {{else}}
+                                                {{useModel.levelName}}
+                                              {{/if}}
+                                            </td>
+                                            <td class="center list-style ellipsis {{if useModel.errorClass 'hasError' ''}}">{{useModel.model.remark}}</td>
                                         </tr>
                                         {{#if useModel.hasShow}}
                                         <tr style="cursor:default;">
@@ -108,21 +168,20 @@
                                         <div class="col-sm-12">
                                             <!-- BOX BORDER-->
                                             <div class="padding-left40">
-                                                {{#each realQuestionList as |question index|}}
+                                                {{#each useModel.questions as |question index|}}
                                                     <div class="padding-bottom-20 question-style {{if useModel.errorClass 'hasError' ''}}">{{question.realIndex}}.{{question.content.content}}?<div class="inlineBlock {{if useModel.errorClass 'hasError' 'hidden'}}">(请完成此题)</div></div>
                                                     <div class="padding-bottom20">
                                                         {{#each question.answerList as |answer|}}
-                                                            {{#if (eq answer.answerIndex 'B')}}
-                                                            <div class="choose-inline-block pointer" {{action "chooseAnswer" answer question on="click"}}>
-                                                                <div class="fontLogo choose-inline-block {{if detailModify 'choose-box' ''}} {{if answer.hasSelcted 'fa-check' ''}}"></div>&nbsp;&nbsp;
-                                                                <div class="choose-inline-block margin-right-40 answer-style">{{answer.answerIndex}}.{{answer.content}}</div>
-                                                            </div>
-                                                          <br />
-                                                          {{else}}
-                                                            <div class="choose-inline-block pointer" {{action "chooseAnswer" answer question on="click"}}>
-                                                                <div class="fontLogo choose-inline-block {{if detailModify 'choose-box' ''}} {{if answer.hasSelcted 'fa-check' ''}}"></div>&nbsp;&nbsp;
-                                                                <div class="choose-inline-block margin-right-40 answer-style">{{answer.answerIndex}}.{{answer.content}}</div>
-                                                            </div>
+                                                            {{#if detailModify}}
+                                                              <div class="choose-inline-block pointer" {{action "chooseAnswer" answer question on="click"}}>
+                                                                  <div class="fontLogo choose-inline-block {{if detailModify 'choose-box' ''}} {{if answer.hasSelcted 'fa-check' ''}}"></div>&nbsp;&nbsp;
+                                                                  <div class=" margin-right-40 answer-style" style="display:inline;">{{answer.answerIndex}}({{answer.answer.score}}分).{{answer.answer.answerContent}}</div>
+                                                              </div>
+                                                            {{else}}
+                                                              <div class="choose-inline-block pointer">
+                                                                  <div class="fontLogo choose-inline-block {{if detailModify 'choose-box' ''}} {{if answer.hasSelcted 'fa-check' ''}}"></div>&nbsp;&nbsp;
+                                                                  <div class=" margin-right-40 answer-style" style="display:inline;">{{answer.answerIndex}}({{answer.answer.score}}分).{{answer.answer.answerContent}}</div>
+                                                              </div>
                                                             {{/if}}
                                                         {{/each}}
                                                     </div>
@@ -143,7 +202,7 @@
                     <div class="text-center padding-top20">
                         <p class="text-center user-add-btn" style="display:inline-block;margin:0 auto!important ">
                         {{#if detailModify}}
-                        {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check"  text='保存'}}
+                        {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check"  text='提交' clickAction="detailSaveClick" detailSaveClick="detailSaveClick"}}
                         {{/ui/mix-button}}
                         {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply"  text='取消'  clickAction="cancelClick" cancelClick="cancelClick" }}
                         {{/ui/mix-button}}
@@ -157,3 +216,49 @@
         </div>
     </div>
 </div>
+
+{{#if levelInfoModal}}
+  {{#bs-modal body=false footer=false header=false closedAction=(action "invitation")}}
+		{{#bs-modal-header}}
+			<h3 class="modal-title">分级标准</h3>
+		{{/bs-modal-header}}
+		{{#bs-modal-body}}
+			<div style="padding:10px;">
+        {{#if actionLevelInfo}}
+          <span style="font-size:14px;line-height:24px;">
+            0 能力完好：<br/>
+            &nbsp;&nbsp;&nbsp;日常生活活动、精神状态、感知觉与沟通分级均为0，社会参与分级为0或1；<br/>
+            1 轻度失能：<br/>
+            &nbsp;&nbsp;&nbsp;日常生活活动分级为0，但精神状态、感知觉与沟通中至少一项分级为1及以上，或社会参与的分级为2；<br/>
+            &nbsp;&nbsp;&nbsp;或日常生活活动分级为1，精神状态、感知觉与沟通、社会参与中至少有一项的分级为0或1。<br/>
+            2 中度失能：<br/>
+            &nbsp;&nbsp;&nbsp;日常生活活动分级为1，但精神状态、感知觉与沟通、社会参与均为2，或有一项为3。<br/>
+            &nbsp;&nbsp;&nbsp;或日常生活活动分级为2，且精神状态、感知觉与沟通、社会参与中有1-2项的分级为1或2。<br/>
+            3 重度失能：<br/>
+            &nbsp;&nbsp;&nbsp;日常生活活动的分级为3；<br/>
+            &nbsp;&nbsp;&nbsp;或日常生活活动、精神状态、感知觉与沟通、社会参与分级均为2或以上；<br/>
+            &nbsp;&nbsp;&nbsp;或日常生活活动分级为2，且精神状态、感知觉与沟通、社会参与中至少有一项分级为3。
+          </span>
+        {{/if}}
+        {{#if nursingLevelInfo}}
+        <span style="font-size:14px;line-height:24px;">
+          1 自理：<br/>
+          &nbsp;&nbsp;&nbsp;日常生活活动、精神状态、感知觉与沟通分级均为0，社会参与分级为0或1；<br/>
+          2 介助1：<br/>
+          &nbsp;&nbsp;&nbsp;日常生活活动分级为0(85-95分)，精神状态、感知觉与沟通中至少有一项的分级为1及以上，或社会参与的分级为2。<br/>
+          3 介助2：<br/>
+          &nbsp;&nbsp;&nbsp;日常生活活动分级为1(75-80分)，但精神状态、感知觉与沟通、社会参与中至少有一项的分级为0或1。<br/>
+          4 介助3：<br/>
+          &nbsp;&nbsp;&nbsp;日常生活活动分级为1(65-70分)，但精神状态、感知觉与沟通、社会参与均为2或有一项为3。<br/>
+          5 介护1：<br/>
+          &nbsp;&nbsp;&nbsp;日常生活活动分级为2(45-60分)，且精神状态、感知觉与沟通、社会参与中有1-2项的分级为1或2。<br/>
+          6 介护2：<br/>
+          &nbsp;&nbsp;&nbsp;日常生活活动的分级为3(≤40分)；<br/>
+          7 介护3：<br/>
+          &nbsp;&nbsp;&nbsp;日常生活活动、精神状态、感知觉与沟通、社会参与分级均为2或以上；或日常生活活动分级为2以上，且精神状态、感知觉与沟通、社会参与中至少有一项分级为3。
+        </span>
+        {{/if}}
+      </div>
+		{{/bs-modal-body}}
+	{{/bs-modal}}
+{{/if}}

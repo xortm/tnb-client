@@ -1,0 +1,16 @@
+<div class="header-bar-switch" {{action "showSwitchListAction" on="tap"}}>
+  <img src="assets/images/mobile/switchService.png"/>
+</div>
+<div class="header-bar-switch-shade {{if showSwitchList "" "hide"}}" {{action "switchAction" "close" on="tap"}}></div>
+<ul class="header-bar-switch-ul {{if showSwitchList "" "hide"}}">
+  <li {{action "switchAction" "service-nurse" on="tap"}}>
+    <img class="a-img before" src="assets/images/mobile/serviceNurse.png"/>
+    <span>专业护理</span>
+    <img class="a-img after {{if (eq switchServiceFlag "service-nurse") "" "hide"}}" src="assets/images/mobile/servicePoint.png"/>
+  </li>
+  <li {{action "switchAction" "service-care" on="tap"}}>
+    <img class="a-img before" src="assets/images/mobile/serviceCare.png"/>
+    <span>生活照料</span>
+    <img class="a-img after {{if (eq switchServiceFlag "service-care") "" "hide"}}" src="assets/images/mobile/servicePoint.png"/>
+  </li>
+</ul>

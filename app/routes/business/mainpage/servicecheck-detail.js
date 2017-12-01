@@ -11,18 +11,37 @@ export default BaseBusiness.extend({
       },
   },
   header_title:'执行情况信息',
+  dataLoader:Ember.inject.service('data-loader'),
   model(){
     return{};
   },
   setupController(controller, model){
     this._super(controller, model);
+    let finishLevelList = this.get('dataLoader.serviceFinishDefaultList');
     var editMode=this.getCurrentController().get('editMode');
     var id=this.getCurrentController().get('id');
     if(editMode=='edit'){
       controller.set('detailEdit',false);
-      this.store.findRecord('nursingplanexe',id).then(function(planInfo){
-        controller.set('planInfo',planInfo);
-      });
+      let planInfo = this.store.peekRecord('nursingplanexe',id);
+      let str = '';
+      if(planInfo.get('exeTabRemark')){
+        let remark = JSON.parse(planInfo.get('exeTabRemark'));
+        let list = remark.remarkStr.split(',');
+
+        for(let i=0;i<list.length;i++){
+          if(finishLevelList.findBy('remark',list[i])){
+            let item = finishLevelList.findBy('remark',list[i]);
+            str += item.get('name') + ',';
+          }
+        }
+        str = str.substring(0,str.length-1);
+      }else{
+        str = '无';
+      }
+
+      planInfo.set('exeTabRemarkStr',str);
+      controller.set('planInfo',planInfo);
+      controller.set('planInfo.exeTabRemarkStr',str);
     }else{
       let filterCustomer;
       filterCustomer = $.extend({}, filterCustomer, {

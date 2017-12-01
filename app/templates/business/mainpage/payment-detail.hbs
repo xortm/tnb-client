@@ -25,7 +25,7 @@
 							<span class="input-group-addon">用户姓名：</span>
 								{{#if detailEdit}}
                   {{#bs-form-element class="inline-block form-input-group" controlType="customer"  property="customer" }}
-									{{#power-select class="input-group-content" placeholder='用户姓名(必填)' options=customerList  selected=defaultCustomer searchField="namePinyin"
+									{{#power-select class="input-group-content" placeholder='必填' options=customerList  selected=defaultCustomer searchField="namePinyin"
 									noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "selectCustomer" ) as |customer|}}
 										{{customer.name}}
 									{{/power-select}}
@@ -42,7 +42,7 @@
 							<div class="form-input-group">
 							<span class="input-group-addon">消费金额(元)：</span>
 								{{#if detailEdit}}
-										{{bs-form-element property="money" class="inline-block form-input-group label-normal" controlType="money" placeholder='消费金额(必填)'}}
+										{{bs-form-element property="money" class="inline-block form-input-group label-normal" controlType="money" placeholder='必填'}}
 								{{else}}
 									<div class="input-group-content">{{tradeInfo.money}}</div>
 								{{/if}}
@@ -57,7 +57,7 @@
 								{{#if detailEdit}}
                 {{#bs-form-element class="inline-block form-input-group" controlType="type"  property="type" }}
 									{{callbusi/dict-selector class="inline-block" curDict=tradeModel.type groupCode=constants.consumeType
-										showName='消费类型' value=tradeModel.type preselected=false}}
+										showName='必填' value=tradeModel.type preselected=false}}
                 {{/bs-form-element}}
 								{{else}}
 									<div class="input-group-content">{{tradeInfo.type.typename}}</div>
@@ -72,7 +72,7 @@
 								{{#if detailEdit}}
                 {{#bs-form-element class="inline-block form-input-group" controlType="payAccountType"  property="payAccountType" }}
 									{{callbusi/dict-selector class="inline-block" curDict=tradeModel.payAccountType groupCode=constants.accountType
-										showName='账户类型' value=tradeModel.payAccountType preselected=false}}
+										showName='必填' value=tradeModel.payAccountType preselected=false}}
                 {{/bs-form-element}}
 								{{else}}
 									<div class="input-group-content">{{tradeInfo.payAccount.type.typename}}</div>

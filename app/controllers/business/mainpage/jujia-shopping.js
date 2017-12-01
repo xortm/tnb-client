@@ -6,7 +6,6 @@ export default Ember.Controller.extend(InfiniteScroll,{
   infiniteModelName: "user",
   infiniteContainerName:"userJujiaShoppingContainer",
 
-  moment: Ember.inject.service(),
   statusService: Ember.inject.service("current-status"),
   service_PageConstrut:Ember.inject.service("page-constructure"),
   mainController: Ember.inject.controller('business.mainpage'),
@@ -16,6 +15,9 @@ export default Ember.Controller.extend(InfiniteScroll,{
   uploadUrl: Ember.computed('property', function() {return this.get("pathConfiger").get("uploadUrl");}),
 
   actions:{
+    switchShowAction(){
+      window.open('http://m.kyserver01.com/');
+    },
     switchPage:function (menuLink,elementId) {//个人信息 界面
       console.log("id```````",elementId);
       var _self = this;

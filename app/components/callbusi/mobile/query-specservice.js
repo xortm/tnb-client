@@ -14,17 +14,15 @@ export default BaseUiItem.extend({
   constants: Constants,
 
   serviceListFlag: 0,
+  timeedTaskFlag: 0,
+  antTimeedTaskFlag: 0,
   countListFlag: 0,
   queryFlag: 0,
   scollFlag: 0,//刷新后使组件包裹滚动条
   selectStartTimeFlag: 0,
-  scrollToPosition: false,//刷新后使滚动
   i: 0,
   k: 0,
-  planDataPushFlag:0,
-  scrollFlag:false,
-  btnFlag:false,
-  isScrollToTop:false,
+  suishiDataBuildFlag:0,
   infiniteContentPropertyName: Ember.computed("infinitePropertyName",function(){
     return this.get("infinitePropertyName");
   }),
@@ -33,7 +31,6 @@ export default BaseUiItem.extend({
     return this.get("infiniteName");
   }),
   screenOffset:160,
-  squareScanShow:true,
   panmoveMode: "showFunc",//划动处理，showFunc：显示按钮 delete：删除本条
   curExpService: null,//当前展开的服务内容
   tabFuncs:Ember.computed("taskList",function() {
@@ -57,18 +54,12 @@ export default BaseUiItem.extend({
 
   init: function(){
     this._super(...arguments);
-    // this.set("directInitScollFlag",true);
-    // this.incrementProperty("queryFlag");
-    // this.get("service_PageConstrut").set("showLoader", false);//先关闭mainpage的
-    this.set("showLoadingImgIn",true);
+    // this.set("showLoadingImgIn",true);
     var _self = this;
     Ember.run.schedule("afterRender",this,function() {
       //设置默认显示tab页
       console.log("menuitem in tab init");
-      _self.set("clickActFlag","todayTask");
-      this.set("countListFlag",0);//计次
-      this.set("serviceListFlag",0);//定时
-      this.incrementProperty("planDataPushFlag");
+      _self.set("clickActFlag",_self.get("curTabCode"));
     });
   },
   didInsertElementObs:function(){
@@ -86,264 +77,128 @@ export default BaseUiItem.extend({
   //下拉刷新
   queryFlagIn: function(){
     //重新查找数据
-    this.incrementProperty("queryFlag");
+    this.sendAction("refreshModel");
     console.log("in itqueryFlagIn");
-    this.set("countListFlag",0);//计次
-    this.set("serviceListFlag",0);//定时
-    // this.set("planDataPushFlag",false);
-    this.incrementProperty("planDataPushFlag");
-    // this.set("directInitScollFlag",false);
   },
-  // scrollObs: function () {//观察 infinite-scroll 设置的对象 _scroller
-  //   let _self = this;
-  //   var _scroller = this.get("_scroller");
-  //   if(!_scroller){return;}
-  //   Ember.run.schedule("afterRender",this,function() {
-  //     let scrollNum = _self.get("scrollNum");
-  //     _scroller.scrollTo(0, scrollNum, 0);
-  //   });
-  // }.observes("_scroller","scrollNum").on("init"),
-  //重新查找数据
-  queryObs: function(){
-    let _self = this;
-    console.log("queryObs run");
-    this.set("showLoadingImgIn",true);//打开加载图片
-    console.log("query obs in,queryFlag:" + this.get("queryFlag"));
-    var commonInitHasCompleteFlag = this.get("global_curStatus.commonInitHasCompleteFlag");
-    console.log("queryObs run commonInitHasCompleteFlag",commonInitHasCompleteFlag);
-    if(!commonInitHasCompleteFlag){
+  dingshiDataDoneObs: function(){
+    var _self = this;
+    let dingshiItemArray = new Ember.A();
+    console.log("run in dataDoneObs");
+    let dingshiDataDoneFlag = this.get("dingshiDataDoneFlag");
+    console.log("dingshiDataDoneFlag:",dingshiDataDoneFlag);
+    if(!dingshiDataDoneFlag){return;}
+    let itemList = this.get("dingshiItemList");
+    let localObj = this.get("localObj");
+    //每次加载完数据后回到顶部,在组件中体现
+    // _self.set("isScrollToTop",true);
+    _self.set("selectStartTime",localObj.queryStartDate);
+    _self.set("selectEndTime",localObj.queryEndDate);
+    _self.incrementProperty("selectStartTimeFlag");
+    console.log("selectStartTimeFlag: in data:",this.get("selectStartTimeFlag"));
+    // _self.send("queryTime",localObj.queryStartDate,localObj.queryEndDate);
+    //如果没有数据
+    if(!itemList.get("length")){
+      this.set("serviceList",null);
+      _self.incrementProperty("timeedTaskFlag");
+      console.log("run in timeedTaskFlag");
       return;
     }
-    //获得当前user
-    let curuser = this.get('global_curStatus').getUser();
-    var customerId = this.get("serveCustomerId");
-    console.log("queryObs run customer",customerId);
-    var params = {};
-    var filter = {};
-    var querySpecFalg = this.get("querySpecFalg");
-    var queryCusStr = localStorage.getItem("queryCusObj");
-    var queryCusObj = JSON.parse(queryCusStr);
-    if(!queryCusStr){
-      console.log("run queryCusStr");
-      queryCusObj = {};
-      queryCusObj.queryStartDate = "6";
-      queryCusObj.queryEndDate = "8";
-    }
-    console.log("query_specservice",queryCusObj);
-    // if(!customerId&&!queryCusObj){
-    if(!customerId){
-      return;
-    }else if (customerId == "nolocal") {//如果本地没有储存时间数据
-      this.set("nocustomerId",true);
-      console.log("LoadingImgInss111");
-      this.set("showLoadingImgIn",false);
-      return;
-    }else{
-      console.log("showLoadingImgIn::",this.get("showLoadingImgIn"));
-      console.log("customerId yes",customerId);
-      this.set("nocustomerId",false);
-      if(querySpecFalg=="care"){
-        //如果选择的全部
-        if(customerId=="all"){
-          filter.uid = curuser.get("id");
-          //filter.positonType = "postType5";//护理员
-          filter.itemType = "serviceType2";//生活照料
-          _self.set("showRightFlag",true);
-          //选择指定老人
-        }else {
-          _self.set("showRightFlag",false);
-          filter.customerId = customerId;
-          //filter.positonType = "postType5";//护理员
-          filter.itemType = "serviceType2";//生活照料
-        }
-      }else if (querySpecFalg=="nurse") {
-        if(customerId=="all"){
-          filter.uid = curuser.get("id");
-          //filter.positonType = "postType4";//护士
-          filter.itemType = "serviceType1";//专业护理
-          _self.set("showRightFlag",true);
-        }else {
-          _self.set("showRightFlag",false);
-          filter.customerId = customerId;
-          //filter.positonType = "postType4";//护士
-          filter.itemType = "serviceType1";//专业护理
-        }
-      }
-      _self.set("queryCusFlagAgain",customerId);
-    }
-    console.log("goon...");
-    var startTime = this.get("startTime");
-    var endTime = this.get("endTime");
-    if(queryCusObj){
-      var localObj = {
-        queryCusFlag:customerId,
-      };
-      if(customerId=="all"){
-        if(endTime){
-          localObj.queryStartDate = startTime;
-          localObj.queryEndDate = endTime;
-        }else {
-          //计算当前时间节点
-          let sysTime = this.get("dataLoader").getNowTime();
-          var nowHour = this.get("dateService").formatDate(sysTime,"hh");
-          var numH = Number(nowHour);
-          console.log("sysTime nowHour numH",sysTime,nowHour,numH);
-          if(numH>=0&&numH<6){
-            localObj.queryStartDate = "0";
-            localObj.queryEndDate = "6";
-          }else if (numH>=6&&numH<8) {
-            localObj.queryStartDate = "6";
-            localObj.queryEndDate = "8";
-          }else if (numH>=8&&numH<10) {
-            localObj.queryStartDate = "8";
-            localObj.queryEndDate = "10";
-          }else if (numH>=10&&numH<12) {
-            localObj.queryStartDate = "10";
-            localObj.queryEndDate = "12";
-          }else if (numH>=12&&numH<14) {
-            localObj.queryStartDate = "12";
-            localObj.queryEndDate = "14";
-          }else if (numH>=14&&numH<16) {
-            localObj.queryStartDate = "14";
-            localObj.queryEndDate = "16";
-          }else if (numH>=16&&numH<18) {
-            localObj.queryStartDate = "16";
-            localObj.queryEndDate = "18";
-          }else if (numH>=18&&numH<20) {
-            localObj.queryStartDate = "18";
-            localObj.queryEndDate = "20";
-          }else if (numH>=20&&numH<24) {
-            localObj.queryStartDate = "20";
-            localObj.queryEndDate = "24";
-          }
-        }
-      }else {
-        localObj.queryStartDate = startTime;
-        localObj.queryEndDate = endTime;
-      }
-      //存入本地
-      localStorage.queryCusObj = JSON.stringify(localObj);
-    }
-    // this.set("filter",filter);
-//改版后查找全部时间点的数据
-    filter.queryStartDate = "0";
-    filter.queryEndDate = "24";
-    params.filter = filter;
-    console.log("query specservice before components",customerId,params);
-    //查找数据
-    this.get("store").query("specservice",params).then(function(itemList){
-      //每次加载完数据后回到顶部,在组件中体现
-      _self.set("isScrollToTop",true);
-      _self.set("selectStartTime",localObj.queryStartDate);
-      _self.set("selectEndTime",localObj.queryEndDate);
-      // _self.send("queryTime",localObj.queryStartDate,localObj.queryEndDate);
-      //如果没有数据
-      if(!itemList.get("length")){
-        console.log("LoadingImgInss222");
-        _self.set("showLoadingImgIn",false);
-      }
-      let serviceItemArray = new Ember.A();
-      console.log("specservice itemList",itemList);
-      let index = 0;
-      if(itemList.get("length")===0){
-        _self.get("startTime","");//查完就清空
-        _self.get("endTime","");
-        _self.set("serviceItemArray",serviceItemArray);
-        _self.incrementProperty("planDataPushFlag");
+    console.log("specservice itemList",itemList);
+    let index = 0;
+    //循环组装数据
+    itemList.forEach(function(item){
+      console.log("item in foreach:",item);
+      let serviceItem = _self.createServiceItem();
+      if(item.get("project").content){
+        serviceItem = _self.typeOneProject(serviceItem,item);
+      }else if(item.get("item").content){
+        serviceItem = _self.typeOneItem(serviceItem,item);
+      }else{
         return;
       }
-      //循环组装数据
-      itemList.forEach(function(item){
-        let serviceItem = _self.createServiceItem();
-        if(item.get("project").content){
-          serviceItem = _self.typeOneProject(serviceItem,item);
-        }else if(item.get("item").content){
-          serviceItem = _self.typeOneItem(serviceItem,item);
-        }else if(item.get("projectItem").content){
-          serviceItem = _self.typeTwo(serviceItem,item.get("projectItem"),item.get("itemExes"));
-        }else{
-          return;
-        }
-        // serviceItemArray.pushObject(serviceItem);
-        serviceItemArray.pushObject(serviceItem);
-        _self.set("serviceItemArray",serviceItemArray);
-        index++;
-        //组装完毕开始进行排序等业务
-        if(index>=itemList.get("length")){
-          //设置数据加载完毕标志
-          _self.get("startTime","");//查完就清空
-          _self.get("endTime","");//查完就清空
-          _self.incrementProperty("planDataPushFlag");
-        }
-      });
-      let typeOneList = new Ember.A();
-      let typetwoList = new Ember.A();
-      //计算定时和不定时任务是否有数据
-      serviceItemArray.forEach(function(item){
-        if(item.get("type") == 1){
-          typeOneList.pushObject(item);
-        }
-        if(item.get("type") == 2){
-          typetwoList.pushObject(item);
-        }
-      });
-      console.log("typeOneList len:",typeOneList.get("length"));
-      console.log("typetwoList len:",typetwoList.get("length"));
-      if(!typeOneList.get("length") || !typetwoList.get("length")){
-        console.log("LoadingImgInss333");
-        _self.set("showLoadingImgIn",false);
+      dingshiItemArray.pushObject(serviceItem);
+      index++;
+      //组装完毕开始进行排序等业务
+      if(index>=itemList.get("length")){
+        _self.set("dingshiItemArray",dingshiItemArray);
+        //设置数据加载完毕标志
+        _self.incrementProperty("serviceListFlag");
       }
-    },
-      function(){//then 方法500失败后走这个方法
-        console.log("LoadingImgInss444");
-        _self.set("showLoadingImgIn",false);
+    });
+
+  }.observes("dingshiDataDoneFlag").on("init"),
+  suishiDataDoneObs: function(){
+    var _self = this;
+    let suishiItemArray = new Ember.A();
+    console.log("run in dataDoneObs");
+    let suishiDataDoneFlag = this.get("suishiDataDoneFlag");
+    console.log("suishiDataDoneFlag:",suishiDataDoneFlag);
+    if(!suishiDataDoneFlag){return;}
+    let itemList = this.get("suishiItemList");
+    //如果没有数据
+    if(!itemList.get("length")){
+      this.set("countList",null);
+      _self.incrementProperty("antTimeedTaskFlag");
+      console.log("run in antTimeedTaskFlag");
+      return;
+    }
+    console.log("specservice itemList",itemList);
+    let index = 0;
+    //循环组装数据
+    itemList.forEach(function(item){
+      let serviceItem = _self.createServiceItem();
+      if(item.get("projectItem").content){
+        serviceItem = _self.typeTwo(serviceItem,item.get("projectItem"),item.get("itemExes"));
+      }else{
+        return;
       }
-    );
-  }.observes("global_curStatus.commonInitHasCompleteFlag","queryFlag","serveCustomerId").on("init"),
+      suishiItemArray.pushObject(serviceItem);
+      index++;
+      //组装完毕开始进行排序等业务
+      if(index>=itemList.get("length")){
+        //设置数据加载完毕标志
+        _self.set("suishiItemArray",suishiItemArray);
+        _self.incrementProperty("suishiDataBuildFlag");
+      }
+    });
+
+  }.observes("suishiDataDoneFlag").on("init"),
   //当数据都加载完毕，开始进行页面数据组织
   dataBuildObs: function(){
     var _self = this;
     console.log("in dataBuildObs");
     let curuser = this.get('global_curStatus').getUser();
-    if(!this.get("planDataPushFlag")){
+    if(!this.get("suishiDataBuildFlag")){
       return;
     }
-    let serviceList = new Ember.A();
-    let customerList = new Ember.A();
-    let oriarray = this.get("serviceItemArray");
+    let oriarray = this.get("suishiItemArray");
     console.log("oriarray sort,",oriarray);
-    let curCustomer = null;
-    if(!oriarray){return;}
-    // oriarray = oriarray.sortBy("hasApply");
     console.log("oriarray len:" + oriarray.get("length"));
+    if(!oriarray){return;}
+    let curCustomer = null;
+    let customerList = new Ember.A();
     oriarray.forEach(function(serviceItem){
       console.log("finishRemark in foreach:",serviceItem.get("finishRemark"));
-      if(serviceItem.get("type")===2){
-        //组装按照客户排列的数据,按层级组装
-        let customerIdInloop = serviceItem.get("customerId");
-        if(!curCustomer||curCustomer.get("id")!==customerIdInloop){
-          curCustomer = Ember.Object.create({
-            id:customerIdInloop,
-            name:serviceItem.get("customerName"),
-            room:serviceItem.get("customerBed"),
-            stuffName:curuser.get("name"),
-            services: new Ember.A(),
-          });
-          customerList.pushObject(curCustomer);
-        }
-        console.log("curCustomer push:" );
-        curCustomer.get("services").pushObject(serviceItem);
-      }else{
-        console.log("serviceList push:" );
-        serviceList.pushObject(serviceItem);
+      //组装按照客户排列的数据,按层级组装
+      let customerIdInloop = serviceItem.get("customerId");
+      if(!curCustomer||curCustomer.get("id")!==customerIdInloop){
+        curCustomer = Ember.Object.create({
+          id:customerIdInloop,
+          name:serviceItem.get("customerName"),
+          room:serviceItem.get("customerBed"),
+          stuffName:curuser.get("name"),
+          services: new Ember.A(),
+        });
+        customerList.pushObject(curCustomer);
       }
+      console.log("curCustomer push:" );
+      curCustomer.get("services").pushObject(serviceItem);
     });
     console.log("customerList in first:",customerList);
-    this.set("serviceAllList",serviceList);
-    this.set("countList",customerList);
-    this.incrementProperty("serviceListFlag");
+    console.log("dataBuildObs run in antTimeedTaskFlag");
+    this.set("suishiCountList",customerList);
     this.incrementProperty("countListFlag");
-  }.observes("planDataPushFlag").on("init"),
+  }.observes("suishiDataBuildFlag").on("init"),
 
   //按时服务列表变化的监视器
   serviceListObs: function(){
@@ -352,11 +207,7 @@ export default BaseUiItem.extend({
     if(this.get("serviceListFlag")===0){
       return;
     }
-    let serviceAllList = this.get("serviceAllList");
-    serviceAllList.forEach(function(servicetimeStrOne){
-      console.log("servicetimeStrOne in forEach:",servicetimeStrOne.get("timeStrOne"));
-      console.log("service in forEach:",servicetimeStrOne);
-    });
+    let serviceAllList = this.get("dingshiItemArray");
     let serviceItem = this.get("feedBus").get("serviceData");
     //将修改完的单数据插入总数据,是页面不进行刷新
     if(serviceItem){
@@ -368,6 +219,8 @@ export default BaseUiItem.extend({
           service.set("finishTime",serviceItem.get("finishTime"));
           service.set("finishRemark",serviceItem.get("finishRemark"));
           service.set("finishLevelName",serviceItem.get("finishLevelName"));
+          service.set("finishLevel",serviceItem.get("finishLevel"));
+          service.set("exeTabRemark",serviceItem.get("exeTabRemark"));
           service.set("trueDrugNum",serviceItem.get("trueDrugNum"));
           service.set("personName",serviceItem.get("personName"));
           _self.get("feedBus").set("serviceData",null);//重置feedbus数据
@@ -379,103 +232,10 @@ export default BaseUiItem.extend({
     let serviceAllListSort = serviceAllList.sortBy("hasApply","timeStrOne");
     console.log("sort serviceAllListSort1111:",serviceAllListSort);
     let flagBar = new Ember.A();
-    //分析每一项数据,给他们分配相应的id数据,绘制到页面中,为全部老人右侧滚动条业务做准备,只给每个时间段内的第一条数据设置相应的id
-    serviceAllListSort.forEach(function(serviceList) {
-      // var timeStrOne = serviceList.get("timeStrDate");
-      var timeStrOne = serviceList.get("timeStrOne");
-      console.log("timeStrOne in each:",timeStrOne);
-      var hasApply = serviceList.get("hasApply");
-      console.log("serviceList in hasApply:",hasApply);
-      if(hasApply === true){
-        console.log("hasApply!!");
-        if(!flagBar.flagHasApply){
-          console.log("hasApply in if!!");
-          serviceList.set('initial',"flagHasApply");
-          console.log("serviceList in initial!!",serviceList.get('initial'));
-          flagBar.set('flagHasApply',true);
-        }else{
-          serviceList.set('initial',null);
-        }
-        return true;
-      }
-      if( timeStrOne<6 && timeStrOne>=0){
-        if(!flagBar.flag0){
-          serviceList.set('initial',"flag0");
-          flagBar.set('flag0',true);
-        }else{
-          serviceList.set('initial',null);
-        }
-      }
-      if( timeStrOne<8 && timeStrOne>=6){
-        if(!flagBar.flag6){
-          serviceList.set('initial',"flag6");
-          flagBar.set('flag6',true);
-        }else{
-          serviceList.set('initial',null);
-        }
-      }
-      if( timeStrOne<10 && timeStrOne>=8){
-        if(!flagBar.flag8){
-          serviceList.set('initial',"flag8");
-          flagBar.set('flag8',true);
-        }else{
-          serviceList.set('initial',null);
-        }
-      }
-      if( timeStrOne<12 && timeStrOne>=10){
-        if(!flagBar.flag10){
-          serviceList.set('initial',"flag10");
-          flagBar.set('flag10',true);
-        }else{
-          serviceList.set('initial',null);
-        }
-      }
-      if( timeStrOne<14 && timeStrOne>=12){
-        if(!flagBar.flag12){
-          serviceList.set('initial',"flag12");
-          flagBar.set('flag12',true);
-        }else{
-          serviceList.set('initial',null);
-        }
-      }
-      if( timeStrOne<16 && timeStrOne>=14){
-        if(!flagBar.flag14){
-          serviceList.set('initial',"flag14");
-          flagBar.set('flag14',true);
-        }else{
-          serviceList.set('initial',null);
-        }
-      }
-      if( timeStrOne<18 && timeStrOne>=16){
-        if(!flagBar.flag16){
-          serviceList.set('initial',"flag16");
-          flagBar.set('flag16',true);
-        }else{
-          serviceList.set('initial',null);
-        }
-      }
-      if( timeStrOne<20 && timeStrOne>=18){
-        if(!flagBar.flag18){
-          serviceList.set('initial',"flag18");
-          flagBar.set('flag18',true);
-        }else{
-          serviceList.set('initial',null);
-        }
-      }
-      if( timeStrOne<24 && timeStrOne>=20){
-        if(!flagBar.flag20){
-          serviceList.set('initial',"flag20");
-          flagBar.set('flag20',true);
-        }else{
-          serviceList.set('initial',null);
-        }
-      }
-    });
     console.log("sort serviceAllListSort:",serviceAllListSort);
     this.set("serviceList",serviceAllListSort);
     console.log("sort serviceList after:",this.get("serviceList"));
-    // this.directInitScoll();
-  }.observes("serviceListFlag","toSpecservice","directInitScollFlag").on("init"),
+  }.observes("serviceListFlag","directInitScollFlag").on("init"),
   //计次服务列表变化的监视器
   countListObs: function(){
     var _self = this;
@@ -484,7 +244,7 @@ export default BaseUiItem.extend({
     }
     var falgOfprojectPlanCustomerId = this.get("falgOfprojectPlanCustomerId");//不定时任务 save标识  save了就不让第一个 "expanded"为true
     var falgOfprojectPlanBusiId = this.get("falgOfprojectPlanBusiId");//不定时任务 save标识  save了就不让第一个 "expanded"为true
-    var customerList = this.get("countList");
+    var customerList = this.get("suishiCountList");
     console.log("customerList in obs:",customerList);
     console.log("falgOfprojectPlanCustomerId111",falgOfprojectPlanCustomerId);
     if(!falgOfprojectPlanCustomerId){//true 就不用第一个"expanded"为true了
@@ -542,7 +302,7 @@ export default BaseUiItem.extend({
           drugprojectExe.set("drugProject",planItem);
           console.log("trueDrugNum111",serviceItem.get("trueDrugNum"));
           // let serviceTag ;
-          if(serviceItem.get("trueDrugNum")){//如果有的话证明点进 detail里操作的
+          if(serviceItem.get("trueDrugNum") >= 0){//如果有的话证明点进 detail里操作的
             drugprojectExe.set("drugNum",serviceItem.get("trueDrugNum"));//实际用药量
             drugprojectExe.set("drugNumPlan",serviceItem.get("useDrugNum"));//实际用药量 else  直接把计划里的数量填入
           }else {
@@ -558,7 +318,7 @@ export default BaseUiItem.extend({
           if(serviceItem.get("servicefinishlevel")){
             drugprojectExe.set("finishLevel",serviceItem.get("servicefinishlevel"));//标签对象
           }else{
-            var servicefinishlevelDrug = _self.get("dataLoader.serviceFinishDefaultList").findBy("remark",Constants.servicefinishlevelDefault);
+            var servicefinishlevelDrug = _self.get("dataLoader.serviceFinishDefaultList").findBy("remark",Constants.servicefinishlevelDefault1);
             drugprojectExe.set("finishLevel",servicefinishlevelDrug);//标签对象
           }
           drugprojectExe.set("drugSpec",useDrugFreqObj);//用药规格
@@ -572,10 +332,10 @@ export default BaseUiItem.extend({
             serviceItem.set("hasApply",true);
             serviceItem.set("finishTime",finishTime);
             serviceItem.set("finishLevelName",drugprojectExe.get("finishLevel.name"));
+            serviceItem.set("finishLevel",drugprojectExe.get("finishLevel"));
             serviceItem.set("trueDrugNum",drugprojectExe.get("drugNum"));//实际用药量
             console.log("personName in finishService:",user.get("employee.name"));
             serviceItem.set("personName",user.get("employee.name"));//服务人名
-            // _self.incrementProperty("queryFlag");
             _self.incrementProperty("serviceListFlag");
             if(callback){
               callback();
@@ -587,7 +347,7 @@ export default BaseUiItem.extend({
               App.lookup('controller:business.mainpage').closeMobileShade("保存失败");
             }
             if(error.code==="15"){
-              App.lookup("controller:business").popTorMsg("保存失败,此服务已被执行");
+              App.lookup("controller:business").popTorMsg("保存失败,此服务已被完成");
               App.lookup('controller:business.mainpage').closeMobileShade("保存失败");
             }
           });
@@ -608,11 +368,16 @@ export default BaseUiItem.extend({
         if(serviceDesc){
           exeRecord.set("remark",serviceDesc);
         }
+        if(serviceItem.get("exeTabRemark")){
+          exeRecord.set("exeTabRemark",serviceItem.get("exeTabRemark"));//标签对象
+        }else{
+          exeRecord.set("exeTabRemark",null);//标签对象
+        }
         console.log("finishLevel in exeRecord save:",serviceItem.get("servicefinishlevel"));
         if(serviceItem.get("servicefinishlevel")){
           exeRecord.set("finishLevel",serviceItem.get("servicefinishlevel"));//标签对象
         }else{
-          var servicefinishlevel = _self.get("dataLoader.serviceFinishDefaultList").findBy("remark",Constants.servicefinishlevelDefault);
+          var servicefinishlevel = _self.get("dataLoader.serviceFinishDefaultList").findBy("remark",Constants.servicefinishlevelDefault1);
           console.log("servicefinishlevel in exeRecord save:",servicefinishlevel);
           exeRecord.set("finishLevel",servicefinishlevel);//标签对象
         }
@@ -625,6 +390,8 @@ export default BaseUiItem.extend({
           serviceItem.set("hasApply",true);
           serviceItem.set("finishTime",finishTime);
           serviceItem.set("finishLevelName",exeRecord.get("finishLevel.name"));
+          serviceItem.set("finishLevel",exeRecord.get("finishLevel"));
+          serviceItem.set("exeTabRemark",exeRecord.get("exeTabRemark"));
           serviceItem.set("personName",user.get("employee.name"));//服务人名
           _self.incrementProperty("serviceListFlag");
           if(callback){
@@ -633,7 +400,7 @@ export default BaseUiItem.extend({
         },function(err){
           let error = err.errors[0];
           if(error.code==="14"){
-            App.lookup("controller:business").popTorMsg("保存失败,此服务已被执行");
+            App.lookup("controller:business").popTorMsg("保存失败,此服务已被完成");
             App.lookup('controller:business.mainpage').closeMobileShade("保存失败");
           }
           if(error.code==="15"){
@@ -644,28 +411,30 @@ export default BaseUiItem.extend({
 
     }else{//不定时任务  计次服务
       console.log("itemProject111  type 应该是 2",serviceItem.get("type"));
-      var servicefinishlevelExe = _self.get("dataLoader.serviceFinishDefaultList").findBy("remark",Constants.servicefinishlevelDefault);
+      var servicefinishlevelExe = _self.get("dataLoader.serviceFinishDefaultList").findBy("remark",Constants.servicefinishlevelDefault1);
       exeRecord.set("finishLevel",servicefinishlevelExe);//标签对象
       exeRecord.set("itemProject",serviceItem.get("item"));
+      exeRecord.set('exeTabRemark',serviceItem.get('exeTabRemark'));
+      console.log('exeTabRemark in queryspecservice :',serviceItem.get('exeTabRemark'));
       exeRecord.save().then(function(exe){
         console.log("exe in save:",exe);
-        let countList = _self.get("countList");
-        console.log("countList in save:",countList);
-        countList.forEach(function(countItem){
-          if(countItem.get("id") == serviceItem.get("customerId")){
-            console.log("countItem in save:",countItem);
-            countItem.get("services").forEach(function(service){
-              if(service.get("busiId") == serviceItem.get("busiId")){
-                console.log("service in save:",service);
-                service.get("itemExes").pushObject(exe);
-              }
-            });
-          }
-        });
-        console.log("countList in save:",countList);
-        _self.set("countList",countList);
+        // let countList = _self.get("countList");
+        // console.log("countList in save:",countList);
+        // countList.forEach(function(countItem){
+        //   if(countItem.get("id") == serviceItem.get("customerId")){
+        //     console.log("countItem in save:",countItem);
+        //     countItem.get("services").forEach(function(service){
+        //       if(service.get("busiId") == serviceItem.get("busiId")){
+        //         console.log("service in save:",service);
+        //         service.get("itemExes").pushObject(exe);
+        //       }
+        //     });
+        //   }
+        // });
+        // console.log("countList in save:",countList);
+        // _self.set("countList",countList);
           _self.set("falgOfprojectPlanCustomerId",serviceItem.get("customerId"));//不定时任务完成 刷新标识 customerId
-              _self.set("falgOfprojectPlanBusiId",serviceItem.get("busiId"));//不定时任务完成 刷新标识 customerId
+          _self.set("falgOfprojectPlanBusiId",serviceItem.get("busiId"));//不定时任务完成 刷新标识 customerId
           _self.incrementProperty("countListFlag");
         if(callback){
           callback();
@@ -812,6 +581,7 @@ export default BaseUiItem.extend({
       console.log("finishRemark in typeOneProject:",item.get("drugExe.remark"));
       serviceItem.set("finishRemark",item.get("drugExe.remark"));
       serviceItem.set("finishLevelName",item.get("drugExe.finishLevel.name"));
+      serviceItem.set("finishLevel",item.get("drugExe.finishLevel"));
       console.log("personName in typeOneProject:",item.get("drugExe.lastUpdateUser.name"));
       serviceItem.set("personName",item.get("drugExe.lastUpdateUser.name"));//服务人名
       serviceItem.set("drugExe",item.get("drugExe"));
@@ -875,6 +645,8 @@ export default BaseUiItem.extend({
       console.log("finishRemark in typeOneItem:",itemExe.get("remark"));
       serviceItem.set("finishRemark",itemExe.get("remark"));
       serviceItem.set("finishLevelName",itemExe.get("finishLevel.name"));
+      serviceItem.set("finishLevel",itemExe.get("finishLevel"));
+      serviceItem.set("exeTabRemark",itemExe.get("exeTabRemark"));
       console.log("personName in typeOneItem:",itemExe.get("exeStaff.name"));
       serviceItem.set("personName",itemExe.get("exeStaff.name"));//服务人名
       console.log("1111itemExe.getexeStaffName",itemExe.get("exeStaff.name"),itemExe.get("exeStaff"));
@@ -917,29 +689,30 @@ export default BaseUiItem.extend({
     //tab页的切换
     switchTab(code){
       let _self = this;
+      let hasOpensuishi = this.get("hasOpensuishi");
+      let hasOpendingshi = this.get("hasOpendingshi");
       console.log('switchTab in,code:' + code);
       this.set("curTabCode",code);
-      // this.set("showLoadingImgIn",false);
       if(code=="finished"){
         console.log("LoadingImgInss666");
-      }else {
-        var showRightFlag = this.get("showRightFlag");
-        // var filter = this.get("filter");
-        let selectStartTime = this.get("selectStartTime");
-        let selectEndTime = this.get("selectEndTime");
-        console.log("selectStartTime in switchTab:",selectStartTime);
-        console.log("selectEndTime in switchTab:",selectEndTime);
-      if(showRightFlag){
-        //如果是全部老人,切换tab页时,不进行滚动到指定位置
-        this.set("scrollToPosition",false);
-        this.incrementProperty("selectStartTimeFlag");
+        console.log("hasOpensuishi in finished:" + hasOpensuishi);
+        if(!hasOpensuishi){
+          console.log("run in hasOpensuishi");
+          _self.send("queryFlagInAction");
+          _self.set("hasOpensuishi",true);
         }
+      }else {
         console.log("LoadingImgInss777");
-        // this.set("showLoadingImgIn",false);
+        console.log("hasOpensuishi in today:" + hasOpensuishi);
+        if(!hasOpendingshi){
+          console.log("run in hasOpendingshi zhi:",this.get("hasOpendingshi"));
+          console.log("run in hasOpendingshi");
+          _self.send("queryFlagInAction");
+          _self.set("hasOpendingshi",true);
+        }
         var list = this.get("serviceList");
         if(!list){
           console.log("LoadingImgInss888");
-          // this.set("showLoadingImgIn",false);
         }
       }
       console.log("run scollFlag in switchTab");
@@ -959,7 +732,7 @@ export default BaseUiItem.extend({
       /*删除模式*/
       if(this.get("panmoveMode")==="delete"||true){
         this.finishService(item,function(){
-          App.lookup("controller:business").popTorMsg("护理任务--" + item.get("title") + ",已执行");
+          App.lookup("controller:business").popTorMsg("护理任务--" + item.get("title") + ",已完成");
         });
       }
       /*功能按钮显示模式*/
@@ -1040,7 +813,7 @@ export default BaseUiItem.extend({
     //保存方法
     finish(serviceItem){
       this.finishService(serviceItem,function(){
-        App.lookup("controller:business").popTorMsg("护理任务--" + serviceItem.get("title") + ",已执行");
+        App.lookup("controller:business").popTorMsg("护理任务--" + serviceItem.get("title") + ",已完成");
       });
     },
     saveNursingLog(customerId,detailContent,callback){
@@ -1064,14 +837,14 @@ export default BaseUiItem.extend({
       console.log("insert e in qs");
       this.incrementProperty("scollFlag");
     },
-    //从组件中获取是否去掉loading图标
-    showLoadingImgInClose(){
-      this.set("showLoadingImgIn",false);
-    },
     //从组件中获取是否下拉刷新
     queryFlagInAction(){
       this.queryFlagIn();
     },
+    refreshData(param1,param2){
+      this.sendAction("refreshData",param1,param2);
+    },
+
 
   },
 });

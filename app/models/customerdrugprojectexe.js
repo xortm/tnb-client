@@ -10,6 +10,7 @@ var CustomerDrug = BaseModel.extend({
   lastUpdateUser:DS.belongsTo('user'),//更新操作者userid
   createUser:DS.belongsTo('user'),//创建者ID
   remark:DS.attr('string'),//备注
+  remarkAdd:DS.attr('string'),//剩余药量(天)
   exeDate:DS.attr('number'),//执行时间  具体时间值 实际用药时间
   result:DS.belongsTo('dicttype'),//完成情况
   finishLevel:DS.belongsTo('servicefinishlevel'),//完成情况
@@ -83,7 +84,6 @@ var CustomerDrug = BaseModel.extend({
         var serviceTagexe = itemData.serviceTagexe;
         if(itemDataTag){
           var dictServiceTypename = _self.get("dataLoader").findDict(itemDataTag).get("typename");
-          console.log("dictServiceTypename",dictServiceTypename);
           if(itemDataServiceDesc){
             str = dictServiceTypename+"，"+itemDataServiceDesc;
           }else {
@@ -102,10 +102,10 @@ var CustomerDrug = BaseModel.extend({
           }
         }
       }else {
-        str = "正常完成" + remark;
+        str =  remark;
       }
     }else {
-      str = "正常完成";
+      str = "";
       // str = "老人配合，正常完成";
     }
     return str;

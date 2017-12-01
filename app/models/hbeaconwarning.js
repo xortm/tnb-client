@@ -15,8 +15,9 @@ var hbeaconWarning = BaseModel.extend({
     operateNote: DS.attr("string"), //处理说明
     caller: DS.belongsTo('customer'), //呼叫老人
     createDateTime: DS.attr("number"), //创建时间
-    cancelTime:DS.attr('number'),//复位时间
+    cancelTime:DS.attr('number'),//复位时间 到场时间
     operateTime:DS.attr('number'),//处理时间
+    exeRemark:DS.attr('string'),//执行情况备注
     cancelTimeStr:Ember.computed("cancelTime", function() {
         var cancelTime = this.get("cancelTime");
         return cancelTime?this.get("dateService").formatDate(cancelTime, "yyyy-MM-dd hh:mm:ss"):'无';

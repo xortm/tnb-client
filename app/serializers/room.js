@@ -1,6 +1,6 @@
 import Payload from './payload';
 import DS from 'ember-data';
-import _ from 'lodash/lodash';
+
 
 export default Payload.extend({
   attrs: {
@@ -19,17 +19,17 @@ export default Payload.extend({
   },
   normalizePeekRecordResponse: function(store, primaryModelClass, payload, id, requestType) {
 
-    let payloadFloor = _.filter(payload.included, function (obj) {
+    let payloadFloor = payload.included.filter( function (obj) {
       if(obj.type==="floor"){
         return true;
       }
     });
-    let payloadRoom = _.filter(payload.included, function (obj) {
+    let payloadRoom = payload.included.filter( function (obj) {
       if(obj.type==="room"){
         return true;
       }
     });
-    let payloadBuilding = _.filter(payload.included, function (obj) {
+    let payloadBuilding = payload.included.filter( function (obj) {
       if(obj.type==="building"){
         return true;
       }
@@ -42,17 +42,17 @@ export default Payload.extend({
   },
   normalizeQueryResponse: function(store, primaryModelClass, payload, id, requestType) {
 
-    let payloadFloor = _.filter(payload.included, function (obj) {
+    let payloadFloor = payload.included.filter( function (obj) {
       if(obj.type==="floor"){
         return true;
       }
     });
-    let payloadRoom = _.filter(payload.included, function (obj) {
+    let payloadRoom = payload.included.filter( function (obj) {
       if(obj.type==="room"){
         return true;
       }
     });
-    let payloadBuilding = _.filter(payload.included, function (obj) {
+    let payloadBuilding = payload.included.filter( function (obj) {
       if(obj.type==="building"){
         return true;
       }
@@ -74,17 +74,17 @@ export default Payload.extend({
   //对payload重新排序
   _resortPayload: function(store, primaryModelClass, payload, id, requestType){
     console.log('store:',store,'primaryModelClass:',primaryModelClass,'payload:',payload,'id:',id,'requestType:',requestType);
-    let payloadFloor = _.filter(payload.included, function (obj) {
+    let payloadFloor = payload.included.filter( function (obj) {
       if(obj.type==="floor"){
         return true;
       }
     });
-    let payloadRoom = _.filter(payload.included, function (obj) {
+    let payloadRoom = payload.included.filter( function (obj) {
       if(obj.type==="room"){
         return true;
       }
     });
-    let payloadBuilding = _.filter(payload.included, function (obj) {
+    let payloadBuilding = payload.included.filter( function (obj) {
       if(obj.type==="building"){
         return true;
       }

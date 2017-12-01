@@ -1,4 +1,4 @@
-<div class="img-container position-relative">
+<div class="img-container position-relative" style="float:left;">
 
 {{#if errorThrown}}
   <div class="lazy-image-error-message">{{defaultErrorText}}</div>
@@ -8,11 +8,11 @@
 <!-- <div class="cccc"> -->
   <!-- <div class="intergration_normal " style="height:{{height}}px; width:{{width}}px"> -->
   {{#if useDimensionsAttrs}}
-      <img class="{{unbound class}} imgSrcClass" src={{imgSrc}} alt="{{unbound alt}}"
+      <img class="{{unbound class}} imgSrcClass {{if outerClass outerClass ""}}" src={{imgSrcReal}} alt="{{unbound alt}}"
         height={{height}} width={{width}}/>
-      <img class="imgOutClass" src={{imgSrc}}/>
+      <!-- <img class="imgOutClass" src={{imgSrcReal}}/> -->
   {{else}}
-      <img class="{{unbound class}}" src={{imgSrc}} alt="{{unbound alt}}"/>
+      <img class="{{unbound class}} {{if outerClass outerClass ""}}" src={{imgSrcReal}} alt="{{unbound alt}}"/>
   {{/if}}
  <!-- </div> -->
 <!-- </div>{{action "uploadClick" on="tap"}} {{action "uploadImage" this on="change"}} -->
@@ -22,19 +22,33 @@
     <!-- 点击显示大图,然后有一个上传按钮 -->
     {{#if (eq businessFlag "clickShowBigImgUpload")}}
       <div class="position_absolute {{unless upBarShow "hide"}}  clickClass"
-      style="width:{{width}}px; height:{{width}}px; top:0; left:0; cursor:pointer;" {{action "showBigImgAction"}}></div>
+      style="width:100%; height:100%; top:0; left:0; cursor:pointer;" {{action "showBigImgAction"}}></div>
       <!-- 点击直接上传图片 -->
     {{else if (eq businessFlag "clickImgUpload")}}
-      <!-- <label class="position_absolute {{unless upBarShow "hide"}}"
-      style="display:block; width:{{width}}px; height:{{width}}px; top:0; left:0; cursor:pointer; margin-bottom:0;" {{action "tapUpload" on="tap"}}></label> -->
-      <label class="position_absolute {{unless upBarShow "hide"}}"
-      style="display:block; width:{{width}}px; height:{{width}}px; top:0; left:0; cursor:pointer; margin-bottom:0;" for="{{concat 'uploader-' name}}"></label>
-    {{else}}
-    <!-- 在图片下边有一个上传按钮 -->
-      <label class="barInBottom  {{unless upBarShow "hide"}}"
-      style="display:block; width:{{width}}px; cursor:pointer" for="{{concat 'uploader-' name}}">点击上传图片&nbsp;</label>
+      {{#if isCordova}}
+        {{#if (eq uploadFlag "camera")}}
+          <!-- app模式 -->
+          {{#ui/mobile/gestures-container}}
+            <label name="takePicAct" class="position_absolute {{unless upBarShow "hide"}}"
+            style="display:block; width:100%; height:100%; top:0; left:0; cursor:pointer; margin-bottom:0;" {{action "takePic" on="tap"}}></label>
+          {{/ui/mobile/gestures-container}}
+        {{else if (eq uploadFlag "doc")}}
+          <!-- web模式 -->
+          <label class="barInBottom  {{unless upBarShow "hide"}}"
+            style="display:block; width:{{width}}px; cursor:pointer" for="{{concat 'uploader-' name}}">点击上传图片&nbsp;</label>
+        {{else if (eq uploadFlag "all")}}
+          <!-- 弹出层模式 -->
+          {{#ui/mobile/gestures-container}}
+            <label class="barInBottom  {{unless upBarShow "hide"}}"
+            style="display:block; width:{{width}}px; cursor:pointer" {{action "showUploadAllAction"}}></label>
+          {{/ui/mobile/gestures-container}}
+        {{/if}}
+      {{else}}
+        <!-- web模式 -->
+        <label class="barInBottom  {{unless upBarShow "hide"}}"
+          style="display:block; width:{{width}}px; cursor:pointer" for="{{concat 'uploader-' name}}">点击上传图片&nbsp;</label>
+      {{/if}}
     {{/if}}
-    <!-- <input id="{{concat 'uploader-' name}}" class="hide" type="file" accept="image/*" capture="camera"/> -->
     <input id="{{concat 'uploader-' name}}" class="hide" type="file" accept="image/*"/>
   {{else}}
   <!-- PC端上传 -->
@@ -62,17 +76,58 @@
             <div class="drug-img" class="modal-body clearfix">
                 <div class="width100B imgWrapperInner" style="text-align: center; margin:0 auto;">
                   <img class="bigImgSrcClass" src="{{imgSrc}}" alt="{{unbound alt}}">
-                  <label class="uploadBut" for="{{concat 'uploader-' name}}">点击上传图片</label>
+                  {{#if uploadUrl}}
+                    {{#if isCordova}}
+                      {{#if (eq uploadFlag "camera")}}
+                        <!-- app模式 -->
+                        {{#ui/mobile/gestures-container}}
+                          <label name="takePicAct" class="uploadBut" {{action "takePic" on="tap"}}>点击上传图片</label>
+                        {{/ui/mobile/gestures-container}}
+                      {{else if (eq uploadFlag "doc")}}doc
+                        <!-- web模式 -->
+                        <label class="uploadBut" for="{{concat 'uploader-' name}}">点击上传图片</label>
+                      {{else if (eq uploadFlag "all")}}
+                        <!-- 弹出层模式 -->
+                        {{#ui/mobile/gestures-container}}
+                          <label name="takePicAct" class="uploadBut" {{action "showUploadAllAction"}}>点击上传图片</label>
+                        {{/ui/mobile/gestures-container}}
+                      {{/if}}
+                    {{else}}
+                      <label class="uploadBut" for="{{concat 'uploader-' name}}">点击上传图片</label>
+                    {{/if}}
+                  {{/if}}
                 </div>
             </div>
         {{/bs-modal-body}}
     {{/bs-modal}}
 {{/if}}
+
+{{#if showUploadAllModal}}
+    {{#bs-modal body=false footer=false header=false closedAction=(action "invitationClose") openedAction=(action "showUploadAllOpened")}}
+        {{#bs-modal-header}}
+            <h4 class="modal-title">选择上传图片方式</h4>
+        {{/bs-modal-header}}
+        {{#bs-modal-body}}
+            <div class="drug-img" class="modal-body clearfix">
+                <div class="width100B imgWrapperInner" style="text-align: center; margin:0 auto;">
+                  {{#ui/mobile/gestures-container}}
+                    <label name="takePicAct" class="uploadBut uploadButClass" {{action "takePic" on="tap"}}>拍照上传</label>
+                    <label class="uploadBut uploadButClass" for="{{concat 'uploader-' name}}">从文件中选择</label>
+                  {{/ui/mobile/gestures-container}}
+                </div>
+            </div>
+        {{/bs-modal-body}}
+    {{/bs-modal}}
+{{/if}}
+
+
+
 <style>
 .imgOutClass{width: 50px; height:auto; opacity: 0; position: absolute; left: 1000px;}
 .modal-header{height: 40px;}
 .modal-header .close{margin-top: -10px;}
 .modal-header .modal-title{margin-top: -10px; font-size: 16px; line-height: 20px; height: 20px;}
 .modal-body{padding:5px 5px;}
-.uploadBut{display:block; height:50px; color:#333333; font-size:16px; line-height:50px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; background-color: #999999; text-align: center; margin:0 auto;}
+.uploadBut{display:block; height:50px; color:#333333; font-size:16px; line-height:50px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; background-color: #cccccc; text-align: center; margin:0 auto;}
+.uploadButClass{background-color: #cccccc; border-radius: 3px; margin-bottom: 5px;}
 </style>

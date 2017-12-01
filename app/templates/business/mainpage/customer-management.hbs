@@ -2,25 +2,28 @@
   <div class="box panel-default col-sm-12" style="padding-top:0px;">
     <div class="box-body">
       <div class="col-sm-12 nopadding-left"style="margin:20px 0px;">
-        <div class="col-sm-6 nopadding-left">
-        {{callbusi/time-interval class="inline-block" text='选择统计区间' chooseDate=chooseDate dateShow=dateShow submmit="submmit" }}
-        </div>
+        {{#unless (eq paramShow "customerData")}}
+          <div class="col-sm-6 nopadding-left">
+          {{callbusi/time-interval class="inline-block" text='选择统计区间' chooseDate=chooseDate dateShow=dateShow submmit="submmit" }}
+          </div>
+        {{/unless}}
         <div class="col-sm-6">
           <div class="pull-right">
             {{#ui/icon-button iconClass="fa-expand" class="hide"
             data-toggle="tooltip"  title="放大"  data-placement="top" data-original-title="放大"
             clickAction="bigClick" bigClick="bigClick"}}
             {{/ui/icon-button}}
-          </div>  
+          </div>
         </div>
       </div>
       <div class="tabbable">
         <ul class="nav nav-tabs">
-          <li class="active" {{action "customerAnalysisClick" "checkIn" on="click"}}><a href="#tab_3_1" data-toggle="tab">用户分析</a></li>
+          <li class="active" {{action "customerAnalysisClick" "customerAnalysis" on="click"}}><a href="#tab_3_1" data-toggle="tab">用户分析</a></li>
+          <li class="" {{action "customerDataClick" "customerData" on="click"}}><a href="#tab_3_2" data-toggle="tab">用户实时数据</a></li>
         </ul>
         <div class="tab-content fade in col-md-12 nopadding-left nopadding-right">
              <div class="tab-pane fade in padding-top20 active">
-                {{callbusi/package-start-analytic sizeFlag=sizeFlag class="inline-block"  durTypeFlag=durTypeFlag beginDate=beginDate endDate=endDate beginseaconDate=beginseaconDate endseaconDate=endseaconDate beginseaconFlag=beginseaconFlag endseaconFlag=endseaconFlag paramList=paramList paramShow=paramShow doQueryFlag=doQueryFlag querytypeList=querytypeList}}
+                {{callbusi/package-start-analytic sizeFlag=sizeFlag class="inline-block"  durTypeFlag=durTypeFlag beginDate=beginDate endDate=endDate beginseaconDate=beginseaconDate endseaconDate=endseaconDate beginseaconFlag=beginseaconFlag endseaconFlag=endseaconFlag paramShow=paramShow doQueryFlag=doQueryFlag querytypeList=querytypeList}}
               </div>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import Ember from 'ember';
-import ModelInitializer from 'callcloud/initializers/model';
+import ModelInitializer from 'tiannianbao/initializers/model';
+import Constants from 'tiannianbao/utils/constants';
 import { module, test } from 'qunit';
 
 let application;
@@ -9,6 +10,7 @@ module('Unit | Initializer | model', {
     Ember.run(function() {
       application = Ember.Application.create();
       application.deferReadiness();
+      window.Constants = Constants;
     });
   }
 });

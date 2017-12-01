@@ -2,6 +2,7 @@ import Ember from 'ember';
 import BaseBusiness from '../base-business';
 
 export default BaseBusiness.extend({
+  dataLoader:Ember.inject.service('data-loader'),
   queryParams: {
       id: {
           refreshModel: true
@@ -24,6 +25,8 @@ export default BaseBusiness.extend({
     var id=this.getCurrentController().get('id');
     controller.set('curQuestion','');
     controller.set('curAnswer','');
+    controller.set('evaInfo',null);
+    controller.set('questionList',null);
     if(editMode=='edit'){//点击列表进入的详情页
       controller.set('detailEdit',false);
       /*
@@ -35,14 +38,18 @@ export default BaseBusiness.extend({
       //查询答案列表，选择该模板下的所有答案
       let evaInfo = this.store.peekRecord('evaluatemodel',id);
         controller.set('evaInfo',evaInfo);
+        let modelSource = evaInfo.get('modelSource');
+        console.log('source remark',modelSource.get('id'),modelSource.get('remark'),modelSource.get('name'));
+        if(modelSource.get('remark') == 'beijing'){
+          controller.set('sourceType',true);
+          let actionLevelList = _self.get('dataLoader').findDictList('actionLevel');
+          controller.set('actionLevelList',actionLevelList);
+        }else{
+          controller.set('sourceType',false);
+        }
       this.store.query('evaluateanswer',{filter:{question:{model:{id:id}}}}).then(function(answerList){
         //清除answer垃圾数据
-        let answerAll = _self.store.peekAll('evaluateanswer');
-        answerAll.forEach(function(answer){
-          if(!answer.get("id")){
-            answer.set('hasHidden',true);
-          }
-        });
+
         let questionList = new Ember.A();
         answerList.forEach(function(answer){
           if (!questionList.findBy("id", answer.get('question.id'))) {
@@ -51,21 +58,24 @@ export default BaseBusiness.extend({
               for(let i=0;i<questionList.get('length');i++){
                 questionList.objectAt(i).set('seq',i+1);
               }
-              questionList.forEach(function(question){
-                let seq = ['A','B','C','D','E','F','G'];
-                let answerList = question.get('answerList').sortBy('seq');
-                for(let i=0;i<answerList.get('length');i++){
-                  answerList.objectAt(i).set('curIndex',seq[i]);
-                }
-              });
-              controller.set('questionList',questionList);
-
           }
         });
+        questionList.forEach(function(question){
+          let seq = ['A','B','C','D','E'];
+          let answers = answerList.filter(function(answer){
+            return answer.get('question.id') == question.get('id');
+          });
+          for(let i=0;i<answers.get('length');i++){
+            answers.objectAt(i).set('curIndex',seq[i]);
+          }
+          question.set('answerList',answers);
         });
-      this.store.query('evaluatescorescope',{filter:{model:{id:id}}}).then(function(scoreScopeList){
-        controller.set('scoreScopeList',scoreScopeList);
+        controller.set('questionList',questionList);
+        _self.store.query('evaluatescorescope',{filter:{model:{id:id}}}).then(function(scoreScopeList){
+          controller.set('scoreScopeList',scoreScopeList);
+        });
       });
+
     }else{//点击新增进入的编辑页
       controller.set('detailEdit',true);
       let evaInfo = this.store.peekRecord('evaluatemodel',id);
@@ -73,6 +83,15 @@ export default BaseBusiness.extend({
         let questionList = new Ember.A();
         controller.set('questionList',questionList);
         controller.set('scoreScopeList',null);
+        let modelSource = evaInfo.get('modelSource');
+        console.log('source remark',modelSource.get('id'),modelSource.get('remark'),modelSource.get('name'));
+        if(modelSource.get('remark') == 'beijing'){
+          controller.set('sourceType',true);
+          let actionLevelList = _self.get('dataLoader').findDictList('actionLevel');
+          controller.set('actionLevelList',actionLevelList);
+        }else{
+          controller.set('sourceType',false);
+        }
 
     }
 

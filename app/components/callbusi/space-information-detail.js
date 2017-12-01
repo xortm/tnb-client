@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import BaseItem from '../ui/base-ui-item';
-import Echarts from "npm:echarts";
+
 export default Ember.Component.extend({
     addDict:false,
     showData:false,

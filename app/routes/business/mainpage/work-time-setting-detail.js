@@ -22,6 +22,22 @@ export default BaseBusiness.extend({
     // this.store.unloadAll('worktimesetting');
     var editMode=this.getCurrentController().get('editMode');
     var id=this.getCurrentController().get('id');
+    let filterCustomer;
+    filterCustomer = $.extend({}, filterCustomer, {
+        '[customerStatus][typecode@$like]@$or1---1': 'customerStatusIn'
+    });
+    filterCustomer = $.extend({}, filterCustomer, {
+        '[customerStatus][typecode@$like]@$or1---2': 'customerStatusTry'
+    });
+    filterCustomer = $.extend({}, filterCustomer, {
+        'addRemark@$not': 'directCreate'
+    });
+    this.store.query('customer',{filterCustomer}).then(function(customerList){
+      customerList.forEach(function(customer){
+        customer.set('namePinyin',pinyinUtil.getFirstLetter(customer.get("name")));
+      });
+      controller.set('customerList',customerList);
+    });
     this.store.query('worktimesetting',{}).then(function(workTimeList){
       //已有排班的颜色列表
       let colorList = new Ember.A();
@@ -72,12 +88,16 @@ export default BaseBusiness.extend({
         controller.set('detailEdit',false);
         let worktimesettingInfo = _self.store.peekRecord('worktimesetting',id);
         controller.set('worktimesettingInfo',worktimesettingInfo);
+        _self.store.query('bedworktimesetting',{filter:{setting:{id:id}}}).then(function(list){
+           controller.set('selectedBeds',list);
+        });
       }else{
         let worktimesettingInfo = _self.store.createRecord('worktimesetting',{});
         worktimesettingInfo.set('startTime',null);
         worktimesettingInfo.set('endTime',null);
         controller.set('detailEdit',true);
         controller.set('worktimesettingInfo',worktimesettingInfo);
+        controller.set('selectedBeds',null);
       }
     });
 

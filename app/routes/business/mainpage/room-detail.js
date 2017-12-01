@@ -18,6 +18,7 @@ export default BaseBusiness.extend({
   },
   setupController(controller, model){
     this._super(controller, model);
+    console.log('********room detail in route in dist********');
     let _self = this;
     var editMode=this.getCurrentController().get('editMode');
     var id=this.getCurrentController().get('id');

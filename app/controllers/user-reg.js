@@ -150,7 +150,6 @@ export default Reg.extend(InfiniteScroll,{
       this.set('responseInfo',"密码长度应大于6位，请重新输入~");
       return;
     }
-    var _self = this;
     var psd = $.md5(this.get('password'));
     var newUser = _self.store.createRecord('userSession',{});
     if(this.get('mailLogin')) {

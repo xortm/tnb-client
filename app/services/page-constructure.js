@@ -1,14 +1,25 @@
 import Ember from 'ember';
-import _ from 'lodash/lodash';
-import InfinityRoute from '../addon/ember-infinity/mixins/infinity-route';
-import RouteMixin from '../addon/ember-cli-pagination/remote/route-mixin';
+
 /*
  * 页面整体布局服务
  */
-export default Ember.Service.extend(Ember.Evented, InfinityRoute,RouteMixin,{
+export default Ember.Service.extend(Ember.Evented,{
   statusService: Ember.inject.service("current-status"),
+  initPageConfig: Ember.inject.service("initpage-config"),
   feedBus: Ember.inject.service("feed-bus"),
-  notify: Ember.inject.service(),
+  //初始空白页数量
+  totalBlankPageNum: 6,
+  //需要预加载的route名称
+  preparedRoutes: Ember.computed("initPageConfig","statusService",function(){
+    if(!this.get("statusService.isMobile")){
+      return;
+    }
+    if(this.get("statusService.isConsumer")){
+      return this.get("initPageConfig.public.needPrepareRouteNames");
+    }
+    return this.get("initPageConfig.mobile.needPrepareRouteNames");
+  }),
+
 
   preTransitionFlag: 0,//跳转标记
   preTransitionFlagObs: function(){
@@ -26,6 +37,7 @@ export default Ember.Service.extend(Ember.Evented, InfinityRoute,RouteMixin,{
   backPath: null, //后退路径
   crumRouteList: [], //当前路由链
   routeList: [], //路由记录
+  avaBlankRouteSeq:1,//当前未使用空白页面的序号
   switchCounter: 0,//页面切换记录，用于其他组件进行页面事件监控
   showLoader: false, //是否显示加载页面
   /*
@@ -61,6 +73,7 @@ export default Ember.Service.extend(Ember.Evented, InfinityRoute,RouteMixin,{
       console.log("deviceready event:");
       //显示进度
       var sysFuncPlugin = cordova.require('org.apache.cordova.plugin.SysFuncPlugin');
+      sysFuncPlugin.closeLoadingPage({type:1});
       sysFuncPlugin.showProgress({type:"main",progressDur:"1"});
       //定义原生事件
       CORDOVA_EVENTS.forEach(function(eventName) {
@@ -74,12 +87,8 @@ export default Ember.Service.extend(Ember.Evented, InfinityRoute,RouteMixin,{
       console.log("currentMobileFunctionsNums:", _self.get("statusService.currentMobileFunctionsNums"));
       console.log("showFootBar:", _self.get("showFootBar"));
       console.log("backPath:", _self.get("backPath"));
-      // var curRouteName = _self.get("curRouteName");
-      // console.log("curRouteName in backFunc:" + curRouteName);
-      // if(curRouteName === "function-page"){
-      //   return false;
-      // }
-
+      var curRouteName = _self.get("curRouteName");
+      console.log("curRouteName in backFunc:" + curRouteName);
       //退回上一级页面
       if (_self.get("backPath")) {
         console.log("need back up");
@@ -90,6 +99,7 @@ export default Ember.Service.extend(Ember.Evented, InfinityRoute,RouteMixin,{
       //如果存在多功能区,且route为主页直接跳转到多功能区
       if (_self.get("statusService.currentMobileFunctionsNums") && _self.get("showFootBar")) {
         console.log("need back up to function-page");
+        _self.get("statusService").set("functionPageRoute",curRouteName);
         App.lookup("controller:business").send("changeMainPage", "function-page");
         return;
       }
@@ -122,8 +132,6 @@ export default Ember.Service.extend(Ember.Evented, InfinityRoute,RouteMixin,{
   showToast: function() {
     console.log("showToast in");
     //显示退出提示
-    //var notify = this.get('notify');
-    //notify.show("info", "再次点击回退按钮将退出应用!");
     var detailController = App.lookup("controller:business");
     detailController.popTorMsg("再次点击回退按钮将退出应用!");
   },
@@ -142,34 +150,26 @@ export default Ember.Service.extend(Ember.Evented, InfinityRoute,RouteMixin,{
       curPath === "service-care" ||
       curPath === "service-nurse" ||
       curPath === "customer-business" ||
-      // curPath === "customer-health" ||
       curPath === "customer-warning" ||
-      // curPath === "customer-point" ||
       curPath === "nurse-log" ||
       curPath === "attendance-check" ||
       curPath === "employee-assessment" ||
       curPath === "view-score" ||
+      curPath === "service-check-list-mobile" ||
       curPath === "connect-manage" ||
       curPath === "service-query" ||
       curPath === "other-business" ||
+      curPath === "service-order-looking" ||
+      curPath === "my-order-looking" ||
       curPath === "consultation-management-mobile" ||
-      curPath === "workdelivery-self-mobile" ||
       curPath === "workdelivery-view-mobile"
-      // curPath === "pressure-sores-care" ||
-      // curPath === "customer-dynamic-list" ||
-      // curPath === "evaluation-info" ||
-      // curPath === "evaluate-template" ||
-      // curPath === "result-management" ||
-      // curPath === "risk-form-management" ||
-      // curPath === "risk-result-record" ||
-      // curPath === "record-detail"
       ) {
       return true;
     }
     //公众号菜单判断
     if(this.get("statusService.isConsumer")){
       if(!this.get("statusService").get("isJujia")){
-        if (curPath === "publicnumber-service" || curPath === "publichealth-data" || curPath === "accounts-message") {
+        if (curPath === "consumer-service" || curPath === "publichealth-data" || curPath === "customer-dynamic" || curPath === "accounts-message") {
           return true;
         }
       }
@@ -182,6 +182,9 @@ export default Ember.Service.extend(Ember.Evented, InfinityRoute,RouteMixin,{
     return false;
   }),
   /*********************计算导航信息**********************/
+  getBlankPageName: function(seq){
+    return "blank-page-" + seq;
+  },
   breadCrumbsProcess: function(breadCrumbsPath) {
     var treeList = this.computeBreadCrumbs(breadCrumbsPath);
     console.log("treeList in busi", treeList);
@@ -257,9 +260,7 @@ export default Ember.Service.extend(Ember.Evented, InfinityRoute,RouteMixin,{
   //取得路由节点定义
   getRouteDef: function(routeName) {
     var rmodel = this.get("funcTreeData");
-    var routeMatch = _.filter(rmodel, {
-      code: routeName,
-    });
+    var routeMatch = rmodel.filterBy("code",routeName);
     let hasPageRoute = rmodel.filter(function(item){
       return item.page > 0;
     });
@@ -284,8 +285,11 @@ export default Ember.Service.extend(Ember.Evented, InfinityRoute,RouteMixin,{
 
 
   /*********************动态路由控制部分*********************/
-  createRouteItem: function(routeName, params) {
+
+  createRouteItem: function(routeName, templateName,params) {
+    let _self = this;
     var route = Ember.Object.create({
+      templateName:templateName,
       routeName: routeName,
       params: params,
       destroy: false,
@@ -300,14 +304,52 @@ export default Ember.Service.extend(Ember.Evented, InfinityRoute,RouteMixin,{
         }
         return false;
       }),
-      displayClass: Ember.computed('isHide', function() {
+      isBlankPage: Ember.computed('routeName', function() {
+        if (this.get("routeName").indexOf("blank-page")===0) {
+          return true;
+        }
+        return false;
+      }),
+      needPrepared: Ember.computed('routeName', function() {
+        let isClude = _self.routeIncludes(this.get("routeName"));
+        return isClude;
+      }),
+      displayClass: Ember.computed('isHide','routeName', function() {
+        //空白页面始终隐藏
+        if(this.get("routeName").indexOf("blank-page")===0){
+          return "hide";
+        }
         if (this.get("isHide")) {
           return "hide";
         }
         return "show";
       }),
+      statusObs: function(){
+        console.log("status changed:" + this.get("status") + " with route:" + this.get("routeName"));
+      }.observes("status").on("init")
     });
     return route;
+  },
+  //从空白页中生成业务页面
+  extractRoute: function(routeName){
+    let blankRouteName = this.getBlankPageName(this.get("avaBlankRouteSeq"));
+    this.incrementProperty("avaBlankRouteSeq");
+    //从已有空白列表中取出一个可使用的
+    let routeInst = this.getRouteItemWithInst(blankRouteName);
+    console.log("routeInst in extractRoute:",routeInst);
+    //标记当前实际route
+    routeInst.set("routeName",routeName);
+    this.set("currentRouteInstance",routeInst);
+    return routeInst;
+  },
+  //根据业务route名称取得实际的template名称
+  getRealTemplateName: function(routeName){
+    //空白页保留原名称
+    if(routeName.indexOf("blank-page")>=0){
+      return routeName;
+    }
+    let routeInst = this.getRouteItemWithInst(routeName);
+    return routeInst.get("templateName");
   },
   //取得当前路由实体
   currentRouteInstance: Ember.computed('curRouteName', function() {
@@ -318,9 +360,6 @@ export default Ember.Service.extend(Ember.Evented, InfinityRoute,RouteMixin,{
   getRouteItemWithInst: function(routeName) {
     var route = this.get("routeList").findBy("routeName", routeName);
     if (!route) {
-      return null;
-    }
-    if (!route.get("routeInstance")) {
       return null;
     }
     return route;
@@ -356,29 +395,57 @@ export default Ember.Service.extend(Ember.Evented, InfinityRoute,RouteMixin,{
     //累加页面切换计数
     this.incrementProperty("switchCounter",1);
   },
+  //创建一个空白页并放入路由列表
+  pushBlankRoute: function(routeName){
+    let route = this.createRouteItem(routeName,routeName);
+    this.get("routeList").pushObject(route);
+  },
   //打开一个路由页面
-  openRoute: function(routeName, params) {
+  openRoute: function(routeName, params,oriRouteItem,callback) {
     var routeList = this.get("routeList");
+    let _self = this;
     console.log("routeName is:" + routeName);
     var route = this.getRouteItemWithInst(routeName);
-    //如果路由已存在，则返回
-    if (route) {
-      //立刻显示此路由
-      route.set("status", 3);
-      this.set("pageStatus",3);
-      return;
+    let oriRouteName = null;
+    if(oriRouteItem){
+      oriRouteName = oriRouteItem.get("routeName");
     }
-    route = this.createRouteItem(routeName, params);
-    this.get("routeList").pushObject(route);
-    //由于此时route还未被使用，因此利用transitionToRoute来渲染，从而可以获得route实例
-    var routeFullName = "business.mainpage." + routeName;
-    console.log("routeFullName:" + routeFullName);
-    var routeInst = App.lookup("route:" + routeFullName);
-    console.log("routeInst loop:", routeInst);
-    //设置前台转场标志
-    this.get("feedBus").set("frontTranspage",routeName);
-    //转场处理
-    this.directTransition(routeName, params);
+    let process = function(){
+      //转场处理,如果前路由需要保持，则当前路由需要从空白路由中获取
+      let preparedRoutes = _self.get("preparedRoutes");
+      if(_self.routeIncludes(routeName)){
+        console.log("routeIncludes routeName:",routeName);
+        //从已有空白路由中获取
+        route = _self.extractRoute(routeName);
+        _self.transitionFromBlank(route, params);
+      }else{
+        //创建路由定义，并直接跳转
+        route = _self.createRouteItem(routeName,routeName);
+        _self.get("routeList").pushObject(route);
+        _self.directTransition(routeName, params);
+      }
+    };
+    //如果需要单独加载js，在此处理
+    if(this.get("initPageConfig").isNeedPartJs(routeName)){
+      //需要等待数据初始化完毕
+      if(!this.get("initPageConfig.dbInitOver")){
+        console.log("need wait dbInitOver");
+        _self.get("initPageConfig").initStorage().then(function(){
+          console.log("initStoragem over");
+          //获取单独js后，再进行后续处理
+          _self.get("initPageConfig").getPartJsAndAppend(routeName,function(){
+            process();
+          });
+        });
+      }else{
+        //如果已经初始化过数据，则直接获取
+        _self.get("initPageConfig").getPartJsAndAppend(routeName,function(){
+          process();
+        });
+      }
+    }else{
+      process();
+    }
   },
   //关闭一个路由页面
   closeRoute: function(routeName) {
@@ -402,8 +469,6 @@ export default Ember.Service.extend(Ember.Evented, InfinityRoute,RouteMixin,{
     if (params) {
       route.set("params", params);
     }
-    var routeInst = route.get("routeInstance");
-    console.log("routeInst get", routeInst);
     var controllerName = "business.mainpage." + routeName;
     var controller = App.lookup("controller:" + controllerName);
     //如果当前route是从后台渲染模式切换的，则给对应页面发送切换事件
@@ -433,6 +498,10 @@ export default Ember.Service.extend(Ember.Evented, InfinityRoute,RouteMixin,{
       });
     }
     console.log("send show action");
+    //首页面直接显示
+    if(routeName=="function-page"){
+      this.set("showLoader", false);
+    }
     //发送显示切换事件
     controller.send("switchShowAction");
   },
@@ -450,25 +519,29 @@ export default Ember.Service.extend(Ember.Evented, InfinityRoute,RouteMixin,{
       route.set("backRender", true);
       //设置后台转场标志
       this.get("feedBus").set("backTranspage",routeName);
-      Ember.run.next(this, function() {
-        var targetController = App.lookup("controller:business.mainpage." + routeName);
-        _self.get("mainpageController").get("target").send("changePage", routeName,targetController.getProperties());
-      });
+      //如果不需要预加载，则隐藏的时候需要对此页面进行后台渲染
+      let preparedRoutes = this.get("preparedRoutes");
+      if(!_self.routeIncludes(routeName)){
+        Ember.run.next(this, function() {
+          var targetController = App.lookup("controller:business.mainpage." + routeName);
+          _self.get("mainpageController").get("target").send("changePage", routeName,routeName,targetController.getProperties());
+        });
+      }
     }
     console.log("hide,routeName:" + routeName);
     //通过设置status属性来隐藏
     route.set("status", 4);
-    // this.set("pageStatus",4);
   },
   //主页面跳转
-  switchMainPageTrack: function(routeName, oriRouteName, params) {
+  switchMainPageTrack: function(routeName, oriRouteName, params,callback) {
+    this.set('statusService.pageChangeFlag',true);
     var _self = this;
     //设置transition标志，用于识别是否history的页面跳转
     this.incrementProperty("preTransitionFlag");
     console.log("changeMainPage in,routeName:" + routeName + " and oriRouteName:" + oriRouteName);
     //相同的route不做处理
     if (routeName === oriRouteName) {
-      console.log("changeMainPage in,routeName:" + routeName + " and oriRouteName:" + oriRouteName);
+      console.log("changeMainPage in,routeName:11" + routeName + " and oriRouteName:" + oriRouteName);
       if (!this.get("hasSwitch")) {
         //第一次切换时忽略原网址，不视为相同route
         oriRouteName = null;
@@ -481,7 +554,6 @@ export default Ember.Service.extend(Ember.Evented, InfinityRoute,RouteMixin,{
     this.set("hasSwitch", true);
     //显示加载页面
     console.log("need set showLoader true");
-    this.set("showLoader", true);
     this.set("curRouteName", routeName);
     //定义本路由的out输出
     console.log("target is:", this.get('target'));
@@ -490,15 +562,24 @@ export default Ember.Service.extend(Ember.Evented, InfinityRoute,RouteMixin,{
       this.directTransition(routeName, params);
       return;
     }
+    this.set("transferStab",{routeName:routeName,oriRouteName:oriRouteName,params:params});
+    //此时只设置显示loading页标志，实际切换在loading页面组件中进行。
+    this.set("showLoader", true);
+    this.switchPageProcess(callback);
+  },
+  //开始进行页面切换
+  switchPageProcess(callback){
+    var _self = this;
+    var routeName = this.get("transferStab.routeName");
+    var oriRouteName = this.get("transferStab.oriRouteName");
+    var params = this.get("transferStab.params");
+    this.set("transferStab",null);
     //设置页面当前状态
-    // this.set("pageInLoading",true);
     this.set("pageStatus",1);
-    if (oriRouteName) {
+    if (oriRouteName && oriRouteName.indexOf("blank-page")!==0) {
       var oriRouteItem = this.getRouteItemWithInst(oriRouteName);
       if (oriRouteItem) {
-        var oriInst = oriRouteItem.get("routeInstance");
-        var oriController = oriInst.get("controller");
-        console.log("oriController is", oriController);
+        var oriController = App.lookup("controller:business.mainpage." + oriRouteItem.get("routeName"));
         //屏蔽InfinityRoute的自动加载
         oriController.set("notLoadMore", true);
         //由于需要transition到别的路由，之前的路由应该处于非激活状态，在此设置
@@ -513,23 +594,33 @@ export default Ember.Service.extend(Ember.Evented, InfinityRoute,RouteMixin,{
       console.log("need open route:" + routeName);
       this.set("pageInLoading",true);
       Ember.run.later(function(){
-        _self.openRoute(routeName, params);
-      },1);
+        _self.openRoute(routeName, params,oriRouteItem);
+        //打开后需要的回调,异步进行
+        if(callback){
+          callback();
+        }
+      },100);
     } else {
       console.log("need show route:" + routeName);
       //恢复InfinityRoute的自动加载
       var routeItem = this.getRouteItemWithInst(routeName);
-      var routeInst = routeItem.get("routeInstance");
-      var routeController = routeInst.get("controller");
+      var routeController = App.lookup("controller:business.mainpage." + routeName);
       console.log("routeController is", routeController);
       routeController.set("notLoadMore", false);
       //显示页面
       this.showRoute(routeName, params);
-      //隐藏之前的route
-      if (oriRouteName) {
-        this.hideRoute(oriRouteName);
+      //打开后需要的回调
+      if(callback){
+        callback();
       }
     }
+  },
+  transitionFromBlank: function(routeInst, params) {
+    let _self = this;
+    let routeName = routeInst.get("routeName");
+    let templateName = routeInst.get("templateName");
+    let main = App.lookup("route:business.mainpage");
+    main.changePageInroute(routeName,templateName,params);
   },
   directTransition: function(routeName, params) {
     var link = "business.mainpage." + routeName;
@@ -559,4 +650,16 @@ export default Ember.Service.extend(Ember.Evented, InfinityRoute,RouteMixin,{
     }
     return concatName;
   },
+  routeIncludes: function(routeName){
+    let preparedRoutes = this.get("preparedRoutes");
+    if(!preparedRoutes){
+      return false;
+    }
+    for(let i=0;i<preparedRoutes.length;i++){
+      if(routeName===preparedRoutes[i]){
+        return true;
+      }
+    }
+    return false;
+  }
 });

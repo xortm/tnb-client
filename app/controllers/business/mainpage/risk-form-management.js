@@ -1,12 +1,27 @@
 import Ember from 'ember';
 import InfiniteScroll from '../../infinite-scroll';
-
 export default Ember.Controller.extend(InfiniteScroll,{
   dateService: Ember.inject.service("date-service"),
   feedService: Ember.inject.service('feed-bus'),
   mainController: Ember.inject.controller('business.mainpage'),
   nocustomerId:false,
   infiniteContainerName:"resultFormManagementContainer",
+  uiCapa: Ember.inject.service("ui-capability"),
+  recognizers: 'press tap',//移动端手势
+  press(e) {
+   e=e||window.event;
+   if (e.stopPropagation) {
+     e.stopPropagation();//IE以外
+   } else {
+     e.cancelBubble = true;//IE
+   }
+   console.log("press in",e);
+   var target = e.target || e.srcElement;
+  },
+
+  tap(e) {
+   console.log("tap in",e);
+  },
   customerObs: function(){
     var _self = this;
     let id = this.get('id');
@@ -47,6 +62,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
             let model = _self.get('feedService.recordModelList').findBy('id',id);
             newResult.set('model',model);
             newResult.set('customer',_self.get("global_curStatus.healtyCustomer"));
+            console.log('save new result 000000');
             newResult.save().then(function(result){
               _self.get("mainController").switchMainPage('risk-result-record',{recordId:id,resultId:result.get('id')});
             });
@@ -58,6 +74,18 @@ export default Ember.Controller.extend(InfiniteScroll,{
     },
     switchShowAction(){
       this.directInitScoll();
+    },
+    //删除遮罩
+    showDelBut(result){
+      this.set('showDelButFlag',true);
+      this.get('resultList').forEach(function(res){
+        res.set('toDelStatus',false);
+      })
+      result.set('toDelStatus',true)
+      console.log('come in showDelBut');
+    },
+    hideDelBut(){
+      this.set('showDelButFlag',false);
     },
     delById(result){
       let _self = this;

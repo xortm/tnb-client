@@ -1,6 +1,6 @@
 <div class="busi-info">
     <div class="box-body">
-    <div>该老人最近3天的护理记录，查看更多请前往：护理管理/护理记录</div>  
+    <div>这里显示该老人最近3天的护理记录，查看更多请前往：护理管理/护理记录</div>
     <div id="" class="dataTables_wrapper form-inline" role="grid">
       <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable nomargin-vertical" aria-describedby="datatable1_info">
         <thead>
@@ -22,7 +22,7 @@
             <td class="ellipsis" >{{planProject.serviceName}}</td>
             <td class="ellipsis">{{planProject.planStartTimeString}}</td>
             <td class="ellipsis">{{planProject.finishLevel.name}}</td>
-            <td class="ellipsis">{{planProject.remarkStr}}</td>
+            <td style="max-width:200px;"><div  class="nowrap">{{planProject.remarkStr}}</div></td>
           </tr>
 
           {{/each}}

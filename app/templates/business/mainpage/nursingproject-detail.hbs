@@ -30,7 +30,13 @@
 
 						<div class="col-xs-12 col-sm-6">
 							<div class="form-input-group label-normal">
-								<span class="input-group-addon">价格(元/天)：</span>
+								<span class="input-group-addon">价格
+									{{#if projectInfo.month}}
+									(元/月)
+									{{else}}
+									(元/天)
+									{{/if}}
+									：</span>
 									<div class="input-group-content">{{projectInfo.price}}</div>
 							</div>
 
@@ -143,7 +149,7 @@
 		<div class="remark"><i class="fa fa-check" style="color:#000;"></i>护理计划已安排的护理项目</div>
 	</h3>
 
-	<div class="col-sm-12 nopadding-left nopadding-right">
+	<div class="col-sm-12 nopadding-left nopadding-right project-service-detail">
 		{{#each allServiceList as |service|}}
 		{{#bs-form formLayout=formLayout model=serviceModel invalid=(action "invalid")}}
 		<div class="{{if media.isJumbo 'col-lg-3' 'col-sm-4'}} service">

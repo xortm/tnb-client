@@ -19,20 +19,20 @@
       {{#if global_curStatus.isJujia}}
         <li class="position-relative top40 height40">
           <img class="user-login-i" src="assets/images/logo/admin.png" height="22" alt=""/>
-          {{input type="number" class="padding-left-10 height40 font18 width180 position_absolute left40 borderB1-D2D2D2" maxlength="11" value=mobileNum  focus-in="changeInfo"  placeholder="请输入您的手机号" enter='loginAction'}}
+          {{input type="number" id="mobile-value" class="padding-left-10 height40 font18 width180 position_absolute left40 borderB1-D2D2D2" maxlength="11" value=mobileNum  focus-in="changeInfo"  placeholder="请输入您的手机号" enter='loginAction'}}
         </li>
         <li class="position-relative top10 height40">
           <img class="user-login-i" src="assets/images/logo/key.png" height="22" alt=""/>
-          {{input type="password" class="padding-left-10 height40 font18 width180 position_absolute left40 borderB1-D2D2D2" value=password focus-in="changeInfo"  placeholder="请输入登录密码" enter='loginAction'}}
+          {{input type="password" id="password" class="padding-left-10 height40 font18 width180 position_absolute left40 borderB1-D2D2D2" value=password focus-in="changeInfo"  placeholder="请输入登录密码" enter='loginAction'}}
         </li>
       {{else}}
         <li class="position-relative top40 height40">
           <img class="user-login-i" src="assets/images/logo/admin.png" height="22" alt=""/>
-          {{input type="number" class="padding-left-10 height40 position_absolute left40 borderB1-D2D2D2" maxlength="11" value=mobileNum  focus-in="changeInfo"  placeholder="请输入您的手机号" enter='loginAction'}}
+          {{input type="number" id="mobile-value"  class="padding-left-10 height40 position_absolute left40 borderB1-D2D2D2" maxlength="11" value=mobileNum  focus-in="changeInfo"  placeholder="请输入您的手机号" enter='loginAction'}}
         </li>
         <li class="position-relative top10 height40">
           <img class="user-login-i" src="assets/images/logo/key.png" height="22" alt=""/>
-          {{input type="password" class="padding-left-10 height40 position_absolute left40 borderB1-D2D2D2" value=password focus-in="changeInfo"  placeholder="请输入登录密码" enter='loginAction'}}
+          {{input type="password"  id="password" class="padding-left-10 height40 position_absolute left40 borderB1-D2D2D2" value=password focus-in="changeInfo"  placeholder="请输入登录密码" enter='loginAction'}}
         </li>
       {{/if}}
       {{#if success}}
@@ -95,7 +95,7 @@
 </div>
 <!-- {{ui/container/infinite-scroll moniteData="userLogin" didRenderAction="didRender" didInsertElementAction="didInsertElement"}} -->
 {{else}}
-<div class="container login">
+<!-- <div class="container login">
   <div class="row">
     <div class="col-md-6 col-md-offset-3" style="padding-left:6.5%;padding-right:6.5%;">
       <div id="logo" style="padding-bottom:11%;padding-top:9%; {{if jujia 'background-color:#638775;' 'background-color:#3f4657;'}}">
@@ -134,7 +134,68 @@
         <div class="text-color-danger left4 top15">{{responseInfo}}</div>
         {{/if}}
         <div class="form-actions nopadding-left nopadding-right nopadding-top">
-          <!-- <label class="checkbox inline-block pull-left"><div class="checker user-checker"><span><input type="checkbox" class="uniform" value=""></span></div> 记住用户名</label> -->
+          <label class="checkbox inline-block pull-left"><div class="checker user-checker"><span><input type="checkbox" class="uniform" value=""></span></div> 记住用户名</label>
+          <a class="pull-right inline-block forget pointer">忘记密码?</a>
+          {{#if mailLogin}}
+          <input type="button" class="btn btn-danger" {{action "loginAction"}} disabled={{deterDisabled}} value="企业登录">
+          {{/if}}
+          {{#if phoneLogin}}
+          <input type="button" class="btn btn-info" {{action "loginAction"}} disabled={{deterSDisabled}} style="margin-top:3%;margin-left:10px;width:97%; {{if jujia 'background-color:#638775;'}}" value="登录">
+          {{/if}}
+          <span class="registered">还未成为其中的一员？<a >点击注册</a></span>
+        </div>
+      </form>
+
+    </div>
+  </div>
+  <footer class="col-sm-12 col-xs-12 center">
+    <span> ICP备14048432号</span>
+    <br>
+    <img src="assets/images/备案图标.png" width="15" alt=""/><span> 京公网安备xxxxxxx号</span>
+  </footer>
+</div>
+</div> -->
+{{#if global_curStatus.isJujia}}
+<div class="container login">
+  <div class="row">
+    <div class="col-md-6 col-md-offset-3" style="padding-left:6.5%;padding-right:6.5%;">
+      <div id="logo" style="padding-bottom:11%;padding-top:9%; {{if jujia 'background-color:#638775;' 'background-color:#3f4657;'}}">
+        <div class='logo-block'>
+          <img src="{{if jujia 'assets/images/kangyi/kangyi-logo.png' 'assets/images/logo/logo.png'}}" width="200" alt=""/>
+          <span class="logo-text">养老管理系统</span>
+        </div>
+
+      </div>
+  </div>
+
+  <div class="col-md-6 col-md-offset-3" style="padding-left:6.5%;padding-right:6.5%;">
+    <div class="login-box-plain nopadding-top" style="padding-bottom:0;margin-bottom:10px;">
+      <div class="divide-20"></div>
+      <form role="form">
+        {{log 'mailLogin' mailLogin 'phoneLogin' phoneLogin}}
+        {{#if mailLogin}}
+        <div class="form-group">
+          <i class="fa fa-envelope"></i>
+          {{input type="email" class="form-control" value=emailAddress focus-in="changeInfo"  placeholder="邮箱" enter='loginAction'}}
+        </div>
+        {{/if}}
+        {{#if phoneLogin}}
+        <div class="form-group">
+          <i class="fa fa-check-circle user-mobile"></i>
+          {{input type="tel" class="form-control" value=mobileNum maxlength="11" focus-in="changeInfo"  placeholder="请输入11位手机账号" id="mobile-value" enter='loginAction'}}
+        </div>
+        {{/if}}
+        <div class="form-group">
+          <img class="password" src="assets/images/logo/password.png" width="18px">
+          {{input type="password" class="form-control" value=password focus-in="changeInfo"  placeholder="请输入您的密码" id='password' enter='loginAction'}}
+        </div>
+        {{#if success}}
+        <div class="text-color-success left4 top15">{{responseInfo}}</div>
+        {{else}}
+        <div class="text-color-danger left4 top15">{{responseInfo}}</div>
+        {{/if}}
+        <div class="form-actions nopadding-left nopadding-right nopadding-top">
+          <label class="checkbox inline-block pull-left"><div class="checker user-checker"><span><input type="checkbox" class="uniform" value=""></span></div> 记住用户名</label>
           <!-- <a class="pull-right inline-block forget pointer">忘记密码?</a> -->
           {{#if mailLogin}}
           <input type="button" class="btn btn-danger" {{action "loginAction"}} disabled={{deterDisabled}} value="企业登录">
@@ -149,10 +210,64 @@
     </div>
   </div>
   <footer class="col-sm-12 col-xs-12 center">
-    <span> ICP备14048432号</span>
+    <span> ICP备xxxxx</span>
     <br>
-    <!-- <img src="assets/images/备案图标.png" width="15" alt=""/><span> 京公网安备xxxxxxx号</span> -->
+    <img src="assets/images/备案图标.png" width="15" alt=""/><span> 京公网安备xxxxxxx号</span>
   </footer>
 </div>
 </div>
+{{else}}
+  <section class="login-block">
+    <div class='topbanner'>
+      <div class="poswrap">
+        <a class="brand">
+          <h1>天年宝</h1>
+          <h3>机构养老管理系统</h3>
+        </a>
+      </div>
+    </div>
+    <div class="form-unit" style="margin-bottom:100px;margin-top:25px;">
+      <div>
+        <div class="form-field">
+          {{input type="text" placeholder="请输入11位手机账号" id="mobile-value" name="phone" value=mobileNum focus-in="changeInfo" enter='loginAction'}}
+          {{#if mobileNum}}
+            <span class="fa fa-times-circle-o show-password" {{action 'cleanText' 'mobileNum' on="click"}}></span>
+          {{/if}}
+          {{#if mobileFalse}}
+          <span class='login-error'><i class="fa fa-times"></i>&nbsp;{{mobileInfo}}</span>
+          {{/if}}
+        </div>
+        <div class="form-field">
+          {{input type="password" placeholder="请输入您的密码" id='password' name="password" value=password focus-in="changeInfo" enter='loginAction'}}
+          {{#if password}}
+            <span class="fa fa-times-circle-o clean-password" {{action 'cleanText' 'password' on="click"}}></span>
+          {{/if}}
+          <span class="fa show-password {{if passShow 'fa-eye' 'fa-eye-slash'}}" {{action 'showPassword' on="click"}}></span>
+          {{#if pwdFalse}}
+          <span class='login-error'><i class="fa fa-times"></i>&nbsp;{{pwdInfo}}</span>
+          {{/if}}
+          {{#if success}}
+          <span class="text-color-success left4 login-result">{{responseInfo}}</span>
+          {{else}}
+          <span class="text-color-danger left4  login-result">{{responseInfo}}</span>
+          {{/if}}
+        </div>
+        <div class="form-field forgot-password-box">
+          <a class="forgot-password" >
+            {{#link-to 'forgot'}}
+              忘记密码？
+            {{/link-to}}
+          </a>
+        </div>
+        <input type="button" class="login-btn" id='userLoginBtn'  value="登录" {{action "loginAction"}}>
+      </div>
+
+    </div>
+    <footer class="col-sm-12 col-xs-12 center">
+      <span> ICP备14048432号</span>
+      <br>
+      <span> 北京云宝科技有限公司&nbsp;&nbsp;版权所有</span>
+    </footer>
+  </section>
+{{/if}}
 {{/if}}

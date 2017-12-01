@@ -83,13 +83,14 @@ export default Ember.Controller.extend({
       }
     },
     changeStartTime: function(date) {
-      let stamp = this.get("dateService").timeStringToTimestamp(date);
+      let stamp = this.get("dateService").timeToTimestamp(date);
       let minDate = this.get('dateService').timestampToTime(stamp);
+      console.log('minDate:',minDate,date);
       this.set("leaveModel.expectStartTimeDate", minDate);
       this.set("leaveModel.expectStartTime", stamp);
     },
     changeExpectEndTime: function(date) {
-      let stamp = this.get("dateService").timeStringToTimestamp(date);
+      let stamp = this.get("dateService").timeToTimestamp(date);
       this.set("leaveModel.expectEndTime", stamp);
     },
     leaveTypeSelect: function(type) {

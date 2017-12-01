@@ -9,6 +9,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
   nocustomerId:false,
   infiniteContainerName:"recordChildDetailContainer",
   scrollPrevent:true,
+  stopScroll:true,
   fieldInfoObs:function(){//观察ID变化，更新fieldInfo数据
     let _self = this;
     let parentFieldId = this.get('parentFieldId');
@@ -79,7 +80,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
       _self.hideAllLoading();
       return;
     }else{
-      this.set("stopScroll",false);
+      this.set("stopScroll",true);
     }
     this.set("nocustomerId",false);
     this.set("customerId",customerId);

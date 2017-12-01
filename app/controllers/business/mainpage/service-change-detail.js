@@ -23,6 +23,18 @@ export default Ember.Controller.extend(ChangeValidations, {
         return false;
       }
     }),
+    chargeTypeObs:function(){
+      let customer = this.get('customer');
+      if(!customer){
+        return ;
+      }
+      let chargeType = customer.get('chargeType');
+      if(chargeType.get('typecode')=='chargeTypeY'){
+        this.set('chargeTypeFlag',true);
+      }else{
+        this.set('chargeTypeFlag',false);
+      }
+    }.observes("customer"),
     today: Ember.computed(function() {
         let today = this.get('dateService').getCurrentTime();
         today=parseFloat(today)-86400;
@@ -126,25 +138,35 @@ export default Ember.Controller.extend(ChangeValidations, {
                 });
             }
         },
-        //变更状态
-        // statusSelect(statusDict) {
-        //     this.get("change").set("status", statusDict);
-        // },
+        //变更护理等级
+        selectLevel(level){
+          this.set('changeModel.nursingLevelNew',level);
+          if(this.get('chargeTypeFlag')){
+            this.set('changeModel.nursingLevelNewReferencePrice',level.get('totalPrice'));
+            this.set('changeModel.projectPriceNew',level.get('totalPrice'));
+          }else{
+            this.set('changeModel.nursingLevelNewReferencePrice',level.get('totalPrice'));
+            this.set('changeModel.projectPriceNew',level.get('typeValue'));
+          }
+        },
         //变更后餐饮标准
         foodLevelNewSelect(foodLevelNewDict) {
             this.get("change").set("foodLevelNew", foodLevelNewDict);
-            // this.set('changeModel.foodPriceOld',foodLevelNewDict.get('typeValue'));
-            this.set('changeModel.foodPriceNew',foodLevelNewDict.get('typeValue'));
+            if(this.get('chargeTypeFlag')){
+              this.set('changeModel.foodLevelNewReferencePrice',foodLevelNewDict.get('totalPrice'));
+              this.set('changeModel.foodPriceNew',foodLevelNewDict.get('totalPrice'));
+            }else{
+              this.set('changeModel.foodLevelNewReferencePrice',foodLevelNewDict.get('totalPrice'));
+              this.set('changeModel.foodPriceNew',foodLevelNewDict.get('typeValue'));
+            }
+
         },
         //选择楼层
         selectFloor(floor) {
-            console.log("controller:floor", floor);
             var _self = this;
             this.set('change.floor',floor);
             var obj = this.get("dataLoader").findDict(Constants.bedStatusIdle);
-            console.log("obj is", obj);
             var statusId = obj.get("id");
-            console.log("statusId is", statusId);
             this.store.query('bed', {
                 filter: {
                     room: {
@@ -168,23 +190,58 @@ export default Ember.Controller.extend(ChangeValidations, {
             var bedInfo = customer.get("bed");
             var diningStandard = customer.get("diningStandard");
             var actualPrice = customer.get("actualPrice");
+            let changeModel = this.get('changeModel');
+            let chargeType = this.get('chargeTypeFlag');
+            //选择申请人后，将老人当前的信息放入对应的位置，床位、餐饮、护理
             this.store.query('nursingproject',{filter:{customer:{id:customer.get('id')}}}).then(function(projectList){
               let project = projectList.get('firstObject');
-              _self.get('changeModel').set("bedOld", bedInfo);
-              _self.get('changeModel').set("foodLevelOld", diningStandard);
-              _self.get('change').set("foodLevelOld", diningStandard);
-              _self.get('changeModel').set("priceOld", actualPrice);
-              _self.set('change.projectPriceOld',project.get('price'));
-              _self.set('changeModel.projectPriceOld',project.get('price'));
-              _self.set('changeModel.projectPriceNew',project.get('price'));
+              //设置当前的入住状态和结算类型
+              changeModel.set('customerStatus',customer.get('customerStatus'));
+              changeModel.set('chargeType',customer.get('chargeType'));
+              //设置变更前床位
+              changeModel.set('bedOld',bedInfo);
+              if(chargeType){
+                changeModel.set('bedOldReferencePrice',bedInfo.get('totalPrice'));
+              }else{
+                changeModel.set('bedOldReferencePrice',bedInfo.get('price'));
+              }
+              changeModel.set('bedPriceOld',customer.get('actualBedPrice'));
+              //设置变更前餐饮等级
+              changeModel.set('foodLevelOld',diningStandard);
+              if(chargeType){
+                changeModel.set('foodLevelOldReferencePrice',diningStandard.get('totalPrice'));
+              }else{
+                changeModel.set('foodLevelOldReferencePrice',diningStandard.get('typeValue'));
+              }
+              changeModel.set('foodPriceOld',customer.get('actualDiningPrice'));
+              //设置护理等级
+              changeModel.set('nursingLevelOld',project.get('level'));
+              if(chargeType){
+                changeModel.set('nursingLevelOldReferencePrice',project.get('level.totalPrice'));
+              }else{
+                changeModel.set('nursingLevelOldReferencePrice',project.get('level.price'));
+              }
+              changeModel.set('projectPriceOld',project.get('price'));
+              //设置变更前价格
+              changeModel.set('priceOld',customer.get('actualPrice'));
+              //默认各信息无变更，将变更后的实际价格默认值，设为当前实际价格
+              changeModel.set('bedPriceNew',customer.get('actualBedPrice'));
+              changeModel.set('foodPriceNew',customer.get('actualDiningPrice'));
+              changeModel.set('projectPriceNew',project.get('price'));
             });
         },
         //变更后床位号
         selectBed(bed) {
             this.get('changeModel').set("bedNew", bed);
             this.set('change.bedNew', bed);
-            // this.set('changeModel.bedPriceOld',bed.get('price'));
-            this.set('changeModel.bedPriceNew',bed.get('price'));
+            if(this.get('chargeTypeFlag')){
+              this.set('changeModel.bedNewReferencePrice',bed.get('totalPrice'));
+              this.set('changeModel.bedPriceNew',bed.get('totalPrice'));
+            }else{
+              this.set('changeModel.bedNewReferencePrice',bed.get('totalPrice'));
+              this.set('changeModel.bedPriceNew',bed.get('price'));
+            }
+
         },
 
         //删除按钮

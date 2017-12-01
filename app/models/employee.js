@@ -64,13 +64,29 @@ export default BaseModel.extend({
     contractEndDate:DS.attr("number"),//合同截止日期
     leaderFlag:DS.attr("number"),//是否是领导人
     // nurseGroup:DS.belongsTo("nursegroup"),
-
+    departureDate:DS.attr('number'),//离职日期
     authCode:DS.attr("string"),
     // tenant:DS.belongsTo("tenant"),//对应租户
     customers:DS.hasMany('customer'),//护工对应的顾客
     bracelet:DS.belongsTo("device"),//手环
     url:DS.attr("string"),///execl表格导出url
     town:DS.belongsTo('town'),//客户地址信息
+    departureFlag:Ember.computed('staffStatus',function(){
+      let staffStatus = this.get('staffStatus');
+      if(staffStatus.get('typecode')=='staffStatusLeave'){
+        return true;
+      }else{
+        return false;
+      }
+    }),
+    departureDateString:Ember.computed("departureDate",function(){
+      var departureDate = this.get("departureDate");
+      return departureDate?this.get("dateService").formatDate(departureDate,"yyyy-MM-dd"):null;
+    }),
+    departureDateTime:Ember.computed("departureDate",function(){
+      var departureDate = this.get("departureDate");
+      return departureDate?this.get("dateService").timestampToTime(departureDate):null;
+    }),
     //根据规则拼出完整的url
     avatarUrl: Ember.computed('avatar', function() {
         var avatar = this.get("avatar");

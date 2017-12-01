@@ -213,6 +213,7 @@ export default Ember.Controller.extend(StaffValidations, {
                         }
                         App.lookup('controller:business.mainpage').openPopTip("正在保存");
                         console.log("computedAge1111  staffCardCode", _self.get("staff.staffCardCode"));
+                        staffModel.set("delStatus", 0);
                         staffModel.save().then(function(staff) {
                         // staffModel.save().then(function(staff) {},function(err){});
                           console.log("error11111  in  save");
@@ -296,6 +297,7 @@ export default Ember.Controller.extend(StaffValidations, {
         /*删除*/
         delStaff: function(staff) {
             var _self = this;
+            console.log("run in delStaff!");
             staff.set("delStatus", 1);
             //通过增加计数来触发分页条刷新
             App.lookup('controller:business.mainpage').openPopTip("正在删除");
@@ -343,6 +345,7 @@ export default Ember.Controller.extend(StaffValidations, {
         statusSelect: function(dict) {
             this.set("staff.staffStatus", dict);
             this.set('staffModel.staffStatus', dict);
+            console.log("staffModel:",this.get("staffModel"));
         },
         systemUserSelect: function(systemUser) {
             this.set("staff.systemusers", systemUser);

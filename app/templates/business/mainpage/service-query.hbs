@@ -24,21 +24,15 @@
             <div class="wrapperInner padding-bottom50" style="padding-top:50px;background:#ffffff;">
                 <div id="scrollFlagId" style="height:1px; width:100%;"></div>
                 {{#if skillList}}
-                    <div class="bgcolor-white line-item-task col-sm-6 col-xs-12 height-auto bottom-border-plan1">
+                    <ul class="profile">
                         {{#each skillList as |dataDetail|}}
-                            <div itemId="{{dataDetail.id}}" name="listContainer" class="contentArea contentAreaList width100B">
-                                <div class="col-xs-middle time-content nopadding-horizontal width100B clearfix position-relative" id="item_{{dataDetail.id}}" {{action "gotoMarketSkillDetail" "receive" dataDetail on="tap"}}>
-                                    <div class="title pull-left" style="width:130px;">
-                                        <div class="time-label color2FA7FD" style="font-size:14px;">{{dataDetail.titleString}}</div>
-                                    </div>
-                                    <div class="item-split"></div>
-                                    <div class="content clearfix padding-left-114 width100B position_absolute" style="float:none;">
-                                        <div class="user-info font16" style="margin-top:0;"> <span class="font12 color999999">内容：</span>{{dataDetail.remarkString}}</div>
-                                    </div>
-                                </div>
-                            </div>
+                            <li class=" carousel color666 border-top-1 border-bottom-1" id="item_{{dataDetail.id}}" {{action "gotoMarketSkillDetail" "receive" dataDetail on="tap"}}>
+                                <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                                <span class="profile-span">标题:{{dataDetail.titleString}} </span>
+                                <i class="fa-angle-right font20 my-right color-ccc"></i>
+                            </li>
                         {{/each}}
-                    </div>
+                    </ul>
                 {{else}}
                     <div class="nodate">暂无数据</div>
                 {{/if}}

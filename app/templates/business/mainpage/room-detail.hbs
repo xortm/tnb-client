@@ -210,7 +210,8 @@
 			            <tr role="row">
 			              <th rowspan="1" colspan="1">床位名称</th>
 			              <th rowspan="1" colspan="1">床位类型</th>
-			              <th rowspan="1" colspan="1">价格(元/天)</th>
+			              <th rowspan="1" colspan="1">日价格(元/天)</th>
+										<th rowspan="1" colspan="1">月价格(元/月)</th>
 										<th rowspan="1" colspan="1">华米按键</th>
 										<th rowspan="1" colspan="1">使用状态</th>
 										{{#if detailEdit}}
@@ -236,14 +237,20 @@
 												{{bed.bedType.typename}}
 											{{/if}}
 										</td>
-			              <td class="ellipsis" >
+			              <td class="ellipsis" width="15%">
 											{{#if detailEdit}}
-													{{input type="text" class="padding-left-8 full-width inline-block form-input-group label-normal" value=bed.price placeholder='床位价格'}}
+													{{input type="text" class="padding-left-8 full-width inline-block form-input-group label-normal" value=bed.price placeholder='日价格'}}
 											{{else}}
 												{{bed.price}}
 											{{/if}}
 										</td>
-
+										<td class="ellipsis" width="15%">
+											{{#if detailEdit}}
+													{{input type="text" class="padding-left-8 full-width inline-block form-input-group label-normal" value=bed.totalPrice placeholder='月价格'}}
+											{{else}}
+												{{bed.totalPrice}}
+											{{/if}}
+										</td>
 										<td class="ellipsis" >
 									 	 {{#if detailEdit}}
 										 {{#power-select class="inline-block input-group-content" placeholder="" options=buttonList selected=bed.button searchField="seq"

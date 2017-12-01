@@ -1,0 +1,93 @@
+<div class="col-sm-12">
+    <div class="box clearfix">
+        <div class="bottom12">
+            <ul class="nopadding-left border-bottom">
+                <li class="pull-left margin-right30 {{if (eq selectTypecode "all") "jujia-select-bottom-border"}}" {{action "changeTab" "all" on="click"}} >
+                    <a href="#tab_1_1" data-toggle="tab" class="{{if (eq selectTypecode "all") 'jujia-select-title' 'noselect-title'}} the-a">全部订单</a>
+                </li>
+                <li class="pull-left margin-right30  {{if (eq selectTypecode "jujiaServiceStatus1") "jujia-select-bottom-border"}}" {{action "changeTab" "jujiaServiceStatus1" on="click"}}>
+                    <a href="#tab_1_2" data-toggle="tab" class="{{if (eq selectTypecode "jujiaServiceStatus1") 'jujia-select-title' 'noselect-title'}} the-a">待分配</a>
+                </li>
+                <li class="pull-left margin-right30  {{if (eq selectTypecode "jujiaServiceStatus2") "jujia-select-bottom-border"}}" {{action "changeTab" "jujiaServiceStatus2" on="click"}}>
+                    <a href="#tab_1_2" data-toggle="tab" class="{{if (eq selectTypecode "jujiaServiceStatus2") 'jujia-select-title' 'noselect-title'}} the-a">已分配</a>
+                </li>
+                <li class="pull-left margin-right30  {{if (eq selectTypecode "jujiaServiceStatus3") "jujia-select-bottom-border"}}" {{action "changeTab" "jujiaServiceStatus3" on="click"}}>
+                    <a href="#tab_1_2" data-toggle="tab" class="{{if (eq selectTypecode "jujiaServiceStatus3") 'jujia-select-title' 'noselect-title'}} the-a">已上路</a>
+                </li>
+                <li class="pull-left margin-right30  {{if (eq selectTypecode "jujiaServiceStatusYWC") "jujia-select-bottom-border"}}" {{action "changeTab" "jujiaServiceStatusYWC" on="click"}}>
+                    <a href="#tab_1_2" data-toggle="tab" class="{{if (eq selectTypecode "jujiaServiceStatusYWC") 'jujia-select-title' 'noselect-title'}} the-a">已完成</a>
+                </li>
+            </ul>
+            <div class="clear"></div>
+        </div>
+        <div class="box nopadding-left nopadding-right">
+          <div class="box-body">
+            <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+                  <div class="row">
+                      <!--搜索-->
+                      <div class="col-sm-3">
+                        <div class="input-group full-width">
+                          {{#power-select class="input-group-content full-width" placeholder='接单人姓名' options=employeeList selected=defaultEmployee searchField="employeePinyin"
+                          noMatchesMessage="没有相关员工"	allowClear=true	onchange=(action "selectEmployee" ) as |employee|}}
+                            {{employee.name}}
+                          {{/power-select}}
+                        </div>
+                      </div>
+                       <div class="col-sm-3">
+                         <div class="pull-left">
+                             <div class="input-group bottom8">
+                                 {{input class="form-control" type="text" placeholder="搜索下单人姓名" value=queryStr enter="search"}}
+                                 <span class="input-group-btn">
+                                       <button class="btn btn-primary btn-reduce" type="button" style="touch-action: manipulation; -ms-touch-action: manipulation;"
+                                        {{action "search" on="click"}}>
+                                         <i class="fa fa-search"></i>
+                                       </button>
+                                 </span>
+                             </div>
+                         </div>
+                       </div>
+                       <div class="col-sm-3 nopadding-right nopadding-left">
+                            {{callbusi/time-search class="inline-block" text='按下单日期搜索' dateShow=dateShow chooseDate=chooseDate search="search"
+                                submmit="submmit" emptied='emptied' changeBeginDateAction='changeBeginDateAction'
+                                changeEndDateAction='changeEndDateAction'}}
+                        </div>
+                  </div>
+                  <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable"
+                         aria-describedby="datatable1_info">
+                    <thead>
+                      <tr role="row">
+                        <th rowspan="1" colspan="1" width="">下单用户</th>
+                        <th rowspan="1" colspan="1" width="">服务项目</th>
+                        <th rowspan="1" colspan="1" width="">服务时长</th>
+                        <th rowspan="1" colspan="1" width="">价格</th>
+                        <th rowspan="1" colspan="1" width="">下单时间</th>
+                        <th rowspan="1" colspan="1" width="">服务时间</th>
+                        <th rowspan="1" colspan="1" width="">接单人员</th>
+                        <th rowspan="1" colspan="1" width="">订单状态</th>
+                      </tr>
+                    </thead>
+                    <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+                      {{#each nursingplandetailList as |nursingplandetail|}}
+                        <tr {{action "toDetailPage" nursingplandetail on="click"}}>
+                          <td class="ellipsis">{{nursingplandetail.customer.name}}</td>
+                          <td class="ellipsis">{{nursingplandetail.item.item.name}}</td>
+                          <td class="ellipsis">{{nursingplandetail.item.item.serviceTime}}分钟</td>
+                          <td class="ellipsis">{{nursingplandetail.item.item.price}}元</td>
+                          <td class="ellipsis">{{nursingplandetail.createDateTimeStr}}</td>
+                          <td class="ellipsis">{{nursingplandetail.serviceTimeStr}}</td>
+                          <td class="ellipsis">{{if nursingplandetail.serviceOperater.name nursingplandetail.serviceOperater.name "无"}}</td>
+                          <td class="ellipsis">{{nursingplandetail.serviceStatus.typename}}</td>
+                        </tr>
+                      {{/each}}
+                    </tbody>
+                  </table>
+                  {{#if nursingplandetailList }}
+                      {{page-numbers content=nursingplandetailList showFL=true numPagesToShow=10 }}
+                  {{else}}
+                          <h1 class="col-sm-12 center unTask"></h1>
+                  {{/if}}
+            </div>
+         </div>
+        </div>
+    </div>
+</div>

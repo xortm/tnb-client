@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import BaseBusiness from '../base-business';
 export default BaseBusiness.extend({
-  header_title:'老人呼叫',
+  header_title:'消息通知',
   queryParams: {
       customerListFlag: {
           refreshModel: true

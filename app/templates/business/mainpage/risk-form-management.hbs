@@ -9,7 +9,8 @@
       {{#if resultList}}
         <div class="bgcolor-white">
         {{#each resultList as |result|}}
-        <div class="line-item-task col-sm-6 col-xs-12 height-auto" {{action 'addNewRecord' result on='tap'}}>
+        {{#ui/mobile/gestures-press}}
+        <div class="line-item-task col-sm-6 col-xs-12 height-auto" {{action 'addNewRecord' result on='tap'}} {{action 'showDelBut' result on="press"}}>
           <div name="listContainer" class="contentArea contentAreaList width100B">
             <div class="col-xs-middle time-content nopadding-horizontal width100B clearfix position-relative" >
               <div class="title pull-left" style="width:110px;">
@@ -19,11 +20,20 @@
               <div class="content clearfix padding-left-114 width100B position_absolute" style="float:none;">
                   <div class="detail extend color999999" style="margin-top:12px;">名称:{{result.model.name}}</div>
                   <div class="detail extend color999999">记录人:{{result.user.name}}</div>
-                  <span style="font-size:14px;color:#03BADD;" id="{{concat 'risk-form-management-mobile-del-' result.id}}" {{action 'delById' result on='tap' bubbles=false}}>删除记录</span>
+                  <!-- <span style="font-size:14px;color:#03BADD;" id="{{concat 'risk-form-management-mobile-del-' result.id}}" {{action 'delById' result on='tap' bubbles=false}}>删除记录</span> -->
               </div>
             </div>
           </div>
+          {{#if result.toDelStatus}}
+            {{#if showDelButFlag}}
+              <div class="width100B height100B position_absolute bk-color-000000-D5" style="top:0;left:0;" {{action 'hideDelBut' on="tap" bubbles=false}}>
+              </div>
+              <div class="width80 height34 font14 line-height-34 header-text-color bk-color-2FA7FD position_absolute abs-top-50B abs-left-50B margin-left-f40 margin-top-f17 border-radius3 center"
+              {{action 'delById' result on="tap" bubbles=false}}>删除</div>
+            {{/if}}
+          {{/if}}
         </div>
+        {{/ui/mobile/gestures-press}}
 
         {{/each}}
         </div>

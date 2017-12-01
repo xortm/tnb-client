@@ -18,6 +18,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
   customerObs: function(){
     var _self = this;
     var customerId = this.get("healtyCustomerId");
+    console.log("healtyCustomerId in obs:",customerId);
     if(!customerId){
       this.set("nocustomerId",true);
       _self.hideAllLoading();

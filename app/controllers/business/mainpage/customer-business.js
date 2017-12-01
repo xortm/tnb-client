@@ -7,7 +7,6 @@ export default Ember.Controller.extend(InfiniteScroll,{
   infiniteContainerName:"customerBusinessContainer",
   stopScroll: true,//阻止下拉刷新的所有操作
 
-  moment: Ember.inject.service(),
   service_PageConstrut:Ember.inject.service("page-constructure"),
   mainController: Ember.inject.controller('business.mainpage'),
   pathConfiger: Ember.inject.service("path-configer"),
@@ -27,7 +26,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
   }.on('willDestroyElement'),
 
   showScanCustomerBusiness: function(){
-    var itemId = "customer_scan";
+    var itemId = "customer-business-scan";
     $("#" + itemId).addClass("tapped");
     Ember.run.later(function(){
       $("#" + itemId).removeClass("tapped");
@@ -47,8 +46,8 @@ export default Ember.Controller.extend(InfiniteScroll,{
       this.set("nocustomerId",true);
       this.hideAllLoading();
       return;
-    }else{
-      this.set("stopScroll",false);
+    // }else{
+    //   this.set("stopScroll",false);
     }
     // var healtyCustomer  = this.get("global_curStatus.healtyCustomer");
     var healtyCustomer = this.store.peekRecord('customer',customerId);

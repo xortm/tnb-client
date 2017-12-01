@@ -6,6 +6,7 @@ dateService: Ember.inject.service("date-service"),
 pathConfiger: Ember.inject.service("path-configer"),
 itemtype: DS.belongsTo('dicttype'),//体检项目
 examDateTime:DS.attr("number"), //体检时间
+healthentry:DS.belongsTo('health-info-entry'),//数据录入批存
 result:DS.attr("string"),//体检结果
 resultAddtion:DS.attr("string"),//体检结果补充1
 resultAddtionSec:DS.attr("string"),//体检结果补充2

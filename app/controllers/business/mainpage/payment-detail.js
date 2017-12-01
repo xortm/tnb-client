@@ -44,7 +44,7 @@ export default Ember.Controller.extend({
                   });
               });
           } else {
-              rechargeModel.set("validFlag", Math.random());
+              tradeModel.set("validFlag", Math.random());
           }
       });
     },

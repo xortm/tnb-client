@@ -12,14 +12,15 @@
                             {{/if}}
                             <!-- <div class="col-xs-middle time-content nopadding-horizontal width100B clearfix position-relative" id="item_{{item.id}}" > -->
                             <div class="col-xs-middle time-content nopadding-horizontal width100B clearfix position-relative" id="item_{{dataDetail.id}}" {{action "gotoWorkdeliveryDetail" "view" dataDetail on="tap"}}>
-                                <div class="title pull-left" style="width:130px;">
-                                    <div class="time-label color2FA7FD" style="font-size:14px;">{{dataDetail.createDateString}}</div>
+                                <div class="title pull-left" style="width:105px;">
+                                  <div class="time-label color2FA7FD" style="font-size:14px;">{{dataDetail.createDateStringBefore}}</div>
+                                  <div class="time-label color2FA7FD" style="font-size:14px; margin-top:0;">{{dataDetail.createDateStringAfter}}</div>
                                 </div>
-                                <div class="item-split"></div>
+                                <div class="item-split" style="margin: 16px 0; height: 46px;"></div>
                                 <div class="content clearfix padding-left-114 width100B position_absolute" style="float:none;">
                                     <div class="user-info font16" style="margin-top:0;"> <span class="font12 color999999">交班人：</span>{{dataDetail.sender.name}}</div>
                                     <div class="user-info font16" style="margin-top:0;"> <span class="font12 color999999">接班人：</span>{{dataDetail.receiver.name}}</div>
-                                    <div class="user-info font16" style="margin-top:0;"> <span class="font12 color999999">交接内容：</span>{{dataDetail.remarkString}}</div>
+                                    <div class="user-info font16" style="margin-top:0;"> <span class="font12 color999999">注意事项：</span>{{dataDetail.specialRemarkString}}</div>
                                 </div>
                             </div>
                         </div>

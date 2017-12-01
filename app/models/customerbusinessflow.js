@@ -1,6 +1,6 @@
 import DS from 'ember-data';
 import BaseModel from './base-model';
-const {leaveStatus1,leaveStatus2,leaveStatus3,consultStatus6,consultStatus7} = Constants;
+const {leaveStatus1,leaveStatus2,leaveStatus3,leaveStatus4,leaveStatus5,leaveStatus6,consultStatus6,consultStatus7} = Constants;
 
 var Customerbusinessflow = BaseModel.extend({
   dateService: Ember.inject.service("date-service"),
@@ -50,7 +50,7 @@ var Customerbusinessflow = BaseModel.extend({
   leaveStaff:DS.belongsTo('employee'),//办理退住员工
   leaveRemark:DS.attr('string'),//退住备注
   leaveStatus:DS.belongsTo('dicttype'),//退住状态
-
+  leaveDateReal:DS.attr('number'),//实际退住日期
   customerAddr:DS.attr('string'),//老人地址
   customerAge:DS.attr('number'),//老人年龄
   customerBrith:DS.attr('number'),//老人生日
@@ -58,6 +58,19 @@ var Customerbusinessflow = BaseModel.extend({
   customerTel:DS.attr('string'),//老人电话
   customerEducation:DS.belongsTo('dicttype'),//老人教育级别
   customerGender:DS.belongsTo('dicttype'),//老人性别
+  customerGenderFlag:Ember.computed('customerGender',function(){
+    let customerGender = this.get('customerGender');
+    let customerGenderFlag = {};
+    if(customerGender){
+      if(customerGender.get('typecode')=='sexTypeMale'){
+        customerGenderFlag.man = true;
+      }
+      if(customerGender.get('typecode')=='sexTypeFemale'){
+        customerGenderFlag.woman = true;
+      }
+    }
+    return customerGenderFlag;
+  }),
   customerName:DS.attr('string'),//老人姓名
   customerNative:DS.belongsTo('dicttype'),//老人籍贯
   customerPS:DS.attr('string'),//老人身体情况
@@ -75,6 +88,19 @@ var Customerbusinessflow = BaseModel.extend({
   guardianFirstName:DS.attr('string'),//联系人姓名
   guardianFirstCardCode:DS.attr('string'),//联系人身份证
   guardianFirstGener:DS.belongsTo('dicttype'),//联系人性别
+  guardianFirstGenerFlag:Ember.computed('guardianFirstGener',function(){
+    let guardianFirstGener = this.get('guardianFirstGener');
+    let guardianFirstGenerFlag = {};
+    if(guardianFirstGener){
+      if(guardianFirstGener.get('typecode')=='sexTypeMale'){
+        guardianFirstGenerFlag.man = true;
+      }
+      if(guardianFirstGener.get('typecode')=='sexTypeFemale'){
+        guardianFirstGenerFlag.woman = true;
+      }
+    }
+    return guardianFirstGenerFlag;
+  }),
   guardianFirstContact:DS.attr('number'),//联系人的联系方式
   firstRelation:DS.belongsTo('dicttype'),//联系人与老人关系
   guardianFirstWork:DS.attr('string'),//联系人工作单位
@@ -90,6 +116,8 @@ var Customerbusinessflow = BaseModel.extend({
   customerMedicalInsuranceCategory: DS.belongsTo('dicttype'), //医保类别(MedicalInsuranceType)
   town:DS.belongsTo('town'),//客户地址信息
   backRemark: DS.attr('string'),//申请退住的时候设置为 out (新增一条退住的时候)
+  totalPrice: DS.attr("number"), //总价格
+  chargeType: DS.belongsTo('dicttype'), //账单计费类型
   allTownName:Ember.computed('town',function(){//拼接所在地区
     let townName=this.get('town.name');
     let countyName=this.get('town.county.name');
@@ -143,7 +171,7 @@ var Customerbusinessflow = BaseModel.extend({
       if(birthday){
         return this.get("dateService").formatDate(birthday, "yyyy-MM-dd");
       }else{
-        return ';'
+        return '';
       }
 
   }),
@@ -174,6 +202,8 @@ var Customerbusinessflow = BaseModel.extend({
       return 1;
     }else if(leaveStatus.get("typecode")===Constants.leaveStatus5||leaveStatus.get("typecode")===Constants.leaveStatus2){
       return 2;
+    }else if(leaveStatus.get("typecode")===Constants.leaveStatus6){
+      return 3;
     }
 
   }),
@@ -192,6 +222,8 @@ var Customerbusinessflow = BaseModel.extend({
     }else if(leaveStatus.get("typecode")===Constants.leaveStatus5){
       str = "已作废";
 
+    }else if(leaveStatus.get("typecode")===Constants.leaveStatus6){
+      str = "费用结算完成";
     }
     return str;
   }),
@@ -328,7 +360,7 @@ var Customerbusinessflow = BaseModel.extend({
     if(!checkInStartTimeDate){
       return null;
     }
-    this.get("dateService").timestampToTime(checkInStartTimeDate);
+    return this.get("dateService").timestampToTime(checkInStartTimeDate);
   }),
   checkInStartTimeDateString:Ember.computed("checkInStartTime",function(){
     var checkInStartTimeDate=this.get("checkInStartTime");
@@ -340,7 +372,6 @@ var Customerbusinessflow = BaseModel.extend({
     if(!checkInEndTimeDate){
       return null;
     }
-    console.log(checkInEndTimeDate);
     return this.get("dateService").timestampToTime(checkInEndTimeDate);
   }),
   checkInEndTimeDateString:Ember.computed("checkInEndTime",function(){
@@ -358,6 +389,18 @@ var Customerbusinessflow = BaseModel.extend({
   checkInDateTimeString:Ember.computed("checkInDate",function(){
     var checkInDateTime=this.get("checkInDate");
     return this.get("dateService").formatDate(checkInDateTime,"yyyy-MM-dd");
+  }),
+  //实际退住日期
+  leaveDateRealTime:Ember.computed('leaveDateReal',function(){
+    let leaveDateReal = this.get("leaveDateReal");
+    if(!leaveDateReal){
+      return null;
+    }
+    return this.get("dateService").timestampToTime(leaveDateReal);
+  }),
+  leaveDateRealTimeString:Ember.computed("leaveDateReal",function(){
+    var leaveDateRealTime=this.get("leaveDateReal");
+    return leaveDateRealTime?this.get("dateService").formatDate(leaveDateRealTime,"yyyy-MM-dd"):'';
   }),
   //分配的床位信息
   bed:Ember.computed('status','orderBed','checkInBed','experienceBed',function(){
@@ -437,7 +480,37 @@ var Customerbusinessflow = BaseModel.extend({
         this.set('couldCancel',false);
         return '已取消';
       }
+  }),
+  //退住的账单状态，checkinremark
+  billStatusName:Ember.computed('checkInRemark','leaveStatus',function(){
+    let checkInRemark = this.get('checkInRemark');
+    let leaveStatus = this.get('leaveStatus');
+    if(checkInRemark == 'none'){
+      return '账单未出';
+    }else if(checkInRemark == 'created'){
+      if(leaveStatus.get('typecode')!==Constants.leaveStatus3){
+        this.set('couldBack',true);
+      }else{
+        this.set('couldBack',false);
+      }
 
+      return '账单已出';
+    }else if(checkInRemark == 'done'){
+      if(leaveStatus.get('typecode')!==Constants.leaveStatus3){
+        this.set('couldBack',true);
+      }else{
+        this.set('couldBack',false);
+      }
+      return '账单结算完成';
+    }
+  }),
+  detailBack:Ember.computed('leaveStatus',function(){
+    let leaveStatus = this.get('leaveStatus');
+    if(leaveStatus.get('typecode')==Constants.leaveStatus1){
+      return true;
+    }else{
+      return false;
+    }
   }),
 });
 

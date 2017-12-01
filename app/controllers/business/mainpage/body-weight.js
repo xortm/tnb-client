@@ -1,13 +1,12 @@
 import Ember from 'ember';
 import InfiniteScroll from '../../infinite-scroll';
-import Echarts from "npm:echarts";
+
 
 export default Ember.Controller.extend(InfiniteScroll,{
   infiniteContentPropertyName: "",
   infiniteModelName: "",
   infiniteContainerName:"userBodyWeightContainer",
 
-  moment: Ember.inject.service(),
   statusService: Ember.inject.service("current-status"),
   store: Ember.inject.service("store"),
   dateService: Ember.inject.service("date-service"),
@@ -42,6 +41,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
   }.observes("healthInfoList").on("init"),
   queryFlagIn: function(){
     var _self = this;
+    _self._showLoading();
     var curCustomer = this.get("statusService").getCustomer();//获取居家curCustomer
     var curCustomerId = curCustomer.get("id");//获取居家curCustomerId
     var params = {
@@ -63,6 +63,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
       console.log("healthAnalysisList",healthAnalysisList);
       var contentsEmpty = healthAnalysisList.get("firstObject").get("contents");
       _self.set("contentsEmpty",contentsEmpty);
+      _self.hideAllLoading();
     });
     _self.incrementProperty("queryFlag");
   },
@@ -83,7 +84,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
             var chartType = chartHealth.get('itemtype.typecode'); //体检类型
             var chartResult = chartHealth.get('result'); //体检结果
             var chartResultAddtion = chartHealth.get('resultAddtion'); //低压
-            var itemDate = chartHealth.get('examDateStringMobile'); //体检时间
+            var itemDate = chartHealth.get('examDateString'); //体检时间
             console.log("itemDate1111111",itemDate);
             //console.log("chartType is",chartType);
             //体重
@@ -119,7 +120,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
                   boundaryGap: false,
                   data: weightDate, //x轴(时间)
                   axisLabel: {
-                      interval: 0
+                      interval: "auto"
                   }
               }],
               yAxis: {
@@ -160,7 +161,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
         // var pwWeight = ($("#health-area").width()) ;
         console.log("pwWeight is:" + pwWeight);
         $("#bodyWeight").width(pwWeight);
-        var bodyWeight = Echarts.init(document.getElementById('bodyWeight'));
+        var bodyWeight = echarts.init(document.getElementById('bodyWeight'));
         this.set("bodyWeight", bodyWeight);
 
     },

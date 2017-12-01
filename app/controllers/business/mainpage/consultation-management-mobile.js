@@ -14,6 +14,7 @@ export default Ember.Controller.extend(InfiniteScroll, {
     customerObs: function() {
         var _self = this;
         var filter = {};
+        console.log("testincrease1 ",this.get("queryFlagInFlag"));
         filter = $.extend({}, filter, {
             '[consultStatus][typecode@$like]@$or1---1': 'consultStatus1'
         });
@@ -23,7 +24,7 @@ export default Ember.Controller.extend(InfiniteScroll, {
         filter = $.extend({}, filter, {
             'advName@$isNotNull': 'null'
         });
-        console.log("queryFlagInFlag:", this.get("queryFlagInFlag"));
+        console.log("queryFlagInFlag:", _self.get("queryFlagInFlag"));
         // this.store.query("backvist", {
         //     filter: {},
         //     sort: {
@@ -31,16 +32,13 @@ export default Ember.Controller.extend(InfiniteScroll, {
         //     }
         // }).then(function(backvistList) {
         // });
-        this.infiniteQuery('consultinfo', {
+        _self.infiniteQuery('consultinfo', {
             filter: filter,
             sort: {
                 createDateTime: 'desc'
             }
-        }).then(function(consultationList) {
-            _self.set("consultationList", consultationList);
-            _self.hideAllLoading();
-            _self.directInitScoll();
         });
+        _self.get("feedService").set("conManaFlag",false);
     }.observes("queryFlagInFlag").on("init"),
 
     //当添加完说明后执行此操作
@@ -127,6 +125,13 @@ export default Ember.Controller.extend(InfiniteScroll, {
                 var mainpageController = App.lookup('controller:business.mainpage');
                 mainpageController.switchMainPage('consultation-detail-mobile', params);
             }, 200);
+        },
+        switchShowAction(){
+          this.directInitScoll();
+          let assessmentFlag = this.get("feedService").get("conManaFlag");
+          if(assessmentFlag){
+            this.customerObs();
+          }
         },
     },
 });

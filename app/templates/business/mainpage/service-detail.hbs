@@ -79,7 +79,7 @@
 									{{#if detailEdit}}
 										{{#if id}}
 											{{callbusi/dict-selector class="inline-block" groupCode=constants.period curDict=serviceitemInfo.period
-												showName=serviceitemInfo.period.typename dictSelect="periodSelect"}}
+												showName='周期' dictSelect="periodSelect" preselected=false}}
 										{{else}}
 											{{callbusi/dict-selector class="inline-block" groupCode=constants.period curDict=serviceitemInfo.period
 												showName='周期' dictSelect="periodSelect" preselected=false}}

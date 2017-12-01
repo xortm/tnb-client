@@ -1,16 +1,28 @@
-<div class="bottom-border-plan1 col-xs-middle time-content nopadding-horizontal width100B clearfix position-relative height-auto" id="customerItem_{{customerItem.customerId}}" {{action "gotoCustomerList" on="tap"}}>
-  {{log customerItem.curCustomer.name}}
-  <div class="font14 color666666 line-height-30 padding-left-15">评分老人: <span class="font14 color999999">{{customerItem.curCustomer.name}}</span></div>
-  {{#if customerItem.averageScoreAll}}
-    <div class="font14 color666666 line-height-30 padding-left-15">总体评分: <span class="font14 color999999">{{customerItem.averageScoreAll}}分</span></div>
-  {{else}}
-    <div class="font14 color666666 line-height-30 padding-left-15">总体评分: <span class="font14 color999999">暂未评分</span></div>
-  {{/if}}
-  {{#if customerItem.averageScoreEmployee}}
-    <div class="font14 color666666 line-height-30 padding-left-15">员工评分: <span class="font14 color999999">{{customerItem.averageScoreEmployeeName}}({{customerItem.averageScoreEmployee}}分)...</span></div>
-  {{else}}
-    <div class="font14 color666666 line-height-30 padding-left-15">员工评分: <span class="font14 color999999">暂未评分</span></div>
-  {{/if}}
-  <!-- <div class="font18 color2FA7FD center line-height-44">{{customerItem.curCustomer.name}}</div> -->
-  <!-- <div class="font14 line-height-18 padding-left-10 padding-right-10 color666666 padding-bottom10">该老人对员工{{customerItem.employeeListRemark}}进行了评分</div> -->
-</div>
+{{#if employeeFlag}}
+  <!-- 按照员工 -->
+  <div class="bottom-border-plan1 col-xs-middle time-content nopadding-horizontal width100B clearfix position-relative height-auto" id="employeeItem_{{item.employeeId}}" {{action "gotoEmployeeList" on="tap"}}>
+    {{log item.curEmployeeExtend.name}}
+    <div class="font14 color666666 line-height-30 padding-left-15">评价员工: <span class="font14 color999999">{{item.curEmployeeExtend.name}}</span></div>
+    {{#if item.averageScore}}
+      <div class="font14 color666666 line-height-30 padding-left-15">总体平均分: <span class="font14 color999999">{{item.averageScore}}分</span></div>
+    {{else}}
+      <div class="font14 color666666 line-height-30 padding-left-15">总体平均分: <span class="font14 color999999">暂未评分</span></div>
+    {{/if}}
+  </div>
+{{else}}
+  <!-- 按照老人 -->
+  <div class="bottom-border-plan1 col-xs-middle time-content nopadding-horizontal width100B clearfix position-relative height-auto" id="customerItem_{{item.customerId}}" {{action "gotoCustomerList" on="tap"}}>
+    {{log item.curCustomer.name}}
+    <div class="font14 color666666 line-height-30 padding-left-15">评分老人: <span class="font14 color999999">{{item.curCustomer.name}}</span></div>
+    {{#if item.averageScoreAll}}
+      <div class="font14 color666666 line-height-30 padding-left-15">总体评分: <span class="font14 color999999">{{item.averageScoreAll}}分</span></div>
+    {{else}}
+      <div class="font14 color666666 line-height-30 padding-left-15">总体评分: <span class="font14 color999999">暂未评分</span></div>
+    {{/if}}
+    {{#if item.averageScoreEmployee}}
+      <div class="font14 color666666 line-height-30 padding-left-15">员工评分: <span class="font14 color999999">{{item.averageScoreEmployeeName}}({{item.averageScoreEmployee}}分)...</span></div>
+    {{else}}
+      <div class="font14 color666666 line-height-30 padding-left-15">员工评分: <span class="font14 color999999">暂未评分</span></div>
+    {{/if}}
+  </div>
+{{/if}}

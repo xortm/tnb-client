@@ -27,13 +27,14 @@ export default BaseBusiness.extend(Pagination, {
           if (curController.get('queryCondition')) {
               filter = $.extend({}, filter, {'advName@$like@$or1':curController.get('queryCondition')});
               filter = $.extend({}, filter, {'advTel@$like@$or1':curController.get('queryCondition')});
+              filter = $.extend({}, filter, {'remark@$like@$or1':curController.get('queryCondition')});
               filter = $.extend({}, filter, {'[consultStatus][typecode@$like]@$or2---1':'consultStatus1'});
               filter = $.extend({}, filter, {'[consultStatus][typecode@$like]@$or2---2':'consultStatus2'});
-              filter = $.extend({}, filter, {'advName@$isNotNull':'null'});
+              filter = $.extend({}, filter, {'advName@$isNotNull':'null','advTel@$isNotNull': 'null'});
           }else {
             filter = $.extend({}, filter, {'[consultStatus][typecode@$like]@$or1---1':'consultStatus1'});
             filter = $.extend({}, filter, {'[consultStatus][typecode@$like]@$or1---2':'consultStatus2'});
-            filter = $.extend({}, filter, {'advName@$isNotNull':'null'});
+            filter = $.extend({}, filter, {'advName@$isNotNull':'null','advTel@$isNotNull': 'null'});
           }
             //按咨询时间条件搜索
             if (dateQueryCondition) {
@@ -71,13 +72,13 @@ export default BaseBusiness.extend(Pagination, {
             //按预约参观日期查询
             if (dateQueryConditionAp) {
                 var compareDateAp = null;
-                if (dateQueryCondition === "today") {
+                if (dateQueryConditionAp === "today") {
                     compareDateAp = this.get("dataService").getTodayTimestamp();
                 }
-                if (dateQueryCondition === "seven") {
+                if (dateQueryConditionAp === "seven") {
                     compareDateAp = this.get("dataService").getDaysBeforeTimestamp(7);
                 }
-                if (dateQueryCondition === "thirty") {
+                if (dateQueryConditionAp === "thirty") {
                     compareDateAp = this.get("dataService").getDaysBeforeTimestamp(30);
                 }
                 filter = $.extend({}, filter, {
@@ -140,12 +141,13 @@ export default BaseBusiness.extend(Pagination, {
       // },
     },
     setupController: function(controller, model) {
-    this.doQuery();
+
     var queryCondition = controller.get('input');
     controller.set('queryCondition', queryCondition);
     controller.set("dateQueryCondition", "");
     controller.set("dateQueryConditionAp", "");
     this._super(controller, model);
+    this.doQuery();
     console.log("saveConsult is",controller.get("saveConsult"));
     }
 });

@@ -4,6 +4,7 @@
 </div>
 <div id="healthInfoContainer" class="mainContent {{if global_pageConstructure.showLoader 'hide' ''}}">
   <div class="wrapperInner">
+    {{#unless chartShow}}
     <div class="">
       {{#if healthInfoList}}
         {{#each healthInfoList as |healthInfo|}}
@@ -34,6 +35,7 @@
         <div class="nodate">暂无数据</div>
       {{/if}}
     </div>
+    {{/unless}}
   </div>
 </div>
 {{#if showModel}}

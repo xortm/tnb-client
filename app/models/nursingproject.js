@@ -15,6 +15,14 @@ var Nursingproject = BaseModel.extend({
     level:DS.belongsTo('nursinglevel'),//对应的护理等级
     result:DS.belongsTo('evaluateresult'),//对应问卷
     updateFlag:DS.attr('string'),
+    month:Ember.computed('customer',function(){
+      let chargeType = this.get('customer.chargeType');
+      if(chargeType.get('typecode')=='chargeTypeY'){
+        return true;
+      }else{
+        return false;
+      }
+    }),
     servicesName: Ember.computed('services', function() {
         var name = '';
         if (this.get('services')) {

@@ -5,7 +5,6 @@ export default Ember.Controller.extend(InfiniteScroll,{
   infiniteContentPropertyName: "",
   infiniteModelName: "",
   infiniteContainerName:"userJujiaMyContainer",
-  moment: Ember.inject.service(),
   statusService: Ember.inject.service("current-status"),
   service_PageConstrut:Ember.inject.service("page-constructure"),
   mainController: Ember.inject.controller('business.mainpage'),
@@ -13,16 +12,20 @@ export default Ember.Controller.extend(InfiniteScroll,{
   service_notification:Ember.inject.service("notification"),
   constants:Constants,
   uploadUrl: Ember.computed('property', function() {return this.get("pathConfiger").get("uploadUrl");}),
-  queryFlagIn: function(){return;},
   curCustomerObs: function() {
+    this._showLoading();
     //let curCustomer = this.get("statusService.curStatus.currentCustomer");
     let curCustomer = this.get("statusService").getCustomer();
     console.log("curCustomer in jujia",curCustomer);
     if(!curCustomer||!curCustomer.get("id")){
       return;
     }
+    this.hideAllLoading();
     this.set("curCustomer",curCustomer);
   }.observes("statusService.curStatus.currentCustomer").on("init"),
+  queryFlagIn: function(){
+    this.hideAllLoading();
+  },
   actions:{
     switchPage:function (menuLink,elementId) {//个人信息 界面
       console.log("id```````",elementId);

@@ -4,7 +4,6 @@ import format from 'ember-moment/computeds/format';
 import BaseModel from './base-model';
 
 export default BaseModel.extend({
-  moment: Ember.inject.service(),
   pathConfiger: Ember.inject.service("path-configer"),
   dateService:Ember.inject.service('date-service'),
 

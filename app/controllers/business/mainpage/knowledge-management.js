@@ -10,7 +10,6 @@ i:0,
   content:"",
   editEnd:true,
   fail1:true,//标题、内容必须填写！
-  moment: Ember.inject.service(),
   showAddContents:false,//弹框
   //判断是客服端还是企业端如果是1就是企业端，如果是2的话则是客服端
   cancel:Ember.computed('modification', function(){
@@ -81,7 +80,7 @@ i:0,
               _self.get('target').send("reloadModel");
             });
           }
-        })
+        });
         // userEnt.save();
       });
     },//“删除”按钮

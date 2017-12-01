@@ -1,0 +1,105 @@
+{{#ui/mobile/gestures-container}}
+<div id="serviceOrderContainer" class="mainContent color-white {{if global_pageConstructure.showLoader 'hide' ''}}">
+  <div class="wrapperInner color333333 font14">
+  {{#if serviceOrderData}}
+    <!-- <div class="clearfix width100B height142 padding-15-10 border-bottom-E7E7E7 position-relative">
+      <div class="title pull-left" style="width:112px;height:112px;">
+        <img src="{{serviceOrderData.avatarUrl}}" alt="" class="width100B height100B">
+      </div>
+      <div class="padding-left-130 padding-right-5 width100B height-auto position_absolute">
+        <div class="font18 color000000 line-height-30 height30 extend weight-bold">{{serviceOrderData.name}}</div>
+        <div class="font14 color2FA7FD line-height-20 height20 extend clearfix">
+          <span class="padding-0-3 bk-color-E4F7E3 border-radius3 color4BC845 height20 line pull-left">{{serviceOrderData.serviceType.typename}}</span>
+        </div>
+        {{#if serviceOrderData.serviceTime}}
+          <div class="font14 color707070 line-height-30 height30 extend">{{serviceOrderData.serviceTime}}分钟/次</div>
+        {{/if}}
+        {{#if serviceOrderData.price}}
+          <div class="font18 colorE54B00 line-height-30 width80 height30 extend position_absolute abs-top-50 abs-right-30 text-right">{{serviceOrderData.price}}元</div>
+        {{/if}}
+        {{#if serviceOrderData.remark}}
+          <div class="font14 color707070 line-height-30 height30 extend">{{serviceOrderData.remark}}</div>
+        {{/if}}
+      </div>
+    </div> -->
+    <div class="clearfix top5">
+      <div class="pull-left width33B line-height-30 padding-right-5 text-right">
+        服务项目：
+      </div>
+      <div class="pull-left width67B line-height-30 color999999">
+        {{serviceOrderData.name}}
+      </div>
+    </div>
+    <div class="clearfix top5">
+      <div class="pull-left width33B line-height-30 padding-right-5 text-right">
+        服务时长：
+      </div>
+      <div class="pull-left width67B line-height-30 color999999">
+        {{serviceOrderData.serviceTime}}分钟
+      </div>
+    </div>
+    <div class="clearfix top5">
+      <div class="pull-left width33B line-height-30 padding-right-5 text-right">
+        价&nbsp;&nbsp;&nbsp;&nbsp;格：
+      </div>
+      <div class="pull-left width67B line-height-30 color999999">
+        {{serviceOrderData.price}}元
+      </div>
+    </div>
+    <div class="clearfix top5">
+      <div class="pull-left width33B line-height-30 padding-right-5 text-right">
+        预约时间：
+      </div>
+      <div class="pull-left width67B line-height-30">
+        {{input type="datetime-local" class="height30 width90B padding-0-5 border-radius3 border-1solid-ccc color999999" placeholder="" value=date}}
+      </div>
+    </div>
+    <div class="clearfix top5">
+      <div class="pull-left width33B line-height-30 padding-right-5 text-right">
+        支付方式：
+      </div>
+      <div class="pull-left width160 color999999">
+        <select class="height30 width20 color999999" onchange={{action 'typeName' value="target.value"}} id="serviceOrderSelector">
+          <option class="padding4" value="1" style="color: #b6b6b6" disabled selected>请选择</option>
+          {{#each paymentTypeList as |paymentType|}}
+          <option class="padding4" value="{{paymentType.typecode}}">{{paymentType.typename}}</option>
+          {{/each}}
+        </select>
+      </div>
+    </div>
+    <div class="clearfix top5">
+      <div class="pull-left width33B line-height-30 padding-right-5 text-right">
+        联系电话：
+      </div>
+      <div class="pull-left width67B line-height-30">
+        {{input type="number" class="height30 width160 padding-0-5 border-radius3 border-1solid-ccc color999999" value=nursingplandetailModel.serviceTel}}
+      </div>
+    </div>
+    <div class="clearfix top5">
+      <div class="pull-left width33B line-height-30 padding-right-5 text-right">
+        地&nbsp;&nbsp;&nbsp;&nbsp;址：
+      </div>
+      <div class="pull-left width67B line-height-30">
+        {{textarea type="text" class="height62 width160 padding-3-5 border-radius3 border-1solid-ccc line-height-18 font14 color999999" value=nursingplandetailModel.serviceAddress}}
+      </div>
+    </div>
+    <div class="hasError center" style="min-height:18px;">
+      {{#if noMessageShow}}
+        {{noMessage}}
+      {{/if}}
+    </div>
+    {{ui/mobile/task-detail-button needDoubleClickPrevent=true touchStartAction="saveServiceOrder" saveServiceOrder="saveServiceOrder" butContent="提交" outerClass="serviceOrderBut"}}
+
+  {{else}}
+    <div class="nodate">暂无数据</div>
+  {{/if}}
+
+
+
+  </div>
+
+</div>
+{{/ui/mobile/gestures-container}}
+
+{{ui/container/infinite-scroll moniteData="customerserviceitemList"
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

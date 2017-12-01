@@ -24,7 +24,9 @@ export default Ember.Component.extend({
           item.set('name',name);
           item.set('seq',seq);
           if(!list.findBy('seq',seq)){
-            list.pushObject(item);
+            if(!list.findBy('name',name)){
+              list.pushObject(item);
+            }        
           }
       }
     });

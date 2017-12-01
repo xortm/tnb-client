@@ -15,6 +15,12 @@ export default BaseModel.extend({
   bindStatus:DS.belongsTo('dicttype'),//绑定状态
   operateFlag:DS.attr('string'),//绑定操作bind解绑操作removeBind
   operateTarget:DS.attr('string'),//绑定的人或房间ID
+  domainName:DS.attr('string'),//域名
+  appName:DS.attr('string'),//应用名
+  streamName:DS.attr('string'),//直播流名
+  liveUrl:DS.attr('string'),//推流地址
+  viewUrl:DS.attr('string'),//直播地址
+
   deviceStatusName:Ember.computed('deviceStatus',function(){
     let deviceStatus = this.get('deviceStatus');
     if(deviceStatus==1){
@@ -84,6 +90,9 @@ export default BaseModel.extend({
         break;
       case 'deviceType6':
         colorClass =  'card-color';
+        break;
+      case 'deviceTypeVideo':
+        colorClass =  'video-color';
         break;
       default:
     }

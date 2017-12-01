@@ -6,7 +6,8 @@ var Bed = BaseModel.extend({
 
   button:DS.belongsTo('device'),//小米按键ID
   name:DS.attr('string'),//床位名称
-  price:DS.attr('string'),//价格
+  price:DS.attr('string'),//日价格
+  totalPrice:DS.attr('string'),//月价格
   status:DS.belongsTo('dicttype'),//状态  已分配、未分配
   createDateTime:DS.attr('number'),//创建时间
   lastUpdateDateTime:DS.attr('number'),//更新时间
@@ -46,15 +47,17 @@ var Bed = BaseModel.extend({
     }
   }),
   roomBedName:Ember.computed("room","name",function(){
-    var roomName=this.get("room.name");
     var bedName=this.get("name");
-    if(roomName&&bedName){
-      return roomName+"-"+bedName;
+    if(!this.get("room.id")||!this.get("room.name")){
+      // console.log("floor empty and id:" + this.get("floor.id"));
+      if(!this.get("dataLoader").get("allRoomList")){
+        return "";
+      }
+      var room = this.get("dataLoader").get("allRoomList").findBy("id",this.get("roomId"));
+      this.set("room",room);
     }
-    if(!roomName){
-      return '';
-    }
-
+    let roomName = this.get('room.name');
+    return roomName + '-' + bedName;
   }),
   roomName:Ember.computed("roomBedName",function(){
     var roomBedName=this.get("roomBedName");
@@ -90,7 +93,30 @@ var Bed = BaseModel.extend({
   buildingFloorName:Ember.computed('name','room',function(){
     let buildingName = this.get('room.floor.building.name');
     let floorName=this.get('room.floor.name');
-    return buildingName+'-'+floorName;
+    
+      if(!this.get("room.floorId")||!this.get("room.floor.name")){
+        if(!this.get("dataLoader").get("allFloorList")){
+          return "";
+        }
+        let bed = this.get('dataLoader.beds').findBy('id',this.get('id'));
+        let room = this.get('dataLoader.allRoomList').findBy("id",bed.get("roomId"));
+        var floor = this.get("dataLoader").get("allFloorList").findBy("id",room.get("floorId"));
+        this.set("floor",floor);
+        floorName = this.get('floor.name');
+        buildingName = floor.get('building.name');
+      }
+      if(!buildingName){
+        if(!this.get("dataLoader").get("allBuildingList")){
+          return "";
+        }
+        let floor = this.get("dataLoader").get("allFloorList").findBy("id",this.get("room.floor.building.id"));
+        this.set("build",build);
+        buildingName = build.get('building.name');
+      }
+
+      return buildingName+'-'+floorName;
+
+
   })
 });
 

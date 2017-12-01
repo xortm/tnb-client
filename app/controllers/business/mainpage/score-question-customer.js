@@ -1,7 +1,5 @@
 import Ember from 'ember';
 import InfiniteScroll from '../../infinite-scroll';
-import Changeset from 'ember-changeset';
-import lookupValidator from 'ember-changeset-validations';
 
 export default Ember.Controller.extend(InfiniteScroll,{
   dataLoader: Ember.inject.service("data-loader"),
@@ -15,18 +13,28 @@ export default Ember.Controller.extend(InfiniteScroll,{
   customerListFlag: 0,
   constants:Constants,
 
-  uploadUrl: Ember.computed(function() {return this.get("pathConfiger").get("uploadUrl");}),
-
-  customerItem:Ember.computed("customerId","itemIdFlag",function(){
+  item:Ember.computed("itemIdFlag",function(){
     //从全局上下文服务里拿到外层传递的数据
     this._showLoading();
-    let customerItem = this.get("feedBus").get("customerItemData");
-    console.log("customerItem computed:",customerItem);
-    this.get("feedBus").set("serviceData",null);//重置feedbus数据
-  //与传参进行比较，一致才设置
-    if(customerItem.get("customerId")===this.get("customerId")){
-      this.hideAllLoading();
-      return customerItem;
+    let source = this.get("source");
+    if(source == "customerFlag"){
+      let customerItem = this.get("feedBus").get("customerItemData");
+      console.log("customerItem computed:",customerItem);
+      this.get("feedBus").set("customerItemData",null);//重置feedbus数据
+    //与传参进行比较，一致才设置
+      if(customerItem.get("customerId")===this.get("customerId")){
+        this.hideAllLoading();
+        return customerItem;
+      }
+    }else if(source == "employeeFlag"){
+      let employeeItem = this.get("feedBus").get("employeeItemData");
+      console.log("employeeItem computed:",employeeItem);
+      this.get("feedBus").set("employeeItemData",null);//重置feedbus数据
+    //与传参进行比较，一致才设置
+      if(employeeItem.get("employeeId")===this.get("employeeId")){
+        this.hideAllLoading();
+        return employeeItem;
+      }
     }
   }),
 

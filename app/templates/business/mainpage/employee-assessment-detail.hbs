@@ -12,26 +12,8 @@
         </div>
         <div class="clearfix margin-top-10">
           <div class="pull-left width30B line-height-25 padding-right-18 text-right">考核时间:</div>
-          <div class="pull-left width50B">
-            <input type="date" placeholder="" id="assessmentFromDate" value=""
-            name="FromDate" formart="yyyy-mm-dd" onfocus="Constants.LOF_inputDateFocus(this);"
-            class="date iosinput width140 height30 line-height-25 padding-left-5" style="{{if global_curStatus.isIphone '-webkit-appearance: none;'}}"  onchange="Constants.LOF_inputDateChange(this);"/>
-          </div>
-        </div>
-        <div class="clearfix margin-top-10">
-          <div class="pull-left width30B line-height-25 padding-right-18 text-right">考核类型:</div>
-          <div class="pull-left width140">
-            <select class="height30 width20" onchange={{action 'typeName' value="target.value"}} id="assessmentTypeSelector">
-              <option class="padding4" value="1" style="color: #b6b6b6" disabled selected>请选择</option>
-              {{#each assessmentTypeList as |assessmentType|}}
-                <option class="padding4" value="{{assessmentType.typecode}}" selected="{{if (eq assessmentType.typecode constants.assessmentType2) "selected" ""}}">{{assessmentType.typename}}</option>
-              {{/each}}
-            </select>
-          </div>
-        </div>
-        <div class="clearfix">
-          <div class="finished-detail width93B margin0auto">
-            {{textarea class="" placeholder="请输入备注信息" value=assessmentInfo.remark}}
+          <div class="pull-left width70B line-height-25">
+            {{assessment.examTimeStr}}
           </div>
         </div>
         <!-- 保存提示 -->
@@ -40,7 +22,7 @@
           {{responseInfo}}
           {{/if}}
         </div>
-        {{ui/mobile/task-detail-button needDoubleClickPrevent=true touchStartAction="saveDetail" saveDetail="saveDetail" butContent="确定" outerClass="assessmentBut"}}
+
       </div>
     {{else}}
       <div class="clearfix bk-color-white position-relative" id="assessment_detail_{{assessment.id}}" {{action 'gotoAssessmentDetail' on="tap"}}>
@@ -48,7 +30,6 @@
           <h2 class="center link-color line-height-25 top5">已经有该天的考核数据,您可以进行其他操作.</h2>
         {{/if}}
         <div class="clearfix margin-top-10">
-          {{log "assessment in hbs:" assessment}}
           <div class="pull-left width30B line-height-25 padding-right-18 text-right">
             考核员工:
           </div>
@@ -64,35 +45,28 @@
             {{assessment.examTimeStr}}
           </div>
         </div>
-        <div class="clearfix">
-          <div class="pull-left width30B line-height-25 padding-right-18 text-right">
-            考核类型:
-          </div>
-          <div class="pull-left width70B line-height-25">
-            {{assessment.type.typename}}
-          </div>
-        </div>
-        <div class="clearfix">
-          <div class="pull-left width30B line-height-25 padding-right-18 text-right">
-            备注:
-          </div>
-          <div class="pull-left width50B line-height-20">
-            {{assessment.remark}}
-          </div>
-        </div>
-        <i class="pull-right fa-angle-right img-right font24 color2FA7FD"></i>
       </div>
+      {{/if}}
+
       <ul class="self nopadding-left margin-top-10">
+        <li id="indicator_type" class="" style="position:relative;" {{action 'toChooseType' assessment 'assessmentType' on="tap"}}>
+          <strong>考核类型:</strong>
+          <span class="pull-right" style="margin-right:10px;">{{assessment.type.typename}}&nbsp;<i class="fa-angle-right font20 my-right color-ccc"></i></span>
+        </li>
+        <li class="margin-leftright10 border-bottom-1"></li>
         {{#each assessmentResults as |assessmentResult index|}}
-          <li id="indicator_{{index}}" class="" {{action 'toSelfChoose' assessmentResult.assessmentIndicator.maxScore assessmentResult.assessmentIndicator.name assessmentResult.assessmentIndicator.id assessmentResult index on="tap"}}>
+          <li id="indicator_{{index}}" class="" style="position:relative;" {{action 'toSelfChoose' assessmentResult.assessmentIndicator.maxScore assessmentResult.assessmentIndicator.name assessmentResult.assessmentIndicator.id assessmentResult index on="tap"}}>
             <strong>{{assessmentResult.assessmentIndicator.name}}</strong>
-            <span class="pull-right">{{assessmentResult.score}}分&nbsp;<i class="el-right-open"></i></span>
+            <span class="pull-right" style="margin-right:10px;">{{assessmentResult.score}}分&nbsp;<i class="fa-angle-right font20 my-right color-ccc"></i></span>
           </li>
           <li class="margin-leftright10 border-bottom-1"></li>
         {{/each}}
-
+        <li id="indicator_remark" class="" style="position:relative;" {{action 'toChooseType' assessment 'remark' on="tap"}}>
+          <strong>备注:</strong>
+          <span class="pull-right" style="margin-right:10px;max-width:200px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;">{{assessment.remark}}&nbsp;<i class="fa-angle-right font20 my-right color-ccc"></i></span>
+        </li>
       </ul>
-    {{/if}}
+      <!-- {{ui/mobile/task-detail-button needDoubleClickPrevent=true touchStartAction="saveDetail" saveDetail="saveDetail" butContent="确定" outerClass="assessmentBut"}} -->
   {{/ui/mobile/gestures-container}}
   </div>
 </div>

@@ -49,7 +49,8 @@
                         <th rowspan="1" colspan="1" width="">请假类型</th>
                         <th rowspan="1" colspan="1" width="">申请日期</th>
                         <th rowspan="1" colspan="1" width="">请假日期</th>
-                        <th rowspan="1" colspan="1" width="">请假结束日期</th>
+                        <th rowspan="1" colspan="1" width="">预计销假日期</th>
+                        <th rowspan="1" colspan="1" width="">实际销假日期</th>
                         <th rowspan="1" colspan="1" width="">状态</th>
                         {{#unless inLeaving}}
                             <th rowspan="1" colspan="1" width="">操作</th>
@@ -64,11 +65,10 @@
                         <td class="ellipsis" {{action "toDetailPage" leave on="click"}}>{{leave.applyTimeStr}}</td>
                         <td class="ellipsis" {{action "toDetailPage" leave on="click"}}>{{leave.expectStartTimeStr}}</td>
                         <td class="ellipsis" {{action "toDetailPage" leave on="click"}}>
-                          {{#if  leave.realEndTime}}
-                              {{leave.realEndTimeStr}}
-                          {{else}}
                               {{leave.expectEndTimeStr}}
-                          {{/if}}
+                        </td>
+                        <td class="ellipsis" {{action "toDetailPage" leave on="click"}}>
+                              {{leave.realEndTimeStr}}
                         </td>
                         <td class="ellipsis" {{action "toDetailPage" leave on="click"}}>{{leave.statusStr}}</td>
                         {{#unless inLeaving}}

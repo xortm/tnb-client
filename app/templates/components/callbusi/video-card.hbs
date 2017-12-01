@@ -1,0 +1,160 @@
+
+  <div class="box nopadding-left nopadding-right nopadding-vertical device-card {{device.colorClass}}" >
+    <div class="box-body" id="device-card" {{action 'deviceChoose' device on="mouseEnter" bubbles=false}}
+  		{{action 'deviceNoChoose' device on="mouseLeave" bubbles=false}}>
+      <!--设备解绑遮罩层-->
+      {{#if device.unBindDevice}}
+        <div class="unbind-mask" {{action 'clickBtn' on="click" bubbles=false}}>
+          确定要解绑设备吗？
+        </div>
+        <div {{action 'clickBtn' on='click' bubbles=false}}>
+          {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check"  text='确定' clickAction='unBind' unBind='unBind' clickActParams=device}}
+          {{/ui/mix-button}}
+          {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消' clickAction='undo' undo='undo' clickActParams=device}}
+          {{/ui/mix-button}}
+        </div>
+      {{/if}}
+      <!--开通直播遮罩层-->
+      {{#if device.liveMask}}
+        <div class="unbind-mask" {{action 'clickBtn' on="click" bubbles=false}}>
+          确定要开通直播吗？
+        </div>
+        <div {{action 'clickBtn' on='click' bubbles=false}}>
+          {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check"  text='确定' clickAction='startLive' startLive='startLive' clickActParams=device}}
+          {{/ui/mix-button}}
+          {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消' clickAction='undo' undo='undo' clickActParams=device}}
+          {{/ui/mix-button}}
+        </div>
+      {{/if}}
+      <!--设备删除遮罩层-->
+      {{#if device.delDeviceMask}}
+        <div class="unbind-mask" {{action 'clickBtn' on='click' bubbles=false}}>
+          确定要删除该设备吗？
+        </div>
+        <div {{action 'clickBtn' on='click' bubbles=false}}>
+          {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check"  text='确定' clickAction='delDevice' delDevice='delDevice' clickActParams=device}}
+          {{/ui/mix-button}}
+          {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消' clickAction='undo' undo='undo' clickActParams=device}}
+          {{/ui/mix-button}}
+        </div>
+      {{/if}}
+      <!--设备绑定遮罩层-->
+      {{#if device.bindDeviceMask}}
+        <div class="bind-pop theLineHeight26" {{action 'clickBtn' on="click" bubbles=false}}>
+          {{#if device.isVideo}}
+            <!--绑定房间或床位，视频-->
+            <div class="col-sm-12 form-input-group" style='margin-top:3px;'>
+              <span class="col-sm-6 nopadding-left nopadding-right" style="color:#fff;font-size:13px;"><i class="fa {{if device.isBindRoom 'fa-dot-circle-o' 'fa-circle-o'}}" {{action 'isBindRoom' on="click" bubbles=false}}></i>绑定房间</span>
+              <span class="col-sm-6 nopadding-left nopadding-right" style="color:#fff;font-size:13px;"><i class="fa {{if device.isBindBed 'fa-dot-circle-o' 'fa-circle-o'}}" {{action 'isBindBed' on="click" bubbles=false}}></i>绑定床位</span>
+              {{#if device.isBindRoom}}
+              <div class="col-sm-12 nopadding-right nopadding-left" style='margin-top:3px;'>
+                <div class="col-sm-12 nopadding-right nopadding-left" style='margin-top:3px;'>
+                  <div class="col-sm-12 form-input-group">
+                    {{#power-select class="form-input-group" placeholder='选择楼宇楼层' options=buildList  selected=chooseBuild searchField="namePinyin"
+                    noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "selectBuild" ) as |build|}}
+                      {{build.name}}
+                    {{/power-select}}
+                  </div>
+                  <div class="col-sm-12 form-input-group">
+                    {{#power-select class="form-input-group" placeholder='选择房间' options=chooseList  selected=bindRoom searchField="namePinyin"
+                    noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "selectBindRoom" ) as |room|}}
+                      {{room.name}}
+                    {{/power-select}}
+                  </div>
+                </div>
+              </div>
+              {{else}}
+              <div class="col-sm-12 nopadding-right nopadding-left" style='margin-top:3px;'>
+                <div class="col-sm-12 nopadding-right nopadding-left" style='margin-top:3px;'>
+                  <div class="col-sm-12 form-input-group">
+                    {{#power-select class="form-input-group" placeholder='选择楼宇楼层' options=buildList  selected=chooseBuild searchField="namePinyin"
+                    noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "selectBuild" ) as |build|}}
+                      {{build.name}}
+                    {{/power-select}}
+                  </div>
+                  <div class="col-sm-12 form-input-group">
+                    {{#power-select class="form-input-group" placeholder='选择床位' options=chooseList  selected=bindBed searchField="namePinyin"
+                    noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "selectBindBed" ) as |bed|}}
+                      {{bed.roomBedName}}
+                    {{/power-select}}
+                  </div>
+                </div>
+              </div>
+              {{/if}}
+            </div>
+          {{/if}}
+
+          <div class="col-sm-12" {{action 'clickBtn' on='click' bubbles=false}} style="margin-top:10px;">
+            <div class="col-sm-3">
+              {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check"  text='确定' clickAction='bindUser' bindUser='bindUser' clickActParams=device}}
+              {{/ui/mix-button}}
+            </div>
+            <div class="col-sm-3 pull-right">
+              {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消' clickAction='undo' undo='undo' clickActParams=device}}
+              {{/ui/mix-button}}
+            </div>
+          </div>
+        </div>
+        <div class="bind-mask col-sm-12 nopadding-left nopadding-right" {{action 'clickBtn' on="click" bubbles=false}}>
+        </div>
+      {{/if}}
+      <div class=" mt10" style="margin-bottom:0;line-height:25px;height:25px;">
+          <div class="device-icon pull-left device-type-card nopadding-right" style="margin-left:10px;">
+            {{#if device.isVideo}}
+              {{ui/img-intergration name="avatarImg" imgSrc='assets/images/icon/video.png'}}
+            {{/if}}
+          </div>
+          <span style="display:inline-block;margin-left:5px">序列号：{{device.code}}</span>
+          <div class="pull-left nopadding-left nopadding-right center" style="margin-left:10px;font-size:12px;">{{device.deviceType.typename}}</div>
+          <div class=" pull-right nopadding-left" style="height:25px;margin-right:5px;width:20px;">
+            {{#if device.choosed}}
+              {{#if device.delFlag}}
+                {{#ui/form-function  removeAction="delById" delById="delById" editNone=true}}
+                {{/ui/form-function}}
+              {{/if}}
+        		{{/if}}
+          </div>
+          <div class=" pull-right nopadding-right nopadding-left">
+            {{#if device.statusFlag}}
+                <i class="fa fa-exclamation-triangle" style="font-size:18px;color:orange;"></i>
+            {{/if}}
+          </div>
+      </div>
+      <div class="row mt10">
+        {{#if device.hasBind}}
+              <div class="col-sm-12 nopadding-left center" >
+                {{device.bindName}}
+                <a class="pointer" style="font-size:12px;" {{action 'unBindMask' device on='click' bubbles=false}}>解绑</a>
+              </div>
+        {{else}}
+            <div class="col-sm-12 nopadding-left center" ><span style="font-size:16px;color:green;">空闲</span>
+              <a class="pointer" style="font-size:12px;" {{action 'bindDeviceMask' device on='click' bubbles=false}}>立即绑定</a>
+            </div>
+        {{/if}}
+      </div>
+      <div class="row">
+        <div class="col-sm-12 nopadding-left center" style="font-size:13px;color:red">
+          {{#unless device.statusFlag}}
+            {{device.statusName}}
+          {{/unless}}
+        </div>
+      </div>
+      <div class="divide-16">
+
+      </div>
+      <div style="width:100%;height:18px;position:absolute;bottom:5px;padding-left:10px;">
+        <!-- <i class="fa fa-warning" style="margin-right:10px;" title="不可用"></i> -->
+        {{log 'video status in component' device.id '*****' device.liveStatus}}
+        {{#if device.liveStatusFlag}}
+        <i class="fa fa-video-camera" style="margin-right:10px;color:#77b0e1" title="观看人数：{{device.audienceNum}}"></i>
+        {{else}}
+        <i class="fa fa-video-camera" style="margin-right:10px;" title="直播异常"></i>
+        {{/if}}
+        {{#if device.statusFlag}}
+        <i class="fa fa-play-circle" style="margin-right:10px;color:#03a52b" title="本地播放准备就绪"></i>
+        {{else}}
+        <i class="fa fa-play-circle" style="margin-right:10px;" title="本地播放异常"></i>
+        {{/if}}
+      </div>
+    </div>
+  </div>

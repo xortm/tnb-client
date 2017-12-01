@@ -1,23 +1,40 @@
 {{#if global_curStatus.isMobile}}
-  {{#if global_pageConstructure.showLoader}}
-    <div class="mainpageLoading">
-      <img class="width33" src="assets/images/logo/loading.gif" alt="">
-    </div>
-  {{/if}}
+  <div class="mainpageLoading {{unless service_PageConstrut.showLoader 'hide'}}">
+    <img class="width33" src="assets/images/logo/loading.gif" alt="">
+  </div>
+  <!-- 公众号老人视频直播全局的弹框 -->
+  {{#callbusi/mobile/live-video-box showBoxFlag=showBoxFlag}}
+  {{/callbusi/mobile/live-video-box}}
   {{#if isShowMobileShade}}
     <div class="change-sex center" style="padding: 70% 5%;color: #fff;font-size:20px;" modaltype="">
       {{mobileShadeMessage}}
     </div>
   {{/if}}
+  {{#if isShowMobileLoading}}
+    <div class="change-loading center" style="padding: 70% 5%;color: #fff;font-size:20px;" modaltype="">
+      <img class="width33" src="assets/images/logo/loading.gif" alt="">
+    </div>
+  {{/if}}
   {{#each service_PageConstrut.routeList as |route|}}
-  <div name="routeArea" class="{{route.displayClass}}">
-    {{outlet route.routeName}}
+  <div name="routeArea" class="{{route.displayClass}}" rname="{{route.routeName}}" id="{{route.routeName}}">
+    {{log "isBlankPage:" route.isBlankPage}}
+    {{#unless route.isBlankPage}}
+      {{#callbusi/mobile/header-bar transPage="changeMainPage" routeId=route.routeName}}
+      hasntApplyed=hasntApplyed
+      {{/callbusi/mobile/header-bar}}
+    {{/unless}}
+
+    {{outlet route.templateName}}
   </div>
   {{/each}}
 {{else}}
+<!-- PC端视频直播全局的弹框 -->
+{{#callbusi/live-video-detail isShowVideoDetail=isShowVideoDetail deviceObj=selectDeviceObj deviceObjFlag=deviceObjFlag}}
+{{/callbusi/live-video-detail}}
 <header class="navbar clearfix" id="header">
 	<div class="container">
 			<div class="navbar-brand">
+        <p class="tenantName">（{{tenantName}}）</p>
 				<img src="{{imgSrc}}" alt="天年宝产品" class="img-responsive">
 				<!-- <a href="#"  {{action "showPopTip" "相关记录已添加" on="click"}}>
 					<img src="assets/images/logo/logo.png" alt="天年宝产品" class="img-responsive">
@@ -50,6 +67,7 @@
             <i class="fa fa-angle-down"></i>
           </a>
           <ul class="dropdown-menu">
+            {{ui/userinfo-menu text="机构选择" code="changeTenant" menuSelect="popChangeTenant" iconClass="el-retweet"}}
             {{ui/userinfo-menu text="修改密码" code="changePass" menuSelect="popChangePass" iconClass="el-lock"}}
             {{ui/userinfo-menu text="退出登录" code="quitLogin" menuSelect="quit" iconClass="el-export"}}
           </ul>
@@ -98,7 +116,7 @@
             {{/each}}
     			</ul>
     			<!-- /BREADCRUMBS -->
-    			<div class="clearfix pull-right top16 right20">
+    			<div class="clearfix" style="float:left;margin-top:23px;margin-left:23px;">
             {{#ui/icon-button iconClass="fa-refresh font-large color-brand" class="pull-right right8"
             data-toggle="tooltip"  title="刷新"  data-placement="top" data-original-title="刷新"
             clickAction="refreshPage" refreshPage="refreshPage" }}
@@ -150,6 +168,47 @@
 {{/bs-modal-footer}}
 {{/bs-modal}}
 {{/if}}
+
+<!-- 机构选择弹层 -->
+{{#if showPopChangeTenantModal}}
+{{#bs-modal body=false footer=false header=false closedAction=(action "cancelTenantSubmit")}}
+{{#bs-modal-header}}
+<h4 class="modal-title">机构选择</h4>
+{{/bs-modal-header}}
+{{#bs-modal-body}}
+  <div class="row">
+    {{#each tenantList as |tenant|}}
+      <div class="width55B clearfix margin-20px-auto font20 {{if (eq currentTenantId tenant.id) "color2FA7FD weight-bold" "pointer"}}" {{action "switchTenantAction" tenant}}>
+        <span class="">{{tenant.orgName}}</span>
+        {{#if (eq currentTenantId tenant.id)}}
+          <i class="pull-right"><img class="a-img" src="assets/images/mobile/choice.png"/></i>
+        {{/if}}
+      </div>
+    {{/each}}
+  </div>
+  {{/bs-modal-body}}
+{{/bs-modal}}
+{{/if}}
+<!-- 机构选择确认弹层 -->
+{{#if showDialogTenantModal}}
+{{#bs-modal body=false footer=false header=false closedAction=(action "closeTenantDialog")}}
+  {{#bs-modal-header}}
+    <h3 class="modal-title">确认窗口</h3>
+  {{/bs-modal-header}}
+  {{#bs-modal-body}}
+  <div class="row">
+    <div class="col-sm-12 center" style="font-size:24px;">您确定切换到<span class="color2FA7FD padding-0-3">{{changeTenantName}}</span>吗？</div>
+  </div>
+  {{/bs-modal-body}}
+  {{#bs-modal-footer class="user-add-btn"}}
+    {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="confirmTenantDialog" confirmTenantDialog="confirmTenantDialog"}}
+    {{/ui/mix-button}}
+    {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="closeTenantDialog" closeTenantDialog="closeTenantDialog"}}
+    {{/ui/mix-button}}
+  {{/bs-modal-footer}}
+{{/bs-modal}}
+{{/if}}
+
 <!-- 通用提示弹层 -->
 <!-- {{#if showDialogModal}}
 {{#bs-modal body=false footer=false header=false}}

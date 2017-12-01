@@ -58,6 +58,9 @@ export default BaseController.extend(AssessmentValidations,{
       }else{
         assessment.set('level',0);
       }
+      assessmentModel.set('name',assessment.get('name'));
+      assessmentModel.set('maxScore',assessment.get('maxScore'));
+      assessmentModel.set('remark',assessment.get('remark'));
       assessmentModel.validate().then(function(){
         if(assessmentModel.get('errors.length')==0){
           App.lookup('controller:business.mainpage').showPopTip('正在保存');

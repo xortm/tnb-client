@@ -23,17 +23,38 @@ export default BaseUiItem.extend({
       console.log("go customer warning detail");
       var _self = this;
       var params = {};
-      params= {customerId:_self.get("customerItem.customerId"),itemIdFlag:Math.random()};
+      params= {customerId:_self.get("item.customerId"),itemIdFlag:Math.random(),source:"customerFlag"};
       console.log("gotoCustomerList params",params);
-      var customerId = "customerItem_" + this.get("customerItem.customerId");
+      var customerId = "customerItem_" + this.get("item.customerId");
       $("#" + customerId).addClass("tapped");
       Ember.run.later(function(){
         $("#" + customerId).removeClass("tapped");
         Ember.run.later(function(){
           var mainpageController = App.lookup('controller:business.mainpage');
           //通过全局服务进行上下文传值
-          console.log("customerItem in list:",_self.get("customerItem"));
-          _self.get("feedBus").set("customerItemData",_self.get("customerItem"));
+          console.log("item in list:",_self.get("item"));
+          _self.get("feedBus").set("customerItemData",_self.get("item"));
+          mainpageController.switchMainPage('score-question-customer',params);
+        },100);
+      },200);
+    },
+
+    //跳转到detail页面
+    gotoEmployeeList(){
+      console.log("go employee warning detail");
+      var _self = this;
+      var params = {};
+      params= {employeeId:_self.get("item.employeeId"),itemIdFlag:Math.random(),source:"employeeFlag"};
+      console.log("gotoCustomerList params",params);
+      var employeeId = "employeeItem_" + this.get("item.employeeId");
+      $("#" + employeeId).addClass("tapped");
+      Ember.run.later(function(){
+        $("#" + employeeId).removeClass("tapped");
+        Ember.run.later(function(){
+          var mainpageController = App.lookup('controller:business.mainpage');
+          //通过全局服务进行上下文传值
+          console.log("item in list:",_self.get("item"));
+          _self.get("feedBus").set("employeeItemData",_self.get("item"));
           mainpageController.switchMainPage('score-question-customer',params);
         },100);
       },200);

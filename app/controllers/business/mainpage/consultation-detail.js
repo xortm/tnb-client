@@ -66,6 +66,7 @@ export default Ember.Controller.extend(ConsultValidations, {
         selectSex(sex){
           this.set('defaultSex',sex);
           this.set('consultModel.advGender',sex.get('sex'));
+          console.log('selectSex',sex);
         },
         invalid() {
         },
@@ -164,9 +165,19 @@ export default Ember.Controller.extend(ConsultValidations, {
           this.get("consult").set("advWay", list);
         },
         //老人性别
-        customerSexSelect: function(customerSexDict) {
-            console.log("customerSexDict in", customerSexDict);
-            this.get("consult").set("customerGender", customerSexDict);
+        customerSexSelect: function(str) {
+            // console.log("customerSexDict in", customerSexDict);
+            // this.get("consult").set("customerGender", customerSexDict);
+            let sexType;
+            if(str=='man'){//男
+              sexType = this.get("dataLoader").findDict('sexTypeMale');
+            }
+            if(str=='woman'){//女
+              sexType = this.get("dataLoader").findDict('sexTypeFemale');
+            }
+            this.set('consultModel.customerGender',sexType);
+            this.get("consult").set("customerGender", sexType);
+
         },
         //咨询时间
         changeADVDateAction(date) {
@@ -193,6 +204,10 @@ export default Ember.Controller.extend(ConsultValidations, {
         //老人自理能力
         abilitySelect: function(abilityDict) {
             this.get("consultModel").set("customerSelfCareAbility", abilityDict);
+        },
+        //老人咨询人关系
+        relationTypeSelect: function(relationDict) {
+            this.get("consultModel").set("relationType", relationDict);
         },
         //老人文化程度
         educationSelect: function(educationDict) {

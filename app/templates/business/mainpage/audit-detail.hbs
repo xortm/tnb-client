@@ -1,99 +1,223 @@
-<div class="col-sm-12">
-	<div class="box margin-middle max-width">
-		<!-- BOX-BODY -->
-		<div class="box-body">
-			<div class="row">
-				<div class="col-xs-12">
-					<p class="user-add-btn">
-						{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-edit" text='审核' clickAction="audit" audit="audit" }}
-						{{/ui/mix-button}}
-						{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo" text='取消' clickAction="detailCancel" detailCancel="detailCancel" }}
-						{{/ui/mix-button}}
-					</p>
-				</div>
-				<!-- 列表详细介绍 -->
-				<div class="col-xs-12 nopadding-left">
-					<div class="col-xs-12 nopadding-horizontal mt20">
-						<div class="col-xs-12 col-sm-6">
-							<div class="form-input-group">
-								<span class="input-group-addon">用户姓名：</span>
-								<div class="input-group-content">{{billInfo.customer.name}}</div>
-							</div>
-						</div>
 
-						<div class="col-xs-12 col-sm-6">
-							<div class="form-input-group">
-								<span class="input-group-addon">账单类别：</span>
-								<div class="input-group-content">{{billInfo.billType.typename}}</div>
+	<div class="col-sm-12">
+		<div class="box margin-middle max-width">
+			<!-- BOX-BODY -->
+			<div class="box-body">
+				<div class="row">
+					<div class="col-xs-12">
+						<p class="user-add-btn">
+							{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-edit" text='审核通过' clickAction="audit" audit="audit" }}
+							{{/ui/mix-button}}
+							{{#ui/mix-button class="user-btn times-btn " iconClass="fa fa-times"  text='审核驳回' clickAction="rejectedModel" rejectedModel="rejectedModel" }}
+							{{/ui/mix-button}}
+							{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo" text='返回' clickAction="detailCancel" detailCancel="detailCancel" }}
+							{{/ui/mix-button}}
+						</p>
+					</div>
+					<!-- 列表详细介绍 -->
+					{{#if billType}}
+					<div class="col-xs-12 nopadding-left">
+						<div class="col-xs-12 nopadding-horizontal mt20">
+							<div class="bottom12 col-sm-12  border-bottom" style="height:26px;">
+									<strong class="font16 font-black">账单信息</strong>
 							</div>
-						</div>
-
-						{{#if year}}
 							<div class="col-xs-12 col-sm-6">
 								<div class="form-input-group">
-									<span class="input-group-addon">账单年份：</span>
-									<div class="input-group-content">{{billInfo.year}}</div>
+									<span class="input-group-addon">用户姓名：</span>
+									<div class="input-group-content">{{billInfo.customer.name}}</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="form-input-group">
+									<span class="input-group-addon">对应服务：</span>
+									<div class="input-group-content">{{billInfo.billStatType.typename}}</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="form-input-group">
+									<span class="input-group-addon">结算类别：</span>
+									<div class="input-group-content">{{billInfo.billType.typename}}</div>
 								</div>
 							</div>
 
-							{{#if month}}
+							{{#if year}}
 								<div class="col-xs-12 col-sm-6">
 									<div class="form-input-group">
-										<span class="input-group-addon">账单月份：</span>
-										<div class="input-group-content">{{billInfo.month}}</div>
+										<span class="input-group-addon">账单年份：</span>
+										<div class="input-group-content">{{billInfo.year}}</div>
 									</div>
 								</div>
+
+								{{#if month}}
+									<div class="col-xs-12 col-sm-6">
+										<div class="form-input-group">
+											<span class="input-group-addon">账单月份：</span>
+											<div class="input-group-content">{{billInfo.month}}</div>
+										</div>
+									</div>
+								{{/if}}
+
+								{{#if quarter}}
+									<div class="col-xs-12 col-sm-6">
+										<div class="form-input-group">
+											<span class="input-group-addon">账单季度：</span>
+											<div class="input-group-content">{{billInfo.quarter}}</div>
+										</div>
+									</div>
+								{{/if}}
+
 							{{/if}}
 
-							{{#if quarter}}
-								<div class="col-xs-12 col-sm-6">
-									<div class="form-input-group">
-										<span class="input-group-addon">账单季度：</span>
-										<div class="input-group-content">{{billInfo.quarter}}</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="form-input-group">
+									<span class="input-group-addon">账单金额(元)：</span>
+									<div class="input-group-content">{{billInfo.total}}</div>
+								</div>
+							</div>
+
+							<div class="col-xs-12 col-sm-12">
+								<div class="form-input-group">
+									<span class="input-group-addon">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：</span>
+									<div class="input-group-content">{{billInfo.remark}}</div>
+								</div>
+							</div>
+
+							<div class="divide-10" style="clear:both" />
+							<div class="bottom12 col-sm-12  border-bottom" style="height:26px;">
+									<strong class="font16 font-black">账单详情</strong>
+							</div>
+							<div class="divide-10" style="clear:both" />
+							{{#if dayBillList}}
+							<div class="col-sm-12">
+								<div class=" nopadding-left nopadding-right nopadding-vertical">
+									<div class=" overflow-hidden fullWidth">
+										<table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+											<thead>
+												<tr role="row">
+													<th rowspan="1" colspan="1" width="">用户姓名</th>
+													<th rowspan="1" colspan="1" width="">账单日期</th>
+													<th rowspan="1" colspan="1" width="">入住状态</th>
+													<th rowspan="1" colspan="1" width="">床位(价格)</th>
+													<th rowspan="1" colspan="1" width="">餐饮等级(价格)</th>
+													<th rowspan="1" colspan="1" width="">护理等级(价格)</th>
+													<th rowspan="1" colspan="1" width="">总价格(元/天)</th>
+												</tr>
+											</thead>
+											<tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+												{{#each dayBillList as |dayBill|}}
+												<tr >
+													<td class="ellipsis" >{{dayBill.customer.name}}</td>
+													<td class="ellipsis" >{{dayBill.billTimeString}}</td>
+													<td class="ellipsis" >{{dayBill.customerStatus.typename}}</td>
+													<td class="ellipsis" >{{dayBill.customer.bed.roomBedName}}({{dayBill.total1}}元/天)</td>
+													<td class="ellipsis" >{{dayBill.diningStandard.typename}}({{dayBill.total2}}元/天)</td>
+													<td class="ellipsis" >{{dayBill.level.name}}({{dayBill.total3}}元/天)</td>
+													<td class="ellipsis" >{{dayBill.total}}</td>
+												</tr>
+												{{/each}}
+											</tbody>
+										</table>
 									</div>
 								</div>
+							</div>
 							{{/if}}
 
-						{{/if}}
-
-						<div class="col-xs-12 col-sm-6">
-							<div class="form-input-group">
-								<span class="input-group-addon">账单金额(元)：</span>
-								<div class="input-group-content">{{billInfo.total}}</div>
+							{{#if appreciationBillList}}
+							<div class="col-sm-12">
+								<div class=" nopadding-left nopadding-right nopadding-vertical">
+									<div class=" overflow-hidden fullWidth">
+										<table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+											<thead>
+												<tr role="row">
+													<th rowspan="1" colspan="1" width="">用户姓名</th>
+													<th rowspan="1" colspan="1" width="">账单日期</th>
+													<th rowspan="1" colspan="1" width="">项目名称</th>
+													<th rowspan="1" colspan="1" width="">账单金额(元)</th>
+												</tr>
+											</thead>
+											<tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+												{{#each appreciationBillList as |dayBill|}}
+												<tr >
+													<td class="ellipsis" >{{dayBill.customer.name}}</td>
+													<td class="ellipsis" >{{dayBill.billTimeString}}</td>
+													<td class="ellipsis" >{{dayBill.exe.itemProject.item.name}}</td>
+													<td class="ellipsis" >{{dayBill.total}}</td>
+												</tr>
+												{{/each}}
+											</tbody>
+										</table>
+									</div>
+								</div>
 							</div>
-						</div>
-
-						<div class="col-xs-12 col-sm-12">
-							<div class="form-input-group">
-								<span class="input-group-addon">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：</span>
-								<div class="input-group-content">{{billInfo.remark}}</div>
-							</div>
+							{{/if}}
 						</div>
 					</div>
-				</div>
-				<!-- 列表详细介绍 -->
-			</div>
-		</div>
-		<!-- /BOX-BODY -->
-	</div>
-</div>
+					{{/if}}
+					{{#if rechargeType}}
+					<div class="col-xs-12 nopadding-left">
+						<div class="col-xs-12 col-sm-6">
+								<div class="form-input-group">
+										<span class="input-group-addon">充值账户：</span>
+										<div class="input-group-content">{{billInfo.rechargeAccount.customer.name}}</div>
+								</div>
+						</div>
+						<div class="col-xs-12 col-sm-6">
+								<div class="form-input-group">
+										<span class="input-group-addon">账户类型：</span>
+										<div class="input-group-content">{{billInfo.rechargeAccount.type.typename}}</div>
+								</div>
 
+						</div>
+
+						<div class="col-xs-12 col-sm-6">
+								<div class="form-input-group">
+										<span class="input-group-addon">充值金额(元)：</span>
+										<div class="input-group-content">{{billInfo.money}}</div>
+								</div>
+						</div>
+						<div class="col-xs-12 col-sm-6">
+								<div class="form-input-group">
+										<span class="input-group-addon">充值方式：</span>
+										<div class="font-light input-group-content">{{billInfo.channel.typename}}</div>
+								</div>
+						</div>
+					</div>
+					{{/if}}
+					<!-- 列表详细介绍 -->
+				</div>
+			</div>
+			<!-- /BOX-BODY -->
+		</div>
+	</div>
 {{#if showAudit}}
-	{{#bs-modal body=false footer=false header=false}}
+	{{#bs-modal body=false footer=false header=false closedAction=(action "recall")}}
 		{{#bs-modal-header}}
 			<h3 class="modal-title">审核提示</h3>
 		{{/bs-modal-header}}
 		{{#bs-modal-body}}
-			<h4 class="modal-title">是否提交审核？</h4>
+			<h3 class="modal-title center">是否确定通过审核</h3>
 		{{/bs-modal-body}}
-
-		{{#bs-modal-footer class="user-add-btn audit"}}
-			{{#ui/mix-button class="pass-btn" iconClass="fa fa-check"  text='审核通过' clickAction="passed" passed="passed" }}
-			{{/ui/mix-button}}
-			{{#ui/mix-button class="reject-btn " iconClass="fa fa-times"  text='审核驳回' clickAction="rejected" rejected="rejected" }}
-			{{/ui/mix-button}}
-			{{#ui/mix-button class="recall-btn" iconClass="fa fa-undo" text='取消' clickAction="recall" recall="recall" }}
-			{{/ui/mix-button}}
-		{{/bs-modal-footer}}
+		{{#bs-modal-footer class="user-add-btn"}}
+      {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check"  text='确定' clickAction="passed" passed="passed" }}
+      {{/ui/mix-button}}
+      {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="recall" recall="recall"}}
+      {{/ui/mix-button}}
+    {{/bs-modal-footer}}
+	{{/bs-modal}}
+{{/if}}
+{{#if showRejectedModel}}
+	{{#bs-modal body=false footer=false header=false closedAction=(action "recall")}}
+		{{#bs-modal-header}}
+			<h3 class="modal-title">审核提示</h3>
+		{{/bs-modal-header}}
+		{{#bs-modal-body}}
+			<h3 class="modal-title center">是否确定驳回审核</h3>
+		{{/bs-modal-body}}
+		{{#bs-modal-footer class="user-add-btn"}}
+      {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check"  text='确定' clickAction="rejected" rejected="rejected" }}
+      {{/ui/mix-button}}
+      {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="recall" recall="recall"}}
+      {{/ui/mix-button}}
+    {{/bs-modal-footer}}
 	{{/bs-modal}}
 {{/if}}

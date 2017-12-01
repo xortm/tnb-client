@@ -14,13 +14,18 @@ export default Ember.Mixin.create(InfinityRoute,RouteMixin,{
     var rmodel = this.get("pageConstructure.funcTreeData");
     let hasPageRoute = rmodel.filter(function(item){
       return item.page > 0;
-    })
+    });
     if(hasPageRoute.length>0){
       if(!this.get('pageConstructure.crumRouteList').findBy('code',hasPageRoute[0].code)){
         let item = rmodel.findBy('code',hasPageRoute[0].code);
         item.page = 1;
       }else{
-        params.page = hasPageRoute[0].page;
+        if(!this.get('statusService.pageChangeFlag')){//本页面再次请求findpaged
+          params.page = 1;
+        }else{//页面切换
+          params.page = hasPageRoute[0].page;
+        }
+
       }
 
     }
@@ -28,13 +33,28 @@ export default Ember.Mixin.create(InfinityRoute,RouteMixin,{
       //消除加载提示
       if(_self.get("tableSelector")){
         mainpageController.removeTableLoading($(_self.get("tableSelector")));
+        console.log('list data in pagination',list.get('length'));
+        if(list.get('length')==0){
+          if($('.nodate').length>0){
+
+          }else{
+            $(_self.get("tableSelector")).append("<div class='nodate'>暂无数据</div>");
+          }
+
+        }else{
+          $('.nodate').remove();
+        }
+
+
       }
       if(callback){
         //记忆当前页码
-        let curRouteName = _self.get('pageConstructure.curRouteName')
+        let curRouteName = _self.get('pageConstructure.curRouteName');
         let route = _self.get('pageConstructure').getRouteDef(curRouteName);
-        route.page = list.get('query.page[number]');
-        route.modelName = modelName;
+        if(route){
+          route.page = list.get('query.page[number]');
+          route.modelName = modelName;
+        }
         callback(list);
       }
     };

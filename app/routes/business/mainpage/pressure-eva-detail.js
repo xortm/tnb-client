@@ -62,7 +62,15 @@ export default BaseBusiness.extend({
       evaluate.set('lastUpdateDateTimeString',result.get('lastUpdateDateTimeString'));
       evaluate.set('customer',result.get('customer'));
       evaluate.set('hasSelcted',false);
-      evaluate.set('hasShow',false);
+      evaluate.set('hasShow',true);
+      let riskLevelList = _self.get('feedBus.pressureLevelList');
+      riskLevelList.forEach(function(level){
+        if((result.get('score')<=level.get('maxScore'))&&(result.get('score')>=level.get('minScore'))){
+          evaluate.set('levelName',level.get('levelName'));
+        }else{
+          evaluate.set('levelName','无');
+        }
+      });
       controller.set('evaluate',evaluate);
     });
   },

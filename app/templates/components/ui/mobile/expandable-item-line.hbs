@@ -1,19 +1,8 @@
-<div class="title-area bk-color-FAFAF9 margin-0-10px border-bottom-1">
-  <div class="item-name pull-left">{{itemName}}</div>
+<div class="title-area bk-color-white margin-0-10px border-bottom-1" id="any-time-{{itemId}}" {{action 'timeTaskDetail' on="tap"}}>
+  <div class="item-name pull-left padding-left-5 font13" >{{itemName}}</div>
   <div class="pull-right">
-    <!-- {{ui/icon-button iconClass="" title="加一" clickAction="saveCountApply" saveCountApply="saveCountApply" class="tip-text-color font16"}} -->
-    <!-- {{ui/icon-button iconClass="" title="减一" clickAction="minusAction" minusAction="minusAction" class=""}} -->
-    {{#if itemCount}}
-      <span id="minus_{{itemId}}" {{action "minusAction" on="tap"}}><i class="fa-minus color999999 font16 right8"></i></span>
-    {{else}}
-      <span id="minus_{{itemId}}"><i class="fa-minus colorCCC font16 right8"></i></span>
-    {{/if}}
     <span class="tip color2FA7FD">{{itemCount}}</span><span class="font12">  次</span>
-    <span id="save_{{itemId}}" {{action "saveCountApply" on="tap"}}><i class="fa-plus left8 color999999 font16"></i></span>
-
-
-
-
+    <span id="save_{{itemId}}" {{action "saveCountApply" on="tap" bubbles=false}}><i class="fa-plus left8 color999999 font16"></i></span>
   </div>
   <!-- <div class="func pull-right right8">
     {{ui/icon-button iconClass="el-plus" title="添加" clickAction="cntAddAction" cntAddAction="cntAddAction" class="tip-text-color font16"}}
@@ -47,7 +36,25 @@
   {{/if}}
 </div> -->
 <div class="clear"/>
-
+{{#if addNewTask}}
+	{{#bs-modal body=false footer=false header=false closeAction="invitation"}}
+		{{#bs-modal-body}}
+			<div class="col-xs-12 nopadding-horizontal">
+				<div class="col-xs-12 nopadding-left col-xs-12">
+					<div class="form-input-group">
+						<span class="input-group-addon center">是否执行该项任务？</span>
+					</div>
+				</div>
+      </div>
+		{{/bs-modal-body}}
+		{{#bs-modal-footer class="user-add-btn"}}
+      {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="saveNewTask" saveNewTask="saveNewTask"}}
+      {{/ui/mix-button}}
+      {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="invitation" invitation="invitation"}}
+      {{/ui/mix-button}}
+		{{/bs-modal-footer}}
+	{{/bs-modal}}
+{{/if}}
 
 <!--  点击是否显示大图  -->
 <!-- {{#if showExesModal}}

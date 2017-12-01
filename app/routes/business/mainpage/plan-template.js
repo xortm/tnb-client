@@ -22,6 +22,8 @@ export default BaseBusiness.extend({
   },
   setupController: function(controller,model){
     this._super(controller, model);
+    controller.set('curCustomer',null);
+    
     let allBedList = this.get('global_dataLoader.allBedList');
     controller.set("allBedList",allBedList);//打开加载图片
     controller.set("showLoadingImg",true);//打开加载图片
@@ -59,5 +61,12 @@ export default BaseBusiness.extend({
     // Ember.run.schedule("afterRender",this,function() {
     //   $($("#daySelect").children("div").get(0)).trigger("click");//第一个子元素点击
     // });
+    Ember.run.schedule('afterRender',function(){
+      let header = $('.breadcrumb');
+      if(header.children().length>3){
+        let li = header.children('li').eq(2);
+        li.remove();
+      }
+    });
   }
 });

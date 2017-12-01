@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import BaseUiItem from '../../ui/base-ui-item';
-import Echarts from "npm:echarts";
+//
 import InfiniteScroll from '../../../controllers/infinite-scroll';
 const {
     useDrugResult1

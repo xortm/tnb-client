@@ -6,6 +6,11 @@ export default BaseBusiness.extend({
   },
   setupController(controller, model) {
   //controller.set('chooseDate','选择日期');
+  controller.set('beginDate',null);
+  controller.set('endDate',null);
+  controller.set('durTypeFlag',null);
+  controller.set('beginseaconDate',null);
+  controller.set('endseaconDate',null);
   controller.computedParams();
   this.get('store').query('statquerytype',{}).then(function(querytypeList){
     console.log('querytypeList is',querytypeList);

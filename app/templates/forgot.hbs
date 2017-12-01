@@ -1,0 +1,35 @@
+<section class="login-block">
+  <div class='topbanner'>
+    <div class="poswrap">
+      <a class="brand">
+        <h1>天年宝</h1>
+        <h3>机构养老管理系统</h3>
+      </a>
+    </div>
+  </div>
+  <div class="form-unit" style="margin-bottom:100px;margin-top:25px;">
+    <div>
+      <h4 >忘记密码</h4>
+      <div class="form-field">
+        {{input type="text" placeholder="您的手机号" id='mobileNum' name="mobileNum" value=mobileNum focus-in="changeInfo"}}
+        {{#if pwdFalse}}
+        <span class='login-error'><i class="fa fa-times"></i>&nbsp;{{pwdInfo}}</span>
+        {{/if}}
+      </div>
+      <input type="button" class="login-btn" id='get-code'  value="获取短信验证码" {{action 'getCode' on="click"}}>
+      {{#if hasSendSMS}}
+      <div class="form-field" style="margin-top:25px;">
+        {{input type="text" placeholder="输入验证码" id='code' name="code" value=code focus-in="changeInfo"}}
+        {{#if codeFalse}}
+        <span class='login-error'><i class="fa fa-times"></i>&nbsp;{{codeInfo}}</span>
+        {{/if}}
+      </div>
+      <input type="button" class="login-btn" id='reset-password'  value="重置密码" {{action 'toReset' on="click"}}>
+      {{/if}}
+    </div>
+
+  </div>
+  <footer class="col-sm-12 col-xs-12 center">
+
+  </footer>
+</section>

@@ -1,27 +1,47 @@
 <!-- 头部信息 -->
 <div class="nhead">
   <!-- 头像及信息 -->
-  {{#if queryCustomer}}
-    {{ui/img-intergration name="headImg" hasUploader=false
-    imgSrc=allSrc height=38 width=38 class="pull-left top2"}}
-  {{else}}
-    {{#if listSelectedEnd}}
+  {{#if isExpandMode}}
+    {{#if queryCustomer}}
       {{ui/img-intergration name="headImg" hasUploader=false
-        imgSrc=listSelectedEnd.avatarUrl height=28 width=28 class="pull-left top4"}}
+      imgSrc=allSrc height=38 width=38 class="pull-left top2"}}
     {{else}}
-      <div class="pull-left" {{action "switchExpand" on="tap"}} style="line-height:35px;color:#fff;padding-right:5px;text-align:right;width:50%;">
-        {{#if (eq isSquare 12)}}
-          请选择员工
-        {{else}}
-          请选择老人
-        {{/if}}
-      </div>
+      {{#if listSelectedEnd}}
+        {{ui/img-intergration name="headImg" hasUploader=false
+          imgSrc=listSelectedEnd.avatarUrl height=28 width=28 class="pull-left top4"}}
+      {{else}}
+        <div class="pull-left" {{action "switchShrink" on="tap"}} style="line-height:35px;color:#fff;padding-right:5px;text-align:center;width:80%;">
+          {{#if (eq isSquare 12)}}
+            请选择员工
+          {{else}}
+            请选择老人
+          {{/if}}
+        </div>
+      {{/if}}
+    {{/if}}
+  {{else}}
+    {{#if queryCustomer}}
+      {{ui/img-intergration name="headImg" hasUploader=false
+      imgSrc=allSrc height=38 width=38 class="pull-left top2"}}
+    {{else}}
+      {{#if listSelectedEnd}}
+        {{ui/img-intergration name="headImg" hasUploader=false
+          imgSrc=listSelectedEnd.avatarUrl height=28 width=28 class="pull-left top4"}}
+      {{else}}
+        <div class="pull-left" {{action "switchExpand" on="tap"}} style="line-height:35px;color:#fff;padding-right:5px;text-align:center;width:80%;">
+          {{#if (eq isSquare 12)}}
+            请选择员工
+          {{else}}
+            请选择老人
+          {{/if}}
+        </div>
+      {{/if}}
     {{/if}}
   {{/if}}
   <!-- 展开收起按钮 -->
   {{#if isExpandMode}}
     {{#if queryCustomer}}
-      <div class="pull-left" {{action "switchShrink" on="tap"}} style="line-height:44px;color:#fff;padding-left:30px;text-align:left;width:38%;">
+      <div class="pull-left" {{action "switchShrink" on="tap"}} style="line-height:44px;color:#fff;padding-left:30px;text-align:left;width:50%;">
         {{#if (eq isSquare 12)}}
           全部员工
         {{else}}
@@ -44,7 +64,7 @@
     {{/ui/icon-button}}
   {{else}}
     {{#if queryCustomer}}
-      <div class="pull-left" {{action "switchExpand" on="tap"}} style="line-height:44px;color:#fff;padding-left:30px;text-align:left;width:38%;">
+      <div class="pull-left" {{action "switchExpand" on="tap"}} style="line-height:44px;color:#fff;padding-left:30px;text-align:left;width:50%;">
         {{#if (eq isSquare 12)}}
           全部员工
         {{else}}
@@ -66,23 +86,8 @@
         clickAction="switchExpand" switchExpand="switchExpand" }}
     {{/ui/icon-button}}
   {{/if}}
-  <!-- {{#if (eq isSquare 7)}}
-    <div class="pull-right padding-top5" style="position: absolute;top: 0;right: 3px;">
-        {{#if queryCustomer}}
-          <div class="pull-right color-white select-warning bk-color-ccc" {{action 'queryCustomer' on='tap'}}>
-            <div class="pull-left padding-right-3">个人</div>
-            <div class=" pull-left select-backg-true" style=""></div>
-          </div>
-        {{else}}
-          <div class="pull-right color-white select-warning bk-color-ccc" {{action 'queryCustomer' on='tap'}}>
-            <div class="pull-left select-backg-true" style=""></div>
-            <div class="pull-left padding-left-3">全部</div>
-          </div>
-        {{/if}}
-    </div>
-  {{/if}} -->
 
 </div>
 <!-- 扩展信息 -->
   {{log "isSquare in hbs:" isSquare}}
-  {{callbusi/select-bar isSquare=isSquare isExpandMode=isExpandMode isExpand=isExpand choiceCustomer="choiceCustomer" switchShrink="switchShrink"}}
+  {{callbusi/select-bar isSquare=isSquare isExpandMode=isExpandMode isExpand=isExpand choiceCustomer="choiceCustomer" switchShrink="switchShrink" routeId=routeId}}

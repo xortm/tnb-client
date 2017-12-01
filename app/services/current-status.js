@@ -8,14 +8,22 @@ const { callStatus_noCall,callStatus_calling, callStatus_inCall,callStatus_callE
 export default Ember.Service.extend({
   store: Ember.inject.service('store'),
   global_dataLoader: Ember.inject.service('data-loader'),
+  service_notification:Ember.inject.service("notification"),
+  constants: Constants,
 
   curStatus: {},
   flag: false,
+  netConnected:true,//标志网络是否连通
+  saveErrorFlag:true,//标志save方法是否成功
   tenantId: null,
+  isCloseLoadingPage: false,//是否在加载的时候去掉loading
   isConsumer: false,//是否老人公众号
   queryCusObj: {},//查询个人/全部老人的标识
   preventRepeatSubmitFlag: true,//阻止按钮在五秒内重复点击当为true时可以提交
   commonInitHasCompleteFlag: false,//business中数据已经加载完成的标志
+  appHasCompleteFlag: false,//application加载完成的标志
+  maxDeviceNumber:4,//设置PC端开启实时监控的最大数量
+  // deviceObj:new Ember.A(),//PC实时监控对象
   // setDrugDaysRemind: 10, //设置缺药提醒天数
   isOrgMobile:Ember.computed("isConsumer","isMobile",function(){
     if(!this.get("isMobile")){
@@ -29,10 +37,15 @@ export default Ember.Service.extend({
   logCustomerId: null,//护理日志的老人id
   attendanceEmployeeId: null,//护理日志的老人id
   chartShow: true,//公众号健康数据切换,默认显示图表
+  switchServiceFlag: null,//移动端服务显示哪个route
   currentMobileFunctions: null,//移动端功能区菜单数组
   currentMobileFunctionsNums: false,//是否跳转到移动端功能区页面
-  footBarMenusShowFlag: null,//footbar中要显示哪些导航菜单的标志位
+  footBarMenusShowFlag: null,//footbar中要显示哪些导航菜单的标志位(进入哪个工作区)
   videoObj: null,//存正在播放的video对象
+  preventMenuChange: false,//阻止footbar的MenuChange重新跳转
+  functionPageRoute: null,//标志从哪个工作去退回的route
+  // headerBarHasReady: false,//标志从哪个工作去退回的route
+  switchDateFlag: "all",//订单查询时间筛选标志
 
   init() {
     this._super(...arguments);
@@ -47,6 +60,12 @@ export default Ember.Service.extend({
       currentTaskList: Ember.A([]),
     });
     this.set('curStatus', curStatus);
+  },
+  connectFail: function(){
+    this.set("netConnected",false);
+  },
+  connectSuc: function(){
+    this.set("netConnected",true);
   },
   //阻止按钮在5秒内重复点击
   preventRepeatSubmitFlagObs: function(){
@@ -111,11 +130,10 @@ export default Ember.Service.extend({
       console.log("run in obs");
       return;
     }
+    console.log("attendanceEmployeeId in status:"+this.get("attendanceEmployeeId"));
     let employee = _self.get("global_dataLoader").get("employeeSelecter").findBy("id",_self.get("attendanceEmployeeId"));
     _self.set("attendanceEmployee",employee);
   }.observes("attendanceEmployeeId").on("init"),
-
-
   //判断是否移动设备
   isMobile: Ember.computed(function() {
     var md = new MobileDetect(window.navigator.userAgent);
@@ -147,13 +165,14 @@ export default Ember.Service.extend({
   goHome: function(controller){
     if(this.get("isMobile")){
       //移动端使用切换route的方式
+      console.log("run in goHome1");
       controller.transitionToRoute('application');
     }else{
       //pc端使用页面跳转的方式，避免css缩小
       this.toIndexPage();
     }
   },
-  toIndexPage: function(){
+  toIndexPage: function(paramsFlag){
     var href = "index.html";
     console.log("config.environment:" + config.environment);
     if(this.get("isMobile")){
@@ -169,9 +188,21 @@ export default Ember.Service.extend({
         }
       }else {
         if(config.environment!=="development"){
+          console.log("run in else:");
+          let isClose;
+          if(paramsFlag){
+            isClose = paramsFlag.close;
+          }else{
+            isClose = false;
+          }
+          console.log("close in if:" + isClose);
           if(this.get("isAndroid")){
             // href = "index_android.html";//暂时注释掉 还没应用
-            href = "index.html";
+            if(isClose){
+              href = "index.html?close=yes";
+            }else{
+              href = "index.html";
+            }
           }else{
             // href = "index_ios.html";//暂时注释掉 还没应用
             href = "index.html";
@@ -184,6 +215,7 @@ export default Ember.Service.extend({
         href = "index.html?systype=2";
       }
     }
+    console.log("href after:"+href);
     window.location.href = href;
   },
   isCustomerService:Ember.computed("curStatus.currentUser",function() {
@@ -204,8 +236,9 @@ export default Ember.Service.extend({
   },
   //居家项目和手机公众号的customer
   setCustomer: function (curCustomer) {
+    console.log("curCustomer in setCustomer", curCustomer);
     this.set("curStatus.currentCustomer", curCustomer);
-    console.log("curStatus.currentCustomer", curCustomer);
+    console.log("curStatus.currentCustomer", this.get("curStatus.currentCustomer.curCustomer"));
   },
   getCustomer: function () {
     var curStatus = this.get("curStatus");
@@ -316,6 +349,9 @@ export default Ember.Service.extend({
             reject(e);
             return;
           }
+          //发送socket登录
+          _self.set("hasLogin",true);
+          //_self.get("service_notification").socketLogin();
           //设置全局租户变量
           _self.set("tenantId",userRtn.belongsTo("tenant").id());
           console.log("tenantId has set:" + _self.get("tenantId"));
@@ -361,9 +397,12 @@ export default Ember.Service.extend({
   },
   //适用通用的data query
   _getSessionPromise: function (curUser) {
+    let tenantId = localStorage.getItem(Constants.uickey_tenantId);
     let filter = {
       loginName: curUser.get("loginName"),
       password: curUser.get("password"),
+      tenant: {id:tenantId},
+      // oldToken:curUser.get('token'),
       include:{userSession:"employee"}
     };
     return this.get("store").query("userSession", {

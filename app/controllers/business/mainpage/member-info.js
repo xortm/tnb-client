@@ -116,12 +116,27 @@ export default Ember.Controller.extend(InfiniteScroll, {
         console.log("QQQQQ", _self.get('id'));
         this.get("store").findRecord('customer', _self.get('id')).then(function(customer) {
             _self.set("customer", customer);
-        });
-        this.get("store").findRecord('customer', _self.get('id')).then(function(customerInfo) {
-            _self.set("customerInfo", customerInfo);
+            _self.set("customerInfo", customer);
         });
     },
     actions: {
+      //删除按钮
+      delById: function() {
+          var _self = this;
+          var customerInfo = this.get('customerInfo');
+          var mainpageController = App.lookup('controller:business.mainpage');
+          App.lookup('controller:business.mainpage').showConfirm("是否确定删除此会员的所有信息", function() {
+              App.lookup('controller:business.mainpage').openPopTip("正在删除");
+              // 删除customer user staffcustomer表中的数据
+              customerInfo.set("delStatus", 1);
+              customerInfo.save().then(function() {
+                    App.lookup('controller:business.mainpage').showPopTip("删除成功");
+                    var mainpageController = App.lookup('controller:business.mainpage');
+                    mainpageController.switchMainPage('member-management', {});
+              });
+          });
+      },
+
         switchTab(code) {
             this.set("curTabCode", code);
         },

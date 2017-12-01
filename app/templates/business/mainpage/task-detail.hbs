@@ -9,10 +9,13 @@
             {{serviceItem.customerBed}}
           </span>
         </div>
-        <div class="time">
-          <img width='28' src="assets/images/mobile/clock.png"/>
-          {{serviceItem.timeStr}}
-        </div>
+        {{#if notShowTag}}
+        {{else}}
+          <div class="time">
+            <img width='28' src="assets/images/mobile/clock.png"/>
+            {{serviceItem.timeStr}}
+          </div>
+        {{/if}}
       </div>
       {{#if serviceItem.hasApply}}
         <div class="border-top-bottom-1 height35">
@@ -30,7 +33,7 @@
             {{/if}}
             {{#if serviceItem.medicineAvatarUrl}}
               <div class="position_absolute abs-top-8 abs-right-8 width60 height60">
-                {{#ui/img-intergration-simple name="drugImg" isMobile=true businessFlag="clickShowBigImgUpload" showBigImageModal=showBigImageModal hasUploader=true isResizeImage=true imgSrc=serviceItem.medicineAvatarUrl height=60 width=60 margin-left=0 uploadUrl=uploadUrl uploadSucc="uploadSucc" uploadFail="uploadFail" businessType=constants.uploadBusinessType_headimg as |component|
+                {{#ui/img-intergration-simple name="drugImg" isMobile=true businessFlag="clickShowBigImgUpload" showBigImageModal=showBigImageModal uploadFlag="all" hasUploader=true isResizeImage=true imgSrc=serviceItem.medicineAvatarUrl height=60 width=60 margin-left=0 uploadUrl=uploadUrl uploadSucc="uploadSucc" uploadFail="uploadFail" businessType=constants.uploadBusinessType_headimg as |component|
                 }}
                 {{/ui/img-intergration-simple}}
               </div>
@@ -66,6 +69,20 @@
             <span class="color666666">完成情况：</span>
             <span class="">{{serviceItem.finishLevelName}}</span>
           </li>
+          {{#unless serviceItem.medicineDesc}}
+            <li class="font12 padding-top5">
+              <span class="color666666">执行情况：</span>
+              {{#if exeTabExit}}
+                {{#if exeTabRemarkExit}}
+                  <span class="">{{serviceItem.exeTabStr}}</span>
+                {{else}}
+                  <span class="">无</span>
+                {{/if}}
+              {{else}}
+                <span class="">未设置</span>
+              {{/if}}
+            </li>
+          {{/unless}}
           <li class="font12 padding-top5 padding-bottom15">
             <span class="color666666">备注：</span>
             <span class="">{{serviceItem.finishRemark}}</span>
@@ -87,7 +104,7 @@
           {{/if}}
           {{#if serviceItem.medicineAvatarUrl}}
             <div class="position_absolute abs-top-8 abs-right-8 width60 height60">
-              {{#ui/img-intergration-simple name="drugImg" isMobile=true businessFlag="clickShowBigImgUpload" showBigImageModal=showBigImageModal hasUploader=true isResizeImage=true imgSrc=serviceItem.medicineAvatarUrl height=60 width=60 margin-left=0 uploadUrl=uploadUrl uploadSucc="uploadSucc" uploadFail="uploadFail" businessType=constants.uploadBusinessType_headimg as |component|}}
+              {{#ui/img-intergration-simple name="drugImg" isMobile=true businessFlag="clickShowBigImgUpload" showBigImageModal=showBigImageModal uploadFlag="all" hasUploader=true isResizeImage=true imgSrc=serviceItem.medicineAvatarUrl height=60 width=60 margin-left=0 uploadUrl=uploadUrl uploadSucc="uploadSucc" uploadFail="uploadFail" businessType=constants.uploadBusinessType_headimg as |component|}}
               {{/ui/img-intergration-simple}}
             </div>
           {{/if}}
@@ -98,59 +115,54 @@
         <div class="color999999 padding-top15 font12">详情：{{serviceItem.desc}}</div>
       </div>
       {{/if}}
-
+      {{#if notShowTag}}
+      {{else}}
       <div class="border-top-bottom-1 height35">
         <span class="task-detail-split"></span>
         <span class="font14">完成情况</span>
       </div>
-
-      {{#ui/mobile/gestures-container}}
+      <div class="clearfix">
+        <div class="finish-tag  padding-left-10 bk-color-white padding-right-10 padding-bottom15">
+          <div class="clearfix">
+            {{#each finishList  as |item|}}
+            <div class="tag width120 exeStatus2 {{if item.exehasSelect 'selected' ''}}" {{action "tagFinishChoice" item.id item.name item on="tap"}}>{{item.name}}</div>
+            {{/each}}
+          </div>
+        </div>
+      </div>
+      {{/if}}
+      <div class="border-top-bottom-1 height35">
+        <span class="task-detail-split"></span>
+        <span class="font14">执行情况</span>
+      </div>
       <div class="clearfix">
         <div class="finish-tag  padding-left-10 bk-color-white padding-right-10 padding-bottom15">
           {{#if serviceItem.medicineDesc}}
             <div class="padding-top10 detail-input">
-              <span class="pull-left font12 padding-top5 font-black">实际用药剂量({{serviceItem.drugTypename}})：</span>
+              <span class="pull-left font12 padding-top5 font-black">实际用药剂量：</span>
               {{#bs-form-element property="trueDrugNum" class="border-radius5 bottom0 position-relative" controlType="trueDrugNum" placeholder="剂量(必填)"}}
-                {{input type="number" class=" btn-none border-bottom-1 padding-left-5 left5 height30" focus-in="valueInfo" focus-out="valueOut" value=trueDrugNum placeholder="请输入用药剂量(必填)"}}
+                {{input type="number" class="btn-none border-bottom-cccccc padding-left-5 left5 width60 height30 pull-left center" focus-in="valueInfo" focus-out="valueOut" value=trueDrugNum placeholder="必填"}}
                 {{#if drugNameModel}}
                   <div class="position_absolute font-black" style="right:50px;top:6px;">
                     {{serviceItem.drugTypename}}
                   </div>
                 {{/if}}
               {{/bs-form-element}}
+              <span class="pull-left font12 padding-top5 font-black padding-left-5">{{serviceItem.drugTypename}}</span>
 
             </div>
-            <!-- <div class="clearfix">
-              {{#each tagItems  as |item|}}
-                {{#if (eq item.typecode 'exeStatus1')}}
-                  <div class="tag width120 exeStatus1 {{if item.hasSelect 'selected' ''}}" {{action "tagChoice" item.typecode on="tap"}}>{{item.typename}}</div>
-                {{else if (eq item.typecode 'exeStatus2')}}
-                  <div class="tag width120 exeStatus2 {{if item.hasSelect 'selected' ''}}" {{action "tagChoice" item.typecode on="tap"}}>{{item.typename}}</div>
-                {{else if (eq item.typecode 'exeStatus3')}}
-                  <div class="tag width120 exeStatus3 {{if item.hasSelect 'selected' ''}}" {{action "tagChoice" item.typecode on="tap"}}>{{item.typename}}</div>
-                {{else if (eq item.typecode 'useDrugResult1')}}
-                  <div class="tag width120 exeStatus1 {{if item.hasSelect 'selected' ''}}" {{action "tagChoice" item.typecode on="tap"}}>{{item.typename}}</div>
-                {{else if (eq item.typecode 'useDrugResult2')}}
-                  <div class="tag width120 exeStatus2 {{if item.hasSelect 'selected' ''}}" {{action "tagChoice" item.typecode on="tap"}}>{{item.typename}}</div>
-                {{else if (eq item.typecode 'useDrugResult3')}}
-                  <div class="tag width120 exeStatus3 {{if item.hasSelect 'selected' ''}}" {{action "tagChoice" item.typecode on="tap"}}>{{item.typename}}</div>
-                {{/if}}
+          {{/if}}
+          {{#if resultList}}
+            <div class="clearfix" style="padding-bottom:13px;">
+              {{#each resultList  as |item|}}
+                <div class="tag width120 exeStatus2 {{if item.exehasSelect 'selected' ''}}" {{action "tagResultChoice" item.id item.name item on="tap"}}>{{item.name}}</div>
               {{/each}}
             </div>
-          {{else}}
-            <div class="clearfix">
-              {{#each resultList  as |item|}}
-                <div class="tag width120 exeStatus2 {{if item.exehasSelect 'selected' ''}}" {{action "tagExeChoice" item.id item.name on="tap"}}>{{item.name}}</div>
-              {{/each}}
-            </div> -->
           {{/if}}
-          <div class="clearfix">
-            {{#each resultList  as |item|}}
-              <div class="tag width120 exeStatus2 {{if item.exehasSelect 'selected' ''}}" {{action "tagExeChoice" item.id item.name item on="tap"}}>{{item.name}}</div>
-            {{/each}}
-          </div>
-          <div class="">
+          <div class="" >
             {{textarea class="" placeholder="请输入备注信息" value=serviceItem.serviceDesc}}
+            <!-- {{#callbusi/mobile/text-textarea value=serviceItem.serviceDesc placeholder="请输入备注信息"}}
+            {{/callbusi/mobile/text-textarea}} -->
           </div>
         </div>
         {{ui/mobile/task-detail-button needDoubleClickPrevent=true touchStartAction="saveDetail" saveDetail="saveDetail" butContent="确定" outerClass="taskDetailBut"}}
@@ -159,7 +171,6 @@
           确定
         </div> -->
       </div>
-      {{/ui/mobile/gestures-container}}
       <!-- <div class="btnBox clearfix">
         <div class="pull-left short-button" {{action "backMain" on="click"}}>取消</div>
         <div class="pull-left left16 long-button" {{action "saveDetail" on="click"}}>确定</div>

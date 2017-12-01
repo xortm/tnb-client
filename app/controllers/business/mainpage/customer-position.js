@@ -3,10 +3,6 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   flag: 0,
   array:[],
-  json:{"errcode":0,"code":"1103","business":"healthExamType3","num":0,"remark":"",
-  "updateTime":0,"type":2,"content":"{\"customerId\":\"244\",\"customerName\":\"齐三泰\",\"roomId\":698,\"type\":1,\"result\":\"63\"}",
-  "url":"","detailType":0,"createTime":1495706040,"oneToManyFlag":0,"delStatus":0,"hasRead":0,"id":0,
-  "businessType":null,"fromUser":{"id":"83","name":"皮特"}},
   service_notification:Ember.inject.service("notification"),
   init(){
     this._super(...arguments);
@@ -18,12 +14,6 @@ export default Ember.Controller.extend({
 
         }
       });
-      // let customerId = 15;//测试~~~~~~~~
-      // let customerName = "张三";//测试~~~~~~~~
-      // let hbsRoomId = "room_"+107;
-      // let divBegin = "<div id='customer_"+customerId+"' class='pull-left padding-left-10'><div class='height20 center'><img class='height16 width13' src='assets/images/icon/download.png' alt=''></div><div class=''>";
-      // $("#"+hbsRoomId).append(divBegin+customerName+"</div></div>");
-      // console.log("hbsRoomId111111",$("#"+hbsRoomId));
     });
   },
   floorsObs:function(){
@@ -38,7 +28,6 @@ export default Ember.Controller.extend({
       let dataList = _self.get("dataList");
       if(!dataList){return;}
       dataList.forEach(function(item){
-        console.log(item);
         _self.customerPosition(item,'begin');
       });
     });
@@ -180,7 +169,7 @@ export default Ember.Controller.extend({
       let customers = $(id).find('.customer-icon');
       customers.each(function(){
         customersName += $(this).text() + ',';
-      })
+      });
       if(customersName.length===0){
         room.set('customersName','暂无老人');
       }else{

@@ -32,18 +32,26 @@
 							<th rowspan="1" colspan="1" width="">法人</th>
               <th rowspan="1" colspan="1" width="">状态</th>
               <th rowspan="1" colspan="1" width="">操作</th>
+              <th rowspan="1" colspan="1" width="">权限分配</th>
             </tr>
           </thead>
           <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
             {{#each tenantList as |tenant|}}
-						<tr {{action "toDetailPage" tenant on="click"}}>
-							<td class="ellipsis">{{tenant.orgName}}</td>
-              <td class="ellipsis hidden-xs">{{tenant.address}}</td>
-							<td class="ellipsis">{{tenant.orgTel}}</td>
-							<td class="ellipsis hidden-xs">{{tenant.legalPerson}}</td>
-							<td class="ellipsis hidden-xs">{{tenant.status.typename}}</td>
+						<tr >
+							<td {{action "toDetailPage" tenant on="click"}} class="ellipsis">{{tenant.orgName}}</td>
+              <td {{action "toDetailPage" tenant on="click"}} class="ellipsis hidden-xs">{{tenant.address}}</td>
+							<td {{action "toDetailPage" tenant on="click"}} class="ellipsis">{{tenant.orgTel}}</td>
+							<td {{action "toDetailPage" tenant on="click"}} class="ellipsis hidden-xs">{{tenant.legalPerson}}</td>
+							<td {{action "toDetailPage" tenant on="click"}} class="ellipsis hidden-xs">{{tenant.status.typename}}</td>
               <td class="ellipsis hidden-xs">
                 <button {{action "toEquipTypePage" tenant}}>方案类型分配</button>
+              </td>
+              <td class="ellipsis hidden-xs">
+                {{#if (eq tenant.status.typecode 'tenantStatusReleased') }}
+                  <button {{action "toAssignPermissions" tenant}}>机构权限分配</button>
+                    {{else}}
+                        <h1 class="col-sm-12 center unTask"></h1>
+                {{/if}}
               </td>
 						</tr>
             {{/each}}
@@ -59,3 +67,23 @@
   </div>
   <!-- /BOX -->
 </div>
+
+{{#if showpopInvitePassModal}}
+	{{#bs-modal body=false footer=false header=false closedAction=(action "invitation")}}
+  {{#bs-modal-header}}
+    <h3 class="modal-title">权限分配</h3>
+  {{/bs-modal-header}}
+  {{#bs-modal-body}}
+    <h3 class="modal-title center">是否分配全部机构权限？</h3>
+  {{/bs-modal-body}}
+
+  {{#bs-modal-footer class="user-add-btn audit"}}
+    {{#ui/mix-button class="pass-btn" iconClass="fa fa-check"  text='全部分配' clickAction="saveTenantPrivilege" saveTenantPrivilege="saveTenantPrivilege" }}
+    {{/ui/mix-button}}
+    {{#ui/mix-button class="reject-btn " iconClass="fa fa-times"  text='自定义分配' clickAction="toCustomize" toCustomize="toCustomize"}}
+    {{/ui/mix-button}}
+    {{#ui/mix-button class="privilege-btn" iconClass="fa fa-undo" text='取消' clickAction="recall" recall="recall" }}
+    {{/ui/mix-button}}
+  {{/bs-modal-footer}}
+	{{/bs-modal}}
+{{/if}}

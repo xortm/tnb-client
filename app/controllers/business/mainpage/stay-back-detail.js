@@ -5,6 +5,8 @@ import lookupValidator from 'ember-changeset-validations';
 // const {leaveStatus1,consultStatus5,consultStatus6,consultStatus7,leaveReason} = Constants;
 
 export default Ember.Controller.extend(customerbusinessdetailValidations,{
+  inBedFlag:0,
+  leaveFlag:0,
   constants:Constants,
   dateService: Ember.inject.service("date-service"),
   dataLoader: Ember.inject.service("data-loader"),
@@ -24,6 +26,13 @@ export default Ember.Controller.extend(customerbusinessdetailValidations,{
   theToday: Ember.computed(function() {
     let today = this.get('dateService').getCurrentTime();
     today=parseInt(today)-86400;
+    today = this.get("dateService").timestampToTime(today);
+    console.log('today is:',today);
+    return today;
+  }),
+  secondDay:Ember.computed(function() {
+    let today = this.get('dateService').getCurrentTime();
+    today=parseInt(today);
     today = this.get("dateService").timestampToTime(today);
     console.log('today is:',today);
     return today;
@@ -66,11 +75,11 @@ export default Ember.Controller.extend(customerbusinessdetailValidations,{
       mainpageController.switchMainPage('stay-back');
     },
     changeAction(date) {
-        var stamp = this.get("dateService").timeStringToTimestamp(date);
+        var stamp = this.get("dateService").timeToTimestamp(date);
         this.set("customerflowdModel.leaveRecordDate", stamp);
     },
     changeLeaveAction(date) {
-        var stamp = this.get("dateService").timeStringToTimestamp(date);
+        var stamp = this.get("dateService").timeToTimestamp(date);
         this.set("customerflowdModel.leaveDate", stamp);
     },
     //保存

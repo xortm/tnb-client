@@ -149,11 +149,16 @@ export default Ember.Controller.extend({
     detailEditClick:function(){
       this.set('detailEdit',true);
     },
+    cancel:function(){
+      this.set('detailEdit',false);
+      this.get('billInfo').rollbackAttributes();
+    },
     //取消
     detailCancel:function(){
       let mainpageController = App.lookup('controller:business.mainpage');
       mainpageController.switchMainPage('cost-management');
     },
+
     //选择用户
     selectCustomer(customer) {
       this.set('billInfo.customer',customer);

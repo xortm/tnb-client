@@ -8,6 +8,7 @@ export default Ember.Component.extend({
   infiniteContainerName:"showExesContainer",
   global_curStatus: Ember.inject.service("current-status"),
   dataLoader: Ember.inject.service("data-loader"),
+  feedBus:Ember.inject.service('feed-bus'),
   store: Ember.inject.service("store"),
   recognizers: 'tap press',
   classStatic: true,
@@ -32,6 +33,7 @@ export default Ember.Component.extend({
     //弹出层取消显示
     invitation() {
       this.set('showExesModal', false);
+      this.set('addNewTask',false);
     },
     tapAction(){
       // this.sendAction("itemExpand",this.get("itemId"));
@@ -50,13 +52,22 @@ export default Ember.Component.extend({
       // this.get("store").findAll("sysconfig").then(function (sysconfig) {
       //   let sysTime = sysconfig.get("firstObject").get("sysTime");//系统时间
         $("#"+saveId).addClass("tapped");
-        setTimeout(function(){$("#"+saveId).removeClass("tapped");},300);
+        setTimeout(function(){
+          $("#"+saveId).removeClass("tapped");
+          _self.set('addNewTask',true);
+      },300);
         // console.log("saveCountApply11111111 sysTime",sysTime);
         // _self.get("serviceItem").set("sysTime",sysTime);
-        _self.sendAction("finishSave",_self.get("serviceItem"));
+
 
       // });
 
+    },
+    saveNewTask(){
+      console.log('is come here?');
+      let _self = this;
+      this.sendAction("finishSave",_self.get("serviceItem"));
+      this.set('addNewTask',false);
     },
     //删除按钮
     minusAction() {
@@ -65,12 +76,12 @@ export default Ember.Component.extend({
         let itemExesLast = itemExes.get("lastObject");
         let itemExesLastId = itemExes.get("lastObject").get("id");
         console.log("itemExesLastId:",itemExesLastId);
+        let itemCountMinus = _self.get("itemCount") - 1;
+        _self.set("itemCount",itemCountMinus);
         _self.get("store").findRecord("nursingplanexe",itemExesLastId).then(function(nursingplanexe){
           nursingplanexe.set("delStatus", 1);
           nursingplanexe.save().then(function(){
             // _self.sendAction("queryFlagAction");
-            let itemCountMinus = _self.get("itemCount") - 1;
-            _self.set("itemCount",itemCountMinus);
             itemExes.removeObject(itemExesLast);
             App.lookup("controller:business").popTorMsg("执行记录删除成功！");
           });
@@ -144,7 +155,35 @@ export default Ember.Component.extend({
       //   }
       // });
     // },
-
+    timeTaskDetail(){
+      console.log('随时任务详情页');
+      console.log("go task detail");
+      console.log("item itemId in list:",this.get("item.itemId"));
+      console.log("item in list:",this.get("item"));
+      var _self = this;
+      var itemIdshow = "any-time-" + this.get("itemId");
+      var scrollFlagDomId = this.get("scrollFlagDomId");
+      console.log("scrollFlagDomId itemIdshow ",scrollFlagDomId,itemIdshow);
+      var params = {};
+      let service = this.get('serviceItem.item.content.item.serviceType.typecode');
+      console.log('service in expandable item line',service);
+      if(service=="serviceType1"){
+        params= {itemId:_self.get("itemId"),flag:"nurse",taskFlag:'anytimed',itemIdFlag:Math.random()};
+      }else if(service=="serviceType2"){
+        params= {itemId:_self.get("itemId"),flag:"care",taskFlag:'anytimed',itemIdFlag:Math.random()};
+      }
+      console.log("scrollFlagDomId params",params);
+      $("#" + itemIdshow).addClass("tapped");
+      Ember.run.later(function(){
+        $("#" + itemIdshow).removeClass("tapped");
+        Ember.run.later(function(){
+          var mainpageController = App.lookup('controller:business.mainpage');
+          //通过全局服务进行上下文传值
+          _self.get("feedBus").set("threadData",_self.get("serviceItem"));
+          mainpageController.switchMainPage('task-detail',params);
+        },100);
+      },200);
+    },
     addAction(){},
 
   }

@@ -1,0 +1,23 @@
+{{#ui/mobile/gestures-container}}
+<div id="hospitalInteractionContainer" class="mainContent {{if global_pageConstructure.showLoader 'hide' ''}}">
+  <div class="wrapperInner">
+    <ul class="padding-0-10 bk-color-white top10">
+      <li class="height44 line-height-44" id="customer-feedback" {{action 'switchPage' 'customer-feedback' 'customer-feedback' on="tap"}}>
+        <i class="pull-left padding-left-10 line-height-44"><img class="a-img" src="assets/images/mobile/feedback.png"/></i>
+        <span class="padding-left-10 color666666 font14 pull-left">建议反馈 </span>
+        <i class="fa-angle-right font20 color-ccc pull-right line-height-44"></i>
+      </li>
+      <li class="border-bottom-1"></li>
+      <li class="height44 line-height-44" id="score-question" {{action 'switchPage' 'score-question' 'score-question' on="tap"}}>
+        <i class="pull-left padding-left-10 line-height-44"><img class="a-img" src="assets/images/mobile/score-question.png"/></i>
+        <span class="padding-left-10 color666666 font14 pull-left">评分评价 </span>
+        <i class="fa-angle-right font20 color-ccc pull-right line-height-44"></i>
+      </li>
+      <li class="border-bottom-1"></li>
+    </ul>
+  </div>
+</div>
+{{/ui/mobile/gestures-container}}
+
+{{ui/container/infinite-scroll moniteData="" didRenderAction="didRender"
+didInsertElementAction="didInsertElement"}}

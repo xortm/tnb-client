@@ -7,7 +7,6 @@ export default Ember.Controller.extend(InfiniteScroll,{
   infiniteContainerName:"scoreQuestionContainer",
   // scrollPrevent:true,
 
-  moment: Ember.inject.service(),
   service_PageConstrut:Ember.inject.service("page-constructure"),
   mainController: Ember.inject.controller('business.mainpage'),
   pathConfiger: Ember.inject.service("path-configer"),

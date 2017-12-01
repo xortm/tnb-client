@@ -29,15 +29,18 @@ export default Ember.Component.extend({
                         }
                 },
     });
-    editor.focus();
+    // editor.focus();
     let str = this.get('value');
     let base = new Base64();
-    let htmlText = base.decode(str);
-    if(str == _self.get('dateService').base64_encode(_self.get('dateService').base64_decode(str))) {//判断是否经过BASE64转码
-       editor.html(htmlText);
-     }else{
-       editor.html(str);
-     }
+    if(str){
+      let htmlText = base.decode(str);
+      if(str == _self.get('dateService').base64_encode(_self.get('dateService').base64_decode(str))) {//判断是否经过BASE64转码
+         editor.html(htmlText);
+       }else{
+         editor.html(str);
+       }
+    }
+
      //base64处理函数
      function Base64() {
         // private property

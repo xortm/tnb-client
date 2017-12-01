@@ -17,7 +17,7 @@
         	    </div>
         	  </div>
             <div class="col-sm-3 nopadding-left">
-              {{#power-select class="input-group-content" placeholder='审核状态' options=statusList  selected=status
+              {{#power-select class="input-group-content" placeholder='账单状态' options=statusList  selected=status
               noMatchesMessage="没有相关内容"	allowClear=true	onchange=(action "selectStatus" ) as |status|}}
                 {{status.name}}
               {{/power-select}}
@@ -33,12 +33,13 @@
           <thead>
             <tr role="row">
               <th rowspan="1" colspan="1" width="">老人姓名</th>
-              <th rowspan="1" colspan="1" width="">账单类别</th>
-              <th rowspan="1" colspan="1" width="">统计类型</th>
+              <th rowspan="1" colspan="1" width="">结算类别</th>
+              <th rowspan="1" colspan="1" width="">对应服务</th>
               <th rowspan="1" colspan="1" width="">账单时间</th>
-              <th rowspan="1" colspan="1" width="">账单金额(元)</th>
-              <th rowspan="1" colspan="1" width="">备注</th>
+              <th rowspan="1" colspan="1" width="">账单金额(元/月)</th>
+
               <th rowspan="1" colspan="1" width="">账单状态</th>
+              <th rowspan="1" colspan="1" width="">操作</th>
             </tr>
           </thead>
           {{#if billList}}
@@ -50,19 +51,18 @@
               <td class="ellipsis" {{action "toDetailPage" bill on="click"}}>{{bill.billStatType.typename}}</td>
               <td class="ellipsis" {{action "toDetailPage" bill on="click"}}>{{bill.showTime}}</td>
               <td class="ellipsis" {{action "toDetailPage" bill on="click"}}>{{bill.total}}</td>
-              <td class="ellipsis" {{action "toDetailPage" bill on="click"}}>{{bill.showRemark}}</td>
               <td class="ellipsis" >
-                {{#if bill.audit}}
-                  <a {{action "toEdit" bill on="click"}}>{{bill.billStatus.typename}}</a>
-                {{else}}
                   {{bill.billStatus.typename}}
+              </td>
+              <td class="ellipsis">
+                {{#if bill.submitFlag}}
+                  <a {{action "commit" bill on="click" bubbles=false}}>提交</a>
                 {{/if}}
               </td>
             </tr>
             {{/each}}
           </tbody>
           {{else}}
-          <div class="nodate">暂无数据</div>
           {{/if}}
         </table>
         {{#if billList }}
@@ -100,3 +100,22 @@
 
   <!-- /BOX -->
 </div>
+
+
+{{#if popSubmit}}
+	{{#bs-modal body=false footer=false header=false closedAction=(action 'recall')}}
+		{{#bs-modal-header}}
+			<h3 class="modal-title">提示</h3>
+		{{/bs-modal-header}}
+		{{#bs-modal-body}}
+			<h4 class="modal-title">是否提交本账单？</h4>
+		{{/bs-modal-body}}
+
+		{{#bs-modal-footer class="user-add-btn"}}
+			{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="submit" submit="submit"}}
+			{{/ui/mix-button}}
+			{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="recall" recall="recall"}}
+			{{/ui/mix-button}}
+		{{/bs-modal-footer}}
+	{{/bs-modal}}
+{{/if}}

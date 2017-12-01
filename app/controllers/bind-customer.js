@@ -1,7 +1,4 @@
 import Ember from 'ember';
-import Changeset from 'ember-changeset';
-import bindCustomerValidations from '../validations/bind-customer';
-import lookupValidator from 'ember-changeset-validations';
 
 export default Ember.Controller.extend({
   dateService: Ember.inject.service("date-service"),

@@ -13,6 +13,8 @@ var Eva = BaseModel.extend({
     useFlag:DS.attr('number'),//可用状态，0、可用，1、不可用
     questions:DS.hasMany('evaluatequestion'),
     scorescopes:DS.hasMany('evaluatescorescope'),//模板分数范围
+    modelSource:DS.belongsTo('evaluatemodelsource'),//所属模板规范
+    modelType:DS.belongsTo('evaluatemodeltype'),//所属模板类型
     questionList:Ember.computed('questions',function(){
       let answers = this.get('questions');
       let list = new Ember.A();

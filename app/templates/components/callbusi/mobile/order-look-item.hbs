@@ -1,0 +1,38 @@
+<div class="clearfix width100B height-auto bgcolor-white" id="itemLook_{{item.id}}" {{action "gotoDetail" on="tap"}}>
+  <div class="font13 color999999 line-height-30 bk-color-eeeeee clearfix width100B height30 padding-0-10">
+    {{#if isConsumer}}
+      <span class="pull-left color333333">服务时间：{{item.serviceTimeStr}}</span>
+    {{else}}
+      <span class="pull-left color333333">下单时间：{{item.createDateTimeStr}}</span>
+    {{/if}}
+    <span class="pull-right color2FA7FD">{{item.serviceStatus.typename}} | {{item.paymentType.typename}}</span>
+  </div>
+  <div class="clearfix width100B height82 padding-5-10 position-relative">
+    <div class="title pull-left" style="width:72px;height:72px;">
+      <img src="{{item.item.item.avatarUrl}}" alt="" class="width100B height100B">
+    </div>
+    <div class="padding-left-80 padding-right-10 width100B height-auto position_absolute">
+      {{#if isConsumer}}
+        <div class="font13 color000000 line-height-24 height24 extend width70B">{{item.item.item.name}}</div>
+        {{#if item.item.item.serviceType.typename}}
+          <div class="font13 color2FA7FD line-height-20 height20 extend clearfix">
+            <span class="padding-0-3 bk-color-E4F7E3 border-radius3 color4BC845 height20 line pull-left">{{item.item.item.serviceType.typename}}</span>
+          </div>
+        {{/if}}
+        {{#if item.item.item.serviceTime}}
+          <div class="font13 color707070 line-height-24 height24 extend top4">{{item.item.item.serviceTime}}分钟/次</div>
+        {{/if}}
+      {{else}}
+        <div class="font13 color000000 line-height-24 height24 extend width70B">{{item.customer.name}}</div>
+        <div class="font13 color707070 line-height-24 height24 extend width70B">{{item.item.item.name}}</div>
+        <div class="font13 color707070 line-height-24 height24 extend top4">服务时间：{{item.serviceTimeStr}}</div>
+      {{/if}}
+      {{#if item.item.item.price}}
+        <div class="font14 colorE54B00 line-height-24 width80 height24 extend position_absolute abs-top-0 abs-right-30 text-right">{{item.item.item.price}}元</div>
+      {{/if}}
+      <!-- {{#if item.item.item.remark}}
+        <div class="font13 color707070 line-height-30 height30 extend">{{item.item.item.remark}}</div>
+      {{/if}} -->
+    </div>
+  </div>
+</div>

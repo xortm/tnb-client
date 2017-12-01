@@ -18,19 +18,11 @@
 						{{/if}}
 					</p>
 				</div>
-					<div class="col-xs-12 nopadding-horizontal mt20">
-            <!-- <div class="col-xs-12 col-sm-6">
-							<div class="form-input-group">
-								<span class="input-group-addon">创建时间：</span>
-								{{#if detailEdit}}
-										{{ui/addon/bs-datetimepicker date=changeModel.createDate placeholder="创建时间"
-											locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'
-											value=changeModel.createDate show="dpShowAction" change="changeCreateDateAction" }}
-								{{else}}
-									<div class="input-group-content">{{changeModel.createDateString}}</div>
-								{{/if}}
-							</div>
-						</div> -->
+					<div class="bottom12 col-sm-12 nopadding-left border-bottom" style="height:27px;">
+							<strong class="font16 font-black">申请人信息</strong>
+					</div>
+					<div class="divide-10" style="clear:both" />
+					<div class="col-xs-12 nopadding-horizontal">
 						<div class="col-xs-12 col-sm-6">
 							<div class="form-input-group">
 								<span class="input-group-addon">申请人：</span>
@@ -47,33 +39,92 @@
 							</div>
 						</div>
 						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon">生效时间：</span>
+								{{#if detailEdit}}
+								{{#bs-form-element class="inline-block form-input-group" controlType="effectiveTime" property="effectiveTime" }}
+								{{ui/addon/bs-datetimepicker date=changeModel.effectiveDate placeholder="" format='YYYY-MM-DD'
+								locale="zh-CN" iconClasses="fa fa-calendar" minDate=today
+								show="dpShowAction" change="changeEffectiveAction" }}
+								{{/bs-form-element}}
+								{{else}}
+									<div class="input-group-content">{{changeModel.effectiveTimeString}}</div>
+								{{/if}}
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-6">
 		          <div class="form-input-group">
 		            <span class="input-group-addon">入住状态：</span>
-									<div class="input-group-content">{{change.customer.customerStatus.typename}}</div>
+									<div class="input-group-content">
+										{{#if changeModel.newFlowFlag}}
+										变更为
+										{{else}}
+											{{#if changeModel.statusChange}}
+											由{{changeModel.customerStatusOld.typename}}变更为
+											{{/if}}
+										{{/if}}
+										{{changeModel.customerStatus.typename}}
+									</div>
 		          </div>
 		        </div>
 						<div class="col-xs-12 col-sm-6">
 		          <div class="form-input-group">
-		            <span class="input-group-addon">变更前护理价格：</span>
-									<div class="input-group-content">{{changeModel.projectPriceOld}}</div>
+		            <span class="input-group-addon">结算类型：</span>
+									<div class="input-group-content">
+										{{#if changeModel.newFlowFlag}}
+										变更为
+										{{else}}
+											{{#if changeModel.chargeTypeChange}}
+											由{{changeModel.chargeTypeOld.typename}}变更为
+											{{/if}}
+										{{/if}}
+										{{changeModel.chargeType.typename}}
+									</div>
 		          </div>
 		        </div>
-						<div class="col-xs-12 col-sm-3">
-		          <div class="form-input-group">
-		            <span class="input-group-addon">变更后护理价格：</span>
-								{{#if detailEdit}}
-									{{bs-form-element property="projectPriceNew" class="inline-block form-input-group" controlType="projectPriceNew" placeholder=""}}
-								{{else}}
-									<div class="input-group-content">{{change.projectPriceNew}}</div>
-								{{/if}}
-		          </div>
-		        </div>
-						<div class="col-xs-12 col-sm-6">
-		          <div class="form-input-group">
-		            <span class="input-group-addon">变更前床位：</span>
-									<div class="input-group-content">{{changeModel.bedOld.allBedName}}</div>
-		          </div>
-		        </div>
+						<div class="divide-16" style="clear:both" />
+						<div class="bottom12 col-sm-12 nopadding-left border-bottom" style="height:27px;">
+								<strong class="font16 font-black">床位信息</strong>
+						</div>
+						<div class="divide-10" style="clear:both" />
+						<div class="line">
+							<div class="col-xs-12 col-sm-4">
+								<div class="form-input-group">
+									<span class="input-group-addon">变更前床位：</span>
+										<div class="input-group-content">{{changeModel.bedOld.allBedName}}</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-4">
+			          <div class="form-input-group">
+									{{#if chargeTypeFlag}}
+										{{#if changeModel.chargeTypeChange}}
+											<span class="input-group-addon">变更前床位参考价格(元/天)：</span>
+										{{else}}
+											<span class="input-group-addon">变更前床位参考价格(元/月)：</span>
+										{{/if}}
+									<div class="input-group-content">{{changeModel.bedOldReferencePrice}}</div>
+									{{else}}
+			            <span class="input-group-addon">变更前床位参考价格(元/天)：</span>
+									<div class="input-group-content">{{changeModel.bedOldReferencePrice}}</div>
+									{{/if}}
+			          </div>
+			        </div>
+							<div class="col-xs-12 col-sm-4">
+			          <div class="form-input-group">
+									{{#if chargeTypeFlag}}
+										{{#if changeModel.chargeTypeChange}}
+											<span class="input-group-addon">变更前床位实际价格(元/天)：</span>
+										{{else}}
+											<span class="input-group-addon">变更前床位实际价格(元/月)：</span>
+										{{/if}}
+									<div class="input-group-content">{{changeModel.bedPriceOld}}</div>
+									{{else}}
+			            <span class="input-group-addon">变更前床位实际价格(元/天)：</span>
+									<div class="input-group-content">{{changeModel.bedPriceOld}}</div>
+									{{/if}}
+			          </div>
+			        </div>
+					</div>
 						<div class="line">
 	            <div class="col-xs-12 col-sm-4">
 			          <div class="form-input-group">
@@ -90,29 +141,74 @@
 			        </div>
 							<div class="col-xs-12 col-sm-4">
 			          <div class="form-input-group">
-			            <span class="input-group-addon">变更后床位参考价格：</span>
-										<div class="input-group-content">{{changeModel.bedNew.price}}</div>
+									{{#if chargeTypeFlag}}
+									<span class="input-group-addon">变更后床位参考价格(元/月)：</span>
+									<div class="input-group-content">{{changeModel.bedNewReferencePrice}}</div>
+									{{else}}
+			            <span class="input-group-addon">变更后床位参考价格(元/天)：</span>
+									<div class="input-group-content">{{changeModel.bedNewReferencePrice}}</div>
+									{{/if}}
+
 			          </div>
 			        </div>
 							<div class="col-xs-12 col-sm-4">
 			          <div class="form-input-group">
-			            <span class="input-group-addon">变更后床位实际价格：</span>
+									{{#if chargeTypeFlag}}
+									<span class="input-group-addon">变更后床位实际价格(元/月)：</span>
+									{{else}}
+			            <span class="input-group-addon">变更后床位实际价格(元/天)：</span>
+									{{/if}}
 									{{#if detailEdit}}
 										{{bs-form-element property="bedPriceNew" class="inline-block form-input-group" controlType="bedPriceNew" placeholder=""}}
 									{{else}}
-										<div class="input-group-content">{{change.bedPriceNew}}</div>
+										<div class="input-group-content">{{changeModel.bedPriceNew}}</div>
 									{{/if}}
 			          </div>
 			        </div>
 					</div>
-					<div class="line">
-						<div class="col-xs-12 col-sm-6">
-							<div class="form-input-group">
-								<span class="input-group-addon">变更前餐饮等级：</span>
-								<div class="input-group-content">{{changeModel.foodLevelOld.typename}}</div>
-							</div>
+					<div class="divide-16" style="clear:both" />
+						<div class="bottom12 col-sm-12 nopadding-left border-bottom" style="height:27px;">
+								<strong class="font16 font-black">餐饮信息</strong>
 						</div>
-					</div>
+						<div class="divide-10" style="clear:both" />
+						<div class="line">
+							<div class="col-xs-12 col-sm-4">
+								<div class="form-input-group">
+									<span class="input-group-addon">变更前餐饮等级：</span>
+									<div class="input-group-content">{{changeModel.foodLevelOld.typename}}</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-4">
+			          <div class="form-input-group">
+									{{#if chargeTypeFlag}}
+										{{#if changeModel.chargeTypeChange}}
+											<span class="input-group-addon">变更前餐饮参考价格(元/天)：</span>
+										{{else}}
+											<span class="input-group-addon">变更前餐饮参考价格(元/月)：</span>
+										{{/if}}
+									<div class="input-group-content">{{changeModel.foodLevelOldReferencePrice}}</div>
+									{{else}}
+			            <span class="input-group-addon">变更前餐饮参考价格(元/天)：</span>
+									<div class="input-group-content">{{changeModel.foodLevelOldReferencePrice}}</div>
+									{{/if}}
+
+			          </div>
+			        </div>
+							<div class="col-xs-12 col-sm-4">
+			          <div class="form-input-group">
+									{{#if chargeTypeFlag}}
+										{{#if changeModel.chargeTypeChange}}
+											<span class="input-group-addon">变更前餐饮实际价格(元/天)：</span>
+										{{else}}
+											<span class="input-group-addon">变更前餐饮实际价格(元/月)：</span>
+										{{/if}}
+									{{else}}
+			            <span class="input-group-addon">变更前餐饮实际价格(元/天)：</span>
+									{{/if}}
+									<div class="input-group-content">{{changeModel.foodPriceOld}}</div>
+			          </div>
+			        </div>
+						</div>
 						<div class="line">
 							<div class="col-xs-12 col-sm-4">
 			          <div class="form-input-group">
@@ -128,82 +224,160 @@
 			        </div>
 							<div class="col-xs-12 col-sm-4">
 			          <div class="form-input-group">
-			            <span class="input-group-addon">变更后餐饮参考价格：</span>
-										<div class="input-group-content">{{changeModel.foodLevelNew.typeValue}}</div>
+									{{#if chargeTypeFlag}}
+									<span class="input-group-addon">变更后餐饮参考价格(元/月)：</span>
+									<div class="input-group-content">{{changeModel.foodLevelNewReferencePrice}}</div>
+									{{else}}
+			            <span class="input-group-addon">变更后餐饮参考价格(元/天)：</span>
+									<div class="input-group-content">{{changeModel.foodLevelNewReferencePrice}}</div>
+									{{/if}}
+
 			          </div>
 			        </div>
 							<div class="col-xs-12 col-sm-4">
 			          <div class="form-input-group">
-			            <span class="input-group-addon">变更后餐饮实际价格：</span>
+									{{#if chargeTypeFlag}}
+									<span class="input-group-addon">变更后餐饮实际价格(元/月)：</span>
+									{{else}}
+			            <span class="input-group-addon">变更后餐饮实际价格(元/天)：</span>
+									{{/if}}
 									{{#if detailEdit}}
 										{{bs-form-element property="foodPriceNew" class="inline-block form-input-group" controlType="foodPriceNew" placeholder=""}}
 									{{else}}
-										<div class="input-group-content">{{change.foodPriceNew}}</div>
+										<div class="input-group-content">{{changeModel.foodPriceNew}}</div>
 									{{/if}}
 			          </div>
 			        </div>
 						</div>
+						<div class="divide-16" style="clear:both" />
+						<div class="bottom12 col-sm-12 nopadding-left border-bottom" style="height:27px;">
+								<strong class="font16 font-black">护理信息</strong>
+						</div>
+						<div class="divide-10" style="clear:both" />
+						<div class="line">
+							<div class="col-xs-12 col-sm-4">
+			          <div class="form-input-group">
+			            <span class="input-group-addon">变更前护理等级：</span>
+									<div class="input-group-content">{{changeModel.nursingLevelOld.name}}</div>
+			          </div>
+			        </div>
+							<div class="col-xs-12 col-sm-4">
+			          <div class="form-input-group">
+									{{#if chargeTypeFlag}}
+										{{#if changeModel.chargeTypeChange}}
+											<span class="input-group-addon">变更前护理参考价格(元/天)：</span>
+										{{else}}
+											<span class="input-group-addon">变更前护理参考价格(元/月)：</span>
+										{{/if}}
+									<div class="input-group-content">{{changeModel.nursingLevelOldReferencePrice}}</div>
+									{{else}}
+			            <span class="input-group-addon">变更前护理参考价格(元/天)：</span>
+									<div class="input-group-content">{{changeModel.nursingLevelOldReferencePrice}}</div>
+									{{/if}}
 
+			          </div>
+			        </div>
+							<div class="col-xs-12 col-sm-4">
+			          <div class="form-input-group">
+									{{#if chargeTypeFlag}}
+										{{#if changeModel.chargeTypeChange}}
+											<span class="input-group-addon">变更前护理实际价格(元/天)：</span>
+										{{else}}
+											<span class="input-group-addon">变更前护理实际价格(元/月)：</span>
+										{{/if}}
+									{{else}}
+			            <span class="input-group-addon">变更前护理实际价格(元/天)：</span>
+									{{/if}}
+										<div class="input-group-content">{{changeModel.projectPriceOld}}</div>
+			          </div>
+			        </div>
+						</div>
+						<div class="line">
+							<div class="col-xs-12 col-sm-4">
+			          <div class="form-input-group">
+			            <span class="input-group-addon">变更后护理等级：</span>
+									{{#if detailEdit}}
+	                {{#bs-form-element class="inline-block form-input-group" controlType="nursingLevelNew" property="nursingLevelNew" }}
+										{{#power-select class="input-group-content" placeholder=changeModel.nursingLevelNew.name options=levelList  selected=changeModel.nursingLevelNew searchField="name"
+										noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "selectLevel" ) as |Level|}}
+											{{Level.name}}
+										{{/power-select}}
+	                {{/bs-form-element}}
+									{{else}}
+										<div class="input-group-content">{{changeModel.nursingLevelNew.name}}</div>
+									{{/if}}
+			          </div>
+			        </div>
+							<div class="col-xs-12 col-sm-4">
+			          <div class="form-input-group">
+									{{#if chargeTypeFlag}}
+									<span class="input-group-addon">变更后护理参考价格(元/月)：</span>
+									<div class="input-group-content">{{changeModel.nursingLevelNewReferencePrice}}</div>
+									{{else}}
+			            <span class="input-group-addon">变更后护理参考价格(元/天)：</span>
+									<div class="input-group-content">{{changeModel.nursingLevelNewReferencePrice}}</div>
+									{{/if}}
 
-            <div class="col-xs-12 col-sm-6">
-		          <div class="form-input-group">
-		            <span class="input-group-addon">变更前价格(元/天)：</span>
-									<div class="input-group-content">{{changeModel.priceOld}}</div>
-		          </div>
-		        </div>
-            <div class="col-xs-12 col-sm-6">
-		          <div class="form-input-group">
-		            <span class="input-group-addon">变更后价格(元/天)：</span>
-								{{#if detailEdit}}
-									<div class="input-group-content">{{changeModel.priceNew}}</div>
-								{{else}}
-									<div class="input-group-content">{{change.priceNew}}</div>
-								{{/if}}
-		          </div>
-		        </div>
-						<div class="col-xs-12 col-sm-6">
-							<div class="form-input-group">
-								<span class="input-group-addon">生效时间：</span>
-								{{#if detailEdit}}
-								{{#bs-form-element class="inline-block form-input-group" controlType="effectiveTime" property="effectiveTime" }}
-								{{ui/addon/bs-datetimepicker date=changeModel.effectiveDate placeholder="" format='YYYY-MM-DD'
-								locale="zh-CN" iconClasses="fa fa-calendar" minDate=today
-								show="dpShowAction" change="changeEffectiveAction" }}
-								{{/bs-form-element}}
-								{{else}}
-									<div class="input-group-content">{{changeModel.effectiveTimeString}}</div>
-								{{/if}}
+			          </div>
+			        </div>
+							<div class="col-xs-12 col-sm-4">
+			          <div class="form-input-group">
+									{{#if chargeTypeFlag}}
+									<span class="input-group-addon">变更后护理实际价格(元/月)：</span>
+									{{else}}
+			            <span class="input-group-addon">变更后护理实际价格(元/天)：</span>
+									{{/if}}
+									{{#if detailEdit}}
+										{{bs-form-element property="projectPriceNew" class="inline-block form-input-group" controlType="projectPriceNew" placeholder=""}}
+									{{else}}
+										<div class="input-group-content">{{changeModel.projectPriceNew}}</div>
+									{{/if}}
+			          </div>
+			        </div>
+						</div>
+						<div class="divide-16" style="clear:both" />
+						<div class="bottom12 col-sm-12 nopadding-left border-bottom" style="height:27px;">
+								<strong class="font16 font-black">总价信息</strong>
+						</div>
+						<div class="divide-10" style="clear:both" />
+						<div class="line">
+							<div class="col-xs-12 col-sm-6">
+								<div class="form-input-group">
+									{{#if chargeTypeFlag}}
+										{{#if changeModel.chargeTypeChange}}
+										<span class="input-group-addon">变更前总价格(元/天)：</span>
+										{{else}}
+										<span class="input-group-addon">变更前总价格(元/月)：</span>
+										{{/if}}
+										<div class="input-group-content">{{changeModel.priceOld}}</div>
+									{{else}}
+										<span class="input-group-addon">变更前总价格(元/天)：</span>
+										<div class="input-group-content">{{changeModel.priceOld}}</div>
+									{{/if}}
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="form-input-group">
+									{{#if chargeTypeFlag}}
+										<span class="input-group-addon">变更后总价格(元/月)：</span>
+										{{#if detailEdit}}
+											<div class="input-group-content">{{changeModel.priceNew}}</div>
+										{{else}}
+											<div class="input-group-content">{{changeModel.priceNew}}</div>
+										{{/if}}
+									{{else}}
+										<span class="input-group-addon">变更后总价格(元/天)：</span>
+										{{#if detailEdit}}
+											<div class="input-group-content">{{changeModel.priceNew}}</div>
+										{{else}}
+											<div class="input-group-content">{{changeModel.priceNew}}</div>
+										{{/if}}
+									{{/if}}
+								</div>
 							</div>
 						</div>
-            <!-- <div class="col-xs-12 col-sm-6">
-		          <div class="form-input-group">
-		            <span class="input-group-addon">变更状态：</span>
-								{{#if detailEdit}}
-                {{#bs-form-element class="inline-block form-input-group" controlType="status"  property="status" }}
-									{{callbusi/dict-selector curDict=changeModel.status groupCode=constants.applyStatus
-                    showName="变更状态" dictSelect="statusSelect" value=changeModel.status preselected=false}}
-									{{/bs-form-element}}
-								{{else}}
-									<div class="input-group-content">{{change.status.typename}}</div>
-								{{/if}}
-		          </div>
-		        </div> -->
 					</div>
 			</div>
-			<!-- 列表编辑 -->
-			<!-- <div class="col-sm-12">
-			<div class="text-center padding-top20">
-					<p class="text-center user-add-btn" style="display:inline-block;margin:0 auto!important ">
-					{{#if detailEdit}}
-					{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check"  text='保存'}}
-					{{/ui/mix-button}}
-					{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply"  text='取消'  clickAction="detailCancel" detailCancel="detailCancel" }}
-					{{/ui/mix-button}}
-					{{else}}
-					{{/if}}
-					</p>
-			</div>
-			</div> -->
 			<div class="padding-top30 center">
 				<p class="text-center user-add-btn margin0auto inlineBlock">
 					{{#if detailEdit}}

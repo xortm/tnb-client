@@ -5,8 +5,8 @@ export default Ember.Controller.extend(InfiniteScroll,{
   infiniteContentPropertyName: "",
   infiniteModelName: "",
   infiniteContainerName:"userMemberPhotoContainer",
+  stopScroll: true,
 
-  moment: Ember.inject.service(),
   dataLoader: Ember.inject.service("data-loader"),
   feedService: Ember.inject.service('feed-bus'),
   service_PageConstrut:Ember.inject.service("page-constructure"),
@@ -17,7 +17,12 @@ export default Ember.Controller.extend(InfiniteScroll,{
   constants:Constants,
 
   uploadUrl: Ember.computed(function() {return this.get("pathConfiger").get("uploadUrl");}),
-  queryFlagIn: function(){return;},
+  queryFlagIn: function(){
+    this.hideAllLoading();
+  },
+  init:function(){
+    this.hideAllLoading();
+  },
 
   actions:{
     // uploadSucc: function(response) {

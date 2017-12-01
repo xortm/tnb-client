@@ -48,4 +48,5 @@ export default {
   staffStatus:[
     validatePresence({ presence: true, message: '工作状态不能为空' })
   ],
+  departureDate:[],
 };

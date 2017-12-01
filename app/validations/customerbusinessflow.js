@@ -50,7 +50,6 @@ export default {
   ],
   cusCardCode:[
     validatePresence({ presence: true, message: '身份证号不能为空' }),
-    //validateFormat({ regex: /^(\d{15}$|^\d{18}$|^\d{17}(\d|X|x))$/, message: '请输入正确身份证号码' })
     validateFormat({ regex:  /^((\d{6})(18\d{2}|19\d{2}|20[0|1]\d)(0[1-9]|1[0-2])([0-2][0-9]|3[0-1])(\d{3})$|^(\d{6})(18\d{2}|19\d{2}|20[0|1]\d)(0[1-9]|1[0-2])([0-2][0-9]|3[0-1])(\d{3})(\d|X|x))$/, message: '请输入正确身份证号码' })
   ],
 };

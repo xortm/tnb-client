@@ -28,9 +28,10 @@ export default BaseBusiness.extend({
     let editMode = this.getCurrentController().get('editMode');
     if(editMode=="read"){
       controller.set('detailEdit',false);
-      // controller.set('isWeixin',true);
-      let customerbusinessflowInfo = this.store.peekRecord('customerbusinessflow',id);
-      controller.set('customerbusinessflowInfo',customerbusinessflowInfo);
+      this.store.findRecord('customerbusinessflow',id).then(function(customerbusinessflowInfo){
+        controller.set('customerbusinessflowInfo',customerbusinessflowInfo);
+      });
+
     }else{
       controller.set('detailEdit',true);
       let customerbusinessflowInfo;
@@ -40,8 +41,8 @@ export default BaseBusiness.extend({
           customerbusinessflowInfo.set('checkInStartTimeDate',null);
           customerbusinessflowInfo.set('checkInEndTimeDate',null);
           customerbusinessflowInfo.set('checkInDateTime',null);
-          customerbusinessflowInfo.set('bedPrice',customerbusinessflowInfo.get('checkInBed.price'));
-          // controller.set('customerbusinessflowInfo.bedPrice',controller.get('customerbusinessflowInfo.checkInBed.price'));
+          customerbusinessflowInfo.set('bedPrice',customerbusinessflowInfo.get('bedPrice'));
+          customerbusinessflowInfo.set('chargeType',customerbusinessflowInfo.get('chargeType'));
           let id = customerbusinessflowInfo.get("customer.id") ;
           //查询当前老人是否已有护理方案
           _self.store.query('nursingproject',{filter:{customer:{id:id}}}).then(function(projectList){
@@ -51,7 +52,7 @@ export default BaseBusiness.extend({
               //当前老人已有护理方案，设置护理等级为已有方案的等级，设置护理等级为只读模式不可修改
               let level = levelList.findBy('id',project.get('level.id'));
               controller.set('customerbusinessflowInfo.nursinglevel',level);
-              controller.set('customerbusinessflowInfo.levelPrice',level.get('price'));
+              controller.set('customerbusinessflowInfo.levelPrice',customerbusinessflowInfo.get('levelPrice'));
 
               let rootId = _self.getCurrentController().get('id');
               if(rootId){
@@ -64,6 +65,8 @@ export default BaseBusiness.extend({
         }
       }else{
         customerbusinessflowInfo = this.store.createRecord('customerbusinessflow',{});
+        let chargeType = this.get('global_dataLoader').findDict('chargeTypeY');
+        customerbusinessflowInfo.set('chargeType',chargeType);
         customerbusinessflowInfo.set('couldCancel',true);
       }
 
@@ -71,7 +74,6 @@ export default BaseBusiness.extend({
     }
     //床位列表
     let allBedList = this.get('global_dataLoader.allBedList');
-
     controller.set('allBedList',allBedList);
     //护理等级列表
     let levelList = this.get('global_dataLoader.serviceLevel');
@@ -100,18 +102,29 @@ export default BaseBusiness.extend({
       controller.set('id',null);
       this.getCurrentController().set('from','check');
       let customerbusinessflowInfo = this.store.createRecord('customerbusinessflow',{});
+      let chargeType = this.get('global_dataLoader').findDict('chargeTypeY');
+      customerbusinessflowInfo.set('chargeType',chargeType);
       controller.set('customerbusinessflowInfo',customerbusinessflowInfo);
       controller.set('hasProject',false);
-      // controller.set('isWeixin',false);
       controller.set('tryToCheck',false);
     }else{
       // controller.set('isWeixin',true);
     }
     let from = this.getCurrentController().get('from');
-    if(from=='try'){
+    if(from=='try'&&editMode!=='read'){
+      let customerbusinessflowInfo = controller.get('customerbusinessflowInfo');
       let status = this.get("global_dataLoader").findDict("customerStatusIn");
       controller.send('selectStatus',status);
       controller.set('tryToCheck',true);
+      let chargeType = this.get('global_dataLoader').findDict('chargeTypeY');
+      controller.set('customerbusinessflowInfo.chargeType',chargeType);
+      controller.set('customerbusinessflowInfo.checkInStartTime',null);
+      controller.set('customerbusinessflowInfo.checkInEndTime',null);
+      controller.set('customerbusinessflowInfo.checkInDate',null);
+      controller.set('customerbusinessflowInfo.bedPrice',customerbusinessflowInfo.get('checkInBed.totalPrice'));
+      controller.set('customerbusinessflowInfo.diningStandardPrice',customerbusinessflowInfo.get('diningStandard.totalPrice'));
+      controller.set('customerbusinessflowInfo.levelPrice',customerbusinessflowInfo.get('nursinglevel.totalPrice'));
+      controller.set('customerbusinessflowModel.advWay',controller.get('customerbusinessflowInfo.advWay.firstObject'));
     }
     if(from=="scheduled"){
       controller.set('tryToCheck',false);
@@ -131,9 +144,19 @@ export default BaseBusiness.extend({
       nav = '直接入住';
       controller.set('hasProject',false);
     }
+
     Ember.run.schedule('afterRender',function(){
       controller.send('nav',nav);
-      console.log('当前状态：',controller.get('detailEdit'),controller.get('hasProject'));
+      let chargeType = controller.get('customerbusinessflowInfo.chargeType');
+      if(chargeType.get('typecode')=="chargeTypeY"){
+        controller.set('chargeMonth',true);
+        controller.set('chargeDay',false);
+      }
+      if(chargeType.get('typecode')=="chargeTypeD"){
+        controller.set('chargeMonth',false);
+        controller.set('chargeDay',true);
+      }
+      console.log('入住偏好：',controller.get('customerbusinessflowInfo.inPreference'));
     });
   }
 });

@@ -27,7 +27,7 @@ export default Mixin.create({
           drugprojectExe.set("drugProject",planItem);
           console.log("trueDrugNum111",serviceItem.get("trueDrugNum"));
           // let serviceTag ;
-          if(serviceItem.get("trueDrugNum")){//如果有的话证明点进 detail里操作的
+          if(serviceItem.get("trueDrugNum") >= 0){//如果有的话证明点进 detail里操作的
             drugprojectExe.set("drugNum",serviceItem.get("trueDrugNum"));//实际用药量
             // serviceTag = serviceItem.get("serviceTag");
           }else {
@@ -60,7 +60,7 @@ export default Mixin.create({
           if(serviceItem.get("servicefinishlevel")){
             drugprojectExe.set("finishLevel",serviceItem.get("servicefinishlevel"));//标签对象
           }else{
-            var servicefinishlevelDrug = _self.get("dataLoader.serviceFinishDefaultList").findBy("remark",Constants.servicefinishlevelDefault);
+            var servicefinishlevelDrug = _self.get("dataLoader.serviceFinishDefaultList").findBy("remark",Constants.servicefinishlevelDefault1);
             drugprojectExe.set("finishLevel",servicefinishlevelDrug);//标签对象
           }
           drugprojectExe.set("drugSpec",useDrugFreqObj);//用药规格
@@ -76,10 +76,10 @@ export default Mixin.create({
             serviceItem.set("finishRemark",serviceDesc);
             console.log("finishLevel in save1:",serviceItem.get("servicefinishlevel"));
             serviceItem.set("finishLevelName",drugprojectExe.get("finishLevel.name"));
+            serviceItem.set("finishLevel",drugprojectExe.get("finishLevel"));
             serviceItem.set("trueDrugNum",drugprojectExe.get("drugNum"));//实际用药量
             serviceItem.set("personName",user.get("employee.name"));//服务人名
             _self.get("feedBus").set("serviceData",serviceItem);
-            _self.incrementProperty("serviceListFlag");
             if(callback){
               callback();
             }
@@ -116,10 +116,15 @@ export default Mixin.create({
         //   jsonObj.serviceTagexe = serviceItem.get("serviceTagexe");//完成情况名字
         //   jsonObj.serviceFinishId = serviceItem.get("serviceFinishId");//finishlevel id
         // }
+        if(serviceItem.get("exeTabRemark")){
+          exeRecord.set("exeTabRemark",serviceItem.get("exeTabRemark"));//标签对象
+        }else{
+          exeRecord.set("exeTabRemark",null);//标签对象
+        }
         if(serviceItem.get("servicefinishlevel")){
           exeRecord.set("finishLevel",serviceItem.get("servicefinishlevel"));//标签对象
         }else{
-          var servicefinishlevel = _self.get("dataLoader.serviceFinishDefaultList").findBy("remark",Constants.servicefinishlevelDefault);
+          var servicefinishlevel = _self.get("dataLoader.serviceFinishDefaultList").findBy("remark",Constants.servicefinishlevelDefault1);
           console.log("servicefinishlevel in exeRecord save:",servicefinishlevel);
           exeRecord.set("finishLevel",servicefinishlevel);//标签对象
         }
@@ -135,16 +140,17 @@ export default Mixin.create({
           serviceItem.set("finishRemark",serviceDesc);
           console.log("finishLevel in save:",serviceItem.get("servicefinishlevel"));
           serviceItem.set("finishLevelName",exeRecord.get("finishLevel.name"));
+          serviceItem.set("finishLevel",exeRecord.get("finishLevel"));
+          serviceItem.set("exeTabRemark",serviceItem.get("exeTabRemark"));
           serviceItem.set("personName",user.get("employee.name"));//服务人名
           _self.get("feedBus").set("serviceData",serviceItem);
-          _self.incrementProperty("serviceListFlag");
           if(callback){
             callback();
           }
         },function(err){
           let error = err.errors[0];
           if(error.code==="14"){
-            App.lookup("controller:business").popTorMsg("保存失败,此服务已被执行");
+            App.lookup("controller:business").popTorMsg("保存失败,此服务已被完成");
             App.lookup('controller:business.mainpage').closeMobileShade("保存失败");
           }
           if(error.code==="15"){
@@ -168,6 +174,9 @@ export default Mixin.create({
         exeRecord.set("remark",serviceItem.get("applyContent"));//从0添加到有 第二次继续添加报 set undefined
       }
       console.log("exeRecord save before",exeRecord);
+      exeRecord.set('remark',serviceItem.get('remark'));
+      exeRecord.set('finishLevel',serviceItem.get('finishLevel'));
+      exeRecord.set('exeTabRemark',serviceItem.get('exeTabRemark'));
       exeRecord.save().then(function(){
         //设置已执行的标志用于页面处理
         if(!serviceItem.get("hasApply")){//不是 hasApply才刷新exe
@@ -178,7 +187,6 @@ export default Mixin.create({
         }
         serviceItem.set("hasApply",true);
         // serviceItem.set("exeItem",exeRecord);//暂时还是有bug
-        _self.incrementProperty("serviceListFlag");
         if(callback){
           callback();
         }

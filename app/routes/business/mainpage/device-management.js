@@ -87,6 +87,12 @@ export default BaseBusiness.extend(Pagination,{
             item.set('name','呼叫');
             item.set('class','call-card');
             break;
+          case 'video':
+            item.set('code','04');
+            item.set('imgUrl','assets/images/icon/video.png');
+            item.set('name','视频');
+            item.set('class','video-card');
+            break;  
         }
         if(!list.findBy('code',item.get('code'))){
           list.pushObject(item);

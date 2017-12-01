@@ -32,9 +32,31 @@ export default Ember.Controller.extend(InfiniteScroll,{
       console.log("typecodeObj in each:",typecodeObj);
       healthExamTypeList.pushObject(typecodeObj);
     });
-    // healthExamTypeList.forEach(function(obj){
-    //   obj.set('namePinyin',obj.get('typename'));
-    // });
+    healthExamTypeList.forEach(function(healthExamType){
+      healthExamType.set('result',null);
+      healthExamType.set('resultAddtion',null);
+      let typecode = healthExamType.get("typecode");
+      if(typecode=="healthExamType1"){
+        healthExamType.set("resultName","高压(mmHg)");
+        healthExamType.set("resultAddtionName","低压(mmHg)");
+        healthExamType.set('twoResult',true);
+      }else if(typecode=="healthExamType2"){
+        healthExamType.set("resultName","血氧值(%)");
+        healthExamType.set('twoResult',false);
+      }else if(typecode=="healthExamType3"){
+        healthExamType.set("resultName","心率(times/min)");
+        healthExamType.set('twoResult',false);
+      }else if(typecode=="healthExamType4"){
+        healthExamType.set("resultName","呼吸频率(times/min)");
+        healthExamType.set('twoResult',false);
+      }else if(typecode=="healthExamType5"){
+        healthExamType.set("resultName","体温(℃)");
+        healthExamType.set('twoResult',false);
+      }else if(typecode=="healthExamType7"){
+        healthExamType.set("resultName","血糖(mmol/L)");
+        healthExamType.set('twoResult',false);
+      }
+    });
     console.log("healthExamTypeList:",healthExamTypeList);
     return healthExamTypeList;
   }),
@@ -122,73 +144,129 @@ export default Ember.Controller.extend(InfiniteScroll,{
        Ember.run.later(function(){
          $("." + itemId).removeClass("tapped");
          Ember.run.later(function(){
-           var healthFlag = _self.get("healthFlag");
-           _self.incrementProperty("healthFlag");
-           var params = {
-             healthFlag:healthFlag
-           };
-           var date = _self.get("date");//体检时间
-           var healthInfo = _self.get("healthInfo");//体检
-           var itemtypeObj = _self.get("itemtypeObj");
-           _self.set('healthInfo.itemtype',itemtypeObj);
-           var theTypecode = _self.get("theTypecode");//体检项目
-           var result = _self.get("result");//结果
-           var resultAddtion = _self.get("resultAddtion");//第二个结果
-           var twoResult = _self.get("twoResult");//是否有两个结果
-           if(!date){
+        //    var healthFlag = _self.get("healthFlag");
+        //    _self.incrementProperty("healthFlag");
+        //    var params = {
+        //      healthFlag:healthFlag
+        //    };
+        //    var date = _self.get("date");//体检时间
+        //    var healthInfo = _self.get("healthInfo");//体检
+        //    var itemtypeObj = _self.get("itemtypeObj");
+        //    _self.set('healthInfo.itemtype',itemtypeObj);
+        //    var theTypecode = _self.get("theTypecode");//体检项目
+        //    var result = _self.get("result");//结果
+        //    var resultAddtion = _self.get("resultAddtion");//第二个结果
+        //    var twoResult = _self.get("twoResult");//是否有两个结果
+        //    if(!date){
+        //      _self.showNoMessage("请选择测量时间");
+        //      return;
+        //    }
+        //    console.log("data11",date);
+        //    //时间 type="time"
+        //    let sysTime = _self.get("dataLoader").getNowTime();
+        //    var nowDay = _self.get("dateService").formatDate(sysTime,"yyyy-MM-dd");
+        //    date = nowDay+" "+date+":00";
+        //    date = date.replace(/-/g,'/');
+        //    console.log("data11+nowDay:",date);
+        //    var examDateTime = new Date(date).getTime()/1000;
+        //    console.log("data11 examDateTime",examDateTime);
+        //    healthInfo.set("examDateTime",examDateTime);
+        //    console.log("healthInfo.itemtype",healthInfo.get("itemtype"));
+        //    if(!theTypecode){
+        //      _self.showNoMessage("请选择所测量的类型");
+        //      return;
+        //    }
+        //    if(!result){
+        //      _self.showNoMessage("测量结果不能为空");
+        //      return;
+        //    }else{
+        //      if(!_self.isInteger(result)){
+        //        _self.showNoMessage("测量结果应该为大于0的数字");
+        //        return;
+        //      }
+        //    }
+        //    if(twoResult){
+        //      if(!resultAddtion){
+        //        _self.showNoMessage("请补全测量结果");
+        //        return;
+        //      }else{
+        //        if(!_self.isInteger(resultAddtion)){
+        //          _self.showNoMessage("测量结果应该为大于0的数字");
+        //          return;
+        //        }
+        //      }
+        //    }
+        //    if(theTypecode=="healthExamType1"){// ||theTypecode=="healthExamType2"去掉了
+        //    _self.set('healthInfo.result',result);
+        //    _self.set('healthInfo.resultAddtion',resultAddtion);
+        //  }else {
+        //    _self.set('healthInfo.result',result);
+        //  }
+        //  let curuser = _self.get('global_curStatus').getUser();
+        //  let curuserReal = _self.get('global_curStatus').getUserReal();
+        //  console.log("curuser in:",curuser);
+        //  console.log("curuserReal in:",curuserReal);
+        //  _self.set('healthInfo.createUser',curuser);
+        //  healthInfo.save().then(function(){
+        //    var mainpageController = App.lookup('controller:business.mainpage');
+        //    mainpageController.switchMainPage('customer-health',params);
+        //  });
+        let saveFlag = true;
+        let healthFlag = _self.get("healthFlag");
+        _self.incrementProperty("healthFlag");
+        let params = {
+          healthFlag:healthFlag
+        };
+        let healthInfoEntry = _self.store.createRecord('health-info-entry',{});
+        let healthExamTypeList = _self.get('healthExamTypeList');
+        let healths = new Ember.A();
+        let examUser = _self.get("global_curStatus.healtyCustomer");//体检人
+        let date = _self.get("date");//体检时间
+        if(!date){
              _self.showNoMessage("请选择测量时间");
              return;
            }
-           console.log("data11",date);
            //时间 type="time"
-           let sysTime = _self.get("dataLoader").getNowTime();
-           var nowDay = _self.get("dateService").formatDate(sysTime,"yyyy-MM-dd");
-           date = nowDay+" "+date+":00";
-           date = date.replace(/-/g,'/');
-           console.log("data11+nowDay:",date);
-           var examDateTime = new Date(date).getTime()/1000;
-           console.log("data11 examDateTime",examDateTime);
-           healthInfo.set("examDateTime",examDateTime);
-           console.log("healthInfo.itemtype",healthInfo.get("itemtype"));
-           if(!theTypecode){
-             _self.showNoMessage("请选择所测量的类型");
-             return;
-           }
-           if(!result){
-             _self.showNoMessage("测量结果不能为空");
-             return;
-           }else{
-             if(!_self.isInteger(result)){
-               _self.showNoMessage("测量结果应该为大于0的数字");
-               return;
-             }
-           }
-           if(twoResult){
-             if(!resultAddtion){
-               _self.showNoMessage("请补全测量结果");
-               return;
-             }else{
-               if(!_self.isInteger(resultAddtion)){
-                 _self.showNoMessage("测量结果应该为大于0的数字");
-                 return;
-               }
-             }
-           }
-           if(theTypecode=="healthExamType1"){// ||theTypecode=="healthExamType2"去掉了
-           _self.set('healthInfo.result',result);
-           _self.set('healthInfo.resultAddtion',resultAddtion);
-         }else {
-           _self.set('healthInfo.result',result);
-         }
-         let curuser = _self.get('global_curStatus').getUser();
-         let curuserReal = _self.get('global_curStatus').getUserReal();
-         console.log("curuser in:",curuser);
-         console.log("curuserReal in:",curuserReal);
-         _self.set('healthInfo.createUser',curuser);
-         healthInfo.save().then(function(){
-           var mainpageController = App.lookup('controller:business.mainpage');
-           mainpageController.switchMainPage('customer-health',params);
-         });
+        let sysTime = _self.get("dataLoader").getNowTime();
+        let nowDay = _self.get("dateService").formatDate(sysTime,"yyyy-MM-dd");
+        date = nowDay+" "+date+":00";
+        date = date.replace(/-/g,'/');
+        let examDateTime = new Date(date).getTime()/1000;//需要保存的体检时间
+
+        healthExamTypeList.forEach(function(healthExamType){
+          let healthInfo = _self.store.createRecord('health-info',{sourceFlag:"fromHand"});
+          healthInfo.set('examUser',examUser);
+          healthInfo.set('examDateTime',examDateTime);
+          healthInfo.set('itemtype',healthExamType);
+          healthInfo.set('result',healthExamType.get('result'));
+          if(healthExamType.twoResult){
+            healthInfo.set('resultAddtion',healthExamType.get('resultAddtion'));
+            //有两项的时候验证，两项必须都填（血压）
+            if(healthExamType.get('result')){
+              if(!healthExamType.get('resultAddtion')){
+                _self.showNoMessage("请补全测量结果");
+                saveFlag = false;
+              }
+            }
+          }
+          if(healthExamType.get('result')){
+            healths.pushObject(healthInfo);
+          }
+
+        });
+        healthInfoEntry.set('healths',healths);
+        console.log(healthInfoEntry);
+        if(saveFlag){
+          healthInfoEntry.save().then(function(){
+            healthExamTypeList.forEach(function(healthExamType){
+              healthExamType.set('result',null);
+              healthExamType.set('resultAddtion',null);
+            });
+            let mainpageController = App.lookup('controller:business.mainpage');
+               mainpageController.switchMainPage('customer-health',params);
+          });
+        }
+
          },100);
        },200);
      },

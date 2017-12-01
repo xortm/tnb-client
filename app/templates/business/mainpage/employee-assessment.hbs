@@ -1,11 +1,10 @@
-{{#ui/mobile/gestures-container}}
+
 <div id="employeeAssessmentContainer" class="mainContent border-top-1 {{if global_pageConstructure.showLoader 'hide' ''}}">
   <div class="wrapperInner">
   {{#if assessmentList}}
     <div class="bgcolor-white">
-    {{log "assessmentList hbs" assessmentList}}
     {{#each assessmentList as |assessment|}}
-      {{#callbusi/mobile/employee-assessment-list item=assessment outerClass="col-sm-6 col-xs-12 height-auto"}}
+      {{#callbusi/mobile/employee-assessment-list item=assessment outerClass="col-sm-6 col-xs-12 height-auto" delAction="delAction"}}
       {{/callbusi/mobile/employee-assessment-list}}
     {{/each}}
     </div>
@@ -24,13 +23,33 @@
   </div>
 
 </div>
-{{/ui/mobile/gestures-container}}
+
 
 {{#ui/mobile/gestures-container}}
 <div class="detail-dynamicsbtn" id="employee-assessment" {{action 'addAssessment' on="tap"}} style="bottom:40px;">
   <img class="bottom2" width='15' src="assets/images/mobile/add.png" alt="">
   <span class="padding-left-10">添加考核</span>
 </div>
+{{#if addNewAssessment}}
+	{{#bs-modal body=false footer=false header=false closeAction="invitation"}}
+		{{#bs-modal-body}}
+			<div class="col-xs-12 nopadding-horizontal">
+				<div class="col-xs-12 nopadding-left col-xs-12">
+					<div class="form-input-group">
+						<span class="input-group-addon">考核日期：</span>
+            {{input type="date" id='assessment-date' class="full-width" placeholder="" value=date}}
+					</div>
+				</div>
+      </div>
+		{{/bs-modal-body}}
+		{{#bs-modal-footer class="user-add-btn"}}
+      {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="saveNewAssessment" saveNewAssessment="saveNewAssessment"}}
+      {{/ui/mix-button}}
+      {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="invitation" invitation="invitation"}}
+      {{/ui/mix-button}}
+		{{/bs-modal-footer}}
+	{{/bs-modal}}
+{{/if}}
 {{/ui/mobile/gestures-container}}
 
 {{ui/container/infinite-scroll moniteData="assessmentList"

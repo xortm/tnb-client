@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import BaseUiItem from '../../ui/base-ui-item';
-import Echarts from "npm:echarts";
+//
 import InfiniteScroll from '../../../controllers/infinite-scroll';
 const {useDrugResult1} = Constants;
 
@@ -20,7 +20,7 @@ export default BaseUiItem.extend(InfiniteScroll,{
   i: 0,
   k: 0,
   planDataPushFlag:0,
-  scrollFlag:false,
+  scrollPrevent:true,
   btnFlag:false,
   infiniteContentPropertyName: 'workdeliveryData',
   infiniteModelName: "workdelivery",
@@ -225,6 +225,7 @@ export default BaseUiItem.extend(InfiniteScroll,{
         data.set('status',_self.get('dataLoader').findDict('workDeliveryStatus2'));
         data.set('receiveTime',_self.get("dataLoader").getNowTime());
         data.save();
+        _self.directInitScoll();
       });
 
     },
@@ -239,7 +240,7 @@ export default BaseUiItem.extend(InfiniteScroll,{
           return;
       }
       if(!_self.workdeliveryData.get("remark")||_self.workdeliveryData.get("remark")===null||_self.workdeliveryData.get("remark")===""){
-          _self.set("reasonRe","请填写交接内容");
+          _self.set("reasonRe","请填写备注");
 
           return;
       }
@@ -249,6 +250,7 @@ export default BaseUiItem.extend(InfiniteScroll,{
         _self.set("reasonRece","");
         _self.set("reasonRe","");
         data.save();
+        _self.directInitScoll();
       });
 
     },
@@ -274,7 +276,7 @@ export default BaseUiItem.extend(InfiniteScroll,{
           return;
       }
       if(!_self.workdeliveryData.get("remark")||_self.workdeliveryData.get("remark")===null||_self.workdeliveryData.get("remark")===""){
-          _self.set("reasonRe","请填写交接内容");
+          _self.set("reasonRe","请填写备注");
           _self.set('changeSexModel',false);
           return;
       }

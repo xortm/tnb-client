@@ -57,13 +57,13 @@ module.exports = function(environment) {
     ENV.APP.LOG_TRANSITIONS = true;
     ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
     ENV.APP.LOG_VIEW_LOOKUPS = true;
-    ENV.resourceHost = "http://resource.tiannianbao.com";
-    ENV.socketHost ="http://101.200.143.200:7080";
+    ENV.resourceHost = "http://resource.kyserver01.com";
+    ENV.socketHost ="http://60.205.226.66:7080";
     // ENV.host = "http://47.93.78.97:7090";
-   ENV.host = "http://api.tiannianbao.com";
+   ENV.host = "http://api.kyserver01.com";
     // ENV.host = "http://localhost:9080";
-    ENV.imgHost = "http://img.tiannianbao.com";
-    ENV.wxScanurl = "http://web.tnb99.net/index.html";
+    ENV.imgHost = "http://img.kyserver01.com";
+    ENV.wxScanurl = "http://web.kyserver01.com/index.html";
     ENV.locationType = 'hash';
   }
   return ENV;

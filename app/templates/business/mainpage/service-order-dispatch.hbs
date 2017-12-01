@@ -1,0 +1,113 @@
+{{#ui/mobile/gestures-container}}
+<div id="serviceOrderDispatchContainer" class="mainContent color-white {{if global_pageConstructure.showLoader 'hide' ''}}">
+  <div class="wrapperInner color333333 font14">
+  {{#if itemData}}
+    <div class="clearfix top5">
+      <div class="pull-left width40B line-height-30 padding-right-5 text-right">
+        下单用户：
+      </div>
+      <div class="pull-left width60B line-height-30 color999999 padding-right-10">
+        {{itemData.customer.name}}
+      </div>
+    </div>
+    <div class="clearfix top5">
+      <div class="pull-left width40B line-height-30 padding-right-5 text-right">
+        服务项目：
+      </div>
+      <div class="pull-left width60B line-height-30 color999999 padding-right-10">
+        {{itemData.item.item.name}}
+      </div>
+    </div>
+    <div class="clearfix top5">
+      <div class="pull-left width40B line-height-30 padding-right-5 text-right">
+        服务时长：
+      </div>
+      <div class="pull-left width60B line-height-30 color999999 padding-right-10">
+        {{itemData.item.item.serviceTime}}分钟
+      </div>
+    </div>
+    <div class="clearfix top5">
+      <div class="pull-left width40B line-height-30 padding-right-5 text-right">
+        价&nbsp;&nbsp;&nbsp;&nbsp;格：
+      </div>
+      <div class="pull-left width60B line-height-30 color999999 padding-right-10">
+        {{itemData.item.item.price}}元
+      </div>
+    </div>
+    <div class="clearfix top5">
+      <div class="pull-left width40B line-height-30 padding-right-5 text-right">
+        下单时间：
+      </div>
+      <div class="pull-left width60B line-height-30 color999999 padding-right-10">
+        {{itemData.createDateTimeStr}}
+      </div>
+    </div>
+    <div class="clearfix top5">
+      <div class="pull-left width40B line-height-30 padding-right-5 text-right">
+        服务时间：
+      </div>
+      <div class="pull-left width60B line-height-30 color999999 padding-right-10">
+        {{itemData.serviceTimeStr}}
+      </div>
+    </div>
+    {{#if itemData.serviceOperater}}
+      <div class="clearfix top5">
+        <div class="pull-left width40B line-height-30 padding-right-5 text-right">
+          接单人员：
+        </div>
+        <div class="pull-left width60B line-height-30 color999999 padding-right-10">
+          {{itemData.serviceOperater.name}}
+        </div>
+      </div>
+    {{/if}}
+    <div class="clearfix top5">
+      <div class="pull-left width40B line-height-30 padding-right-5 text-right">
+        订单状态：
+      </div>
+      <div class="pull-left width60B line-height-30 color999999 padding-right-10">
+        {{itemData.serviceStatus.typename}}
+      </div>
+    </div>
+    <div class="clearfix top5">
+      <div class="pull-left width40B line-height-30 padding-right-5 text-right">
+        支付方式：
+      </div>
+      <div class="pull-left width60B line-height-30 color999999 padding-right-10">
+        {{itemData.paymentType.typename}}
+      </div>
+    </div>
+    <div class="clearfix top5">
+      <div class="pull-left width40B line-height-30 padding-right-5 text-right">
+        联系电话：
+      </div>
+      <div class="pull-left width60B line-height-30 color999999 padding-right-10">
+        {{itemData.serviceTel}}
+      </div>
+    </div>
+    <div class="clearfix top5">
+      <div class="pull-left width40B line-height-30 padding-right-5 text-right">
+        地&nbsp;&nbsp;&nbsp;&nbsp;址：
+      </div>
+      <div class="pull-left width60B line-height-30 color999999 padding-right-10">
+        {{itemData.serviceAddress}}
+      </div>
+    </div>
+    {{log "serviceStatus:" itemData.serviceStatus.typename}}
+    {{log "jujiaServiceStatus1:" constants.jujiaServiceStatus1}}
+    {{#if (eq itemData.serviceStatus.typecode constants.jujiaServiceStatus1)}}
+      {{ui/mobile/task-detail-button needDoubleClickPrevent=true touchStartAction="dispatchServiceOrder" dispatchServiceOrder="dispatchServiceOrder" butContent="派发订单" outerClass="serviceOrderDispatchBut"}}
+    {{/if}}
+
+  {{else}}
+    <div class="nodate">暂无数据</div>
+  {{/if}}
+
+
+
+  </div>
+
+</div>
+{{/ui/mobile/gestures-container}}
+
+{{ui/container/infinite-scroll moniteData="customerserviceitemList"
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

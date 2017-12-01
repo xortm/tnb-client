@@ -2,7 +2,6 @@ import Ember from 'ember';
 import moment from 'moment';
 
 export default Ember.Service.extend({
-  // moment: Ember.inject.service(),
 
   // 将 Date 转化为指定格式的String
   // 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，
@@ -94,19 +93,22 @@ export default Ember.Service.extend({
           timeStr = t;
           console.log("rep timeStr:" + timeStr);
       }
-      var time = Date.parse(timeStr);
+      var time = Date.parse(timeStr.replace(/-/g,"/"));
       return time / 1000;
   },
   //格式化时间,时间戳转字符串
   formatDateT: function(timestamp,formatString) {
-    var date = this.timestampToTime(timestamp);
+    var date = this.timestampToTime(Number(timestamp));
     var dateStringTemp = this.dateFormat(date,formatString);
     var t = dateStringTemp.replace(" ","T");
     return t;
   },
   //格式化时间,时间戳转字符串
   formatDate: function(timestamp,formatString) {
-  	var date = this.timestampToTime(timestamp);
+    console.log("timestamp11",timestamp);
+  	var date = this.timestampToTime(Number(timestamp));
+    console.log("date11",date);
+    console.log("date1122",this.dateFormat(date,formatString));
   	return this.dateFormat(date,formatString);
   },
   //时间戳转时间
@@ -140,6 +142,11 @@ export default Ember.Service.extend({
   getTodayTimestamp: function(){
     var today = new Date();
     return this.getFirstSecondStampOfDay(today);
+  },
+  //取得当天最后一秒时间戳
+  getTodayLastTimestamp: function(){
+    var today = new Date();
+    return this.getLastSecondStampOfDay(today);
   },
   //取得几天前0点0分0秒的时间戳
   getDaysBeforeTimestamp: function(beforeNumber){
@@ -210,13 +217,13 @@ export default Ember.Service.extend({
      var i=0, len = str.length, string = '';
      while (i < len){
          do{
-             c1 = base64DecodeChars[str.charCodeAt(i++) & 0xff]
+             c1 = base64DecodeChars[str.charCodeAt(i++) & 0xff];
          } while (
              i < len && c1 == -1
          );
          if (c1 == -1) break;
          do{
-             c2 = base64DecodeChars[str.charCodeAt(i++) & 0xff]
+             c2 = base64DecodeChars[str.charCodeAt(i++) & 0xff];
          } while (
              i < len && c2 == -1
          );
@@ -226,7 +233,7 @@ export default Ember.Service.extend({
              c3 = str.charCodeAt(i++) & 0xff;
              if (c3 == 61)
                  return string;
-             c3 = base64DecodeChars[c3]
+             c3 = base64DecodeChars[c3];
          } while (
              i < len && c3 == -1
          );
@@ -235,12 +242,12 @@ export default Ember.Service.extend({
          do{
              c4 = str.charCodeAt(i++) & 0xff;
              if (c4 == 61) return string;
-             c4 = base64DecodeChars[c4]
+             c4 = base64DecodeChars[c4];
          } while (
              i < len && c4 == -1
          );
          if (c4 == -1) break;
-         string += String.fromCharCode(((c3 & 0x03) << 6) | c4)
+         string += String.fromCharCode(((c3 & 0x03) << 6) | c4);
      }
      return string;
    },
@@ -269,8 +276,8 @@ export default Ember.Service.extend({
              string += base64EncodeChars.charAt(c1 >> 2);
              string += base64EncodeChars.charAt(((c1 & 0x3) << 4) | ((c2 & 0xF0) >> 4));
              string += base64EncodeChars.charAt(((c2 & 0xF) << 2) | ((c3 & 0xC0) >> 6));
-             string += base64EncodeChars.charAt(c3 & 0x3F)
+             string += base64EncodeChars.charAt(c3 & 0x3F);
          }
-             return string
+             return string;
      },
 });

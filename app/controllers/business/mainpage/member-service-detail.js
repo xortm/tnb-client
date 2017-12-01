@@ -32,7 +32,7 @@ export default Ember.Controller.extend(PlanexeValidations,{
     changePlanStartDateAction(date){
       let _self = this;
       //当前选择时间
-      var stamp = this.get("dateService").timeStringToTimestamp(date);
+      var stamp = this.get("dateService").timeToTimestamp(date);
       let workDay = this.get("dateService").timestampToTime(stamp).getDay();
       this.set("planModel.exeStartTime", stamp);
       this.set('workDay',workDay);

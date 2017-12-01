@@ -1,35 +1,33 @@
-  {{#if (eq paramShow 'consult')}}
-        {{callbusi/start-analytic reRenderFlag=reRenderFlag class="inline-block col-sm-6 nopadding-left nopadding-right" statTypeCode='statType11' chartType='line' mapData=mapData mapDate=mapDate  dataList=dataList nextFlag=nextFlag durTypeFlag=durTypeFlag   querytypeList=querytypeList}}
-        {{callbusi/start-analytic reRenderFlag=reRenderFlag class="inline-block col-sm-6 nopadding-left nopadding-right" statTypeCode='statType13' chartType='bar' mapData=mapData mapDate=mapDate dataList=dataList nextFlag=nextFlag durTypeFlag=durTypeFlag  querytypeList=querytypeList}}
-        {{callbusi/start-analytic reRenderFlag=reRenderFlag class="inline-block col-sm-4 nopadding-left nopadding-right" statTypeCode='statType12' chartType='bar' mapData=mapData mapDate=mapDate dataList=dataList nextFlag=nextFlag durTypeFlag=durTypeFlag  querytypeList=querytypeList}}
-        {{callbusi/start-analytic reRenderFlag=reRenderFlag class="inline-block col-sm-4 nopadding-left nopadding-right" statTypeCode='statType14' chartType='line' mapData=mapData mapDate=mapDate dataList=dataList nextFlag=nextFlag durTypeFlag=durTypeFlag  querytypeList=querytypeList}}
-        <!-- {{callbusi/start-analytic class="inline-block" statTypeCode='statType15' chartType='pie' mapData=mapData mapDate=mapDate dataList=dataList nextFlag=nextFlag durTypeFlag=durTypeFlag  querytypeList=querytypeList}} -->
-        {{callbusi/start-analytic reRenderFlag=reRenderFlag class="inline-block col-sm-4 nopadding-left nopadding-right" statTypeCode='statType16' chartType='pie' mapData=mapData mapDate=mapDate dataList=dataList nextFlag=nextFlag durTypeFlag=durTypeFlag  querytypeList=querytypeList}}
-    {{else}}
-    {{#if (eq paramShow 'checkIn')}}
-    {{callbusi/start-analytic reRenderFlag=reRenderFlag class="inline-block col-sm-6 nopadding-left nopadding-right" statTypeCode='statType1' chartType='line' mapData=mapData mapDate=mapDate  dataList=dataList nextFlag=nextFlag durTypeFlag=durTypeFlag  querytypeList=querytypeList}}
-    {{callbusi/start-analytic reRenderFlag=reRenderFlag class="inline-block col-sm-6 nopadding-left nopadding-right" statTypeCode='statType2' chartType='bar' mapData=mapData mapDate=mapDate  dataList=dataList nextFlag=nextFlag durTypeFlag=durTypeFlag  querytypeList=querytypeList}}
-    {{callbusi/start-analytic reRenderFlag=reRenderFlag class="inline-block col-sm-4 nopadding-left nopadding-right" statTypeCode='statType3' chartType='bar' mapData=mapData mapDate=mapDate  dataList=dataList nextFlag=nextFlag durTypeFlag=durTypeFlag  querytypeList=querytypeList}}
-    {{callbusi/start-analytic reRenderFlag=reRenderFlag class="inline-block col-sm-4 nopadding-left nopadding-right" statTypeCode='statType4' chartType='pie' mapData=mapData mapDate=mapDate  dataList=dataList nextFlag=nextFlag durTypeFlag=durTypeFlag  querytypeList=querytypeList}}
-    {{callbusi/start-analytic reRenderFlag=reRenderFlag class="inline-block col-sm-4 nopadding-left nopadding-right" statTypeCode='statType5' chartType='pie' mapData=mapData mapDate=mapDate  dataList=dataList nextFlag=nextFlag durTypeFlag=durTypeFlag  querytypeList=querytypeList}}
-    {{callbusi/start-analytic reRenderFlag=reRenderFlag class="inline-block col-sm-6 nopadding-left nopadding-right" statTypeCode='statType6' chartType='pie' mapData=mapData mapDate=mapDate  dataList=dataList nextFlag=nextFlag durTypeFlag=durTypeFlag  querytypeList=querytypeList}}
-    {{callbusi/start-analytic reRenderFlag=reRenderFlag class="inline-block col-sm-6 nopadding-left nopadding-right" statTypeCode='statType7' chartType='pie' mapData=mapData mapDate=mapDate  dataList=dataList nextFlag=nextFlag durTypeFlag=durTypeFlag  querytypeList=querytypeList}}
-    {{else}}
-    {{#if (eq paramShow 'stayBack')}}
-    {{callbusi/start-analytic reRenderFlag=reRenderFlag class="inline-block" statTypeCode='statType9' chartType='line' mapData=mapData mapDate=mapDate  dataList=dataList nextFlag=nextFlag durTypeFlag=durTypeFlag  querytypeList=querytypeList}}
-    {{callbusi/start-analytic reRenderFlag=reRenderFlag class="inline-block" statTypeCode='statType10' chartType='bar' mapData=mapData mapDate=mapDate  dataList=dataList nextFlag=nextFlag durTypeFlag=durTypeFlag  querytypeList=querytypeList}}
-    {{else}}
-    {{#if (eq paramShow 'advance')}}
+<!-- {{callbusi/start-analytic}} -->
+    {{#if (eq paramShow 'consult')}}
+        {{callbusi/line-echart reRenderFlag=reRenderFlag class="inline-block col-sm-12 nopadding-left nopadding-right" statTypeCode='statType11' dataList=statType11DataList chartType='line' echartType='type2' nextFlag=nextFlag durTypeFlag=durTypeFlag  querytypeList=querytypeList queryAction="queryAction" doQueryFlag=doQueryFlag}}
+        {{callbusi/bar-echart reRenderFlag=reRenderFlag class="inline-block col-sm-12 nopadding-left nopadding-right" statTypeCode='statType13' dataList=statType13DataList chartType='bar' echartType='type1' nextFlag=nextFlag durTypeFlag=durTypeFlag  querytypeList=querytypeList queryAction="queryAction" doQueryFlag=doQueryFlag}}
+        {{callbusi/bar-echart reRenderFlag=reRenderFlag class="inline-block col-sm-12 nopadding-left nopadding-right" statTypeCode='statType12' dataList=statType12DataList chartType='bar' echartType='type1' nextFlag=nextFlag durTypeFlag=durTypeFlag  querytypeList=querytypeList queryAction="queryAction" doQueryFlag=doQueryFlag}}
+        {{callbusi/line-echart reRenderFlag=reRenderFlag class="inline-block col-sm-12 nopadding-left nopadding-right" statTypeCode='statType14' dataList=statType14DataList chartType='line' echartType='type1' nextFlag=nextFlag durTypeFlag=durTypeFlag  querytypeList=querytypeList queryAction="queryAction" doQueryFlag=doQueryFlag}}
+        <!-- {{callbusi/pie-echart reRenderFlag=reRenderFlag class="inline-block col-sm-12 nopadding-left nopadding-right" statTypeCode='statType16' dataList=statType16DataList chartType='pie' echartType='type2' nextFlag=nextFlag durTypeFlag=durTypeFlag querytypeList=querytypeList queryAction="queryAction" doQueryFlag=doQueryFlag}} -->
+    {{else if (eq paramShow 'consult2')}}
+      {{callbusi/pie-echart reRenderFlag=reRenderFlag class="inline-block col-sm-12 nopadding-left nopadding-right" statTypeCode='statType25' dataList=statType25DataList chartType='pie' echartType='type2' nextFlag=nextFlag durTypeFlag=durTypeFlag querytypeList=querytypeList queryAction="queryAction" doQueryFlag=doQueryFlag}}
+      {{callbusi/pie-echart reRenderFlag=reRenderFlag class="inline-block col-sm-12 nopadding-left nopadding-right" statTypeCode='statType24' dataList=statType24DataList chartType='pie' echartType='type2' nextFlag=nextFlag durTypeFlag=durTypeFlag  querytypeList=querytypeList queryAction="queryAction" doQueryFlag=doQueryFlag}}
+      {{callbusi/pie-echart reRenderFlag=reRenderFlag class="inline-block col-sm-6 nopadding-left nopadding-right" statTypeCode='statType21' dataList=statType21DataList chartType='pie' echartType='type1' nextFlag=nextFlag durTypeFlag=durTypeFlag  querytypeList=querytypeList queryAction="queryAction" doQueryFlag=doQueryFlag}}
+      {{callbusi/pie-echart reRenderFlag=reRenderFlag class="inline-block col-sm-6 nopadding-left nopadding-right" statTypeCode='statType23' dataList=statType23DataList chartType='pie' echartType='type1' nextFlag=nextFlag durTypeFlag=durTypeFlag  querytypeList=querytypeList queryAction="queryAction" doQueryFlag=doQueryFlag}}
+      {{callbusi/pie-echart reRenderFlag=reRenderFlag class="inline-block col-sm-6 nopadding-left nopadding-right" statTypeCode='statType22' dataList=statType22DataList chartType='pie' echartType='type1' nextFlag=nextFlag durTypeFlag=durTypeFlag  querytypeList=querytypeList queryAction="queryAction" doQueryFlag=doQueryFlag}}
+    {{else if (eq paramShow 'checkIn')}}
+      {{callbusi/bar-echart reRenderFlag=reRenderFlag class="inline-block col-sm-6 nopadding-left nopadding-right" statTypeCode='statType1' dataList=statType1DataList chartType='bar' echartType='type2' nextFlag=nextFlag durTypeFlag=durTypeFlag querytypeList=querytypeList queryAction="queryAction" doQueryFlag=doQueryFlag}}
+      {{callbusi/pie-echart reRenderFlag=reRenderFlag class="inline-block col-sm-6 nopadding-left nopadding-right" statTypeCode='statType5' dataList=statType5DataList chartType='pie' echartType='type1' nextFlag=nextFlag durTypeFlag=durTypeFlag querytypeList=querytypeList queryAction="queryAction" doQueryFlag=doQueryFlag}}
+      {{callbusi/pie-echart reRenderFlag=reRenderFlag class="inline-block col-sm-12 nopadding-left nopadding-right" statTypeCode='statType4' dataList=statType4DataList chartType='pie' echartType='type2' nextFlag=nextFlag durTypeFlag=durTypeFlag querytypeList=querytypeList queryAction="queryAction" doQueryFlag=doQueryFlag}}
+      {{callbusi/pie-echart reRenderFlag=reRenderFlag class="inline-block col-sm-12 nopadding-left nopadding-right" statTypeCode='statType2' dataList=statType2DataList chartType='pie' echartType='type2' nextFlag=nextFlag durTypeFlag=durTypeFlag querytypeList=querytypeList queryAction="queryAction" doQueryFlag=doQueryFlag}}
+      {{callbusi/bar-echart reRenderFlag=reRenderFlag class="inline-block col-sm-12 nopadding-left nopadding-right" statTypeCode='statType3' dataList=statType3DataList chartType='bar' echartType='type1'  nextFlag=nextFlag durTypeFlag=durTypeFlag  querytypeList=querytypeList queryAction="queryAction" doQueryFlag=doQueryFlag}}
+      {{callbusi/pie-echart reRenderFlag=reRenderFlag class="inline-block col-sm-12 nopadding-left nopadding-right" statTypeCode='statType6' dataList=statType6DataList chartType='pie' echartType='type2' nextFlag=nextFlag durTypeFlag=durTypeFlag querytypeList=querytypeList queryAction="queryAction" doQueryFlag=doQueryFlag}}
+      {{callbusi/pie-echart reRenderFlag=reRenderFlag class="inline-block col-sm-12 nopadding-left nopadding-right" statTypeCode='statType7' dataList=statType7DataList chartType='pie' echartType='type2' nextFlag=nextFlag durTypeFlag=durTypeFlag querytypeList=querytypeList queryAction="queryAction" doQueryFlag=doQueryFlag}}
+    {{else if (eq paramShow 'stayBack')}}
+      {{callbusi/bar-echart reRenderFlag=reRenderFlag class="inline-block" statTypeCode='statType9' dataList=statType9DataList chartType='bar' echartType='type2'  nextFlag=nextFlag durTypeFlag=durTypeFlag  querytypeList=querytypeList queryAction="queryAction" doQueryFlag=doQueryFlag}}
+      {{callbusi/bar-echart reRenderFlag=reRenderFlag class="inline-block" statTypeCode='statType10' dataList=statType10DataList chartType='bar' echartType='type1'  nextFlag=nextFlag durTypeFlag=durTypeFlag  querytypeList=querytypeList queryAction="queryAction" doQueryFlag=doQueryFlag}}
+    {{else if (eq paramShow 'advance')}}
     <!-- <div class="">预定</div> -->
-    {{else}}
-    {{#if (eq paramShow 'customerAnalysis')}}
-    {{callbusi/start-analytic class="inline-block" statTypeCode='statType18' chartType='pie' mapData=mapData mapDate=mapDate  dataList=dataList nextFlag=nextFlag durTypeFlag=durTypeFlag querytypeList=querytypeList}}
-    {{callbusi/start-analytic class="inline-block" statTypeCode='statType19' chartType='pie' mapData=mapData mapDate=mapDate  dataList=dataList nextFlag=nextFlag durTypeFlag=durTypeFlag querytypeList=querytypeList}}
-    {{callbusi/start-analytic class="inline-block" statTypeCode='statType20' chartType='pie' mapData=mapData mapDate=mapDate  dataList=dataList nextFlag=nextFlag durTypeFlag=durTypeFlag querytypeList=querytypeList}}
-    {{else}}
-
-    {{/if}}
-    {{/if}}
-    {{/if}}
-    {{/if}}
+    {{else if (eq paramShow 'customerAnalysis')}}
+      {{callbusi/pie-echart class="inline-block" statTypeCode='statType18' dataList=statType18DataList chartType='pie' echartType='type1' nextFlag=nextFlag durTypeFlag=durTypeFlag querytypeList=querytypeList queryAction="queryAction" doQueryFlag=doQueryFlag}}
+      {{callbusi/pie-echart class="inline-block" statTypeCode='statType19' dataList=statType19DataList chartType='pie' echartType='type2' nextFlag=nextFlag durTypeFlag=durTypeFlag querytypeList=querytypeList queryAction="queryAction" doQueryFlag=doQueryFlag}}
+      {{callbusi/pie-echart class="inline-block" statTypeCode='statType20' dataList=statType20DataList chartType='pie' echartType='type2' nextFlag=nextFlag durTypeFlag=durTypeFlag querytypeList=querytypeList queryAction="queryAction" doQueryFlag=doQueryFlag}}
+    {{else if (eq paramShow 'customerData')}}
+      {{callbusi/customer-data-table }}
     {{/if}}

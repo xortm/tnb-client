@@ -9,7 +9,6 @@
           </span>
         </div>
         <div class="time">
-          <!-- <img width='28' src="assets/images/mobile/clock.png"/> -->
           {{warningItem.createDateTimeShortString}}
         </div>
       </div>
@@ -21,52 +20,54 @@
         <div class="bk-color-white padding-left-10">
           <div class="color999999 padding-top10"><span class="color666666">处理人：</span>{{warningItem.operater.name}}</div>
           <div class="color999999 padding-top5"><span class="color666666">处理时间：</span>{{warningItem.operateTimeShortString}}</div>
-          <div class="color999999 padding-top5 padding-bottom10"><span class="color666666">备注信息：</span>{{warningItem.operateNote}}</div>
+          {{#if warningItem.cancelTimeShortString}}
+            <div class="color999999 padding-top5"><span class="color666666">到场时间：</span>{{warningItem.cancelTimeShortString}}</div>
+          {{else}}
+            <div class="color999999 padding-top5"><span class="color666666">到场时间：</span>无</div>
+          {{/if}}
+          <div class="color999999 padding-top5 padding-bottom10"><span class="color666666">执行情况：</span>{{warningItem.exeRemark}}</div>
         </div>
-      {{else if (eq warningItem.flag.typecode constants.hbeaconWarningCancelBySys)}}
-        <div class="border-top-bottom-1 height35">
-          <span class="task-detail-split"></span>
-          <span class="font14"><span class="font-black font16">{{warningItem.reason}}</span>({{warningItem.flag.typename}})</span>
-        </div>
-        <div class="bk-color-white padding-left-10">
-          <div class="color999999 padding-top10"><span class="color666666">复位时间：</span>{{warningItem.cancelTimeShortString}}</div>
-        </div>
-        <div class="finish-tag  padding-left-10 bk-color-white padding-right-10 padding-bottom15">
-          <div class="">
-            {{textarea class="" placeholder="请输入备注信息" value=operateNote}}
-          </div>
-        </div>
-        {{#ui/mobile/gestures-container}}
-        <div class="clearfix">
-          {{ui/mobile/task-detail-button needDoubleClickPrevent=true touchStartAction="saveDetail" saveDetail="saveDetail" outerClass="detail_warning" butContent="确定"}}
-          <!-- <div class="clearfix detail-tosure"  id="detail_tosure" {{action "saveDetail" on="tap"}}>
-            确定
-          </div> -->
-        </div>
-        {{/ui/mobile/gestures-container}}
       {{else}}
-        <div class="border-top-bottom-1 height35">
-          <span class="task-detail-split"></span>
-          <span class="font14"><span class="font-black font16">{{warningItem.reason}}</span>({{warningItem.flag.typename}})</span>
-        </div>
-        <div class="finish-tag  padding-left-10 bk-color-white padding-right-10 padding-bottom15">
-          <div class="">
-            {{textarea class="" placeholder="请输入备注信息" value=operateNote}}
+        <div class="timesCount">
+          <div class="exp-item">
+            <div class="clearfix font16 bk-color-FAFAF9">
+              {{#each customer.services  as |service|}}
+                <div class="title-area bk-color-white border-bottom-1" style="margin:0;padding:0 10px;" id="warning-task-{{service.busiId}}" {{action 'toTaskDetail' service on="tap"}}>
+                  <div class="item-name pull-left padding-left-5 font13" >{{service.title}}</div>
+                  <div class="pull-right">
+                    <span class="tip color2FA7FD">{{service.itemExeLength}}</span><span class="font12">  次</span>
+                    <span id="save-{{service.busiId}}" {{action "addNewTask" service on="tap" bubbles=false}}><i class="fa-plus left8 color999999 font16"></i></span>
+                  </div>
+                </div>
+                <div class="clear"></div>
+              {{/each}}
+            </div>
           </div>
         </div>
-
-      {{#ui/mobile/gestures-container}}
-      <div class="clearfix">
-        {{ui/mobile/task-detail-button needDoubleClickPrevent=true touchStartAction="saveDetail" saveDetail="saveDetail" outerClass="detail_warning" butContent="确定"}}
-        <!-- <div class="clearfix detail-tosure"  id="detail_tosure" {{action "saveDetail" on="tap"}}>
-          确定
-        </div> -->
+      {{/if}}
       </div>
-      {{/ui/mobile/gestures-container}}
-    {{/if}}
-  </div>
-  {{/ui/mobile/gestures-container}}
+    {{/ui/mobile/gestures-container}}
   </div>
 </div>
+{{#if addNewWarningTask}}
+	{{#bs-modal body=false footer=false header=false closeAction="invitation"}}
+		{{#bs-modal-body}}
+			<div class="col-xs-12 nopadding-horizontal">
+				<div class="col-xs-12 nopadding-left col-xs-12">
+					<div class="form-input-group">
+						<span class="input-group-addon center">是否执行该项任务？</span>
+					</div>
+				</div>
+      </div>
+		{{/bs-modal-body}}
+		{{#bs-modal-footer class="user-add-btn"}}
+      {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="saveCountApply" saveCountApply="saveCountApply"}}
+      {{/ui/mix-button}}
+      {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="invitation" invitation="invitation"}}
+      {{/ui/mix-button}}
+		{{/bs-modal-footer}}
+	{{/bs-modal}}
+{{/if}}
+
 {{ui/container/infinite-scroll moniteData=""
 didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

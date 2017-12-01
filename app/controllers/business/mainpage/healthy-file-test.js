@@ -6,7 +6,6 @@ export default Ember.Controller.extend(InfiniteScroll,{
   infiniteModelName: "",
   infiniteContainerName:"userHealthyFileTestContainer",
 
-  moment: Ember.inject.service(),
   service_PageConstrut:Ember.inject.service("page-constructure"),
   mainController: Ember.inject.controller('business.mainpage'),
   pathConfiger: Ember.inject.service("path-configer"),
@@ -26,8 +25,11 @@ export default Ember.Controller.extend(InfiniteScroll,{
       sort:{createTime:"desc"}
     }).then(function(physicalReportList){
       let picPath =  physicalReportList.get("firstObject").get('picPathUrl');
+      let contents =  physicalReportList.get("firstObject").get('contents');
       console.log("picPath",picPath);
       _self.set("picPath",picPath);
+      _self.set("contents",contents);
+      _self.hideAllLoading();
     });
 },
 

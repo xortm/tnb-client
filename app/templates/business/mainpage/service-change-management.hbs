@@ -19,48 +19,8 @@
                             <!--搜索-->
                         </div>
                         <div class="col-sm-7 nopadding-right nopadding-left">
-                            <!-- <div class="data-title pull-left ">按时间搜索：</div>
-           <span class="date-range pull-left">
-             <div class="btn-group">
-               <a class="js_update btn btn-default" href="#" {{action "search" "today" on="click"}}>今天</a>
-               <a class="js_update btn btn-default" href="#" {{action "search" "seven" on="click"}}>最近7天</a>
-               <a class="js_update btn btn-default " href="#" {{action "search" "thirty" on="click"}}>最近一个月</a>
-
-               <a id="reportrange" class="btn reportrange" {{action "showDate" on="click"}}>
-                 <i class="fa fa-calendar"></i>
-                 <span>自定义日期</span>
-                 <i class="fa fa-angle-down"></i>
-               </a>
-             </div>
-
-             {{#if dateShow}}
-             <div class="date-box form-input-group">
-                 <div class="row">
-                   <div class="col-xs-4 col-sm-4 org-title">开始时间：</div>
-                   <div class="col-xs-8 col-sm-8">
-                 {{ui/addon/bs-datetimepicker date=null placeholder="开始时间"
-                   locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'
-                    show="dpShowAction"  change="changeBeginDateAction"}}
-                   </div>
-                 </div>
-                 <div class="row">
-                   <div class="col-xs-4 col-sm-4 org-title">结束时间：</div>
-                   <div class="col-xs-8 col-sm-8">
-                 {{ui/addon/bs-datetimepicker date=null placeholder="结束时间"
-                   locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'
-                    show="dpShowAction"  change="changeEndDateAction"}}
-                   </div>
-                 </div>
-                 <div class="btn-row text-center">
-                   <button class="btn btn-primary"  {{action "hideDate"  on="click"}}><i class="fa fa-check icon-white"></i>&ensp;确定</button>
-                   <button class="btn btn-light-grey"  {{action "hideDate" on="click"}}><i class="fa fa-times"></i>&ensp;取消</button>
-                 </div>
-             </div>
-             {{else}}
-             {{/if}}
-           </span> -->
                             {{callbusi/time-search class="inline-block" text='按创建日期搜索' dateShow=dateShow chooseDate=chooseDate search="search"
-           submmit="submmit" emptied='emptied' changeBeginDateAction='changeBeginDateAction' changeEndDateAction='changeEndDateAction'}}
+                              submmit="submmit" emptied='emptied' changeBeginDateAction='changeBeginDateAction' changeEndDateAction='changeEndDateAction'}}
                         </div>
                     </div>
                     <div class="user-add-btn col-sm-3 pull-right nopadding-right">
@@ -71,38 +31,137 @@
                         <table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable mt15" aria-describedby="datatable1_info">
                             <thead>
                                 <tr role="row">
-                                    <th rowspan="1" colspan="1" width="">创建日期</th>
-                                    <th rowspan="1" colspan="1" width="">申请人</th>
-                                    <th rowspan="1" colspan="1" width="">入住状态</th>
-                                    <th rowspan="1" colspan="1" width="">变更前床位</th>
-                                    <th rowspan="1" colspan="1" width="">变更后床位</th>
-                                    <th rowspan="1" colspan="1" class="" width="">变更前餐饮等级</th>
-                                    <th rowspan="1" colspan="1" class="" width="">变更后餐饮等级</th>
-                                    <th rowspan="1" colspan="1" class="" width="">变更前护理价格</th>
-                                    <th rowspan="1" colspan="1" class="" width="">变更后护理价格</th>
-                                    <th rowspan="1" colspan="1" class="" width="">变更状态</th>
+                                    <th class="center" rowspan="1" colspan="1" width="">创建日期</th>
+                                    <th class="center" rowspan="1" colspan="1" width="">申请人</th>
+                                    <th class="center" rowspan="1" colspan="1" width="">变更内容</th>
+                                    <th class="center" rowspan="1" colspan="1" class="" width="">变更状态</th>
                                 </tr>
                             </thead>
                             {{#if changeList}}
                             <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
                                 {{#each changeList as |change|}}
-                                    {{log "change item" change}}
                                     <tr class="gradeA odd" {{action "toDetailPage" change on="click"}}>
-                                        <td class=" ellipsis sorting_1">{{change.createDateString}}</td>
-                                        <td class=" ellipsis ">{{change.customer.name}}</td>
-                                        <td class=" ellipsis ">{{change.customer.customerStatus.typename}}</td>
-                                        <td class=" ellipsis ">{{change.bedOld.allBedName}}</td>
-                                        <td class=" ellipsis ">{{change.bedNew.allBedName}}</td>
-                                        <td class=" ellipsis ">{{{change.foodLevelOld.typename}}}</td>
-                                        <td class=" ellipsis ">{{{change.foodLevelNew.typename}}}</td>
-                                        <td class=" ellipsis ">{{{change.projectPriceOld}}}</td>
-                                        <td class=" ellipsis ">{{{change.projectPriceNew}}}</td>
-                                        <td class=" ellipsis ">{{{change.status.typename}}}</td>
+                                        <td class=" ellipsis center sorting_1" style="vertical-align:middle">{{change.createDateString}}</td>
+                                        <td class=" ellipsis center" style="vertical-align:middle">{{change.customer.name}}</td>
+                                        <td class=" ellipsis ">
+                                          {{#if change.statusChange}}
+                                            <div>入住状态：
+                                              {{#if change.customerStatusOld.typename}}
+                                              由{{change.customerStatusOld.typename}}
+                                              {{/if}}
+                                              变更为{{change.customerStatus.typename}}
+                                            </div>
+                                          {{/if}}
+                                          {{#if change.newFlowFlag}}
+                                            <div>入住状态：变更为{{change.customerStatus.typename}}</div>
+                                            <div>结算类型：变更为{{change.chargeType.typename}}</div>
+                                          {{/if}}
+                                          {{#if change.chargeTypeChange}}
+                                            <div>结算类型：
+                                              {{#if change.chargeTypeOld.typename}}
+                                              由{{change.chargeTypeOld.typename}}
+                                              {{/if}}
+                                              变更为{{change.chargeType.typename}}
+                                            </div>
+                                          {{/if}}
+                                          {{#if change.bedChange}}
+                                              <div>床位：
+                                                {{#if change.chargeTypeChange}}
+                                                  {{#if change.bedOld.allBedName}}
+                                                  由{{change.bedOld.allBedName}}({{change.bedPriceOld}}元/天)
+                                                  {{/if}}
+                                                  {{#if change.chargeTypeYFlag}}
+                                                  变更为{{change.bedNew.allBedName}}({{change.bedPriceNew}}元/月)
+                                                  {{else}}
+                                                  变更为{{change.bedNew.allBedName}}({{change.bedPriceNew}}元/天)
+                                                  {{/if}}
+                                                {{else}}
+                                                  {{#if change.bedOld.allBedName}}
+                                                  由{{change.bedOld.allBedName}}({{change.bedPriceOld}}元/月)
+                                                  {{/if}}
+                                                  {{#if change.chargeTypeYFlag}}
+                                                  变更为{{change.bedNew.allBedName}}({{change.bedPriceNew}}元/月)
+                                                  {{else}}
+                                                  变更为{{change.bedNew.allBedName}}({{change.bedPriceNew}}元/天)
+                                                  {{/if}}
+                                                {{/if}}
+                                              </div>
+                                          {{/if}}
+                                          {{#if change.foodChange}}
+                                              <div>餐饮等级：
+                                                {{#if change.chargeTypeChange}}
+                                                  {{#if change.foodLevelOld.typename}}
+                                                  由{{change.foodLevelOld.typename}}({{change.foodPriceOld}}元/天)
+                                                  {{/if}}
+                                                  {{#if change.chargeTypeYFlag}}
+                                                  变更为{{change.foodLevelNew.typename}}({{change.foodPriceNew}}元/月)
+                                                  {{else}}
+                                                  变更为{{change.foodLevelNew.typename}}({{change.foodPriceNew}}元/天)
+                                                  {{/if}}
+                                                {{else}}
+                                                  {{#if change.foodLevelOld.typename}}
+                                                  由{{change.foodLevelOld.typename}}({{change.foodPriceOld}}元/月)
+                                                  {{/if}}
+                                                  {{#if change.chargeTypeYFlag}}
+                                                  变更为{{change.foodLevelNew.typename}}({{change.foodPriceNew}}元/月)
+                                                  {{else}}
+                                                  变更为{{change.foodLevelNew.typename}}({{change.foodPriceNew}}元/天)
+                                                  {{/if}}
+                                                {{/if}}
+                                              </div>
+                                          {{/if}}
+                                          {{#if change.levelChange}}
+                                              <div>护理等级：
+                                                {{#if change.chargeTypeChange}}
+                                                  {{#if change.nursingLevelOld.name}}
+                                                  由{{change.nursingLevelOld.name}}({{change.projectPriceOld}}元/天)
+                                                  {{/if}}
+                                                    {{#if change.chargeTypeYFlag}}
+                                                      变更为{{change.nursingLevelNew.name}}({{change.projectPriceNew}}元/月)
+                                                    {{else}}
+                                                      变更为{{change.nursingLevelNew.name}}({{change.projectPriceNew}}元/天)
+                                                    {{/if}}
+                                                {{else}}
+                                                  {{#if change.nursingLevelOld.name}}
+                                                  由{{change.nursingLevelOld.name}}({{change.projectPriceOld}}元/月)
+                                                  {{/if}}
+                                                  {{#if change.chargeTypeYFlag}}
+                                                    变更为{{change.nursingLevelNew.name}}({{change.projectPriceNew}}元/月)
+                                                  {{else}}
+                                                    变更为{{change.nursingLevelNew.name}}({{change.projectPriceNew}}元/天)
+                                                  {{/if}}
+                                                {{/if}}
+                                              </div>
+                                          {{/if}}
+                                          {{#if change.priceChange}}
+                                            <div>总价格：
+                                              {{#if change.chargeTypeChange}}
+                                                {{#if change.priceOld}}
+                                                由{{change.priceOld}}(元/天)
+                                                {{/if}}
+                                                {{#if change.chargeTypeYFlag}}
+                                                  变更为{{change.priceNew}}(元/月)
+                                                {{else}}
+                                                  变更为{{change.priceNew}}(元/天)
+                                                {{/if}}
+                                              {{else}}
+                                                {{#if change.priceOld}}
+                                                由{{change.priceOld}}(元/月)
+                                                {{/if}}
+                                                  {{#if change.chargeTypeYFlag}}
+                                                    变更为{{change.priceNew}}(元/月)
+                                                  {{else}}
+                                                    变更为{{change.priceNew}}(元/天)
+                                                  {{/if}}
+                                                {{/if}}
+                                            </div>
+                                          {{/if}}
+                                        </td>
+                                        <td class=" ellipsis " style="vertical-align:middle">{{{change.status.typename}}}</td>
                                     </tr>
                                 {{/each}}
                             </tbody>
                             {{else}}
-                            <div class="nodate">暂无数据</div>
                             {{/if}}
                         </table>
                         {{#if changeList }}

@@ -1,4 +1,3 @@
-
 <div class="box panel-default col-sm-12 nopadding-bottom">
   <div class="box-body">
     <div class="tabbable">
@@ -90,8 +89,12 @@
                             <span class="input-group-addon">老人性别：</span>
                             {{#if detailEdit}}
                             {{#bs-form-element class="inline-block form-input-group" controlType="customerGender" property="customerGender" }}
-                                {{callbusi/dict-selector curDict=customerbusinessflowModel.customerGender groupCode=constants.sexType
-                                 dictSelect="sexSelect" value=customerbusinessflowModel.customerGender preselected=false}}
+                                <!-- {{callbusi/dict-selector curDict=customerbusinessflowModel.customerGender groupCode=constants.sexType
+                                 dictSelect="sexSelect" value=customerbusinessflowModel.customerGender preselected=false}} -->
+                                 <div class="col-sm-12 nopadding-left nopadding-right pull-right" style="line-height:30px;font-size:13px;">
+                                     <i class="pointer {{if customerbusinessflowInfo.customerGenderFlag.man 'fa-dot-circle-o' 'fa-circle-o'}}" {{action 'sexSelect' 'man' on="click"}}><span>男</span></i>
+                                     <i class="pointer {{if customerbusinessflowInfo.customerGenderFlag.woman 'fa-dot-circle-o' 'fa-circle-o'}}" {{action 'sexSelect' 'woman' on="click"}}><span>女</span></i>
+                                 </div>
                             {{/bs-form-element}}
                             {{else}}
                               <div class="font-light input-group-content">{{customerbusinessflowModel.customerGender.typename}}</div>
@@ -110,15 +113,6 @@
                           </div>
                       </div>
                   </div>
-                  <!-- <div class="line">
-
-                      <div class="col-xs-12 col-sm-6">
-                        <div class="form-input-group label-normal">
-                            <span class="input-group-addon">老人年龄：</span>
-                            <div class="font-light input-group-content">{{customerbusinessflowModel.customerAge}}</div>
-                        </div>
-                      </div>
-                  </div> -->
                   <div class="line">
                     <div class="col-xs-12 col-sm-6 nopadding-left">
                         <div class="form-input-group label-normal">
@@ -236,8 +230,12 @@
                               <span class="input-group-addon">性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：</span>
                               {{#if detailEdit}}
                                 {{#bs-form-element class="inline-block form-input-group" controlType="guardianFirstGener" property="guardianFirstGener" }}
-                                    {{callbusi/dict-selector curDict=customerbusinessflowModel.guardianFirstGener groupCode=constants.sexType
-                                     dictSelect="sexSelectFirst" value=customerbusinessflowModel.guardianFirstGener preselected=false}}
+                                    <!-- {{callbusi/dict-selector curDict=customerbusinessflowModel.guardianFirstGener groupCode=constants.sexType
+                                     dictSelect="sexSelectFirst" value=customerbusinessflowModel.guardianFirstGener preselected=false}} -->
+                                     <div class="col-sm-12 nopadding-left nopadding-right pull-right" style="line-height:30px;font-size:13px;">
+                                         <i class="pointer {{if customerbusinessflowInfo.guardianFirstGenerFlag.man 'fa-dot-circle-o' 'fa-circle-o'}}" {{action 'sexSelectFirst' 'man' on="click"}}><span>男</span></i>
+                                         <i class="pointer {{if customerbusinessflowInfo.guardianFirstGenerFlag.woman 'fa-dot-circle-o' 'fa-circle-o'}}" {{action 'sexSelectFirst' 'woman' on="click"}}><span>女</span></i>
+                                     </div>
                                 {{/bs-form-element}}
                               {{else}}
                                 <div class="font-light input-group-content">{{customerbusinessflowModel.guardianFirstGener.typename}}</div>
@@ -417,7 +415,7 @@
                   </div>
                   <div class="divide-10" style="clear:both" />
                   <div class="line">
-                      <div class="col-xs-12 col-sm-6 nopadding-left">
+                      <div class="col-xs-12 col-sm-3 nopadding-left">
                           <div class="form-input-group label-normal">
                               <span class="input-group-addon">入住类型：</span>
                               {{#if detailEdit}}
@@ -433,6 +431,27 @@
                                 {{/if}}
                               {{else}}
                                   <div class="font-light input-group-content">{{customerbusinessflowInfo.customerStatus.typename}}</div>
+                              {{/if}}
+                          </div>
+                      </div>
+                      <div class="col-xs-12 col-sm-3 nopadding-left">
+                          <div class="form-input-group label-normal">
+                              <span class="input-group-addon">结算类型：</span>
+                              {{#if detailEdit}}
+                                {{#if tryToCheck}}
+                                  <div class="font-light input-group-content">{{customerbusinessflowModel.chargeType.typename}}</div>
+                                {{else}}
+                                  {{#if tryModel}}
+                                    {{#bs-form-element class="inline-block form-input-group" controlType="chargeType"  property="chargeType" }}
+                                      {{callbusi/dict-selector class="inline-block" curDict=customerbusinessflowModel.chargeType groupCode=constants.chargeType
+                                        showName=customerbusinessflowModel.chargeType.typename preselected=true value=customerbusinessflowModel.chargeType dictSelect="chargeTypeSelect"}}
+                                    {{/bs-form-element}}
+                                  {{else}}
+                                    <div class="font-light input-group-content">{{customerbusinessflowModel.chargeType.typename}}</div>
+                                  {{/if}}
+                                {{/if}}
+                              {{else}}
+                                  <div class="font-light input-group-content">{{customerbusinessflowInfo.chargeType.typename}}</div>
                               {{/if}}
                           </div>
                       </div>
@@ -454,11 +473,11 @@
                               {{#if detailEdit}}
                                 {{#bs-form-element class="inline-block form-input-group" controlType="checkInStartTime"  property="checkInStartTime" }}
                                   {{ui/addon/bs-datetimepicker date=customerbusinessflowModel.checkInStartTimeDate placeholder="必填项"
-                                  locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'
+                                  locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD' maxDate=today
                                   value=customerbusinessflowInfo.checkInStartTime show="dpShowAction" change="changeTryStartAction" }}
                                 {{/bs-form-element }}
                               {{else}}
-                                  <div class="font-light input-group-content">{{customerbusinessflowModel.checkInStartTimeDateString}}</div>
+                                  <div class="font-light input-group-content">{{customerbusinessflowInfo.checkInStartTimeDateString}}</div>
                               {{/if}}
                           </div>
                       </div>
@@ -472,7 +491,7 @@
                                   show="dpShowAction" change="changeTryEndAction" }}
                                 {{/bs-form-element }}
                               {{else}}
-                                  <div class="font-light input-group-content">{{customerbusinessflowModel.checkInEndTimeDateString}}</div>
+                                  <div class="font-light input-group-content">{{customerbusinessflowInfo.checkInEndTimeDateString}}</div>
                               {{/if}}
                           </div>
                       </div>
@@ -503,7 +522,7 @@
                                   show="dpShowAction" change="changeTryAction" }}
                                 {{/bs-form-element }}
                               {{else}}
-                                  <div class="font-light input-group-content">{{customerbusinessflowModel.checkInDateTimeString}}</div>
+                                  <div class="font-light input-group-content">{{customerbusinessflowInfo.checkInDateTimeString}}</div>
                               {{/if}}
                           </div>
                       </div>
@@ -524,18 +543,34 @@
                     </div>
                     <div class="col-xs-12 col-sm-4 ">
                         <div class="form-input-group label-normal">
+                          {{#if chargeDay}}
                             <span class="input-group-addon">床位参考价格(元/天)：</span>
                             <div class="font-light input-group-content">{{customerbusinessflowModel.checkInBed.price}}</div>
+                          {{/if}}
+                          {{#if chargeMonth}}
+                            <span class="input-group-addon">床位参考价格(元/月)：</span>
+                            <div class="font-light input-group-content">{{customerbusinessflowModel.checkInBed.totalPrice}}</div>
+                          {{/if}}
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-4 nopadding-left">
                         <div class="form-input-group label-normal">
+                          {{#if chargeDay}}
                             <span class="input-group-addon">床位实际价格(元/天)：</span>
                             {{#if detailEdit}}
                               {{bs-form-element property="bedPrice" class="inline-block form-input-group label-normal" controlType="bedPrice" placeholder='必填项'}}
                             {{else}}
                                 <div class="font-light input-group-content">{{customerbusinessflowModel.bedPrice}}</div>
                             {{/if}}
+                          {{/if}}
+                          {{#if chargeMonth}}
+                            <span class="input-group-addon">床位实际价格(元/月)：</span>
+                            {{#if detailEdit}}
+                              {{bs-form-element property="bedPrice" class="inline-block form-input-group label-normal" controlType="bedPrice" placeholder='必填项'}}
+                            {{else}}
+                                <div class="font-light input-group-content">{{customerbusinessflowModel.bedPrice}}</div>
+                            {{/if}}
+                          {{/if}}
                         </div>
                     </div>
                   </div>
@@ -555,13 +590,24 @@
                     </div>
                     <div class="col-xs-12 col-sm-4">
                         <div class="form-input-group label-normal">
+                          {{#if chargeDay}}
                             <span class="input-group-addon">餐饮参考价格(元/天)：</span>
                             <div class="font-light input-group-content">{{customerbusinessflowModel.diningStandard.typeValue}}</div>
+                          {{/if}}
+                          {{#if chargeMonth}}
+                            <span class="input-group-addon">餐饮参考价格(元/月)：</span>
+                            <div class="font-light input-group-content">{{customerbusinessflowModel.diningStandard.totalPrice}}</div>
+                          {{/if}}
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-4 nopadding-left">
                         <div class="form-input-group label-normal">
+                          {{#if chargeDay}}
                             <span class="input-group-addon">餐饮实际价格(元/天)：</span>
+                          {{/if}}
+                          {{#if chargeMonth}}
+                            <span class="input-group-addon">餐饮实际价格(元/月)：</span>
+                          {{/if}}
                             {{#if detailEdit}}
                               {{bs-form-element property="diningStandardPrice" class="inline-block form-input-group label-normal" controlType="diningStandardPrice" placeholder='必填项'}}
                             {{else}}
@@ -592,13 +638,24 @@
                     </div>
                     <div class="col-xs-12 col-sm-4">
                         <div class="form-input-group label-normal">
+                          {{#if chargeDay}}
                             <span class="input-group-addon">护理参考价格(元/天)：</span>
                             <div class="font-light input-group-content">{{customerbusinessflowModel.nursinglevel.price}}</div>
+                          {{/if}}
+                          {{#if chargeMonth}}
+                            <span class="input-group-addon">护理参考价格(元/月)：</span>
+                            <div class="font-light input-group-content">{{customerbusinessflowModel.nursinglevel.totalPrice}}</div>
+                          {{/if}}
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-4 nopadding-left">
                         <div class="form-input-group label-normal">
-                            <span class="input-group-addon">护理实际价格(元/天)：</span>
+                            {{#if chargeDay}}
+                              <span class="input-group-addon">护理实际价格(元/天)：</span>
+                            {{/if}}
+                            {{#if chargeMonth}}
+                              <span class="input-group-addon">护理实际价格(元/月)：</span>
+                            {{/if}}
                             {{#if detailEdit}}
                               {{bs-form-element property="levelPrice" class="inline-block form-input-group label-normal" controlType="levelPrice" placeholder='必填项'}}
                             {{else}}
@@ -610,17 +667,32 @@
                   <div class="line">
                     <div class="col-xs-12 col-sm-6 nopadding-left">
                         <div class="form-input-group label-normal">
+                          {{#if chargeDay}}
                             <span class="input-group-addon">入住参考价格(元/天)：</span>
                             {{#if detailEdit}}
                               <div class="font-light input-group-content">{{checkInReferencePrice}}</div>
                             {{else}}
                               <div class="font-light input-group-content">{{checkInReferencePrice}}</div>
                             {{/if}}
+                          {{/if}}
+                          {{#if chargeMonth}}
+                            <span class="input-group-addon">入住参考价格(元/月)：</span>
+                            {{#if detailEdit}}
+                              <div class="font-light input-group-content">{{checkInReferencePrice}}</div>
+                            {{else}}
+                              <div class="font-light input-group-content">{{checkInReferencePrice}}</div>
+                            {{/if}}
+                          {{/if}}
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-6">
                         <div class="form-input-group label-normal">
+                            {{#if chargeDay}}
                             <span class="input-group-addon">入住实际价格(元/天)：</span>
+                            {{/if}}
+                            {{#if chargeMonth}}
+                            <span class="input-group-addon">入住实际价格(元/月)：</span>
+                            {{/if}}
                             {{#if detailEdit}}
                               <div class="font-light input-group-content">{{checkInPrice}}</div>
                             {{else}}
@@ -635,7 +707,7 @@
                               {{#if detailEdit}}
                                 {{#bs-form-element class="inline-block form-input-group" controlType="advWay"  property="advWay" }}
                                   {{callbusi/dict-selector class="inline-block" curDict=customerbusinessflowModel.advWay groupCode=constants.consultSource
-                                    showName='必填项' preselected=false  placeholder='必填项'
+                                     preselected=false  placeholder='必填项'
                                      value=customerbusinessflowModel.advWay dictSelect="advWaySelect"}}
                                 {{/bs-form-element}}
                               {{else}}

@@ -82,7 +82,7 @@
                   {{/if}}
                 </span>
                 {{#if detailEdit}}
-                    <i class="fa  pull-right service-check {{if service.hasChoosed 'fa-check-square-o' 'fa-square-o'}}" {{action "chooseService" service on="click"  bubbles=false}}></i>
+                    <i class="fa  pull-right service-check pointer {{if service.hasChoosed 'fa-check-square-o' 'fa-square-o'}}" {{action "chooseService" service on="click"  bubbles=false}}></i>
                 {{else}}
                     {{#if service.hasChoosed}}
                         <i class="fa fa-check pull-right"></i>

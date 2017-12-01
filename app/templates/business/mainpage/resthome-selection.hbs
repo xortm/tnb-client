@@ -1,0 +1,43 @@
+{{#ui/mobile/gestures-container}}
+<div id="resthomeSelectionContainer" class="mainContent {{if global_pageConstructure.showLoader 'hide' ''}}">
+  <div class="wrapperInner">
+      {{#if tenantList}}
+      <div class="training">
+        {{#each tenantList as |tenant|}}
+          <div class="trainingList" id="tenantItem_{{tenant.id}}" {{action "goDetail" tenant on="tap"}}>
+            <i class="prev-icon"><img class="a-img" src="assets/images/mobile/resthomeSelection.png"/></i>
+            <div class="title {{if (eq currentTenantId tenant.id) "color2FA7FD weight-bold" ""}}">{{tenant.orgName}}</div>
+            {{#if (eq currentTenantId tenant.id)}}
+              <i class="next-icon"><img class="a-img" src="assets/images/mobile/choice.png"/></i>
+            {{/if}}
+          </div>
+        {{/each}}
+      </div>
+      {{else}}
+          <div class="nodate">暂无数据</div>
+      {{/if}}
+  </div>
+</div>
+<!-- 切换确认弹框 -->
+{{#if comfirmSwitchFlag}}
+	{{#bs-modal body=false footer=false header=false closeAction="invitation"}}
+		{{#bs-modal-body}}
+			<div class="col-xs-12 nopadding-horizontal">
+				<div class="col-xs-12 nopadding-left col-xs-12">
+					<div class="form-input-group">
+						<p class="input-group-addon center">您确定切换到<span class="color2FA7FD padding-0-3">{{tenantName}}</span>吗？</p>
+					</div>
+				</div>
+      </div>
+		{{/bs-modal-body}}
+		{{#bs-modal-footer class="user-add-btn"}}
+      {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="comfirmAction" comfirmAction="comfirmAction"}}
+      {{/ui/mix-button}}
+      {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="invitation" invitation="invitation"}}
+      {{/ui/mix-button}}
+		{{/bs-modal-footer}}
+	{{/bs-modal}}
+{{/if}}
+{{/ui/mobile/gestures-container}}
+
+{{ui/container/infinite-scroll moniteData="tenantList" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

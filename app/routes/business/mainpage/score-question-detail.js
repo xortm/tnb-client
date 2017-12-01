@@ -3,7 +3,7 @@ import BaseBusiness from '../base-business';
 
 export default BaseBusiness.extend({
   feedBus: Ember.inject.service("feed-bus"),
-  header_title: "评分问卷详情",
+  header_title: "评分评价详情",
   queryParams: {
       itemId: {
           refreshModel: true

@@ -1,8 +1,7 @@
-{{#if isMobile}}
 <div id="userCsInfoContainer" class="mainContent {{if global_pageConstructure.showLoader 'hide' ''}}" style="top:43px;">
   <div class="wrapperInner cs-infoBd">
 {{#ui/mobile/gestures-container}}
-<div class="position-relative">
+<div class="position-relative top10">
   <img class="" height='156' src="assets/images/mobile/backg.png"/>
 <center class="mov-spacer">
   <div class="position-relative clear" id="business_mine"
@@ -37,12 +36,11 @@
   </li>
   <div class="margin-leftright10 border-bottom-1"></div> -->
   {{#if footBarMenusShowFlag}}
-    <li class="carousel color666" id="belong_team" {{action 'switchPage' 'belong-team' 'belong_team' on="tap"}}>
+    <li class="carousel color666 border-bottom-1" id="belong_team" {{action 'switchPage' 'belong-team' 'belong_team' on="tap"}}>
       <i class="profile-i"><img class="a-img" src="assets/images/mobile/Group@2x.png"/></i>
       <span class="profile-span">所属护理组 </span>
       <i class="fa-angle-right font20 my-right color-ccc"></i>
     </li>
-    <div class="margin-leftright10 border-bottom-1"></div>
 
     <li class="carousel color666 border-bottom-1" id="my_schedule" {{action 'switchPage' 'my-schedule' 'my_schedule' on="tap"}}>
       <i class="profile-i"><img class="a-img" src="assets/images/mobile/schedule.png"/></i>
@@ -56,11 +54,18 @@
       <i class="fa-angle-right font20 my-right color-ccc"></i>
     </li>
 
-    <li class="carousel color666 border-bottom-1" id="workdelivery-self-mobile" {{action 'switchPage' 'workdelivery-self-mobile' 'workdelivery-self-mobile' on="tap"}}>
+    <li class="carousel color666 border-bottom-1" id="workdelivery_self_mobile" {{action 'switchPage' 'workdelivery-self-mobile' 'workdelivery_self_mobile' on="tap"}}>
       <i class="profile-i"><img class="a-img" src="assets/images/mobile/jiaojie.png"/></i>
       <span class="profile-span">班次交接 </span>
       <i class="fa-angle-right font20 my-right color-ccc"></i>
     </li>
+
+    <li class="carousel color666 border-bottom-1" id="customer-ordering" {{action 'switchPage' 'customer-ordering' 'customer-ordering' on="tap"}}>
+      <i class="profile-i"><img class="a-img" src="assets/images/mobile/foodOrdering.png"/></i>
+      <span class="profile-span">老人订餐 </span>
+      <i class="fa-angle-right font20 my-right color-ccc"></i>
+    </li>
+
   {{/if}}
 
   <!-- <li class="carousel color666 border-bottom-1" id="customer-feedback" {{action 'switchPage' 'customer-feedback' 'customer-feedback' on="tap"}}>
@@ -75,6 +80,11 @@
     <span class="profile-span">完成任务 </span>
     <i class="fa-angle-right font20 my-right color-ccc"></i>
   </li> -->
+  <li class="carousel color666 border-bottom-1" id="resthome_selection" {{action 'switchPage' 'resthome-selection' 'resthome_selection' on="tap"}}>
+    <i class="profile-i"><img class="a-img" src="assets/images/mobile/resthomeSelection.png"/></i>
+    <span class="profile-span">机构选择（{{tenantName}}）</span>
+    <i class="fa-angle-right font20 my-right color-ccc"></i>
+  </li>
 
   <li class="top10 carousel color666 border-top-1 border-bottom-1" id="my_settings" {{action 'switchPage' 'my-settings' 'my_settings' on="tap"}}>
     <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
@@ -92,4 +102,3 @@
 </div>
 </div>
 {{ui/container/infinite-scroll moniteData="userCsInfo" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}
-{{/if}}

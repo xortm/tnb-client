@@ -9,8 +9,8 @@ export default Ember.Controller.extend(tenantValidations, {
     feedBus: Ember.inject.service("feed-bus"),
     constants: Constants, //引入字典常量
     count: true,
-    systemType:1,
     status:null,
+    systemType:1,
     tenantModel: Ember.computed("tenantInfo", function() {
         var model = this.get("tenantInfo");
         if (!model) {

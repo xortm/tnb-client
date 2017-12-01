@@ -8,6 +8,7 @@ export default Ember.Controller.extend(RechargeValidations, {
     detailEdit: false,
     delFlag: true,
     dateService: Ember.inject.service("date-service"),
+    dataLoader:Ember.inject.service('data-loader'),
     store: Ember.inject.service("store"),
     rechargeObs: function() {
         var model = this.get("recharge");
@@ -75,6 +76,8 @@ export default Ember.Controller.extend(RechargeValidations, {
                             console.log('tradeAccountList firstObject', tradeAccountList.get('firstObject'));
                             rechargeModel.set('rechargeAccount', tradeAccountList.get('firstObject'));
                             App.lookup('controller:business.mainpage').openPopTip("正在保存");
+                            let status = _self.get("dataLoader").findDict("rechargeStatus1");
+                            rechargeModel.set('rechargeStatus',status);
                             rechargeModel.save().then(function() {
                                 App.lookup('controller:business.mainpage').showPopTip("保存成功");
                                 if (id && editMode == 'edit') {

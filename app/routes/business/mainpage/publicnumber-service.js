@@ -7,8 +7,6 @@ export default BaseBusiness.extend({
   },
   setupController: function(controller,model){
     this._super(controller,model);
-    controller.set("showLoadingImg",true);
-    var curUser = this.get("global_curStatus").getUser();//拿到当前人
     var _self = this;
     // this.store.query("staffcustomer",{filter:{staff:{id:curUser.get("id")}}}).then(function(staffcustomers){
     //   var staffcustomer = staffcustomers.get("firstObject");

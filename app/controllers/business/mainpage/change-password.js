@@ -9,6 +9,10 @@ export default Ember.Controller.extend(InfiniteScroll,{
 
   service_PageConstrut:Ember.inject.service("page-constructure"),
   mainController: Ember.inject.controller('business.mainpage'),
+  init:function(){
+    console.log("cs info ctl init");
+    this.hideAllLoading();
+  },
   actions:{
     changePassword: function(){
       $("#changePassword").addClass("tapped");
@@ -65,7 +69,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
                 _self.set("responseInfo","密码修改成功！");
                 setTimeout(function(){
                    _self.get("mainController").send('quit');//退出
-                },1000)
+                },1000);
             });
           },function() {
             _self.set("responseInfo","密码修改失败！");

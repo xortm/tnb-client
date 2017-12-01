@@ -36,23 +36,30 @@ export default Ember.Controller.extend(InfiniteScroll,{
   actions:{
     saveDetail(){
       let _self = this;
-      let assessmentInfo = this.get("assessmentInfo");
-      console.log("assessmentInfo:",this.get("assessmentInfo"));
-      let assessmentInfoRemark = assessmentInfo.get("remark");
-      assessmentInfo.set("point",null);
-      _self.get("mainController").switchMainPage('employee-assessment-detail');
-      assessmentInfo.save().then(function(assessment){
-        App.lookup("controller:business").popTorMsg("考核项信息修改完成!");
-        _self.get("feedBus").set("assessmentFlag",true);
-      }, function(err) {
-        resultsItem.set("remark",assessmentInfoRemark);
-        App.lookup("controller:business").popTorMsg("保存失败,您操作过于频繁!");
-        console.log("save err!");
-        console.log("err:",err);
-        // let error = err.errors[0];
-        // if (error.code === "99") {
-        // }
-      });
+      var itemId = "assessmentDetailBut";
+      $("." + itemId).addClass("tapped");
+      Ember.run.later(function(){
+        $("." + itemId).removeClass("tapped");
+        Ember.run.later(function(){
+          let assessmentInfo = _self.get("assessmentInfo");
+          console.log("assessmentInfo:",_self.get("assessmentInfo"));
+          let assessmentInfoRemark = assessmentInfo.get("remark");
+          assessmentInfo.set("point",null);
+          _self.get("mainController").switchMainPage('employee-assessment-detail');
+          assessmentInfo.save().then(function(assessment){
+            App.lookup("controller:business").popTorMsg("考核项信息修改完成!");
+            _self.get("feedBus").set("assessmentFlag",true);
+          }, function(err) {
+            resultsItem.set("remark",assessmentInfoRemark);
+            App.lookup("controller:business").popTorMsg("保存失败,您操作过于频繁!");
+            console.log("save err!");
+            console.log("err:",err);
+            // let error = err.errors[0];
+            // if (error.code === "99") {
+            // }
+          });
+        },100);
+      },200);
     },
 
     switchShowAction(){

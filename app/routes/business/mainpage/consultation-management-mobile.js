@@ -4,7 +4,7 @@ export default BaseBusiness.extend({
   dataLoader: Ember.inject.service("data-loader"),
   header_title:'咨询管理',
   queryParams: {
-      customerListFlag: {
+      dataListFlag: {
           refreshModel: true
       },
   },

@@ -11,7 +11,7 @@ export default BaseBusiness.extend(Pagination,{
   buildQueryParams:function(){
     var params=this.pagiParamsSet();
     var curController = this.getCurrentController();
-    var filter={};
+    var filter={billType:{'typecode@$not':'chargeTypeD'}};
     var sort;
     if (curController) {
         if (curController.get('queryCondition')) {
@@ -23,7 +23,7 @@ export default BaseBusiness.extend(Pagination,{
     }
     params.filter = filter;
     sort = {
-        'billTime':'desc',
+        'createDateTime':'desc',
     };
     params.sort = sort;
     return params;

@@ -4,12 +4,34 @@ import ServiceLevelValidations from '../../../validations/serviceLevel';
 import lookupValidator from 'ember-changeset-validations';
 
 export default Ember.Controller.extend(ServiceLevelValidations,{
+  statusService: Ember.inject.service("current-status"),
+  global_dataLoader: Ember.inject.service('data-loader'),
   constants: Constants,
   queryCondition:'',
   flags:0,
+  //判断是否为基本租户
+  isBaseTenant:Ember.computed('statusService',function(){
+    let statusService = this.get('statusService');
+    let tenantId = statusService.get('tenantId');
+    if(tenantId == '111'){
+      return true;
+    }else{
+      return false;
+    }
+  }),
+  //判断是否属于规范类等级
+  isStandardModel:Ember.computed('serviceLevelInfo',function(){
+    let serviceLevelInfo = this.get('serviceLevelInfo');
+    if(!serviceLevelInfo){return ;}
+    let sourceRemark = serviceLevelInfo.get('modelSource.remark');
+    if(!sourceRemark||sourceRemark == 'qita'){
+      return false;
+    }else{
+      return true;
+    }
+  }),
   //已选项目列表
   chooseList:Ember.computed('hasServices',function(){
-
     return new Ember.A();
   }),
   //已选项目
@@ -81,6 +103,9 @@ export default Ember.Controller.extend(ServiceLevelValidations,{
   editService:false,
   detailEdit:false,
   actions:{
+    selectModelSource(modelSource){
+      this.set('serviceLevelInfo.modelSource',modelSource);
+    },
     cancel(){
       this.set('serviceInfo',false);
     },
@@ -154,6 +179,7 @@ export default Ember.Controller.extend(ServiceLevelValidations,{
       let _self=this;
       let editMode=this.get('editMode');
       let serviceLevelModel=this.get('serviceLevelModel');
+      console.log('等级列表：',_self.get('dataLader.serviceLevel'));
       let serviceArr = new Ember.A();
       let count = 0;
       let allServiceList = this.get('allServiceList');
@@ -174,10 +200,12 @@ export default Ember.Controller.extend(ServiceLevelValidations,{
         serviceLevelModel.validate().then(function(){
           if(serviceLevelModel.get('errors.length')===0){
             App.lookup('controller:business.mainpage').openPopTip("正在保存");
-            serviceLevelModel.save().then(function(){
+            serviceLevelModel.save().then(function(level){
               App.lookup('controller:business.mainpage').showPopTip("保存成功");
               if(editMode=='add'){
                 _self.set('detailEdit',false);
+
+                _self.get('global_dataLoader.serviceLevel').pushObject(level);
                 let mainpageController = App.lookup('controller:business.mainpage');
                 mainpageController.switchMainPage('service-level-set');
               }else{

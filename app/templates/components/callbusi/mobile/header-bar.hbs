@@ -1,9 +1,10 @@
 <!-- 如果为功能区页面,则不显示headerbar -->
-<mobile-header class="mobile-logo-env center">
+{{#unless (eq isSquare 0)}}
+<mobile-header class="mobile-logo-env center {{if hasBoxShadow "mobile-box-shadow" ""}}">
   {{#if backRoutePath}}
-  <div class="line-height-44 center header-title">
-    {{title}}
-  </div>
+    <div class="line-height-44 center header-title">
+      {{title}}
+    </div>
   {{else}}
       {{log "isSquare:" isSquare}}
       {{#if (eq isSquare 8)}}
@@ -14,39 +15,54 @@
         <div class="line-height-44 center header-title">
           {{title}}
         </div>
+      {{else if (eq isSquare 15)}}
+        <div class="line-height-44 center header-title">
+          {{title}}
+        </div>
+        {{callbusi/mobile/switch-date}}
       {{else if (eq isSquare 11)}}
         {{callbusi/mobile/chart-data-select }}
       {{else}}
       <!-- 显示老人选择控件 -->
-      {{log "global_curStatus HBS queryCusObj" global_curStatus.queryCusObj global_curStatus.serveCustomerId}}
+        {{log "global_curStatus HBS queryCusObj" global_curStatus.queryCusObj global_curStatus.serveCustomerId}}
         {{#callbusi/customer-selecter serveCustomerSelected=global_curStatus.serveCustomer healtyCustomerSelected=global_curStatus.healtyCustomer
             logCustomerSelected=global_curStatus.logCustomer attendanceEmployeeSelected=global_curStatus.attendanceEmployee isSquare=isSquare
             serveCustomerId=global_curStatus.serveCustomerId healtyCustomerId=global_curStatus.healtyCustomerId logCustomerId=global_curStatus.logCustomerId
-            attendanceEmployeeId=global_curStatus.attendanceEmployeeId queryCusObj=global_curStatus.queryCusObj isExpandMode=isExpandMode}}
+            attendanceEmployeeId=global_curStatus.attendanceEmployeeId queryCusObj=global_curStatus.queryCusObj isExpandMode=isExpandMode routeId=routeId}}
         {{/callbusi/customer-selecter}}
         {{#if (eq isSquare 12)}}
+          {{#if hasDateSelect}}
+            <div class="time-search-mobile">
+              {{#if global_curStatus.attendanceEmployeeId}}
+                {{#callbusi/mobile/time-search-mobile searchTimeChange="searchTimeChange"}}
+                {{/callbusi/mobile/time-search-mobile}}
+              {{/if}}
+            </div>
+          {{/if}}
+        {{else if (eq isSquare 7)}}
+          {{callbusi/mobile/switch-service routeId=routeId}}
         {{else}}
-          <div class="header-bar-scan" id="customer_scan" {{action "header_Scan" on="tap"}}>
+          <div class="header-bar-scan" id="{{routeId}}-scan" {{action "header_Scan" on="tap"}}>
             <img class="" style="width:20px;height:20px" src="assets/images/icon/scan.png"/>
           </div>
         {{/if}}
       {{/if}}
-      <!-- {{global_curStatus.serveCustomerId}} -->
   {{/if}}
 
   <div class="mobile-logo">
+    {{log "backRoutePath in hbs:" backRoutePath}}
+    {{log "currentMobileFunctionsNums in hbs:" currentMobileFunctionsNums}}
+    {{log "routeId in hbs:" routeId}}
     {{#if backRoutePath}}
-      {{#unless hiddenBackIcon}}
-        <div id="pageBackBtn" class="pull-left marginLeft0" {{action "transPage" on="tap"}}>
-          <a class="the-a" href="javascript:void(0)">
-            <i class="fa-angle-left header-text-color fontSize20"></i> &nbsp;
-          </a>
-        </div>
-      {{/unless}}
+      <div id="{{routeId}}-pageBackBtn" class="pull-left marginLeft0" {{action "transPage" on="tap"}}>
+        <a class="the-a" href="javascript:void(0)">
+          <i class="fa-angle-left header-text-color fontSize20"></i> &nbsp;
+        </a>
+      </div>
     {{else}}
       {{log "is not backRoutePath"}}
       {{#if currentMobileFunctionsNums}}
-        <div id="pageBackBtn" class="pull-left marginLeft0 topF3" {{action "transPage" "function-page" on="tap"}}>
+        <div id="{{routeId}}-pageBackBtn" class="pull-left marginLeft0 topF3" {{action "transPage" "function-page" on="tap"}}>
           <a class="the-a" href="javascript:void(0)">
             <i class="fa-home header-text-color font20"></i> &nbsp;
           </a>
@@ -55,59 +71,5 @@
     {{/if}}
 
   </div>
-
-
-
-  <!-- This will toggle the mobile menu and will be visible only on mobile devices -->
-  {{#if  (eq service_PageConstrut.curRouteName "customer-service-m")}}
-  <div class="header-bar-scan" id="customer_scan" {{action "header_Scan" on="tap"}}>
-    <img class="" style="width:20px;height:20px" src="assets/images/icon/scan.png"/>
-  </div>
-  {{/if}}
-  <div class="positionNoRel mobile-menu-toggle visible-xs">
-    <!--不同页面对应不同的功能组件-->
-    {{#if  (eq service_PageConstrut.curRouteName "customer-service-m")}}
-    <div class="header-bar-search" id="customer_search">
-      {{#ui/icon-button class="font20 top12 color-white" iconClass="fa fa-search"
-      clickAction="header_customerSearch" header_customerSearch="header_customerSearch"}}
-      {{/ui/icon-button}}
-    </div>
-    {{/if}}
-
-    {{#if  (eq isSquare 2)}}
-      <div class="header-bar-save">
-        <button class='btn-none white-text-color background-transparent' {{action "header_saveFun"}}>保存</button>
-      </div>
-    {{/if}}
-
-    <!-- {{#if  (eq isEdit 8)}}
-      <div class="header-bar-save">
-        <button class='btn-none white-text-color background-transparent' {{action "header_saveFunCon"}}>保存</button>
-      </div>
-    {{/if}}
-
-    {{#if  (eq isEditBack 8)}}
-      <div class="header-bar-save">
-        <button class='btn-none white-text-color background-transparent' {{action "header_saveFunBack"}}>保存</button>
-      </div>
-    {{/if}}
-
-    {{#if  (eq isEditBack 9)}}
-      <div class="header-bar-save">
-        <button class='btn-none white-text-color background-transparent' {{action "header_saveFunDelivery"}}>保存</button>
-      </div>
-    {{/if}}
-
-    {{#if  (eq isEditBack 10)}}
-      <div class="header-bar-save">
-        <button class='btn-none white-text-color background-transparent' {{action "header_saveFunMS"}}>保存</button>
-      </div>
-    {{/if}}
-
-    {{#if  (eq isEditBack 11)}}
-      <div class="header-bar-save">
-        <button class='btn-none white-text-color background-transparent' {{action "header_saveFunCS"}}>保存</button>
-      </div>
-    {{/if}} -->
-  </div>
 </mobile-header>
+{{/unless}}

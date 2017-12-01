@@ -1,0 +1,38 @@
+
+	<div class="col-sm-12">
+		<div class="box margin-middle max-width">
+			<!-- BOX-BODY -->
+			<div class="box-body">
+				<div class="row">
+					<div class="col-xs-12">
+						<p class="user-add-btn">
+						</p>
+					</div>
+					<div class="col-xs-12 nopadding-left">
+						<div class="col-xs-12 col-sm-6">
+								<div class="form-input-group">
+										<span class="input-group-addon">订餐日期：</span>
+										<div class="input-group-content">{{foodplan.diningDateStr}}</div>
+								</div>
+						</div>
+					</div>
+          <div class="divide-10" style="clear:both" />
+					{{#each foodPlanInfo as |foodTime|}}
+						<div class="bottom12 col-sm-12  border-bottom" style="height:26px;">
+								<strong class="font16 font-black">{{foodTime.foodTime.typename}}</strong>
+						</div>
+						<div class="divide-10" style="clear:both" />
+						{{#each foodTime.list as |foodType|}}
+							<div class='col-sm-12'><div class="col-sm-1 center">{{foodType.foodType.typename}}</div>
+								{{#each foodType.list as |plan|}}
+								{{#callbusi/food-card plan=plan choosed='choosed' }}
+								{{/callbusi/food-card}}
+								{{/each}}
+							</div>
+						{{/each}}
+					{{/each }}
+				</div>
+			</div>
+			<!-- /BOX-BODY -->
+		</div>
+	</div>

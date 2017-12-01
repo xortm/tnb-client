@@ -6,7 +6,6 @@ export default Ember.Controller.extend(InfiniteScroll,{
   infiniteModelName: "",
   infiniteContainerName:"userSportsUploadContainer",
 
-  moment: Ember.inject.service(),
   service_PageConstrut:Ember.inject.service("page-constructure"),
   mainController: Ember.inject.controller('business.mainpage'),
   pathConfiger: Ember.inject.service("path-configer"),
@@ -15,7 +14,12 @@ export default Ember.Controller.extend(InfiniteScroll,{
   statusService: Ember.inject.service("current-status"),
   constants:Constants,
 
-  queryFlagIn: function(){return;},
+  init:function(){
+    this.hideAllLoading();
+  },
+  queryFlagIn(){
+    this.hideAllLoading();
+  },
 
   actions:{
     switchPage:function (menuLink,elementId) {//个人信息 界面

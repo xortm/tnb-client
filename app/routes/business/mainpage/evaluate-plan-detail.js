@@ -52,7 +52,7 @@ export default BaseBusiness.extend({
                 questionList.objectAt(i).set('seq',i+1);
               }
               questionList.forEach(function(question){
-                let seq = ['A','B','C','D','E','F','G'];
+                let seq = ['A','B','C','D','E'];
                 let answerList = question.get('answerList').sortBy('seq');
                 for(let i=0;i<answerList.get('length');i++){
                   answerList.objectAt(i).set('curIndex',seq[i]);

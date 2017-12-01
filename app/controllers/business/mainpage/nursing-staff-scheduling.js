@@ -35,6 +35,9 @@ export default Ember.Controller.extend({
     let staffList = this.get('staffList');
     let schedules = this.get('staffschedules');
     let list = new Ember.A();
+    if(!staffList){
+      return ;
+    }
     //查询所有已选护工的排班信息
     if(staffList){
       if(schedules){
@@ -57,6 +60,9 @@ export default Ember.Controller.extend({
     let staffList = this.get('staffList');
     let schedules = this.get('staffschedules');
     let list = new Ember.A();
+    if(!staffList){
+      return ;
+    }
     //查询所有已选护工的排班信息
     if(staffList){
       if(schedules){
@@ -345,6 +351,9 @@ export default Ember.Controller.extend({
     //1、员工ID集合
     let staffList = this.get('staffList');
     let staffIds = '';
+    if(!staffList){
+      return ;
+    }
     staffList.forEach(function(staff){
 
       staffIds += staff.get('id') + ',';
@@ -415,6 +424,15 @@ export default Ember.Controller.extend({
     let leaveList = this.get('leaveList');
     if(!workList){
       return null;
+    }
+    if(!schedules){
+      return ;
+    }
+    if(!weekList){
+      return ;
+    }
+    if(!dayList){
+      return ;
     }
     if(!this.get('staffList')){
       schedules.forEach(function(schedule){

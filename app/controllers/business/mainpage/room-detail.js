@@ -87,9 +87,8 @@ export default Ember.Controller.extend(RoomValidations,{
   //本地床位数据同步
   bedDataAdjust:function(callback){
     let _self = this;
-    let busi = App.lookup("route:business");
     //通过刷新数据来同步
-    busi.rebuildBuiding(function(){
+    this.get('global_dataLoader').rebuildBuiding(function(){
       callback();
     });
   },
@@ -181,6 +180,7 @@ export default Ember.Controller.extend(RoomValidations,{
           beds[i].bedType = bedList.objectAt(i).get('bedType.id')||0;
           console.log('bedList.objectAt(i):bedType',bedList.objectAt(i).get('bedType'));
           beds[i].price = bedList.objectAt(i).get('price');
+          beds[i].totalPrice = bedList.objectAt(i).get('totalPrice');
           beds[i].remark = bedList.objectAt(i).get('remark');
           beds[i].delFlag = 0;
           beds[i].button = bedList.objectAt(i).get('button.id')||'0';//绑定按键
@@ -236,7 +236,7 @@ export default Ember.Controller.extend(RoomValidations,{
           if(beds.get('length')){
             let count = 0;
             bedList.forEach(function(bed){
-              if(_self.bedNameValidate(bed)&&_self.bedPriceValidate(bed)){
+              if(_self.bedNameValidate(bed)){
                 count++;
               }
             });
@@ -345,6 +345,8 @@ export default Ember.Controller.extend(RoomValidations,{
       }
       if(bedList.get('length')<10){
         let newBed = this.store.createRecord('bed',{});
+        newBed.set('price',0);
+        newBed.set('totalPrice',0);
         list.pushObject(newBed);
         this.set('bedList',list);
       }else{
@@ -407,6 +409,7 @@ export default Ember.Controller.extend(RoomValidations,{
           beds[i].name = bedList.objectAt(i).get('name');
           beds[i].bedType = bedList.objectAt(i).get('bedType.id')||0;
           beds[i].price = bedList.objectAt(i).get('price');
+          beds[i].totalPrice = bedList.objectAt(i).get('totalPrice');
           beds[i].remark = bedList.objectAt(i).get('remark');
           beds[i].delFlag = 0;
           beds[i].button = bedList.objectAt(i).get('button.id')||'0';//绑定按键
@@ -437,6 +440,7 @@ export default Ember.Controller.extend(RoomValidations,{
           delBeds[i].name = delBedList.objectAt(i).get('name');
           delBeds[i].bedType = delBedList.objectAt(i).get('bedType.id')||0;
           delBeds[i].price = delBedList.objectAt(i).get('price');
+          delBeds[i].totalPrice = delBedList.objectAt(i).get('totalPrice');
           delBeds[i].remark = delBedList.objectAt(i).get('remark');
           delBeds[i].delFlag = 1;
         }
@@ -473,7 +477,7 @@ export default Ember.Controller.extend(RoomValidations,{
           if(beds.get('length')){
             let count = 0;
             bedList.forEach(function(bed){
-              if(_self.bedNameValidate(bed)&&_self.bedPriceValidate(bed)){
+              if(_self.bedNameValidate(bed)){
                 count = count+1;
               }
             });
@@ -518,7 +522,7 @@ export default Ember.Controller.extend(RoomValidations,{
 
               _self.set('roomInfo',roomInfo);
               var floor = _self.store.peekRecord('floor',roomInfo.get('floor.id'));
-            
+
               var mainpageController = App.lookup('controller:business.mainpage');
 
               _self.store.query('bed',{}).then(function(list){

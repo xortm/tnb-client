@@ -12,7 +12,8 @@ export default BaseBusiness.extend({
   },
   setupController: function(controller,model){
     this._super(controller,model);
-
+    window.open('http://m.kyserver01.com/');
+    // window.location.href="http://m.kyserver01.com/";
     // var curCustomer = this.get("statusService").getCustomer();//获取居家curCustomer
     // console.log("curCustomer jujia",curCustomer);
     // var curCustomerId = curCustomer.get("id");//获取居家curCustomerId

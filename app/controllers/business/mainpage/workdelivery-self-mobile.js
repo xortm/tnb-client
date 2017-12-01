@@ -72,7 +72,7 @@ export default Ember.Controller.extend(InfiniteScroll, {
                     _self.hideAllLoading();
                 });
             }
-
+        _self.get("feedService").set("workdeliSelfFlag",false);
     }.observes("queryFlagInFlag").on("init"),
     workdeliveryReceiveObs: function() {
         var _self = this;
@@ -102,7 +102,7 @@ export default Ember.Controller.extend(InfiniteScroll, {
                   _self.hideAllLoading();
                 });
             }
-
+        _self.get("feedService").set("workdeliSelfFlag",false);
     }.observes("queryFlagInFlag").on("init"),
     queryFlagIn() {
         this.incrementProperty("queryFlagInFlag");
@@ -136,6 +136,15 @@ export default Ember.Controller.extend(InfiniteScroll, {
 
 
     actions: {
+      switchShowAction(){
+        this.directInitScoll();
+        this.incrementProperty("directInitScollFlag");
+        let assessmentFlag = this.get("feedService").get("workdeliSelfFlag");
+        if(assessmentFlag){
+          this.workdeliveryReceiveObs();
+          this.workdeliverySendObs();
+        }
+      },
       didInsertElement(){
         console.log("insert e in");
         this.directInitScoll();
@@ -145,24 +154,36 @@ export default Ember.Controller.extend(InfiniteScroll, {
         this.get("dataLoader").set('conTabCode', code);
         this.set("curTabCode",code);
       },
-        switchShowAction() {
-            this.incrementProperty("directInitScollFlag");
-        },
         addWorkdelivery: function() {
             var _self = this;
-            var params = {
-                source: 'add',
-                itemIdFlag:Math.random(),
-                opType:"send"
-            };
-
-            var itemId = "addWorkdelivery";
-            $("#" + itemId).addClass("tapped");
-            Ember.run.later(function(){
-              $("#" + itemId).removeClass("tapped");
-              var mainpageController = App.lookup('controller:business.mainpage');
-              mainpageController.switchMainPage('workdelivery-detail-mobile', params); 
-            },200);
+            // var params = {
+            //     source: 'add',
+            //     itemIdFlag:Math.random(),
+            //     opType:"send"
+            // };
+            let curuser = this.get('global_curStatus').getUser();
+            let workdeliveryItem = this.get('store').createRecord('workdelivery', {
+                createDateTime:_self.get("dataLoader").getNowTime(),
+                sender: curuser.get('employee'),
+                status:_self.get('dataLoader').findDict('workDeliveryStatus1'),
+                delStatus: 0
+            });
+            workdeliveryItem.save().then(function(data) {
+              _self.get("feedService").set("workdeliveryData", data);
+              var params = {
+                  itemId: data.get("id"),
+                  itemIdFlag: Math.random(),
+                  source: "edit",
+                  opType:'send',
+              };
+              var itemId = "addWorkdelivery";
+              $("#" + itemId).addClass("tapped");
+              Ember.run.later(function(){
+                $("#" + itemId).removeClass("tapped");
+                var mainpageController = App.lookup('controller:business.mainpage');
+                mainpageController.switchMainPage('workdelivery-detail-mobile', params);
+              },200);
+            });
         },
         //跳转到detail页面
         gotoWorkdeliveryDetail(type,data) {

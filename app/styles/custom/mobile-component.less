@@ -61,6 +61,11 @@
   background-color:#289B62;
   //height:40px;
   width:100%;
+  -moz-box-shadow:0px 0px 5px #666666;
+  -webkit-box-shadow:0px 0px 5px #666666;
+  box-shadow:0px 0px 5px #666666;
+  z-index: 1000;
+  border-top: 1px solid #ffffff;
 }
 .inner-tab.block-mode{
   background-color:@bar-background-color;
@@ -72,8 +77,8 @@
   text-align: center;
   // padding:9px 0;不要header-bar的修改 task-square 因为有了line-height 注释
   // height:40px;//不要header-bar的修改 task-square
-  height:44px;
-  line-height:44px;
+  height:40px;
+  line-height:40px;
   overflow:hidden;
 }
 .abs-top-0 .tab-item{
@@ -132,12 +137,12 @@
 .customer-detail .tab-item{
   width: 33.3%;
   color: #999999;
-  background: #fff;
+  background: #ffffff;
 }
 .service-care .tab-item{
   width: 50%;
   color: #999999;
-  background: #fff;
+  background: #ffffff;
 }
 .customer-detail .tab-item.selected .tab-text , .service-care .tab-item.selected .tab-text{
   span{
@@ -507,12 +512,19 @@
     margin-top:15px;
   }
 }
-
+.text-input{
+  padding:0 13px;
+  input{
+    border:none;
+    border-bottom: 1px solid !important;
+    border-color: #26b934 !important;
+  }
+}
 .detail-tosure{
   margin: 15px 10px 0 10px;
   height: 40px;
   line-height: 40px;
-  background: #2FA7FD;
+  background: #26b934;
   color: #fff;
   text-align: center;
   border-radius: 4px;
@@ -657,5 +669,32 @@
     -webkit-tap-highlight-color: rgba(255,0,0,0);
     background: #fff;
     color: #999;
+  }
+}
+
+/*订单列表上部的tabbar条*/
+#service-order-tabbar{
+  position: fixed;
+  top: 44px;
+  background-color:#ffffff;
+  width:100%;
+  height: 40px;
+  -moz-box-shadow:0px 0px 5px #666666;
+  -webkit-box-shadow:0px 0px 5px #666666;
+  box-shadow:0px 0px 5px #666666;
+  z-index: 1000;
+  .tabbar{
+    float: left;
+    // width: 20%;
+    height: 40px;
+    font-size: 13px;
+    color: #5F646E;
+    line-height: 38px;
+    text-align: center;
+    border-bottom: 2px solid #ffffff;
+  }
+  .select{
+    color: #FF5000;
+    border-bottom: 2px solid #FF5000;
   }
 }

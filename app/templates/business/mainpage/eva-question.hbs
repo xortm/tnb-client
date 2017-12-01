@@ -20,46 +20,7 @@
                             <!--搜索-->
                         </div>
                         <div class="col-sm-7 nopadding-right nopadding-left">
-                            <!-- <div class="data-title pull-left ">按时间搜索：</div>
-           <span class="date-range pull-left">
-             <div class="btn-group">
-               <a class="js_update btn btn-default" href="#" {{action "search" "today" on="click"}}>今天</a>
-               <a class="js_update btn btn-default" href="#" {{action "search" "seven" on="click"}}>最近7天</a>
-               <a class="js_update btn btn-default " href="#" {{action "search" "thirty" on="click"}}>最近一个月</a>
 
-               <a id="reportrange" class="btn reportrange" {{action "showDate" on="click"}}>
-                 <i class="fa fa-calendar"></i>
-                 <span>自定义日期</span>
-                 <i class="fa fa-angle-down"></i>
-               </a>
-             </div>
-
-             {{#if dateShow}}
-             <div class="date-box form-input-group">
-                 <div class="row">
-                   <div class="col-xs-4 col-sm-4 org-title">开始时间：</div>
-                   <div class="col-xs-8 col-sm-8">
-                 {{ui/addon/bs-datetimepicker date=null placeholder="开始时间"
-                   locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'
-                    show="dpShowAction"  change="changeBeginDateAction"}}
-                   </div>
-                 </div>
-                 <div class="row">
-                   <div class="col-xs-4 col-sm-4 org-title">结束时间：</div>
-                   <div class="col-xs-8 col-sm-8">
-                 {{ui/addon/bs-datetimepicker date=null placeholder="结束时间"
-                   locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'
-                    show="dpShowAction"  change="changeEndDateAction"}}
-                   </div>
-                 </div>
-                 <div class="btn-row text-center">
-                   <button class="btn btn-primary"  {{action "hideDate"  on="click"}}><i class="fa fa-check icon-white"></i>&ensp;确定</button>
-                   <button class="btn btn-light-grey"  {{action "hideDate" on="click"}}><i class="fa fa-times"></i>&ensp;取消</button>
-                 </div>
-             </div>
-             {{else}}
-             {{/if}}
-           </span> -->
                             {{callbusi/time-search class="inline-block" text='按评估日期搜索' dateShow=dateShow chooseDate=chooseDate search="search"
            submmit="submmit" emptied='emptied' changeBeginDateAction='changeBeginDateAction' changeEndDateAction='changeEndDateAction'}}
                         </div>
@@ -73,10 +34,10 @@
                     <thead>
                         <tr role="row">
                             <th rowspan="1" colspan="1" width="">老人姓名</th>
-                            <th rowspan="1" colspan="1" width="">身份证号</th>
                             <th rowspan="1" colspan="1" width="">房间及床位</th>
-                            <!-- <th rowspan="1" colspan="1" width="">评估模板</th> -->
-                            <!-- <th rowspan="1" colspan="1" class="" width="">评估结果</th> -->
+                            <th rowspan="1" colspan="1" width="">完成状态</th>
+                            <th rowspan="1" colspan="1" width="">对应自理等级</th>
+                            <th rowspan="1" colspan="1" width="">对应护理等级</th>
                             <th rowspan="1" colspan="1" class="" width="">评估人</th>
                             <th rowspan="1" colspan="1" class="" width="">评估日期</th>
                         </tr>
@@ -84,13 +45,34 @@
                     {{#if evaluateList}}
                         <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
                             {{#each evaluateList as |evaluate|}}
-                                {{log "evaluate item" evaluate}}
                                 <tr class="gradeA odd" {{action "goDetail" evaluate on="click"}}>
                                     <td class=" ellipsis sorting_1">{{evaluate.customer.name}}</td>
-                                    <td class=" ellipsis ">{{evaluate.customer.cardCode}}</td>
                                     <td class=" ellipsis ">{{evaluate.customer.bed.roomBedName}}</td>
-                                    <!-- <td class=" ellipsis ">{{evaluate.model.title}}</td> -->
-                                    <!-- <td class=" ellipsis ">{{{evaluate.evaResult}}}</td> -->
+                                    <td class=" ellipsis ">
+                                      {{#if (eq evaluate.doneFlag 0)}}
+                                        <span style="color:red;">{{evaluate.doneFlagName}}</span>
+                                      {{else}}
+                                        {{evaluate.doneFlagName}}
+                                      {{/if}}
+                                    </td>
+                                    <td class=" ellipsis ">
+                                      {{#if (eq evaluate.doneFlag 1)}}
+                                        {{#if evaluate.actionLevel}}
+                                          {{evaluate.actionLevel.typename}}
+                                        {{else}}
+                                          无法计算
+                                        {{/if}}
+                                      {{/if}}
+                                    </td>
+                                    <td class=" ellipsis ">
+                                      {{#if (eq evaluate.doneFlag 1)}}
+                                        {{#if evaluate.level}}
+                                          {{evaluate.level.name}}
+                                        {{else}}
+                                          无法计算
+                                        {{/if}}
+                                      {{/if}}
+                                    </td>
                                     <td class=" ellipsis ">
                                         <span class="ellipsis floatLeft width90">{{evaluate.user.name}}</span>
                                     </td>
@@ -99,7 +81,6 @@
                             {{/each}}
                         </tbody>
                     {{else}}
-                        <div class="nodate">暂无数据</div>
                     {{/if}}
                 </table>
                 <!-- {{#if evaluateList }}

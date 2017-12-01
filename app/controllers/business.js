@@ -1,9 +1,6 @@
 import Ember from 'ember';
-import Cookies from 'ember-cli-js-cookie';
-import TableExport from '../addon/tableExport';
 
 export default Ember.Controller.extend({
-  notify: Ember.inject.service(),
   service_PageConstrut:Ember.inject.service("page-constructure"),
   service_dataLoader:Ember.inject.service("data-loader"),
   service_cordova:Ember.inject.service("cordova"),
@@ -39,21 +36,15 @@ export default Ember.Controller.extend({
       // this.initJqueryPlugin();
     });
   },
-  showHeaderAndFooter:Ember.computed('service_PageConstrut.curRouteName',function(){
-    var curRoutePath=this.get('service_PageConstrut').get('curRouteName');
-    if(curRoutePath==="function-page"){
-      return false;
-    }
-    return true;
-  }),
-
   //观察用户切换功能区,生成不同的footbar菜单
   footBarMenusShowObs: function() {
     let _self = this;
     console.log("run footBarMenusShowObs");
     let footBarMenusShowFlag = this.get("global_curStatus").get("footBarMenusShowFlag");
     console.log("footBarMenusShowFlag in business:",footBarMenusShowFlag);
-    if(footBarMenusShowFlag === null){
+    let switchServiceFlag = this.get("global_curStatus").get("switchServiceFlag");
+    console.log("switchServiceFlag in business:",switchServiceFlag);
+    if(footBarMenusShowFlag === null || switchServiceFlag === null){
       return;
     }
     if(this.get("global_curStatus.isMobile")){
@@ -75,13 +66,8 @@ export default Ember.Controller.extend({
           if(menu.get("code")==="service-care"||
           menu.get("code")==="service-nurse"||
           menu.get("code")==="customer-business"||
-          // menu.get("code")==="customer-health"||
           menu.get("code")==="cs-info"||
-          menu.get("code")==="customer-warning"||
-          // menu.get("code")==="customer-point"||
-          // menu.get("code")==="pressure-sores-care"||
-          // menu.get("code")==="customer-dynamic-list"||
-          menu.get('code')==="nurse-log"){
+          menu.get("code")==="customer-warning"){
             return true;
           }
         }else if(footBarMenusShowFlag == "manager"){
@@ -89,6 +75,7 @@ export default Ember.Controller.extend({
           if(menu.get("code")==="attendance-check"||
           menu.get("code")==="employee-assessment"||
           menu.get("code")==="view-score"||
+          menu.get("code")==="service-check-list-mobile"||
           //menu.get("code")==="connect-manage"||
           menu.get("code")==="workdelivery-view-mobile"||
           menu.get("code")==="cs-info"){
@@ -125,31 +112,22 @@ export default Ember.Controller.extend({
       //设置菜单分组
       if(footBarMenusShowFlag == "cs-user"){
         mobileMenusFilter.forEach(function(menu){
-
           //重置选中状态
           menu.set("selected",false);
-          let careChoice = localStorage.getItem(Constants.uickey_careChoice);
+          // let switchServiceFlag = _self.get("global_curStatus.switchServiceFlag");
+          // let careChoice = localStorage.getItem(Constants.uickey_careChoice);
+          console.log("switchServiceFlag:",switchServiceFlag);
           if(menu.get("code")==="service-care"){
-            //分组菜单
-            let menuGroup = Ember.Object.create({
-              code: "menuGroupCare",
-              isMenuGroup: true,
-              menus:[]
-            });
-            menu.set("menuGroupOrder",1);
             //默认顯示第一個
-            if(!careChoice||careChoice==="service-care"){
+            if(switchServiceFlag&&switchServiceFlag==="service-care"){
               menu.set("selected",true);
+              mobileMenusEnd.pushObject(menu);
             }
-            menuGroup.get("menus").pushObject(menu);
-            mobileMenusEnd.pushObject(menuGroup);
           }else if(menu.get("code")==="service-nurse"){
-            let menuGroup = mobileMenusEnd.findBy("code","menuGroupCare");
-            menu.set("menuGroupOrder",2);
-            if(careChoice&&careChoice==="service-nurse"){
+            if(switchServiceFlag&&switchServiceFlag==="service-nurse"){
               menu.set("selected",true);
+              mobileMenusEnd.pushObject(menu);
             }
-            menuGroup.get("menus").pushObject(menu);
           // }else if(menu.get("code")==="customer-health"){
           //   //分组菜单
           //   let menuGroup = fetchGroup("menuGroupCustomerHealth");
@@ -170,23 +148,25 @@ export default Ember.Controller.extend({
           //   menu.set("menuGroupOrder",4);
           //   menuGroup.get("menus").pushObject(menu);
           }
-          else if(menu.get("code")==="customer-warning"){
-            //分组菜单
-            let menuGroup = fetchGroup("menuGroupNurseLog");
-            menu.set("menuGroupOrder",1);
-            //默认顯示第一個
-            menu.set("selected",true);
-            menuGroup.get("menus").pushObject(menu);
-          }else if(menu.get("code")==="nurse-log"){
-            console.log("customer-warning yes");
-            let menuGroup = fetchGroup("menuGroupNurseLog");
-            menu.set("menuGroupOrder",2);
-            menuGroup.get("menus").pushObject(menu);
-          }else{
+          // else if(menu.get("code")==="customer-warning"){
+          //   //分组菜单
+          //   let menuGroup = fetchGroup("menuGroupNurseLog");
+          //   menu.set("menuGroupOrder",1);
+          //   //默认顯示第一個
+          //   menu.set("selected",true);
+          //   menuGroup.get("menus").pushObject(menu);
+          // }else if(menu.get("code")==="nurse-log"){
+          //   console.log("customer-warning yes");
+          //   let menuGroup = fetchGroup("menuGroupNurseLog");
+          //   menu.set("menuGroupOrder",2);
+          //   menuGroup.get("menus").pushObject(menu);
+          // }
+          else{
             //单个菜单
             mobileMenusEnd.pushObject(menu);
           }
         });
+        console.log("need set menu",mobileMenusEnd);
         this.set("mobileMenus",mobileMenusEnd);
       }else if(footBarMenusShowFlag == "manager"){
         mobileMenusFilter.forEach(function(menu){
@@ -202,6 +182,10 @@ export default Ember.Controller.extend({
           }else if(menu.get("code")==="view-score"){
             let menuGroup = fetchGroup("menuGroupEmployeeAssessment");
             menu.set("menuGroupOrder",2);
+            menuGroup.get("menus").pushObject(menu);
+          }else if(menu.get("code")==="service-check-list-mobile"){
+            let menuGroup = fetchGroup("menuGroupEmployeeAssessment");
+            menu.set("menuGroupOrder",3);
             menuGroup.get("menus").pushObject(menu);
           }else{
             //单个菜单
@@ -227,7 +211,7 @@ export default Ember.Controller.extend({
 
     }
 
-  }.observes("global_curStatus.footBarMenusShowFlag").on("init"),
+  }.observes("global_curStatus.footBarMenusShowFlag","global_curStatus.switchServiceFlag").on("init"),
 
   layoutInit: function(){
     jQuery('.sidebar').removeClass("hidden");
@@ -400,6 +384,19 @@ export default Ember.Controller.extend({
       Ember.run.later(function(){
         $("#footerTor").fadeOut(1000);
       },3000);
+    });
+  },
+
+  /*显示select-bar提示信息*/
+  selectBarMsg: function(msg){
+    let _self = this;
+    this.set("selectBarTorMsg",true);
+    this.set("selectBarMessage",msg);
+    $("#selectBarTor").show();
+    $("#selectBarTor").fadeIn(500,function(){
+      Ember.run.later(function(){
+        $("#selectBarTor").fadeOut(300);
+      },500);
     });
   },
 

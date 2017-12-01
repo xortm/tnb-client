@@ -26,10 +26,10 @@ export default BaseBusiness.extend({
     if(countT){controller.set('count',true);}else {
       controller.set('count',false);
     }
+    let serviceitemInfo = this.store.peekRecord('customerserviceitem',id);
+    controller.set('serviceitemInfo',serviceitemInfo);
     if(editMode=='edit'){
       controller.set('detailEdit',false);
-      let serviceitemInfo = this.store.peekRecord('customerserviceitem',id);
-      controller.set('serviceitemInfo',serviceitemInfo);
       this.store.query('servicefinishlevel',{filter:{item:{id:id}}}).then(function(resultList){
         if(resultList.get('length')>0){
           controller.set('resultList',resultList);
@@ -41,8 +41,8 @@ export default BaseBusiness.extend({
         controller.set('serviceitemInfo.merchList',merchs);
       });
     }else{
-      controller.set('serviceitemInfo',this.store.createRecord('customerserviceitem',{}));
-      controller.set('resultList',new Ember.A());
+
+      controller.set('resultList',null);
       controller.set('detailEdit',true);
     }
     this.store.query('nursemerch',{}).then(function(merchList){

@@ -74,7 +74,7 @@ export default BaseBusiness.extend({
       }
     }).then(function(customerflowInBedList){
       controller.set('customerflowInBedList',customerflowInBedList);//入住试住 老人customerflow
-      controller.set("inBedFlag",true);
+      controller.incrementProperty("inBedFlag");
     });
     this.store.query('customerbusinessflow',{
       filter:{
@@ -85,7 +85,7 @@ export default BaseBusiness.extend({
       }
     }).then(function(leaveList){
       controller.set('leaveList',leaveList);//退住老人(不包括作废)
-      controller.set("leaveFlag",true);
+      controller.incrementProperty("leaveFlag");
     });
 
 

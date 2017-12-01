@@ -7,6 +7,21 @@ export default Ember.Controller.extend(InfiniteScroll,{
   nocustomerId:false,
   infiniteContainerName:"evaluationInfoContainer",
   scrollPrevent:true,
+  levelNameObs:function(){
+    let _self = this;
+    let score = this.get('score');
+    let riskLevelList = this.get('feedService.riskLevelList');
+    if(!score){
+      this.set('levelName','无');
+      return;
+    }
+    riskLevelList.forEach(function(level){
+      console.log('levelName',level.get('levelName'));
+      if((score<=level.get('maxScore'))&&(score>=level.get('minScore'))){
+        _self.set('levelName',level.get('levelName'));
+      }
+    });
+  }.observes('score').on('init'),
   customerObs: function(){
     let _self = this;
     let customerId = this.get("global_curStatus.healtyCustomerId");
@@ -176,6 +191,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
         $(elementId).removeClass("tapped");
         Ember.run.later(function(){
           let newResult = _self.store.createRecord('evaluateresult',{});
+          console.log('save new eva 1111111');
           newResult.save().then(function(result){
           _self.get("mainController").switchMainPage('evaluate-template',{resultId:result.get('id')});
           });

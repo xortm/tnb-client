@@ -34,8 +34,6 @@
           </div>
         {{/each}}
         <div class="col-sm-12" style="height:16px;"></div>
-        {{else}}
-        <div class="col-sm-12 center nopadding-left" style="font-size:24px;">暂无数据</div>
         {{/if}}
         {{#if customerList }}
             {{page-numbers content=customerList showFL=true numPagesToShow=3 export=true}}
@@ -91,7 +89,12 @@
           <div id='drug-tab-content' class="tab-content fade in nopadding-left nopadding-right"  style="width:100%;">
               <div class="tab-pane fade in active"  style="width:100%;" id="tab_1_1">
                 <div class='col-sm-12 border-bottom nopadding-left' style="height:42px;">
+                  {{#if couldAddDrug}}
                   <span class="pointer add-drug" {{action 'detailDrug' on='click'}}>+</span>
+                  {{else}}
+                  <span class="add-drug">+</span>
+                  {{/if}}
+                  {{log "length::" customerdrugList.length}}
                   <span style="font-size:14px;color:#555;">&nbsp;当前共有&nbsp;<b style="font-size:16px;color:#333;">{{customerdrugList.length}}</b>&nbsp;种药品</span>
                 </div>
                   {{#each customerdrugList as |drug|}}
@@ -237,19 +240,19 @@
                     <div class="col-sm-1 nopadding-left nopadding-right drug-icon" style="width:50px;margin-top:-4px;">
                       {{ui/img-intergration name="avatarImg" imgSrc='assets/images/icon/u45.png'}}
                     </div>
-                    <div class="col-sm-11  nopadding-left" style="font-size:13px;">
-                      <div class="col-sm-12 nopadding-left">
+                    <div class="col-sm-11  nopadding-left nopadding-right" style="font-size:13px;">
+                      <div class="col-sm-12 nopadding-left nopadding-right">
                         <span style="font-size:14px;color:#555;font-weight:bold;">{{drug.customerDrug.drug.name}}&nbsp;</span>
                         <span class="title">剂量单位：</span>
                         <span class="text">{{drug.customerDrug.drug.drugSpec.typename}}</span>
                       </div>
-                      <div class="col-sm-12 nopadding-left">
+                      <div class="col-sm-12 nopadding-left nopadding-right">
                         <span class="title">频次(次/天)：</span>
                         <span class="text">{{drug.project.useDrugFreq}}/1</span>
                         <span class="title"><span style="display:inline-block;width:50px;"></span>用药数量({{drug.customerDrug.drug.drugSpec.typename}}/次)：</span>
                         <span class="text">{{drug.project.useDrugNum}}</span>
                       </div>
-                      <div class="col-sm-12 nopadding-left">
+                      <div class="col-sm-12 nopadding-left nopadding-right">
                         <span class="title">执行时间：</span>
                         <span class="text">{{drug.exeDateString}}</span>
                         <span class="title"><span style="display:inline-block;width:30px;"></span>实际用药数量({{drug.customerDrug.drug.drugSpec.typename}})：</span>
@@ -257,11 +260,11 @@
                         <span class="title"><span style="display:inline-block;width:30px;"></span>完成情况：</span>
                         <span class="text">{{drug.resultName}}</span>
                       </div>
-                      <div class="col-sm-12 nopadding-left">
+                      <div class="col-sm-12 nopadding-left nopadding-right">
                         <span class="title">执行人：</span>
                         <span class="text" style="width:100px;display:inline-block;">{{drug.lastUpdateUser.name}}</span>
                         <span class="title">备注</span>
-                        <span class="text">{{drug.remarkString}}</span>
+                        <span class="text" style="word-break:break-all;">{{drug.remarkString}}</span>
                       </div>
                       {{#if drug.couldDel}}
                         {{#if drug.hasSelected}}
@@ -612,7 +615,7 @@
   <div class="">
     <div class="box" style="max-height:500px;overflow-y:auto;">
       <div class="box-body" id='look-drug'>
-        <!--startprint-->
+      <div name="printbegin">
       <div class="col-sm-12 nopadding-left" style="margin-bottom:10px;">
         <span style="font-size:22px;">{{curcustomer.name}}</span>
         <span>{{curcustomer.bed.allBedName}}</span>
@@ -641,9 +644,8 @@
         </table>
         </div>
         {{else}}
-        <div class="col-sm-12 nopadding-left center" style="font-size:18px;">暂无数据</div>
         {{/if}}
-        <!--endprint-->
+        </div>
       </div>
     </div>
     <!-- /BOX -->

@@ -11,7 +11,7 @@ export default BaseBusiness.extend(Pagination,{
   buildQueryParams:function(){
     var params=this.pagiParamsSet();
     var curController = this.getCurrentController();
-    var filter={};
+    var filter={serviceSource:{typecode:'jigou'}};
     var sort;
     if (curController) {
         if (curController.get('queryCondition')) {

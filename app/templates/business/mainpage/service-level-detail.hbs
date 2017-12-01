@@ -4,12 +4,43 @@
 		<h3 class="col-sm-12 base-imformation">
 			<span class="inline-block" style="float:left;">基础信息</span>
 			<p class="user-add-btn inline-block">
-				{{#if detailEdit}}
+				{{#if isBaseTenant}}
+					{{#if detailEdit}}
+					{{else}}
+						{{#if serviceLevelInfo.delFlag}}
+							{{#ui/form-function editAction="detailEditClick" detailEditClick="detailEditClick"
+							removeAction="delById" delById="delById" clickActParams=serviceLevelInfo}}
+							{{/ui/form-function}}
+						{{else}}
+							{{#ui/form-function editAction="detailEditClick" detailEditClick="detailEditClick"
+							 deleteNone=true clickActParams=serviceLevelInfo}}
+							{{/ui/form-function}}
+						{{/if}}
+					{{/if}}
 				{{else}}
-					{{#ui/form-function editAction="detailEditClick" detailEditClick="detailEditClick"
-					removeAction="delById" delById="delById" clickActParams=serviceLevelInfo}}
-					{{/ui/form-function}}
+					{{#if isStandardModel}}
+						{{#if detailEdit}}
+						{{else}}
+							{{#ui/form-function editAction="detailEditClick" detailEditClick="detailEditClick"
+							 deleteNone=true clickActParams=serviceLevelInfo}}
+							{{/ui/form-function}}
+						{{/if}}
+					{{else}}
+						{{#if detailEdit}}
+						{{else}}
+							{{#if serviceLevelInfo.delFlag}}
+								{{#ui/form-function editAction="detailEditClick" detailEditClick="detailEditClick"
+								removeAction="delById" delById="delById" clickActParams=serviceLevelInfo}}
+								{{/ui/form-function}}
+							{{else}}
+								{{#ui/form-function editAction="detailEditClick" detailEditClick="detailEditClick"
+								 deleteNone=true clickActParams=serviceLevelInfo}}
+								{{/ui/form-function}}
+							{{/if}}
+						{{/if}}
+					{{/if}}
 				{{/if}}
+
 			</p>
 		</h3>
 		<div class="col-sm-12 mr10 " style="width:98.5%;">
@@ -22,45 +53,25 @@
 								<div class="form-input-group label-normal">
 									<span class="input-group-addon">等级名称：</span>
 									{{#if detailEdit}}
-										{{#if id}}
-											{{bs-form-element property="name" class="inline-block form-input-group label-normal" controlType="name" placeholder='等级名称(必填)'}}
+										{{#if isBaseTenant}}
+											{{bs-form-element property="name" class="inline-block form-input-group label-normal" controlType="name" placeholder='必填'}}
 										{{else}}
-											{{bs-form-element property="name" class="inline-block form-input-group label-normal" controlType="name" placeholder='等级名称(必填)'}}
+											{{#if isStandardModel}}
+												<div class="input-group-content">{{serviceLevelInfo.name}}</div>
+											{{else}}
+												{{bs-form-element property="name" class="inline-block form-input-group label-normal" controlType="name" placeholder='必填'}}
+											{{/if}}
 										{{/if}}
 									{{else}}
 										<div class="input-group-content">{{serviceLevelInfo.name}}</div>
 									{{/if}}
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-6 nopadding-right">
-								<div class="form-input-group label-normal">
-									<span class="input-group-addon">自理类型：</span>
-									{{#if detailEdit}}
-										{{#if id}}
-											{{#bs-form-element class="inline-block form-input-group" controlType="selfCareLevel"  property="selfCareLevel" }}
-												{{callbusi/dict-selector class="inline-block" curDict=serviceLevelInfo.selfCareLevel groupCode=constants.selfCareLevel placeholder='等级名称(必填)'
-													showName=serviceLevelModel.selfCareLevel.typename value=serviceLevelInfo.selfCareLevel chooseMany=true dictSelect="levelSelect" preselected=false}}
-											{{/bs-form-element}}
-										{{else}}
-											{{#bs-form-element class="inline-block form-input-group" controlType="selfCareLevel"  property="selfCareLevel" }}
-												{{callbusi/dict-selector class="inline-block" curDict=serviceLevelInfo.selfCareLevel groupCode=constants.selfCareLevel placeholder='等级名称(必填)'
-													showName='必填' value=serviceLevelModel.selfCareLevel preselected=false chooseMany=true dictSelect="levelSelect"}}
-											{{/bs-form-element}}
-										{{/if}}
-									{{else}}
-										<div class="input-group-content">{{serviceLevelInfo.selfCareLevelName}}</div>
-									{{/if}}
-								</div>
-							</div>
 							<div class="col-xs-12 col-sm-6">
 								<div class="form-input-group label-normal">
-									<span class="input-group-addon">价格(元/天)：</span>
+									<span class="input-group-addon">日价格(元/天)：</span>
 									{{#if detailEdit}}
-										{{#if id}}
-											{{bs-form-element property="price" class="inline-block form-input-group label-normal" controlType="price" placeholder='价格(必填)'}}
-										{{else}}
-											{{bs-form-element property="price" class="inline-block form-input-group label-normal" controlType="price" placeholder='价格(必填)'}}
-										{{/if}}
+										{{bs-form-element property="price" class="inline-block form-input-group label-normal" controlType="price" placeholder=''}}
 									{{else}}
 										<div class="input-group-content">{{serviceLevelInfo.price}}</div>
 									{{/if}}
@@ -68,10 +79,47 @@
 							</div>
 							<div class="col-xs-12 col-sm-6">
 								<div class="form-input-group label-normal">
+									<span class="input-group-addon">月价格(元/月)：</span>
+									{{#if detailEdit}}
+											{{bs-form-element property="totalPrice" class="inline-block form-input-group label-normal" controlType="totalPrice" placeholder=''}}
+									{{else}}
+										<div class="input-group-content">{{serviceLevelInfo.totalPrice}}</div>
+									{{/if}}
+								</div>
+							</div>
+							{{#if isBaseTenant}}
+							<div class="col-xs-12 col-sm-6">
+								<div class="form-input-group label-normal">
+									<span class="input-group-addon">规范类型：</span>
+									{{#if detailEdit}}
+										{{#power-select class="input-group-content" placeholder='' options=modelSourceList  selected=serviceLevelInfo.modelSource searchField="namePinyin"
+										noMatchesMessage="没有相关内容"	allowClear=false onchange=(action "selectModelSource" ) as |modelSource|}}
+											{{modelSource.name}}
+										{{/power-select}}
+									{{else}}
+										<div class="input-group-content">{{serviceLevelInfo.modelSource.name}}</div>
+									{{/if}}
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="form-input-group label-normal">
+									<span class="input-group-addon">等级编码：</span>
+									{{#if detailEdit}}
+										{{bs-form-element property="sourceCode" class="inline-block form-input-group label-normal" controlType="sourceCode" placeholder=''}}
+									{{else}}
+										<div class="input-group-content">{{serviceLevelInfo.sourceCode}}</div>
+									{{/if}}
+								</div>
+							</div>
+							{{/if}}
+							{{#if id}}
+							<div class="col-xs-12 col-sm-6">
+								<div class="form-input-group label-normal">
 									<span class="input-group-addon">增值服务费：</span>
 									<div class="input-group-content">{{projectInfo.valueAddPrice}}</div>
 								</div>
 							</div>
+							{{/if}}
 							<div class="col-xs-12 col-sm-12 mt10 nopadding-right">
 								<div class="form-input-group label-normal">
 									<span class="input-group-addon">备注说明：</span>

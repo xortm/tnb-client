@@ -7,6 +7,22 @@ import lookupValidator from 'ember-changeset-validations';
 
 export default BaseItem.extend(CustomerValidations,PreferenceValidations, {
     constants: Constants,
+    extendEditFlag:{
+      interest:false,
+      dietFeatures:false,
+      character:false,
+      taboo:false,
+      experiences:false
+    },
+    didInsertElement: function() {
+      let extendInfo= this.get('store').peekRecord('customer-extend',this.get("customerInComp.customerExtend.id"));
+      if(!extendInfo){
+        extendInfo = this.get('store').createRecord('customer-extend',{});
+        extendInfo.set('customer',this.get('customerInComp'));
+      }
+      this.set("extendInfo",extendInfo);
+    },
+    extendInfo:null,
     store: Ember.inject.service("store"),
     dateService: Ember.inject.service("date-service"),
     pathConfiger: Ember.inject.service("path-configer"),
@@ -70,13 +86,15 @@ export default BaseItem.extend(CustomerValidations,PreferenceValidations, {
     actions: {
         editPreference(preference){
           if(preference){
+            preference.set('newFlag',false);
             this.set('curPreference',preference);
-            this.set('editModel',true);
+            this.set('editModel',true);      
           }else{
             let customerInComp = this.get('customerInComp');
             let customer = this.get('store').peekRecord('customer',customerInComp.get('id'));
             let item = this.get('store').createRecord('customer-preference',{});
             item.set('customer',customer);
+            item.set('newFlag',true);
             this.set('curPreference',item);
             this.set('editModel',true);
             this.set('detailEdit',true);
@@ -211,13 +229,16 @@ export default BaseItem.extend(CustomerValidations,PreferenceValidations, {
           preferenceModel.validate().then(function(){
             if(preferenceModel.get('errors.length')===0){
               App.lookup('controller:business.mainpage').openPopTip("正在保存");
-              preferenceModel.save().then(function(){
+              preferenceModel.save().then(function(preference){
                 App.lookup('controller:business.mainpage').showPopTip("保存成功");
                 _self.set('editModel',false);
                 _self.set('detailEdit',false);
+                if(preferenceModel.get('newFlag')){
+                  _self.get('preferenceList').pushObject(preference);
+                }
                 _self.set('curPreference',null);
-                var route = App.lookup('route:business.mainpage.customer-info');
-                App.lookup('controller:business.mainpage').refreshPage(route);
+
+
               });
             }else{
               preferenceModel.set('validFlag',Math.random());
@@ -236,13 +257,33 @@ export default BaseItem.extend(CustomerValidations,PreferenceValidations, {
           });
         },
         cancelPassSubmit(preference){
+          let _self = this;
           App.lookup('controller:business.mainpage').openPopTip("正在删除");
           preference.set('delStatus',1);
-          preference.save().then(function(){
+          preference.save().then(function(preference){
             App.lookup('controller:business.mainpage').showPopTip("删除成功");
-            var route = App.lookup('route:business.mainpage.customer-info');
-            App.lookup('controller:business.mainpage').refreshPage(route);
+            // var route = App.lookup('route:business.mainpage.customer-info');
+            // App.lookup('controller:business.mainpage').refreshPage(route);
+            _self.get('preferenceList').removeObject(preference);
           });
         },
+        editExtendInfo(type){
+          var extendEditFlag =this.get("extendEditFlag");
+          for (var o in extendEditFlag) {
+            if (!extendEditFlag.hasOwnProperty(o)) {
+              continue;
+            }
+            var fieldName="extendEditFlag."+o;
+            this.set(fieldName,type==o);
+          }
+        },
+        saveExtendInfo(type,value){
+          var self=this;
+          let extendInfo=self.get("extendInfo");
+          extendInfo.save().then(function(){
+                var field="extendEditFlag."+type;
+                  self.set(field,false);
+          });
+        }
     }
 });

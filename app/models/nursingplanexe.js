@@ -6,7 +6,7 @@ export default BaseModel.extend({
   dateService: Ember.inject.service("date-service"),
   //store: Ember.inject.service("store"),
   plan:DS.belongsTo('nursingplan'),//护理计划
-
+  warning:DS.belongsTo('hbeaconwarning'),//挂接的呼叫信息//康怡眼删除
   exeStaff:DS.belongsTo('employee'),//服务人员
   itemProject:DS.belongsTo('nursingprojectitem'),//护理项目/按次统计的
   // itemPlan:DS.belongsTo('nursingplanitem'),//护理项目/按时统计的(变了不用这个了)
@@ -18,6 +18,7 @@ export default BaseModel.extend({
   detail:DS.belongsTo('nursingplandetail'),//护理项目/按时统计的
   exeStatus :DS.belongsTo('dicttype'),//执行状态   groupCode:planExeStatus
   finishLevel:DS.belongsTo('servicefinishlevel'),//完成情况
+  exeTabRemark:DS.attr('string'),//执行情况
   // 居家新添加的屬性
   planExeDate:DS.attr('string'),//计划开始时间
   recorder:DS.belongsTo('customer'),

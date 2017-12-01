@@ -3,7 +3,10 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   serviceFlag:0,
   planFlag:0,
+  tipValue:'此服务项目已经排满，请先取消其他时间安排。',
   weekserviceFlag:false,
+  dayServiceLoopStep:0,
+  weekServiceLoopStep:0,
   mainController: Ember.inject.controller('business.mainpage'),
   isSubmit:"disabled",
   global_dataLoader: Ember.inject.service('data-loader'),
@@ -156,7 +159,6 @@ export default Ember.Controller.extend({
       });
       return list;
   }),
-
   queryObs:function(){
     var _self = this;
     var customerId = _self.get("customerId");
@@ -178,12 +180,8 @@ export default Ember.Controller.extend({
     });
 
   }.observes("customerId","toTemplateFlag").on("init"),
-
   //当前老人的 所有计划任务模板
   customerPlanObs:function(){
-    // this.store.query('nursingplanitem',{}).then(function(nursingplanList){
-    //   controller.set('nursingplanList',nursingplanList);//
-    // });
     let _self = this;
     var customerId = this.get("curCustomer.id"),
         serviceFlag = this.get("serviceFlag"),
@@ -191,12 +189,9 @@ export default Ember.Controller.extend({
         projectFlag = this.get("projectFlag"),
         customer = this.get('curCustomer');//当前老人
     if(!serviceFlag||!planFlag||!projectFlag||!customer){return;}
-
     let allServiceList = this.get('allServiceList');//所有的按时执行服务
     let nursingplanList = this.get('nursingplanList');//所有该老人的护理模板项
-    // this.store.query('nursingplanitem',{filter:{customer:{id:customerId}}}).then(function(nursingplanList){});
       //所有该老人任务计划模板
-      console.log("nursingplanList111111111",nursingplanList);
       let customerPlanListWeek = new Ember.A();//按 "周" 执行的定时任务
       let customerPlanListDay = new Ember.A();//按 "日" 执行的定时任务
       nursingplanList.forEach(function(item){
@@ -208,19 +203,10 @@ export default Ember.Controller.extend({
       });
       _self.set("customerPlanListWeek",customerPlanListWeek);//按周
       _self.set("customerPlanListDay",customerPlanListDay);//按天
-      console.log("customerPlanList Week",customerPlanListWeek);
-      console.log("customerPlanList Day",customerPlanListDay);
-
-
       let projectList = _self.get('projectList');//所有的护理方案
       let project = projectList.findBy('customer.id',customerId);//findBy当前老人的护理方案
-
       let dayServiceList = new Ember.A();
       let timeIconList = _self.get('timeIconList');//时间图标
-      // allServiceList = allServiceList.filter(function(item){//通过该老人的护理方案过滤出来 该方案的护理计划
-      //   return item.get('project.id') == project.get('id');
-      // });
-      console.log("customerPlanList allServiceList",allServiceList);
       allServiceList.forEach(function(service){
         if(service.get('period.typecode') == 'periodDay'){//服务按每日的
           let item = Ember.Object.create({});
@@ -238,7 +224,6 @@ export default Ember.Controller.extend({
           let list = new Ember.A();//模板的时间list
           let listTwo = new Ember.A();//空白的时间list
           timeIconList.forEach(function(time){
-
             customerPlanListDay.forEach(function(dayItem){//显示已经选中的样式逻辑
               if(dayItem.get("item.id")==service.get("id")){// 按日的任务模板的护理方案 和 老人所属护理方案的id相同
                   if(dayItem.get("startTimeTab")==time.get("order")){//如果 任务模板的开始时间和order相等
@@ -249,7 +234,6 @@ export default Ember.Controller.extend({
                   }
               }
             });
-
           });
           timeIconList.forEach(function(time){
             let item = _self.store.createRecord('nursingplanitem',{});
@@ -257,7 +241,6 @@ export default Ember.Controller.extend({
             item.set('name',time.get('name'));
             item.set('item',service);
             item.set('customer',customer);
-            // console.log("customer",customer);//这里有的
             item.set('startTimeTab',time.get('order'));
             item.set('selected',false);
             listTwo.pushObject(item);
@@ -266,21 +249,16 @@ export default Ember.Controller.extend({
             listTwo.forEach(function(listTwoItem){
               if(listIem.get("name")==listTwoItem.get("name")){
                 listTwoItem.set("selected",true);
-                // listTwoItem = listIem;
               }
             });
           });
-
           item.set('dateList',listTwo);
           if(!dayServiceList.findBy('item.id',item.get('item.id'))){
             dayServiceList.pushObject(item);
           }
-
         }
       });
       _self.set("dayServiceList",dayServiceList);
-
-
       let weekServiceList = new Ember.A();
       let dayList = new Ember.A();
       let weeklist = ['周日','周一','周二','周三','周四','周五','周六'];
@@ -290,15 +268,11 @@ export default Ember.Controller.extend({
         item.set('order',i);
         dayList.pushObject(item);
       }
-      // allServiceList = allServiceList.filter(function(item){//过滤为 该老人的所有定时服务
-      //   return item.get('project.id') == project.get('id');
-      // });
       allServiceList.forEach(function(service){
         if(service.get('period.typecode') == 'periodWeek'){//服务周期是'周'的话
           let item = Ember.Object.create({});
           item.set('name',service.get('item.name'));
           item.set('id',service.get('id'));//给182行 用的id
-          // item.set('hasFrequency',0);
           var i = 0;
           customerPlanListWeek.forEach(function(weekItemI){//获取当前 service和数据库中相同服务有几条数据
             if(weekItemI.get("item.id")==service.get("id")){
@@ -310,7 +284,6 @@ export default Ember.Controller.extend({
           item.set('item',service.get('item'));//护理项目
           let datelist = new Ember.A();
           dayList.forEach(function(day){
-
             let date = Ember.Object.create({});
             date.set('week',day.get('week'));
             date.set('order',day.get('order'));
@@ -323,7 +296,6 @@ export default Ember.Controller.extend({
             });
             let list2 = new Ember.A();//模板的时间list
             let listTwo2 = new Ember.A();//空白的时间list
-
             timeIconList.forEach(function(time){
               customerPlanListWeek.forEach(function(weekItem){//显示已经选中的样式逻辑
                 if(weekItem.get("item.id")==service.get("id")){// 按日的任务模板的护理方案 和 老人所属护理方案的id相同
@@ -354,11 +326,9 @@ export default Ember.Controller.extend({
               listTwo2.forEach(function(listTwoItem){
                 if(listIem.get("name")==listTwoItem.get("name")){
                   listTwoItem.set("selected",true);
-                  // listTwoItem = listIem;
                 }
               });
             });
-
             date.set('serviceList',listTwo2);
             datelist.pushObject(date);
           });
@@ -370,9 +340,6 @@ export default Ember.Controller.extend({
         }
       });
       _self.set("weekServiceList",weekServiceList);
-      console.log("weekServiceList1111111",weekServiceList);
-
-
       _self.set("rightBtn",false);//每次切换人的时候都刷新重置下 切换按钮为false
       _self.set("leftBtn",false);
       _self.set("weekrightBtn",false);
@@ -381,9 +348,7 @@ export default Ember.Controller.extend({
       Ember.run.schedule("afterRender",this,function() {
         $("#position_absolute").css("left",0);//设置为初始值0 (每次已进入就设置为初始值)
         $("#position_absoluteWeek").css("left",0);//设置为初始值0
-        // console.log("111111111111111111111111",$($("#position_absolute").children("div.white_space").get(0)));
         $($("#position_absolute").children("div.white_space").get(0)).trigger("click");//第一个子元素点击
-
         var theWidth = 0;//初始化日计划的宽
         $("#position_absolute div.white_space").each(function(){
           theWidth += parseInt($(this).css("width")) + 8;
@@ -392,26 +357,19 @@ export default Ember.Controller.extend({
         $("#position_absolute").width(theWidth);
         var $daySelect =  $("#daySelect");
         var daySelectWidth =  parseInt($daySelect.css("width"));
-        console.log("daySelectWidth",daySelectWidth);
-
         if(theWidth > daySelectWidth){
           _self.set("rightBtn",true);
         }else {
           _self.set("rightBtn",false);
         }
-
-
         var weekWidth = 0;//初始化周计划的宽
         $("#position_absoluteWeek div.white_space").each(function(){
           weekWidth += parseInt($(this).css("width")) + 8;
         });
         weekWidth = weekWidth + 3;//有点小问题差一像素 直接大方点加3像素
         $("#position_absoluteWeek").width(weekWidth);
-
         var $weekSelect =  $("#weekSelect");
         var weekSelectWidth =  parseInt($weekSelect.css("width"));
-        console.log("weekSelectWidth",weekSelectWidth);
-        console.log("weekSelectWidth weekWidth",weekWidth);
         if(weekWidth > weekSelectWidth){
           _self.set("weekrightBtn",true);
         }else {
@@ -427,7 +385,7 @@ export default Ember.Controller.extend({
     // let allServiceList = this.get('allServiceList');//所有的按时执行服务
     // var nursingplanList = this.get("nursingplanList");//所有任务计划模板
   // }.observes('curCustomer','nursingplanList','allServiceList'),
-}.observes('serviceFlag','planFlag','projectFlag').on('init'),
+}.observes('serviceFlag','planFlag','projectFlag','curCustomer').on('init'),
 
   confirm(){
     // this.set("curService","");//set curService 为空从新选择
@@ -459,6 +417,9 @@ export default Ember.Controller.extend({
       var jQueryMove;
       if(type=='day'){
         _self.set("leftBtn",true);
+        let dayServiceLoopStep = this.get('dayServiceLoopStep');
+        let moveItemId = '#day-service-loop-' + dayServiceLoopStep;//要移动的日项目
+        let moveWidth = parseInt($(moveItemId).css('width')) + 8;
         var $daySelect =  $("#daySelect"),
             $position_absolute =  $("#position_absolute"),
             daySelectWidth =  parseInt($daySelect.css("width")),//1058
@@ -469,7 +430,7 @@ export default Ember.Controller.extend({
             console.log("position_absolute position_absoluteWidth",position_absoluteWidth);
             jQueryMove = daySelectWidth;
             $position_absolute.animate({
-              left: "-=" + jQueryMove,
+              left: "-=" + moveWidth,
             },500,function(){
               position_absoluteLeft =  parseInt($position_absolute.css("left"));
               //移动后剩余的右侧部门小于 父级元素的宽隐藏右侧btn
@@ -479,8 +440,12 @@ export default Ember.Controller.extend({
                 _self.set("rightBtn",false);
               }
             });
+            this.incrementProperty('dayServiceLoopStep');
       }else {
         _self.set("weekleftBtn",true);
+        let weekServiceLoopStep = this.get('weekServiceLoopStep');
+        let moveItemId = '#week-service-loop-' + weekServiceLoopStep;//要移动的日项目
+        let moveWidth = parseInt($(moveItemId).css('width')) + 8;
         var $weekSelect =  $("#weekSelect"),
             $position_absoluteWeek =  $("#position_absoluteWeek"),
             weekSelectWidth =  parseInt($weekSelect.css("width")),//1058
@@ -488,7 +453,7 @@ export default Ember.Controller.extend({
             position_absoluteWeekLeft =  parseInt($position_absoluteWeek.css("left")); //动一次是 -988px
             jQueryMove = weekSelectWidth;
             $position_absoluteWeek.animate({
-              left: "-=" + jQueryMove,
+              left: "-=" + moveWidth,
             },500,function(){
               position_absoluteWeekLeft =  parseInt($position_absoluteWeek.css("left"));
               if(position_absoluteWeekWidth + position_absoluteWeekLeft < jQueryMove){
@@ -496,6 +461,7 @@ export default Ember.Controller.extend({
               }
 
             });
+            this.incrementProperty('weekServiceLoopStep');
       }
 
     },
@@ -504,6 +470,9 @@ export default Ember.Controller.extend({
       var jQueryMove;
       if(type=='day'){
         _self.set("rightBtn",true);
+        let dayServiceLoopStep = this.get('dayServiceLoopStep')-1;
+        let moveItemId = '#day-service-loop-' + dayServiceLoopStep;//要移动的日项目
+        let moveWidth = parseInt($(moveItemId).css('width')) + 8;
         var $daySelect =  $("#daySelect"),
             $position_absolute =  $("#position_absolute"),
             daySelectWidth =  parseInt($daySelect.css("width")),
@@ -511,7 +480,7 @@ export default Ember.Controller.extend({
             position_absoluteLeft =  parseInt($position_absolute.css("left"));
             jQueryMove = daySelectWidth;
             $position_absolute.animate({
-              left: "+="+ jQueryMove,
+              left: "+="+ moveWidth,
             },500,function(){
               position_absoluteLeft =  parseInt($position_absolute.css("left"));
               console.log("position_absolute position_absoluteLeft toLeft toLeft init11111111111",position_absoluteLeft);
@@ -522,8 +491,12 @@ export default Ember.Controller.extend({
                 _self.set("leftBtn",false);
               }
             });
+            this.set('dayServiceLoopStep',dayServiceLoopStep);
       }else {
         _self.set("weekrightBtn",true);
+        let weekServiceLoopStep = this.get('weekServiceLoopStep')-1;
+        let moveItemId = '#week-service-loop-' + weekServiceLoopStep;//要移动的日项目
+        let moveWidth = parseInt($(moveItemId).css('width')) + 8;
         var $weekSelect =  $("#weekSelect"),
             $position_absoluteWeek =  $("#position_absoluteWeek"),
             weekSelectWidth =  parseInt($weekSelect.css("width")),
@@ -531,13 +504,14 @@ export default Ember.Controller.extend({
             position_absoluteWeekLeft =  parseInt($position_absoluteWeek.css("left"));
             jQueryMove = weekSelectWidth;
             $position_absoluteWeek.animate({
-              left: "+="+ jQueryMove,
+              left: "+="+ moveWidth,
             },500,function(){
               position_absoluteWeekLeft =  parseInt($position_absoluteWeek.css("left"));
               if(position_absoluteWeekLeft === 0){
                 _self.set("weekleftBtn",false);
               }
             });
+          this.set('weekServiceLoopStep',weekServiceLoopStep);
       }
 
     },
@@ -590,6 +564,7 @@ export default Ember.Controller.extend({
         // });
         this.set("dayServiceList",dayServiceList);
         this.set("weekServiceList",weekServiceList);
+        this.send('chooseWeek',this.get('curService.dayList').get('firstObject'));
       }
 
     },
@@ -607,6 +582,11 @@ export default Ember.Controller.extend({
         if(count<curService.get('frequency')){
           curService.set('hasFrequency',count+1);
           service.set('selected',true);
+        }else{
+          service.set('serviceFull',true);
+          setTimeout(function(){
+            service.set('serviceFull',false);
+          },3000);
         }
       }
       this.set('isSubmit',"");
@@ -694,7 +674,9 @@ export default Ember.Controller.extend({
       this.set('isSubmit',"disabled");
     },
     editCustomer(){
-      this.set('editcustomer',true);
+      // this.set('editcustomer',true);
+      var mainpageController = App.lookup('controller:business.mainpage');
+      mainpageController.switchMainPage('nursing-template');
     },
     exitCustomer(){
       this.set('editcustomer',false);

@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import BaseBusiness from '../base-business';
 export default BaseBusiness.extend({
+    statusService: Ember.inject.service("current-status"),
     queryParams: {
         id: {
             refreshModel: true
@@ -9,23 +10,24 @@ export default BaseBusiness.extend({
             refreshModel: true
         },
     },
-    header_title: '新增评估问卷-二级页',
+    header_title: '评估模板选择',
     model() {
         return {};
     },
     setupController(controller, model) {
         this._super(controller, model);
-        //var editMode = this.getCurrentController().get('editMode');
-        //var id = this.getCurrentController().get('id');
+        let tenantId = this.get('statusService').get('tenantId');
         //查询可用的评估模板
         this.store.query('evaluatemodel', {
             filter: {
-                useFlag: 0
+                useFlag: 0,
+                type:{'typecode':'evaluateType2'},
+                modelSource:{'remark@$not':'beijing'},
+                tenant:{id:tenantId}
             }
         }).then(function(useModelList) {
             controller.set('useModelList', useModelList);
-            useModelList.forEach(function(useModel) {              
-              console.log('eva-model-add-route:useModel',useModel);
+            useModelList.forEach(function(useModel) {
               useModel.set('hasChoosed',false);
               useModel.set('errorClass',false);
             });

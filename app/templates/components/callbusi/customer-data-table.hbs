@@ -1,0 +1,100 @@
+<div class="col-sm-12">
+  <table  cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable mt15" aria-describedby="datatable1_info">
+    <thead>
+        <tr role="row">
+            <th rowspan="1" colspan="1" width="" class="center noBorder-all">状态</th>
+            <th rowspan="1" colspan="1" width="" class="center noBorder-all">人数</th>
+            <th rowspan="1" colspan="1" width="" class="center noBorder-all">占比</th>
+        </tr>
+    </thead>
+    <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+      <tr role="row">
+          <td rowspan="1" colspan="1" width="" class="center noBorder-all">全部老人</td>
+          <td rowspan="1" colspan="1" width="" class="center noBorder-all">{{customerAll}}</td>
+          <td rowspan="1" colspan="1" width="" class="center noBorder-all">{{customerAll1}}</td>
+      </tr>
+      <tr role="row">
+          <td rowspan="1" colspan="1" width="" class="center noBorder-all">试住老人</td>
+          <td rowspan="1" colspan="1" width="" class="center noBorder-all">{{customerStatusTry}}</td>
+          <td rowspan="1" colspan="1" width="" class="center noBorder-all">{{customerStatusTry1}}</td>
+      </tr>
+      <tr role="row">
+          <td rowspan="1" colspan="1" width="" class="center noBorder-all">入住老人</td>
+          <td rowspan="1" colspan="1" width="" class="center noBorder-all">{{customerStatusIn}}</td>
+          <td rowspan="1" colspan="1" width="" class="center noBorder-all">{{customerStatusIn1}}</td>
+      </tr>
+      <tr role="row">
+          <td rowspan="1" colspan="1" width="" class="center noBorder-all">请假老人</td>
+          <td rowspan="1" colspan="1" width="" class="center noBorder-all">{{customerLeave}}</td>
+          <td rowspan="1" colspan="1" width="" class="center noBorder-all">{{customerLeave1}}</td>
+      </tr>
+
+    </tbody>
+  </table>
+  <table  cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable mt15" aria-describedby="datatable1_info">
+    <thead>
+        <tr role="row">
+            <th rowspan="1" colspan="1" width="" class="center noBorder-all">性别</th>
+            <th rowspan="1" colspan="1" width="" class="center noBorder-all">人数</th>
+            <th rowspan="1" colspan="1" width="" class="center noBorder-all">占比</th>
+        </tr>
+    </thead>
+    <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+      <tr role="row">
+          <td rowspan="1" colspan="1" width="" class="center noBorder-all">全部老人</td>
+          <td rowspan="1" colspan="1" width="" class="center noBorder-all">{{sexAll}}</td>
+          <td rowspan="1" colspan="1" width="" class="center noBorder-all">{{sexAll1}}</td>
+      </tr>
+      <tr role="row">
+          <td rowspan="1" colspan="1" width="" class="center noBorder-all">男老人</td>
+          <td rowspan="1" colspan="1" width="" class="center noBorder-all">{{sexTypeMale}}</td>
+          <td rowspan="1" colspan="1" width="" class="center noBorder-all">{{sexTypeMale1}}</td>
+      </tr>
+      <tr role="row">
+          <td rowspan="1" colspan="1" width="" class="center noBorder-all">女老人</td>
+          <td rowspan="1" colspan="1" width="" class="center noBorder-all">{{sexTypeFemale}}</td>
+          <td rowspan="1" colspan="1" width="" class="center noBorder-all">{{sexTypeFemale1}}</td>
+      </tr>
+
+    </tbody>
+  </table>
+  <table  cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable mt15" aria-describedby="datatable1_info">
+    <thead>
+        <tr role="row">
+            <th rowspan="1" colspan="1" width="" class="center noBorder-all">自理能力</th>
+            <th rowspan="1" colspan="1" width="" class="center noBorder-all">人数</th>
+            <th rowspan="1" colspan="1" width="" class="center noBorder-all">占比</th>
+        </tr>
+    </thead>
+    <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+      {{#each levelDataArr as |levelData|}}
+      <tr role="row">
+          <td rowspan="1" colspan="1" width="" class="center noBorder-all">{{levelData.name}}</td>
+          <td rowspan="1" colspan="1" width="" class="center noBorder-all">{{levelData.num}}</td>
+          <td rowspan="1" colspan="1" width="" class="center noBorder-all">{{levelData.percent}}</td>
+      </tr>
+      {{/each}}
+
+    </tbody>
+  </table>
+  <table  cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable mt15" aria-describedby="datatable1_info">
+    <thead>
+        <tr role="row">
+            <th rowspan="1" colspan="1" width="" class="center noBorder-all">年龄范围</th>
+            <th rowspan="1" colspan="1" width="" class="center noBorder-all">人数</th>
+            <th rowspan="1" colspan="1" width="" class="center noBorder-all">占比</th>
+        </tr>
+    </thead>
+    <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+      {{#each timeStatArr as |timeStat|}}
+      <tr role="row">
+          <td rowspan="1" colspan="1" width="" class="center noBorder-all">{{timeStat.name}}</td>
+          <td rowspan="1" colspan="1" width="" class="center noBorder-all">{{timeStat.num}}</td>
+          <td rowspan="1" colspan="1" width="" class="center noBorder-all">{{timeStat.percent}}</td>
+      </tr>
+      {{/each}}
+
+    </tbody>
+  </table>
+
+</div>

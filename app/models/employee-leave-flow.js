@@ -63,7 +63,7 @@ export default BaseModel.extend({
   }),
   expectEndTimeStr:Ember.computed('expectEndTime',function(){
     let expectEndTime = this.get('expectEndTime');
-    return expectEndTime?this.get('dateService').formatDate(expectEndTime,"yyyy-MM-dd"):null;
+    return expectEndTime?this.get('dateService').formatDate(expectEndTime,"yyyy-MM-dd"):'无';
   }),
   realEndTimeDate:Ember.computed('realEndTime',function(){
     let realEndTime = this.get('realEndTime');

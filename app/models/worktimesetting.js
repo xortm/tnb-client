@@ -12,6 +12,7 @@ var worktimesetting = BaseModel.extend({
   endTime:DS.attr('string'),//结束时间
   endTimeInt:DS.attr('number'),//结束时间戳
   remark:DS.attr('string'),//备注
+  beds:DS.hasMany('bedworktimesetting'),//照护床位
   // floor:DS.hasmany('floor')
   dateService: Ember.inject.service("date-service"),
   colorFlag:DS.belongsTo('dicttype'),//班次颜色

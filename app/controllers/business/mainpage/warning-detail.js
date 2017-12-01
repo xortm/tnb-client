@@ -131,6 +131,7 @@ export default Ember.Controller.extend(WarningValidations, {
         selectStaff(staff) {
             this.set("staff", staff);
             this.get("warning").set("operater", staff);
+            this.get('warningModel').set("operater", staff);
         },
         changeCallTimeAction(date) {
             var stamp = this.get("dateService").timeToTimestamp(date);

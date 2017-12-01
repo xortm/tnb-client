@@ -9,7 +9,7 @@ export default {
   customer:[
     validatePresence({
        presence: true,
-       message: '会员姓名不能为空' })
+       message: '老人姓名不能为空' })
   ],
   startTime:[
     validatePresence({

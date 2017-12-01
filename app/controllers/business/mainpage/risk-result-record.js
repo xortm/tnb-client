@@ -59,10 +59,11 @@ export default Ember.Controller.extend(InfiniteScroll,{
           _self.set('user',template.get('user'));
           _self.set('dateStr',template.get('recordTimeStr'));
         });
+        _self.hideAllLoading();
       });
     this.set("nocustomerId",false);
     this.set("customerId",customerId);
-    _self.hideAllLoading();
+
 
   }.observes("global_curStatus.healtyCustomerId",'resultId','recordId','global_curStatus.formChange','global_curStatus.pageBackTime').on("init"),
   actions:{

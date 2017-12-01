@@ -1,22 +1,19 @@
+{{#ui/mobile/inner-tabbar menus=tabFuncs switchTab="switchTab" serviceListFlag=serviceListFlag clickActFlag=clickActFlag itemXs="col-xs-6" positionClass="abs-top-44 service-care" theme="block-mode"}}
+{{/ui/mobile/inner-tabbar}}
 {{#ui/mobile/gestures-container}}
-<div id="viewScoreDetailContainer" class="mainContent {{if global_pageConstructure.showLoader 'hide' ''}}">
-  <div class="wrapperInner">
-    {{#if hasResult}}
-      {{#if customerList}}
-        <div class="bgcolor-white">
-        {{log "customerList hbs" customerList}}
-        {{#each customerList as |customerItem|}}
-          {{#callbusi/mobile/view-score-list customerItem=customerItem outerClass="height-auto"}}
-          {{/callbusi/mobile/view-score-list}}
-        {{/each}}
-        </div>
-      {{/if}}
-    {{else}}
-      <div class="nodate">暂无数据</div>
-    {{/if}}
 
+  <div class="{{if service_PageConstrut.showLoader 'hide' ''}}">
+    <!-- 按老人 -->
+    <div class="{{if (eq curTabCode 'scoreByCustomer') '' 'hide'}}">
+      {{#callbusi/mobile/score-by-customer customerList=customerList queryFlagInAction="queryFlagInAction" scollFlag=scollFlag showLoadingImgFlag=showLoadingImgFlag}}
+        {{/callbusi/mobile/score-by-customer}}
+    </div>
+    <!-- 按员工 -->
+    <div class="{{if (eq curTabCode 'scoreByEmployee') '' 'hide'}}">
+      {{#callbusi/mobile/score-by-employee employeeList=employeeList queryFlagInAction="queryFlagInAction" scollFlag=scollFlag showLoadingImgFlag=showLoadingImgFlag}}
+        {{/callbusi/mobile/score-by-employee}}
+    </div>
   </div>
-</div>
+
+
 {{/ui/mobile/gestures-container}}
-{{ui/container/infinite-scroll moniteData=""
-didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

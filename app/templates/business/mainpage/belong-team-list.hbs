@@ -1,0 +1,19 @@
+<div id="belongTeamListContainer" class="mainContent {{if global_pageConstructure.showLoader 'hide' ''}}">
+  <div class="wrapperInner">
+    {{#ui/mobile/gestures-container}}
+      {{#if employeenursinggroupsFilter}}
+      <div class="training">
+        {{#each employeenursinggroupsFilter as |employeenursinggroup|}}
+          <div class="trainingList" id="belongTeamList_{{employeenursinggroup.id}}" {{action "goDetail" employeenursinggroup.id employeenursinggroup.group.id on="tap"}}>
+            <i class="prev-icon"><img class="a-img" src="assets/images/mobile/belongTeamList.png"/></i>
+            <div class="title">{{employeenursinggroup.group.name}}</div>
+          </div>
+        {{/each}}
+      </div>
+      {{else}}
+          <div class="nodate">暂无分组</div>
+      {{/if}}
+    {{/ui/mobile/gestures-container}}
+</div>
+</div>
+{{ui/container/infinite-scroll moniteData="" didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

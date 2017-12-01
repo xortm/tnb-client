@@ -248,6 +248,7 @@ export default Ember.Controller.extend(NursegroupValidations,Pagination,{
     },
     //保存护工组
     saveNurseGroup(){
+      App.lookup('controller:business.mainpage').openPopTip("正在保存");
       var nurseGroupInfo=this.get('nurseGroupInfo');
       nurseGroupInfo.set('leader',this.get('defaultLeader'));
       var nurseGroupModel=this.get('nurseGroupModel');
@@ -267,7 +268,7 @@ export default Ember.Controller.extend(NursegroupValidations,Pagination,{
           //验证是否通过
           nurseGroupModel.validate().then(function(){
             if(nurseGroupModel.get('errors.length')===0){
-              App.lookup('controller:business.mainpage').openPopTip("正在保存");
+
               nurseGroupModel.set('staffs',staffs);
               nurseGroupModel.set('beds',beds);
               nurseGroupModel.save().then(
@@ -308,7 +309,6 @@ export default Ember.Controller.extend(NursegroupValidations,Pagination,{
                       nurseGroupModel.set("validFlag",Math.random());
                     });
                   }else{
-                    App.lookup('controller:business.mainpage').openPopTip("正在保存");
                     _self.store.query('nursegroup',{filter:{id:newNurseGroupData.get('id')}}).then(function(list){
                       let record = list.get('firstObject');
                       let customers = record.get('customers');
@@ -337,6 +337,8 @@ export default Ember.Controller.extend(NursegroupValidations,Pagination,{
           });
 
         }
+      }else{
+        App.lookup('controller:business.mainpage').showPopTip("保存失败",false);
       }
     },
     //编辑按钮

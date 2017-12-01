@@ -8,6 +8,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
   pageConstructure:Ember.inject.service('page-constructure'),
   nocustomerId:false,
   infiniteContainerName:"recordDetailContainer",
+  stopScroll:true,
   scrollPrevent:true,
   filedObs:function(){
     let _self = this;
@@ -81,7 +82,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
       _self.hideAllLoading();
       return;
     }else{
-      this.set("stopScroll",false);
+      this.set("stopScroll",true);
     }
     this.set("nocustomerId",false);
     this.set("customerId",customerId);

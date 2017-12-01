@@ -1,0 +1,67 @@
+
+<div class="col-sm-12">
+  <div class="box">
+  	<!-- BOX-BODY -->
+  	<div class="box-body">
+    <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+      <div class="row ">
+        <div class="col-sm-9 ">
+          <div class="col-sm-5 nopadding-left">
+            <div class="pull-left">
+              <div class="input-group bottom8">
+                {{input class="form-control" type="text" placeholder="搜索物品名称" value=queryCondition enter="search"}}
+                <span class="input-group-btn">
+                  <button class="btn btn-primary btn-reduce" type="button" style="touch-action: manipulation; -ms-touch-action: manipulation;" {{action "search" on="click"}}>
+                    <i class="fa fa-search"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+            <!--搜索-->
+          </div>
+          <div class="col-sm-7 nopadding-right nopadding-left">
+            {{callbusi/time-search class="inline-block" text='按采购日期搜索' dateShow=dateShow chooseDate=chooseDate search="search"
+            submmit="submmit" emptied='emptied' changeBeginDateAction='changeBeginDateAction' changeEndDateAction='changeEndDateAction'}}
+          </div>
+        </div>
+        <div class="user-add-btn col-sm-3 pull-right nopadding-right" >
+          {{#ui/mix-button class=" user-btn pull-right" iconClass="fa-plus"  text='新增采购信息'  clickAction="toDetailPage" toDetailPage="toDetailPage"}}
+          {{/ui/mix-button}}
+        </div>
+      </div>
+          <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable mt15" aria-describedby="datatable1_info">
+            <thead>
+              <tr role="row">
+                <th rowspan="1" colspan="1" width="">采购物品</th>
+                <th rowspan="1" colspan="1" width="">采购日期</th>
+                <th rowspan="1" colspan="1" width="">采购类型</th>
+                <th rowspan="1" colspan="1" width="">采购数量</th>
+                <th rowspan="1" colspan="1" width="">单价(元)</th>
+                <th rowspan="1" colspan="1" width="">总价(元)</th>
+              </tr>
+            </thead>
+            {{#if purchasegoodList}}
+          <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+              {{#each purchasegoodList as |purchasegood|}}
+              <tr class="gradeA odd" {{action 'toDetailPage' purchasegood on="click"}}>
+                <td class=" ellipsis sorting_1">{{purchasegood.goods.name}}</td>
+                <td class=" ellipsis ">{{purchasegood.purchaseTimeStr}}</td>
+                <td class=" ellipsis ">{{purchasegood.purchaseType.typename}}</td>
+                <td class=" ellipsis ">{{purchasegood.purchaseNum}}{{purchasegood.goods.unit}}</td>
+                <td class=" ellipsis ">{{{purchasegood.unitPrice}}}</td>
+                <td class=" ellipsis ">{{{purchasegood.totalPrice}}}</td>
+          	  </tr>
+              {{/each}}
+           </tbody>
+           {{else}}
+           {{/if}}
+            </table>
+      {{#if purchasegoodList }}
+          {{page-numbers content=purchasegoodList showFL=true numPagesToShow=3}}
+      {{else}}
+          <h1 class="col-sm-12 center unTask"></h1>
+      {{/if}}
+    </div>
+    </div>
+  </div>
+</div>

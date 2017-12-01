@@ -14,6 +14,9 @@ export default BaseBusiness.extend(Pagination,{
     var filter =  {
       'status---1':{'typecode@$or1---1':'consultStatus4'},
       'status---2':{'typecode@$or1---2':'consultStatus5'},
+      'status---3':{'typecode@$or1---3':'consultStatusWaitIn'},
+      'status---4':{'typecode@$or1---4':'consultStatusWaitTry'},
+      'status---5':{'typecode@$or1---5':'consultStatusTryWaitIn'},
       'backRemark':'in',
     };
     var sort;
@@ -71,9 +74,6 @@ export default BaseBusiness.extend(Pagination,{
 
   setupController(controller,model){
     this.doQuery();
-    var queryCondition = controller.get('input');
-    controller.set('queryCondition', queryCondition);
-
     this._super(controller,model);
 
   }

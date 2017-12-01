@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import Echarts from "npm:echarts";
 import BaseUiItem from '../../ui/base-ui-item';
+
 
 export default BaseUiItem.extend({
   store: Ember.inject.service("store"),
@@ -43,101 +43,16 @@ export default BaseUiItem.extend({
     var sortByOver = healthInfoArray.sortBy("examDateTime");//排序
     console.log("sortByOver",sortByOver);
     _self.set("healthInfoList",sortByOver);
-    _self.initChart();
-    this.showChartData();
+    _self.initChartData();
+    _self.initBloodChart();
     this.set("showLoadingImg",false);
-    // this.sendAction("showLoadingImgAction");
   }.observes("healthInfoArray,hasRender").on("init"),
 
-  //初始化
-  initChart() {
-    let swipeCount = this.get("swipeCount");
-    let widthWrapper = $("#chartDataWrapper").width();
-    let heightWrapperOut = $(window).height();
-    console.log("heightWrapperOut is:" + heightWrapperOut);
-    console.log("widthWrapper before is:" + widthWrapper);
-    //如果取不到，直接使用屏幕宽度,并调整外层
-    if(widthWrapper===0){
-      widthWrapper = $(window).width();
-      $("#chartDataWrapper").width(widthWrapper);
-      $("#chartDataWrapper .wrapperin").width(widthWrapper*swipeCount);
-      $("#chartDataWrapper .wrapperin").height(heightWrapperOut-93);
-    }
-    let heightWrapper = heightWrapperOut-60-93;
-    console.log("widthWrapper after is:" + widthWrapper);
-    console.log("heightWrapper is:" + heightWrapper);
-    //初始化图表-血压
-    if (this.get("hasInitChart")) {
-        return;
-    }
-    this.set("hasInitChart", true);
-    $("#myChartBlood").width(widthWrapper);
-    $("#myChartBlood").height(heightWrapper);
-    var myChartBlood = Echarts.init(document.getElementById('myChartBlood'));
-    console.log('myChartBlood is',myChartBlood);
-    this.set("myChartBlood", myChartBlood);
-    //初始化图表-血氧
-    if (this.get("hasInitChartOxygen")) {
-        return;
-    }
-    this.set("hasInitChartOxygen", true);
-    $("#myChartOxygen").width(widthWrapper);
-    $("#myChartOxygen").height(heightWrapper);
-    var myChartOxygen = Echarts.init(document.getElementById('myChartOxygen'));
-    this.set("myChartOxygen", myChartOxygen);
-    //初始化图表-血糖
-    if (this.get("hasInitChartEmpty")) {
-        return;
-    }
-    this.set("hasInitChartEmpty", true);
-    $("#myChartEmpty").width(widthWrapper);
-    $("#myChartEmpty").height(heightWrapper);
-    var myChartEmpty = Echarts.init(document.getElementById('myChartEmpty'));
-    this.set("myChartEmpty", myChartEmpty);
-    //初始化图表-呼吸频率
-    if (this.get("hasInitChartBreath")) {
-        return;
-    }
-    this.set("hasInitChartBreath", true);
-    $("#myChartBreath").width(widthWrapper);
-    $("#myChartBreath").height(heightWrapper);
-    var myChartBreath = Echarts.init(document.getElementById('myChartBreath'));
-    this.set("myChartBreath", myChartBreath);
-    //初始化图表-心率数据
-    if (this.get("hasInitChartHeart")) {
-        return;
-    }
-    this.set("hasInitChartHeart", true);
-    $("#myChartHeart").width(widthWrapper);
-    $("#myChartHeart").height(heightWrapper);
-    var myChartHeart = Echarts.init(document.getElementById('myChartHeart'));
-    this.set("myChartHeart", myChartHeart);
-    //初始化图表-体温
-    if (this.get("hasInitChartTemperature")) {
-        return;
-    }
-    this.set("hasInitChartTemperature", true);
-    $("#myChartTemperature").width(widthWrapper);
-    $("#myChartTemperature").height(heightWrapper);
-    var myChartTemperature = Echarts.init(document.getElementById('myChartTemperature'));
-    this.set("myChartTemperature", myChartTemperature);
-  },
-
-  showChartData() {
+  //初始化数据
+  initChartData() {
     var _self = this;
     var healthInfoList = this.get("healthInfoList");
     console.log("healthInfoList len:" + healthInfoList.get("length"));
-    let hasInitChart = this.get("hasInitChart");
-    console.log("hasInitChart in showChartData:" + hasInitChart);
-    if(!hasInitChart){
-      return;
-    }
-    var myChartBlood = _self.get("myChartBlood");
-    var myChartOxygen = _self.get("myChartOxygen");
-    var myChartEmpty = _self.get("myChartEmpty");
-    var myChartBreath = _self.get("myChartBreath");
-    var myChartHeart = _self.get("myChartHeart");
-    var myChartTemperature = _self.get("myChartTemperature");
     //重新定义
     var bloodList = []; //存血压的数组
     var bloodListResult = []; //高压
@@ -203,14 +118,14 @@ export default BaseUiItem.extend({
       if (chartType == 'healthExamType4') {
           console.log("push healthExamType4");
           breathListResult.push(chartResult);
-          breathDate.push(itemHourS);
+          breathDate.push(itemDate);
           breathList.push(chartHealth);
       }
       //心率
       if (chartType == 'healthExamType3') {
           console.log("push healthExamType3,res:" + chartResult);
           heartListResult.push(chartResult);
-          heartDate.push(itemHourS);
+          heartDate.push(itemDate);
           heartList.push(chartHealth);
       }
       //体温
@@ -222,6 +137,544 @@ export default BaseUiItem.extend({
        }
 
     });
+    this.set("bloodListResult",bloodListResult);
+    this.set("bloodListResultAddtion",bloodListResultAddtion);
+    this.set("bloodDate",bloodDate);
+    this.set("oxygenListResult",oxygenListResult);
+    this.set("oxygenDate",oxygenDate);
+    this.set("emptyListResult",emptyListResult);
+    this.set("emptyDate",emptyDate);
+    this.set("breathListResult",breathListResult);
+    this.set("breathDate",breathDate);
+    this.set("heartListResult",heartListResult);
+    this.set("heartDate",heartDate);
+    this.set("temperatureListResult",temperatureListResult);
+    this.set("temperatureDate",temperatureDate);
+    //计算宽高
+    let swipeCount = this.get("swipeCount");
+    let widthWrapper = $("#chartDataWrapper").width();
+    let heightWrapperOut = $(window).height();
+    console.log("heightWrapperOut is:" + heightWrapperOut);
+    console.log("widthWrapper before is:" + widthWrapper);
+    //如果取不到，直接使用屏幕宽度,并调整外层
+    if(widthWrapper===0){
+      widthWrapper = $(window).width();
+      $("#chartDataWrapper").width(widthWrapper);
+      $("#chartDataWrapper .wrapperin").width(widthWrapper*swipeCount);
+      $("#chartDataWrapper .wrapperin").height(heightWrapperOut-93);
+    }
+    let heightWrapper = heightWrapperOut-60-93;
+    console.log("widthWrapper after is:" + widthWrapper);
+    console.log("heightWrapper is:" + heightWrapper);
+    this.set("widthWrapper",widthWrapper);
+    this.set("heightWrapper",heightWrapper);
+  },
+  //加载血压表
+  initBloodChart() {
+    let widthWrapper = this.get("widthWrapper");
+    let heightWrapper = this.get("heightWrapper");
+    let bloodListResult = this.get("bloodListResult");
+    let bloodListResultAddtion = this.get("bloodListResultAddtion");
+    let bloodDate = this.get("bloodDate");
+    //初始化图表-血压
+    if (this.get("hasInitChart")) {
+        return;
+    }
+    this.set("hasInitChart", true);
+    $("#myChartBlood").width(widthWrapper);
+    $("#myChartBlood").height(heightWrapper);
+    var myChartBlood = echarts.init(document.getElementById('myChartBlood'));
+    console.log('myChartBlood is',myChartBlood);
+    // 绘制血压图表
+    myChartBlood.setOption({
+        title: {
+            text:'血压'
+        },
+        tooltip: {
+            trigger: "axis"
+        },
+        legend: {
+            data: ['高压', '低压'],
+            y: "top"
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: [{
+            type: 'category', //类目轴,选择此项必须使用data设置数据
+            boundaryGap: false,
+            data: bloodDate, //x轴(时间)
+            axisLabel: {
+                interval: "auto"
+            }
+        }],
+        yAxis: {
+            name: 'mmHg', //单位
+            type: 'value',
+        },
+        dataZoom: [{ // 这个dataZoom组件，默认控制x轴。
+            type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+            start: ((bloodListResult.length-10)/bloodListResult.length)*100, // 左边在 90% 的位置。
+            end: 100, // 右边在 100% 的位置。
+            filterMode: 'filter',
+
+        }],
+        series: [{
+            name: '高压',
+            type: "line",
+            smooth: true,
+            showAllSymbol:true,
+            itemStyle: {
+                normal: {
+                    lineStyle: {
+                        color: "#ff0000"
+                    }
+                }
+            },
+            //stack:"",
+            data: bloodListResult
+        }, {
+            name: '低压',
+            type: "line",
+            smooth: true,
+            showAllSymbol:true,
+            data: bloodListResultAddtion
+        }]
+    });
+    var option = myChartBlood.getOption();
+    console.log("option is", option.series);
+  },
+
+  //加载血氧表
+  initOxygenChart() {
+    let widthWrapper = this.get("widthWrapper");
+    let heightWrapper = this.get("heightWrapper");
+    let oxygenListResult = this.get("oxygenListResult");
+    let oxygenDate = this.get("oxygenDate");
+    //初始化图表-血氧
+    if (this.get("hasInitChartOxygen")) {
+        return;
+    }
+    this.set("hasInitChartOxygen", true);
+    $("#myChartOxygen").width(widthWrapper);
+    $("#myChartOxygen").height(heightWrapper);
+    var myChartOxygen = echarts.init(document.getElementById('myChartOxygen'));
+    // 绘制血氧图表
+    myChartOxygen.setOption({
+        title: {
+            text:'血氧'
+        },
+        tooltip: {
+            trigger: "axis"
+        },
+        legend: {
+            data: ['血氧值'],
+            y: "top"
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: [{
+            type: 'category', //类目轴,选择此项必须使用data设置数据
+            boundaryGap: false,
+            data: oxygenDate, //x轴(时间)
+            axisLabel: {
+                interval: "auto"
+            }
+        }],
+        yAxis: {
+            name: '%', //单位
+            type: 'value',
+            min:80,
+            max:100
+        },
+        dataZoom: [{ // 这个dataZoom组件，默认控制x轴。
+            type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+            start: 90, // 左边在 90% 的位置。
+            end: 100, // 右边在 100% 的位置。
+            filterMode: 'filter',
+            right:0
+        }],
+        series: [{
+            name: '血氧值',
+            type: "line",
+            smooth: true,
+            showAllSymbol:true,
+            itemStyle: {
+                normal: {
+                    lineStyle: {
+                        color: "#ff0000"
+                    }
+                }
+            },
+            //stack:"",
+            data: oxygenListResult
+        }]
+    });
+  },
+
+  //加载血糖表
+  initEmptyChart() {
+    let widthWrapper = this.get("widthWrapper");
+    let heightWrapper = this.get("heightWrapper");
+    let emptyListResult = this.get("emptyListResult");
+    let emptyDate = this.get("emptyDate");
+    //初始化图表-血糖
+    if (this.get("hasInitChartEmpty")) {
+        return;
+    }
+    this.set("hasInitChartEmpty", true);
+    $("#myChartEmpty").width(widthWrapper);
+    $("#myChartEmpty").height(heightWrapper);
+    var myChartEmpty = echarts.init(document.getElementById('myChartEmpty'));
+    // 绘制空腹血糖图表
+    myChartEmpty.setOption({
+        title: {
+            text: '血糖',
+        },
+        tooltip: {
+            trigger: "axis"
+        },
+        legend: {
+            data: ['血糖'],
+            y: "top",
+            textStyle: {
+               fontSize: 12
+            }
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: [{
+            type: 'category', //类目轴,选择此项必须使用data设置数据
+            boundaryGap: false,
+            data: emptyDate, //x轴(时间)
+            axisLabel: {
+                interval: "auto"
+            }
+        }],
+        yAxis: {
+            name: 'mmol/L', //单位
+            type: 'value',
+        },
+        dataZoom: [{ // 这个dataZoom组件，默认控制x轴。
+            type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+            start: 10, // 左边在 10% 的位置。
+            end: 90, // 右边在 60% 的位置。
+            filterMode: 'filter'
+        }],
+        series: [{
+            name: '血糖',
+            type: "line",
+            smooth: true,
+            showAllSymbol:true,
+            itemStyle: {
+                normal: {
+                    lineStyle: {
+                        color: "#ff0000",
+                        fontSize: 12
+                    }
+                }
+            },
+            //stack:"",
+            data: emptyListResult
+        }]
+    });
+  },
+
+  //加载呼吸频率表
+  initBreathChart() {
+    let widthWrapper = this.get("widthWrapper");
+    let heightWrapper = this.get("heightWrapper");
+    let breathListResult = this.get("breathListResult");
+    let breathDate = this.get("breathDate");
+    //初始化图表-呼吸频率
+    if (this.get("hasInitChartBreath")) {
+        return;
+    }
+    this.set("hasInitChartBreath", true);
+    $("#myChartBreath").width(widthWrapper);
+    $("#myChartBreath").height(heightWrapper);
+    var myChartBreath = echarts.init(document.getElementById('myChartBreath'));
+    // 绘制呼吸频率图表
+    myChartBreath.setOption({
+        title: {
+            text:'呼吸频率'
+        },
+        tooltip: {
+            trigger: "axis"
+        },
+        legend: {
+            data: ['呼吸频率'],
+            y: "top"
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: [{
+            type: 'category', //类目轴,选择此项必须使用data设置数据
+            boundaryGap: false,
+            data: breathDate, //x轴(时间)
+            axisLabel: {
+                interval: "auto"
+            }
+        }],
+        yAxis: {
+            name: 'times/min', //单位
+            type: 'value',
+        },
+        dataZoom: [{ // 这个dataZoom组件，默认控制x轴。
+            type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+            start: ((breathListResult.length-10)/breathListResult.length)*100, // 左边在 90% 的位置。
+            end: 100, // 右边在 100% 的位置。
+            filterMode: 'filter'
+        }],
+        series: [{
+            name: '呼吸频率',
+            type: "line",//图表类型
+            smooth: true,
+            showAllSymbol:true,
+            itemStyle: {
+                normal: {
+                    lineStyle: {
+                        color: "#ff0000"
+                    }
+                }
+            },
+            //stack:"",
+            data: breathListResult
+        }]
+    });
+  },
+
+  //加载心率表
+  initHeartChart() {
+    let widthWrapper = this.get("widthWrapper");
+    let heightWrapper = this.get("heightWrapper");
+    let heartListResult = this.get("heartListResult");
+    let heartDate = this.get("heartDate");
+    //初始化图表-心率数据
+    if (this.get("hasInitChartHeart")) {
+        return;
+    }
+    this.set("hasInitChartHeart", true);
+    $("#myChartHeart").width(widthWrapper);
+    $("#myChartHeart").height(heightWrapper);
+    var myChartHeart = echarts.init(document.getElementById('myChartHeart'));
+    // 绘制心率图表
+    myChartHeart.setOption({
+        title: {
+            text:'心率'
+        },
+        tooltip: {
+            trigger: "axis"
+        },
+        legend: {
+            data: ['心率'],
+            y: "top"
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: [{
+            type: 'category', //类目轴,选择此项必须使用data设置数据
+            boundaryGap: false,
+            data: heartDate, //x轴(时间)
+            axisLabel: {
+                interval: "auto"
+            }
+        }],
+        yAxis: {
+            name: 'times/min', //单位
+            type: 'value',
+        },
+        dataZoom: [{ // 这个dataZoom组件，默认控制x轴。
+            type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+            start: ((heartListResult.length-10)/heartListResult.length)*100, // 左边在 90% 的位置。
+            end: 100, // 右边在 100% 的位置。
+            filterMode: 'filter'
+        }],
+        series: [{
+            name: '心率',
+            type: "line",
+            smooth: true,
+            showAllSymbol:true,
+            itemStyle: {
+                normal: {
+                    lineStyle: {
+                        color: "#ff0000"
+                    }
+                }
+            },
+            //stack:"",
+            data: heartListResult
+        }]
+    });
+  },
+
+  //加载体温表
+  initTemperatureChart() {
+    let widthWrapper = this.get("widthWrapper");
+    let heightWrapper = this.get("heightWrapper");
+    let temperatureListResult = this.get("temperatureListResult");
+    let temperatureDate = this.get("temperatureDate");
+    //初始化图表-体温
+    if (this.get("hasInitChartTemperature")) {
+        return;
+    }
+    this.set("hasInitChartTemperature", true);
+    $("#myChartTemperature").width(widthWrapper);
+    $("#myChartTemperature").height(heightWrapper);
+    var myChartTemperature = echarts.init(document.getElementById('myChartTemperature'));
+    // 绘制体温图表
+    myChartTemperature.setOption({
+        title: {
+            text: '体温',
+        },
+        tooltip: {
+            trigger: "axis"
+        },
+        legend: {
+            data: ['体温'],
+            y: "top",
+            textStyle: {
+               fontSize: 12
+            }
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: [{
+            type: 'category', //类目轴,选择此项必须使用data设置数据
+            boundaryGap: false,
+            data: temperatureDate, //x轴(时间)
+            axisLabel: {
+                interval: "auto"
+            }
+        }],
+        yAxis: {
+            name: '℃', //单位
+            type: 'value',
+            min:35,
+            max:42,
+        },
+        dataZoom: [{ // 这个dataZoom组件，默认控制x轴。
+            type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+            start: 10, // 左边在 10% 的位置。
+            end: 90, // 右边在 60% 的位置。
+            filterMode: 'filter'
+        }],
+        series: [{
+            name: '体温',
+            type: "line",
+            smooth: true,
+            showAllSymbol:true,
+            itemStyle: {
+                normal: {
+                    lineStyle: {
+                        color: "#ff0000",
+                        fontSize: 12
+                    }
+                }
+            },
+            //stack:"",
+            data: temperatureListResult
+        }]
+    });
+  },
+
+
+
+/*
+  initChart() {
+    //初始化图表-血压
+    if (this.get("hasInitChart")) {
+        return;
+    }
+    this.set("hasInitChart", true);
+    $("#myChartBlood").width(widthWrapper);
+    $("#myChartBlood").height(heightWrapper);
+    var myChartBlood = echarts.init(document.getElementById('myChartBlood'));
+    console.log('myChartBlood is',myChartBlood);
+    this.set("myChartBlood", myChartBlood);
+    //初始化图表-血氧
+    if (this.get("hasInitChartOxygen")) {
+        return;
+    }
+    this.set("hasInitChartOxygen", true);
+    $("#myChartOxygen").width(widthWrapper);
+    $("#myChartOxygen").height(heightWrapper);
+    var myChartOxygen = echarts.init(document.getElementById('myChartOxygen'));
+    this.set("myChartOxygen", myChartOxygen);
+    //初始化图表-血糖
+    if (this.get("hasInitChartEmpty")) {
+        return;
+    }
+    this.set("hasInitChartEmpty", true);
+    $("#myChartEmpty").width(widthWrapper);
+    $("#myChartEmpty").height(heightWrapper);
+    var myChartEmpty = echarts.init(document.getElementById('myChartEmpty'));
+    this.set("myChartEmpty", myChartEmpty);
+    //初始化图表-呼吸频率
+    if (this.get("hasInitChartBreath")) {
+        return;
+    }
+    this.set("hasInitChartBreath", true);
+    $("#myChartBreath").width(widthWrapper);
+    $("#myChartBreath").height(heightWrapper);
+    var myChartBreath = echarts.init(document.getElementById('myChartBreath'));
+    this.set("myChartBreath", myChartBreath);
+    //初始化图表-心率数据
+    if (this.get("hasInitChartHeart")) {
+        return;
+    }
+    this.set("hasInitChartHeart", true);
+    $("#myChartHeart").width(widthWrapper);
+    $("#myChartHeart").height(heightWrapper);
+    var myChartHeart = echarts.init(document.getElementById('myChartHeart'));
+    this.set("myChartHeart", myChartHeart);
+    //初始化图表-体温
+    if (this.get("hasInitChartTemperature")) {
+        return;
+    }
+    this.set("hasInitChartTemperature", true);
+    $("#myChartTemperature").width(widthWrapper);
+    $("#myChartTemperature").height(heightWrapper);
+    var myChartTemperature = echarts.init(document.getElementById('myChartTemperature'));
+    this.set("myChartTemperature", myChartTemperature);
+  },
+
+  showChartData() {
+    var _self = this;
+    let hasInitChart = this.get("hasInitChart");
+    console.log("hasInitChart in showChartData:" + hasInitChart);
+    if(!hasInitChart){
+      return;
+    }
+    var myChartBlood = _self.get("myChartBlood");
+    var myChartOxygen = _self.get("myChartOxygen");
+    var myChartEmpty = _self.get("myChartEmpty");
+    var myChartBreath = _self.get("myChartBreath");
+    var myChartHeart = _self.get("myChartHeart");
+    var myChartTemperature = _self.get("myChartTemperature");
     // 绘制血压图表
     myChartBlood.setOption({
         title: {
@@ -557,7 +1010,7 @@ export default BaseUiItem.extend({
 
 
   },
-
+*/
 
   didRender(){
     this._super();
@@ -571,7 +1024,17 @@ export default BaseUiItem.extend({
         let swipeFlag = this.get("swipeFlag");
         let swipeCount = this.get("swipeCount");
         var pwBlood = $("#chartDataWrapper").width();
-        if(swipeFlag === swipeCount){
+        if(swipeFlag == 1){
+          this.initOxygenChart();
+        }else if(swipeFlag == 2){
+          this.initEmptyChart();
+        }else if(swipeFlag == 3){
+          this.initBreathChart();
+        }else if(swipeFlag == 4){
+          this.initHeartChart();
+        }else if(swipeFlag == 5){
+          this.initTemperatureChart();
+        }else if(swipeFlag === swipeCount){
           return;
         }
         let absoluteLeft = -(swipeFlag*pwBlood);

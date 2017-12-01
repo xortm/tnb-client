@@ -136,17 +136,22 @@ export default Ember.Controller.extend(InfiniteScroll,{
     this.set('shareDocument',shareDocument);
     let str = shareDocument.get('remark');
     console.log("str after:",str);
-    let remarkAfter;
-    if(str == _self.get('dateService').base64_encode(_self.get('dateService').base64_decode(str))) {//判断是否经过base64转码
-      console.log("run 11");
-      let base = new Base64();
-      remarkAfter = base.decode(str);
+    let remark;
+    if(!str){
+      remark = "";
     }else{
-      console.log("run 22");
-      remarkAfter = str;
+      let remarkAfter;
+      if(str == _self.get('dateService').base64_encode(_self.get('dateService').base64_decode(str))) {//判断是否经过base64转码
+        console.log("run 11");
+        let base = new Base64();
+        remarkAfter = base.decode(str);
+      }else{
+        console.log("run 22");
+        remarkAfter = str;
+      }
+      console.log("remarkAfter",remarkAfter);
+      remark = remarkAfter.replace(/embed/,'video controls="controls"');
     }
-    console.log("remarkAfter",remarkAfter);
-    let remark = remarkAfter.replace(/embed/,'video controls="controls"');
     console.log("remark:",remark);
     console.log("id render:",$("#brief_"+shareDocument.get("id")));
     $("#MyTrainingContainer").find(".remarkContentClass").find(".remarkClass").remove();

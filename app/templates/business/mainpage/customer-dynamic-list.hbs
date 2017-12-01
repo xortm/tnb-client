@@ -1,4 +1,4 @@
-<div id="customerDynamicListContainer" class="mainContent border-top-1 {{if global_pageConstructure.showLoader 'hide' ''}}">
+<div id="customerDynamicListContainer" class="mainContent  bk-color-ebebeb {{if global_pageConstructure.showLoader 'hide' ''}}">
   <div class="wrapperInner">
     {{#if customerdynamicList}}
       {{log "customerdynamicList:" customerdynamicList}}
@@ -18,21 +18,21 @@
 
   </div>
 </div>
-{{#ui/mobile/gestures-container}}
   <div class="detail-customer-dynamicsbtn" id="detail_dynamicbtn"  style="bottom:0px;">
     <div class="imgWrapperInner">
-      {{#ui/img-intergration-simple name="dynamicsImg" isMobile=true businessFlag="clickImgUpload" hasUploader=true isResizeImage=true imgSrc=null height=24 width=31 margin-left=0 uploadUrl=uploadUrl uploadSucc="addDynamic" uploadFail="uploadFail" businessType=constants.uploadBusinessType_headimg as |component|
+      {{#ui/img-intergration-simple name="dynamicsImg" isMobile=true businessFlag="clickImgUpload" uploadFlag="all" hasUploader=true isResizeImage=true imgSrc=null height=24 width=31 margin-left=0 uploadUrl=uploadUrl uploadSucc="addImgDynamic" uploadFail="uploadFail" businessType=constants.uploadBusinessType_headimg as |component|
       }}
       {{/ui/img-intergration-simple}}
     </div>
     <img src="assets/images/mobile/dynamicspic.png" alt=""/>
     <!-- <img src="assets/images/mobile/video-icon-16.png" alt="" {{action "videoRecord" on="tap"}} id="videoRecord"/> -->
-    <div class="addDynamicText" {{action 'addDynamic' "text" on="tap"}}>发送</div>
+    {{#ui/mobile/gestures-container}}
+      <div class="addDynamicText" {{action 'addDynamic' "text" on="tap"}}>发送</div>
+    {{/ui/mobile/gestures-container}}
     <div class="dynamicTextOut">
       <input class="dynamicText" type="text" name="" value=""/>
     </div>
   </div>
-{{/ui/mobile/gestures-container}}
 {{ui/container/infinite-scroll moniteData="customerdynamicList"
 didRenderAction="didRender" didInsertElementAction="didInsertElement"}}
 

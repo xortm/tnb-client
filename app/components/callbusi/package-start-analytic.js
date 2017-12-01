@@ -7,6 +7,7 @@ export default Ember.Component.extend({
   pathConfiger: Ember.inject.service("path-configer"),
   dataLoader: Ember.inject.service("data-loader"),
   reRenderFlag:0,
+  initQueryFlag:0,
   didInsertElement:function(){
     var _self = this;
   },
@@ -63,8 +64,9 @@ export default Ember.Component.extend({
 
   doQuery: function() {
     var _self = this;
-    var fildurTypeFlag=null;
     var durTypeFlag = this.get('durTypeFlag'); //统计区间,1:年 2季 3月 4周 5日
+    if(!this.get("initQueryFlag") || !this.get('durTypeFlag')){return;}
+    var fildurTypeFlag=null;
     if(durTypeFlag=='year'){
       fildurTypeFlag=1;
     }
@@ -131,11 +133,12 @@ export default Ember.Component.extend({
       endcurDate=this.get("dateService").getLastSecondStampOfMonth(endYear,endMouth);
     }
     //查询条件-统计类型
-    var paramList=this.get('paramList');
-    var str='';
-    paramList.forEach(function(param){
-      str+=param+'@$or';
-    });
+    // var paramList=this.get('paramList');
+    // var str='';
+    // paramList.forEach(function(param){
+    //   str+=param+'@$or';
+    // });
+    let statTypeCode=this.get('statTypeCode');
     //查询条件-开始时间(结束时间)
     var beginTime=null;
     var endTime=null;
@@ -147,11 +150,11 @@ export default Ember.Component.extend({
       beginTime=begincurDate;
       endTime=endcurDate;
     }
-    console.log('strParams str',str);
+    console.log('strParams statTypeCode',statTypeCode);
     //var chartType = this.get('chartType'); //图表类型(比传)
     this.get('store').query('statquery', {
       filter: {
-        '[statType][typecode]': str,
+        '[statType][typecode]': statTypeCode,
         'durType':fildurTypeFlag,
         'beginTime':beginTime,
         'endTime':endTime,
@@ -159,46 +162,9 @@ export default Ember.Component.extend({
     }).then(function(dataList) {
       dataList=dataList.sortBy("statDate");
       //根据口径类型区分数据
-      let mapData = {};
-      let mapDate={};
-      //拼data数据
-      dataList.forEach(function(data){
-        var statResult=data.get('statResult');//结果数据
-        var statDate=data.get('statDate');//结果日期(时间戳)
-        var statItemTypecode=data.get('statItemType.typecode');//口径类型-code
-        let typecode = mapData[statItemTypecode];
-        if(!typecode){
-          let array = [];
-          array.push(statResult);
-          mapData[statItemTypecode]=array;
-        }else{
-          let array = mapData[statItemTypecode];
-          array.push(statResult);
-        }
-        //日期
-        if(!typecode){
-          let array = [];
-          array.push(statDate);
-          mapDate[statItemTypecode]=array;
-        }else {
-          let array = mapDate[statItemTypecode];
-          if(array.indexOf(statDate)<0){
-            array.push(statDate);
-          }
-        }
-      });
-      //  //重组口径数组
-      //  var statTypeAry=[];
-      //  for(var k in mapData){
-      //    statTypeAry.push(k);
-      //  }
-      //  _self.set('statTypeAry',statTypeAry);
-      //  console.log('statTypeAry is',_self.get('statTypeAry'));
-      _self.set('mapData',mapData);
-      console.log('shujushi',mapData);
-      _self.set('mapDate',mapDate);
-      console.log('shijianshi',mapDate);
-      _self.set('dataList',dataList);
+      let dateStr = statTypeCode + "DataList";
+      console.log("dateStr in dataList:",dateStr);
+      _self.set(dateStr,dataList);
 
       if(dataList){
         var nextFlag=0;
@@ -207,5 +173,13 @@ export default Ember.Component.extend({
         console.log('nextFlag对不对',nextFlag);
       }
     });
-  }.observes('doQueryFlag','paramList').on('init'),
+  }.observes('initQueryFlag','durTypeFlag'),
+
+  actions:{
+    queryAction:function(statTypeCode){
+      this.set("statTypeCode",statTypeCode);
+      this.incrementProperty("initQueryFlag");
+
+    },
+  },
 });

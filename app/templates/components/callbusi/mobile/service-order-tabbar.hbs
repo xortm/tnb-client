@@ -1,0 +1,7 @@
+<div id="service-order-tabbar">
+  {{#each menus as |menu|}}
+    <div class="tabbar {{if menu.select "select" ""}} {{innerClass}}" {{action "menuClick" menu on="tap"}}>
+      {{menu.typename}}
+    </div>
+  {{/each}}
+</div>

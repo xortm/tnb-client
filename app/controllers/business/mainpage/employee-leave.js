@@ -62,7 +62,7 @@ export default Ember.Controller.extend({
     //审批弹层
     approvalLeave(leave){
       this.set('approvalLeave',leave);
-      this.set('showApproval',true)
+      this.set('showApproval',true);
     },
     //审批通过
     passApproval(){

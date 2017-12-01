@@ -10,11 +10,11 @@ export default BaseBusiness.extend(Pagination,{
   buildQueryParams:function(){
     var params=this.pagiParamsSet();
     var curController = this.getCurrentController();
-    var filter={};
+    var filter={queryTenant: "tenant"};
     var sort;
     if (curController) {
         if (curController.get('queryCondition')) {
-          filter = $.extend({}, filter, {'name@$like':curController.get('queryCondition')});
+          filter = $.extend({}, filter, {'nameLike':curController.get('queryCondition')});
         }
     }
     params.filter = filter;

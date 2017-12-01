@@ -6,7 +6,6 @@ export default Ember.Controller.extend(InfiniteScroll,{
   infiniteModelName: "",
   infiniteContainerName:"userBloodOxygenUploadContainer",
 
-  moment: Ember.inject.service(),
   service_PageConstrut:Ember.inject.service("page-constructure"),
   mainController: Ember.inject.controller('business.mainpage'),
   pathConfiger: Ember.inject.service("path-configer"),
@@ -16,9 +15,20 @@ export default Ember.Controller.extend(InfiniteScroll,{
   dateService: Ember.inject.service("date-service"),
   constants:Constants,
 
-  queryFlagIn: function(){return;},
+  queryFlagIn: function(){
+    this.hideAllLoading();
+  },
+  init:function(){
+    this.hideAllLoading();
+  },
 
   actions:{
+    switchShowAction(){
+      console.log("in switchShowAction");
+      //  清空页面的input输入框
+      this.set('curValue', "");
+      this.set("date","");
+    },
     dpShowAction(e) {
 
     },
@@ -30,12 +40,6 @@ export default Ember.Controller.extend(InfiniteScroll,{
         this.set("timeStamp", stamp);
     },
     saveItem:function(){
-      var date = this.get("date");
-      console.log("11111111111date",date);
-      var timeStamp = new Date(date).getTime()/1000;
-      console.log("11111111111date",timeStamp);
-      var curCustomer = this.get("statusService").getCustomer();//获取居家curCustomer
-      var curUser = this.get("statusService").getUser();//获取居家curUser
       let _self = this;
       var curValue = this.get('curValue');
       console.log("curValue",curValue);
@@ -43,12 +47,21 @@ export default Ember.Controller.extend(InfiniteScroll,{
       // console.log("timeStamp",timeStamp);
       if ('undefined' === typeof(curValue) || '' === curValue) {
         App.lookup("controller:business").popTorMsg("血氧值不能为空!");
-          return ;
+        return ;
       }
-      if ('undefined' === typeof(timeStamp) || '' === timeStamp) {
+      let date = this.get("date");//体检时间
+      let sysTime = this.get("dataLoader").getNowTime();
+      let nowDay = this.get("dateService").formatDate(sysTime,"yyyy-MM-dd");
+      date = nowDay+" "+date+":00";
+      date = date.replace(/-/g,'/');
+      var timeStamp = new Date(date).getTime()/1000;
+      console.log("11111111111date",timeStamp);
+      if ('undefined' === typeof(timeStamp) || '' === timeStamp ||!timeStamp) {
         App.lookup("controller:business").popTorMsg("日期不能为空!");
-          return ;
+        return ;
       }
+      var curCustomer = this.get("statusService").getCustomer();//获取居家curCustomer
+      var curUser = this.get("statusService").getUserReal();//获取居家curUser
       var typeObj = this.get("dataLoader").findDict(Constants.healthExamType2);
       console.log("typeObj is", typeObj);
       var healthInfo = _self.store.createRecord('health-info', {
@@ -62,8 +75,6 @@ export default Ember.Controller.extend(InfiniteScroll,{
         App.lookup("controller:business").popTorMsg("血氧上传成功!");
         App.lookup('controller:business.mainpage').switchMainPage('blood-oxygen');
       });
-      //  清空页面的input输入框
-      this.set('curValue', "");
     },
 
   },

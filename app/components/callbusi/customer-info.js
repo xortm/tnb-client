@@ -89,11 +89,13 @@ export default BaseItem.extend(CustomerValidations, {
                 //console.log("dictMan is",dictMan);
                 this.get("customerModel").set("sexChange", manObj);
                 this.get("customerModel").set("sex", manObj);
+                this.get("customerInfo").set("sex", manObj);
             } else {
                 var womanObj = this.get("dataLoader").findDict(Constants.sexTypeFemale);
                 //var dictWoman= this.get("store").peekRecord("dicttype", womanObj.get("id"));
                 this.get("customerModel").set("sexChange", womanObj);
                 this.get("customerModel").set("sex", womanObj);
+                this.get("customerInfo").set("sex", womanObj);
             }
             //计算年龄
             var momentDate = this.get('dateService').getCurrentTime();
@@ -306,10 +308,16 @@ export default BaseItem.extend(CustomerValidations, {
                 });
             });
         },
-        sexSelect: function(sexDict) {
-            console.log("sexDict in", sexDict);
-            this.get("customerModel").set("sex", sexDict);
-            console.log("sexDict is", this.get("customerInfo.sex"));
+        sexSelect: function(str) {
+            let sexType;
+            if(str=='man'){//男
+              sexType = this.get("dataLoader").findDict('sexTypeMale');
+            }
+            if(str=='woman'){//女
+              sexType = this.get("dataLoader").findDict('sexTypeFemale');
+            }
+            this.set('customerModel.sex',sexType);
+            this.get("customerInfo").set("sex", sexType);
         }, //性别字典
         abilitySelect: function(abilityDict) {
             this.get("customerInfo").set("selfCareAbility", abilityDict);
@@ -377,8 +385,16 @@ export default BaseItem.extend(CustomerValidations, {
             this.get('customerModel').set('age', computedAge);
         },
         //生日习惯
-        birthdayHabitSelect: function(birthdayHabitDict) {
-            this.get("customerInfo").set("customerBirthdayHabit", birthdayHabitDict);
+        birthdayHabitSelect: function(str) {
+          let birtydayType;
+          if(str=='lunar'){//阴历
+            birtydayType = this.get("dataLoader").findDict('birtydayTypeN');
+          }
+          if(str=='solar'){//阳历
+            birtydayType = this.get("dataLoader").findDict('birtydayTypeY');
+          }
+          this.set('customerModel.customerBirthdayHabit',birtydayType);
+          this.get("customerInfo").set("customerBirthdayHabit", birtydayType);
         },
         //老人类型
         oldManTypeSelect: function(oldManTypeDict) {

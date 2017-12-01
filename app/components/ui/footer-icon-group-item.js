@@ -25,9 +25,13 @@ export default CommonButton.extend({
     //已展开并且没有选中，则显示在上方浮层
     if(this.get("groupExpanded")&&!this.get("menu.selected")){
       Ember.run.schedule('afterRender',function(){
+        if($('.upshow').length == 3){
+            $('.upshow:first').css('top','-123px');
+            $('.upshow:eq(1)').css('top','-82px');
+            $('.upshow:last').css('top','-41px');
+        }
         if($('.upshow').length == 2){
             $('.upshow:first').css('top','-82px');
-            // $('.upshow:eq(1)').css('top','-82px');
             $('.upshow:last').css('top','-41px');
         }
       });

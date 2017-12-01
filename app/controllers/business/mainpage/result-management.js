@@ -6,6 +6,22 @@ export default Ember.Controller.extend(InfiniteScroll,{
   mainController: Ember.inject.controller('business.mainpage'),
   infiniteContainerName:"resultManagementContainer",
   scrollPrevent:true,
+  uiCapa: Ember.inject.service("ui-capability"),
+  recognizers: 'press tap',//移动端手势
+  press(e) {
+   e=e||window.event;
+   if (e.stopPropagation) {
+     e.stopPropagation();//IE以外
+   } else {
+     e.cancelBubble = true;//IE
+   }
+   console.log("press in",e);
+   var target = e.target || e.srcElement;
+  },
+
+  tap(e) {
+   console.log("tap in",e);
+  },
   customerObs: function(){
     var _self = this;
     var customerId = this.get("global_curStatus.healtyCustomerId");
@@ -36,6 +52,18 @@ export default Ember.Controller.extend(InfiniteScroll,{
     addNewEva(result){
       this.get("mainController").switchMainPage('evaluate-template',{editModel:'edit',id:result.get('id'),resultId:result.get('id')});
       this.incrementProperty('global_curStatus.curResultSave');
+    },
+    //删除遮罩
+    showDelBut(result){
+      this.set('showDelButFlag',true);
+      this.get('resultList').forEach(function(res){
+        res.set('toDelStatus',false);
+      })
+      result.set('toDelStatus',true)
+      console.log('come in showDelBut');
+    },
+    hideDelBut(){
+      this.set('showDelButFlag',false);
     },
     delById(result){
       let _self = this;

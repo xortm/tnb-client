@@ -5,10 +5,15 @@ export default BaseBusiness.extend({
       return {};
   },
   setupController(controller, model) {
-  controller.computedParams();
-  this.get('store').query('statquerytype',{}).then(function(querytypeList){
-    console.log('querytypeList is',querytypeList);
-    controller.set('querytypeList',querytypeList);
-  });
+    controller.set('beginDate',null);
+    controller.set('endDate',null);
+    controller.set('durTypeFlag',null);
+    controller.set('beginseaconDate',null);
+    controller.set('endseaconDate',null);
+    controller.computedParams();
+    this.get('store').query('statquerytype',{}).then(function(querytypeList){
+      console.log('querytypeList is',querytypeList);
+      controller.set('querytypeList',querytypeList);
+    });
   }
 });

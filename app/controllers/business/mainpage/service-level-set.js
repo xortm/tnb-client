@@ -4,7 +4,7 @@ export default Ember.Controller.extend({
   constants: Constants,
   queryCondition:'',
   mainController: Ember.inject.controller('business.mainpage'),
-
+  dataLoader:Ember.inject.service('data-loader'),
   actions:{
     toDetailPage(serviceLevel){
       var mainpageController = App.lookup('controller:business.mainpage');

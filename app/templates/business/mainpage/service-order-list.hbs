@@ -1,0 +1,24 @@
+{{#ui/mobile/gestures-container}}
+<div id="serviceOrderListContainer" class="mainContent border-top-1 {{if global_pageConstructure.showLoader 'hide' ''}}">
+  <div class="wrapperInner">
+  {{#if customerserviceitemList}}
+    {{log "customerserviceitemList in hbs:" customerserviceitemList}}
+    <div class="bgcolor-white">
+    {{#each customerserviceitemList as |item|}}
+      {{#callbusi/mobile/service-order-item item=item}}
+      {{/callbusi/mobile/service-order-item}}
+    {{/each}}
+    </div>
+  {{else}}
+    <div class="nodate">暂无数据</div>
+  {{/if}}
+
+
+
+  </div>
+
+</div>
+{{/ui/mobile/gestures-container}}
+
+{{ui/container/infinite-scroll moniteData="customerserviceitemList"
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

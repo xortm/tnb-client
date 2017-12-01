@@ -62,14 +62,15 @@ export default Ember.Controller.extend({
       var userModel = this.get("userModel");
       var passcode = userModel.get("passcode");
       console.log("sysPassWord11 passcode before",passcode);
-      if(passcode==sysPassWord){//相等 证明没有变动
-        userModel.set("passcode",passcode);
-      }else {
-        userModel.set("passcode",$.md5(passcode));
-      }
+
       console.log("sysPassWord11 passcode",passcode);
       userModel.validate().then(function() {
         if (userModel.get('errors.length') === 0) {
+          if(passcode==sysPassWord){//相等 证明没有变动
+            userModel.set("passcode",passcode);
+          }else {
+            userModel.set("passcode",$.md5(passcode));
+          }
           if (_self.get('editMode') == 'add') {
             var newLoginName = userModel.get("loginName");
             _self.store.query("user",{filter:{loginName:newLoginName}}).then(function (users) {
@@ -82,6 +83,8 @@ export default Ember.Controller.extend({
                 userModel.save().then(function() {
                   App.lookup('controller:business.mainpage').showPopTip("保存成功");
                   _self.get("mainController").switchMainPage('system-user');
+                },function(err){
+                  userModel.set('password',password);//保存失败，密码还原为非md5格式
                 });
               }
             });
@@ -90,6 +93,8 @@ export default Ember.Controller.extend({
             userModel.save().then(function() {
               App.lookup('controller:business.mainpage').showPopTip("保存成功");
               _self.set('editModel',false);
+            },function(err){
+              userModel.set('password',password);//保存失败，密码还原为非md5格式
             });
           }
       } else {

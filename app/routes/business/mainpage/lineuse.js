@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import BaseBusiness from '../base-business';
-import _ from 'lodash/lodash';
+
 
 var routeClass = BaseBusiness.extend({
   dateService: Ember.inject.service('date-service'),

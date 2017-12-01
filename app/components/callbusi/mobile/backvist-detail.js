@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import BaseUiItem from '../../ui/base-ui-item';
-import Echarts from "npm:echarts";
+//
 import InfiniteScroll from '../../../controllers/infinite-scroll';
 const {useDrugResult1,liveIntent1} = Constants;
 
@@ -25,6 +25,7 @@ export default BaseUiItem.extend(InfiniteScroll,{
   infiniteContentPropertyName: 'backvistData',
   infiniteModelName: "backvist",
   infiniteContainerName: "backvistDetailContainer",
+  stopScroll:true,
   screenOffset:160,
   squareScanShow:true,
   panmoveMode: "showFunc",//划动处理，showFunc：显示按钮 delete：删除本条
@@ -47,7 +48,7 @@ export default BaseUiItem.extend(InfiniteScroll,{
       var infoId = this.get('dataId');
       var source = this.get('source');
       console.log("dataObs planDataPushFlag:",this.get("planDataPushFlag"));
-      console.log("dataObs itemIdFlag:",this.get("itemIdFlag")); 
+      console.log("dataObs itemIdFlag:",this.get("itemIdFlag"));
       if (source ==="add" ) {
         let curuser = this.get('global_curStatus').getUser();
         let backvistInfo = this.get('store').createRecord('backvist', {
@@ -62,6 +63,7 @@ export default BaseUiItem.extend(InfiniteScroll,{
           _self.set("dataId",data.get("id"));
           _self.set("backvistData", data);
           _self.directInitScoll(true);
+          _self.hideAllLoading();
         });
       }else{
         _self.get("store").findRecord("backvist", infoId).then(function(data) {
@@ -70,6 +72,7 @@ export default BaseUiItem.extend(InfiniteScroll,{
                 _self.set("dataId",data.get("id"));
                 _self.set("backvistData", data);
                 _self.directInitScoll(true);
+                _self.hideAllLoading();
         });
       }
       //重新进行tab选择

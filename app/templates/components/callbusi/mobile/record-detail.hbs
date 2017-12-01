@@ -1,10 +1,10 @@
 {{#if lastLevel}}
 
   {{#if fieldInfo.stringType}}
-    {{callbusi/mobile/text-input type='text' fieldInfo=fieldInfo saveValue="saveValue"}}
+    {{callbusi/mobile/text-input type='text' fieldInfo=fieldInfo value=fieldInfo.value saveValue="saveValue"}}
   {{/if}}
   {{#if fieldInfo.numType}}
-    {{callbusi/mobile/text-input type='number' fieldInfo=fieldInfo saveValue="saveValue"}}
+    {{callbusi/mobile/text-input type='number' fieldInfo=fieldInfo value=fieldInfo.value saveValue="saveValue"}}
   {{/if}}
 {{else}}
   <div class="bgcolor-white">

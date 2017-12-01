@@ -13,6 +13,7 @@ var Answer = BaseModel.extend({
   createDateTime:DS.attr('number'),//创建时间
   lastUpdateDateTime:DS.attr('number'),//更改时间
   forRisk:DS.attr('number'),
+  selectFlag:DS.attr('number'),//选中标识，1，已选，0，未选
   answerId: Ember.computed("answer",function(){
     var answer = this.get("answer");
     if(answer&&answer.get("id")){

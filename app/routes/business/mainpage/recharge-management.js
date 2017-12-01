@@ -61,32 +61,12 @@ export default BaseBusiness.extend(Pagination, {
             '[createDateTime]': 'desc',
         };
         params.sort = sort;
-        console.log("params is:", params);
         return params;
     },
     doQuery: function() {
         var params = this.buildQueryParams();
-        console.log("params is",params);
         var rechargeList = this.findPaged('rechargerecord', params, function(rechargeList) {});
         this.getCurrentController().set("rechargeList", rechargeList);
-    },
-    actions: {
-      // search: function(flag) {
-      //     //alert("执行了");
-      //     this.getCurrentController().set("dateQueryCondition", flag);
-      //     this.get("controller").set("beginDate", null);
-      //     this.get("controller").set("endDate", null);
-      //     this.doQuery();
-      // },
-      // //显示时间选择器
-      // showDate: function() {
-      //     this.get("controller").set('dateShow', true);
-      // },
-      // //隐藏时间选择器
-      // hideDate: function() {
-      //     this.get("controller").set('dateShow', false);
-      //     this.doQuery();
-      // },
     },
     setupController: function(controller, model) {
       this.doQuery();

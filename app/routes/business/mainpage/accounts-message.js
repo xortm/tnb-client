@@ -10,24 +10,6 @@ export default BaseBusiness.extend({
   setupController: function(controller,model){
     this._super(controller,model);
     var _self = this;
-    let customer = this.get("global_curStatus").getCustomer();
-    console.log("customer in public",customer);
-    console.log("customer in public name",customer.get("name"));
-    console.log("customer in public allBedName",customer.get("bed.allBedName"));
-    console.log("customer in public BedId",customer.get("bed.id"));
-    if(!customer||!customer.get("id")){
-      return;
-    }
-    var customerId = customer.get("id");
-    let allBeds = _self.get("global_dataLoader.allBedList");
-    console.log("allBeds",allBeds);
-    allBeds.forEach(function(bedItem){
-      if(bedItem.get("id")==customer.get("bed.id")){
-        customer.set("bed",bedItem);
-      }
-    });
-    console.log("customer in public allBedName after",customer.get("bed.allBedName"));
-    controller.set("customer",customer);
 
       // _self.store.query("tradeaccount",{filter:{customer:{id:customerId}}}).then(function(tradeaccounts){
       //   var tradeaccount = tradeaccounts.get("firstObject");

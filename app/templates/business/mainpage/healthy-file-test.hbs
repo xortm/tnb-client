@@ -1,4 +1,4 @@
-<div id="userHealthyFileTestContainer" class="mainContent">
+<div id="userHealthyFileTestContainer" class="mainContent {{if global_pageConstructure.showLoader 'hide' ''}}">
   <div class="wrapperInner jujia-Bd">
 {{#ui/mobile/gestures-container}}
 <div class="jujia-container healthy-file-test">
@@ -11,6 +11,7 @@
       <!-- <img class="lecture-img" class="lecture" src="{{picPath}}" alt=""> -->
     <!-- </a> -->
   </section>
+  <p class="font16 line-height-24 color333333 width90B margin0auto">{{contents}}</p>
   <section class="jujia-catalog">
     <ul>
       <li class="account" id="file-test-history" {{action 'switchPage' 'file-test-history' 'file-test-history' on="tap"}}>

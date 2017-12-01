@@ -1,0 +1,19 @@
+<div class="clearfix width100B height-auto bgcolor-white {{if (eq item.diningDate currentDate) ""}}" id="customerOrderingList_{{item.id}}" {{action "gotoDetail" on="tap"}}>
+  <div class="font13 color999999 line-height-30 bk-color-eeeeee clearfix width100B height30 padding-0-10">
+    <span class="pull-left color333333">订餐日期：{{item.diningDateStr}}</span>
+    {{#if (eq item.diningDate currentDate)}}
+      <span class="pull-right color2FA7FD weight-bold">今天</span>
+    {{/if}}
+  </div>
+  <div class="clearfix width100B height-auto padding-5-10 position-relative">
+    {{log "item in hbs:" item}}
+    {{log "remarkArr11 in hbs:" item.remarkArr}}
+    {{log "remarkArr22 in hbs:" remarkArr}}
+    {{#each item.remarkArr as |str|}}
+      {{log "str in hbs:" str}}
+      <div class="width100B height-auto">
+        <div class="font14 color666666 line-height-24 height24 extend">{{str}}</div>
+      </div>
+    {{/each}}
+  </div>
+</div>

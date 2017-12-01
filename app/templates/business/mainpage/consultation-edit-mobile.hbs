@@ -11,33 +11,51 @@
         </li>
         <li class="top10 center"></li>
       </ul> -->
-                <ul class="nopadding-left bgcolor-white margin-0-10px">
-                    <li class="input_noneborder top30 textarea">
-                      {{#if (eq textType 'text')}}
-                        {{input type="text"  class='edit fullWidth3 padding-left-8' value=edit placeholder=editPlaceholder autofocus=true bubbles=false }}
-                      {{/if}}
-                      {{#if (eq textType 'textarea')}}
-                        {{textarea type="text"  class='edit fullWidth3 padding-left-8' value=edit placeholder=editPlaceholder autofocus=true bubbles=false }}
-                      {{/if}}
+                <ul class="nopadding-left">
+                    <li class="top30">
+                        {{#if (eq textType 'text')}}
+                            <!-- {{input type="text" class='edit fullWidth3 padding-left-8' value=edit placeholder=editPlaceholder autofocus=true bubbles=false }} -->
+                            {{#callbusi/mobile/text-input value=edit placeholder=editPlaceholder}}
+                            {{/callbusi/mobile/text-input}}
+                        {{/if}}
+                        {{#if (eq textType 'textarea')}}
+                            {{#callbusi/mobile/text-textarea value=edit placeholder=editPlaceholder}}
+                            {{/callbusi/mobile/text-textarea}}
+                            <!-- {{textarea type="text" class='edit fullWidth3 padding-left-8' value=edit placeholder=editPlaceholder autofocus=true bubbles=false }} -->
+                        {{/if}}
                     </li>
                     <li class="top10 center"></li>
                 </ul>
-                {{ui/mobile/task-detail-button needDoubleClickPrevent=true touchStartAction="save" save="save" butContent="保存" outerClass="top40" outerClass="consultationEditMobileBut"}}
+                {{ui/mobile/task-detail-button touchStartAction="save" save="save" butContent="保存" outerClass="top40" outerClass="consultationEditMobileBut"}}
             {{/if}}
             {{#if (eq editType 'select')}}
                 <div class="padding-left-10 padding-right-10 height40 line-height-40 bottom10 bgcolor-white">
-                    {{theChoose.typename}}
+                    <!-- {{theChoose.typename}}
                     {{#if theChoose.typename}}
                         <span class="pull-right">已选中</span>
                     {{else}}
                         <span class="pull-right">请在下方选择</span>
-                    {{/if}}
+                    {{/if}} -->
+                    <span class="pull-right">请在下方选择</span>
                 </div>
                 {{#ui/mobile/gestures-container}}
                     {{#each selfChooseList as |data|}}
                         <div class="padding-left-10 padding-right-10 height40 line-height-40 bgcolor-white" id="choose_{{data.id}}" {{action 'choose' data on="tap"}}>
-                            {{data.typename}}
-                            {{#if (eq theChoose.typename data.typename)}}
+                            {{#if (eq source 'advGender')}}
+                                {{#if (eq data.typename '男')}}
+                                    先生
+                                {{else}}
+                                    女士
+                                {{/if}}
+                            {{else}}
+                                {{data.typename}}
+                            {{/if}}
+                            <!-- {{#if theChoose}}
+                                {{#if (eq theChoose.typename data.typename)}}
+                                    <span class="pull-right">已选中</span>
+                                {{/if}}
+                            {{/if}} -->
+                            {{#if data.select}}
                                 <span class="pull-right">已选中</span>
                             {{/if}}
                         </div>
@@ -78,10 +96,10 @@
                             onchange="Constants.LOF_inputDateChange(this);" />
                     </div>
                 </div>
-                {{ui/mobile/task-detail-button needDoubleClickPrevent=true touchStartAction="save" save="save" butContent="保存" outerClass="top40" outerClass="consultationEditMobileBut"}}
+                {{ui/mobile/task-detail-button touchStartAction="save" save="save" butContent="保存" outerClass="top40" outerClass="consultationEditMobileBut"}}
             {{/if}}
-            <center class="center-edit3">
-                <p >{{succeed}}</p>
+            <center class="center-edit3 abs-top-25B">
+                <p>{{succeed}}</p>
             </center>
         </div>
     </div>

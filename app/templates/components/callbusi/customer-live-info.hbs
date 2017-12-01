@@ -1,25 +1,17 @@
 <div class="busi-info ">
     {{#bs-form formLayout=formLayout model=customerModel action=(action "detailSaveClick") invalid=(action "invalid")}}
-        <div class="sign col-sm-12 nopadding-left">
+        <!-- <div class="sign col-sm-12 nopadding-left">
             <div class="pull-right user-add-btn nopadding-left ">
                 {{#if addMode}}
-                    <!-- {{#ui/mix-button class=" user-btn edit-btn" iconClass="fa-check" text='保存' }}
-                        {{/ui/mix-button}}
-                        {{#ui/mix-button class=" user-btn times-btn" iconClass="fa fa-mail-reply" text='取消' clickAction="cancelClick" cancelClick="cancelClick" }}
-                        {{/ui/mix-button}} -->
                 {{else}}
                     {{#if detailModify}}
-                        <!-- {{#ui/mix-button class=" user-btn edit-btn" iconClass="fa-check" text='保存' }}
-                        {{/ui/mix-button}}
-                        {{#ui/mix-button class=" user-btn times-btn" iconClass="fa fa-mail-reply" text='取消' clickAction="cancelClick" cancelClick="cancelClick" }}
-                        {{/ui/mix-button}} -->
                     {{else}}
                         {{#ui/form-function editAction="detailModifyClick" detailModifyClick="detailModifyClick" removeAction="delById" delById="delById" }}
                         {{/ui/form-function}}
                     {{/if}}
                 {{/if}}
             </div>
-        </div>
+        </div> -->
         <div style="clear:both" />
         <div class="bottom12 top12 col-sm-12 nopadding-left">
             <strong class="font16 font-black">服务信息</strong>
@@ -31,13 +23,23 @@
                     <div class="font-light input-group-content">{{customerModel.contractNO}}</div>
                 </div>
             </div>
-            <div class="col-xs-12 col-sm-6">
+            <div class="col-xs-12 col-sm-3">
                 <div class="form-input-group label-normal">
                     <span class="input-group-addon">入住状态：</span>
                     {{#if detailModify}}
                         <div class="font-light input-group-content">{{customerModel.customerStatus.typename}}</div>
                     {{else}}
                         <div class="font-light input-group-content">{{customerModel.customerStatus.typename}}</div>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+                <div class="form-input-group label-normal">
+                    <span class="input-group-addon">结算类型：</span>
+                    {{#if detailModify}}
+                        <div class="font-light input-group-content">{{customerModel.chargeType.typename}}</div>
+                    {{else}}
+                        <div class="font-light input-group-content">{{customerModel.chargeType.typename}}</div>
                     {{/if}}
                 </div>
             </div>
@@ -91,7 +93,11 @@
             </div>
             <div class="col-xs-12 col-sm-6 ">
                 <div class="form-input-group label-normal">
+                  {{#if chargeTypeDay}}
                     <span class="input-group-addon">餐饮价格(元/天)：</span>
+                  {{else}}
+                    <span class="input-group-addon">餐饮价格(元/月)：</span>
+                  {{/if}}
                     <div class="font-light input-group-content">{{customerModel.actualDiningPrice}}</div>
                 </div>
             </div>
@@ -105,7 +111,11 @@
             </div>
             <div class="col-xs-12 col-sm-6">
                 <div class="form-input-group label-normal">
+                  {{#if chargeTypeDay}}
                     <span class="input-group-addon">护理价格(元/天)：</span>
+                  {{else}}
+                    <span class="input-group-addon">护理价格(元/月)：</span>
+                  {{/if}}
                         <div class="font-light input-group-content">{{customerModel.levelPrice}}</div>
                 </div>
             </div>
@@ -123,7 +133,11 @@
             </div>
             <div class="col-xs-12 col-sm-6">
                 <div class="form-input-group label-normal">
+                  {{#if chargeTypeDay}}
                     <span class="input-group-addon">床位价格(元/天)：</span>
+                  {{else}}
+                    <span class="input-group-addon">床位价格(元/月)：</span>
+                  {{/if}}
                         <div class="font-light input-group-content">{{customerModel.actualBedPrice}}</div>
                 </div>
             </div>
@@ -131,13 +145,21 @@
         <div class="line">
             <div class="col-xs-12 col-sm-6 nopadding-left">
                 <div class="form-input-group label-normal">
+                  {{#if chargeTypeDay}}
                     <span class="input-group-addon">参考价格(元/天)：</span>
+                  {{else}}
+                    <span class="input-group-addon">参考价格(元/月)：</span>
+                  {{/if}}
                     <div class="font-light input-group-content">{{customerModel.realreferencePrice}}</div>
                 </div>
             </div>
             <div class="col-xs-12 col-sm-6">
                 <div class="form-input-group label-normal">
+                  {{#if chargeTypeDay}}
                     <span class="input-group-addon">实际价格(元/天)：</span>
+                  {{else}}
+                    <span class="input-group-addon">实际价格(元/月)：</span>
+                  {{/if}}
                     <div class="font-light input-group-content">{{customerModel.actualPrice}}</div>
                 </div>
             </div>

@@ -1,23 +1,18 @@
 import Ember from 'ember';
 import BaseItem from './base-ui-item';
-import ImageLoadMixin from 'ember-lazy-image/mixins/image-load';
-import LazyImageMixin  from 'ember-lazy-image/mixins/lazy-image';
-import InViewportMixin from 'ember-in-viewport';
 import CommonUtil from '../../utils/common';
-import GesturesMixin from 'ember-gestures/mixins/recognizers';
 
 /*
  * 图片组件，集成了图片展示，以及图片上传
  */
-export default BaseItem.extend(InViewportMixin, ImageLoadMixin, LazyImageMixin,GesturesMixin,{
-  recognizers: 'pinch tap',
+export default BaseItem.extend({
   /*定义属性*/
   isMobile: false,//是否移动端模式
   imgSrc: null,//图片路径
   imgMode: 0,//图片模式，0--文件,1--BASE64字符串
   hasUploader: false,//是否包含上传功能
   uploadUrl:null,//上传地址
-  uploadLimitSize:5120000,//上传文件大小限制，默认5M
+  uploadLimitSize:10240000,//上传文件大小限制，默认5M
   errorText:"",//加载失败提示语
   businessType:null,//上传业务类型
   uploadParams:[],//上传参数
@@ -33,102 +28,128 @@ export default BaseItem.extend(InViewportMixin, ImageLoadMixin, LazyImageMixin,G
   uploaderSetup: null,//pluploader对象
   progressValue: 0,//进度值
   showBigImageModal: false, //大图弹出层默认是否显示
+  showUploadAllModal: false, //上传方式弹出层默认是否显示
+  uploadFlag: "all", //移动端上传模式，all为弹框选择模式，camera为直接拍照上传模式，doc为直接传文档模式
+  isCameraFlag: false, //移动端是否为拍照上传模式，默认为文件上传方式
   // width:'100px',
   // height:'100px',
   //  showProgress:false,
   tap(e) {
    console.log("tap in img:",e);
   },
-  init:function(){
-    var _self = this;
-    _self._super(...arguments);
-    Ember.run.schedule("afterRender",this,function() {
-      var uploadId = "#uploader-" + _self.get("name");
-      console.log("uploadId",uploadId);
-      $(uploadId).change(function(event){
-        var file = event.target.files[0];
-        // console.log("file::::",file);
-        _self.$(".img-container").addClass("mask-background");
-        var reader = new FileReader();
-        // reader onload start
-        reader.onload = function(readerEvent){
-          _self.resizeImage(readerEvent,function(fileImg){
-            console.log("file::2 len:",fileImg.length);
-            _self.set('imgSrc',readerEvent.target.result);
-            let filenameOri = file.name;
-            let size = fileImg.size;
-            console.log("upload filenameOri:" + filenameOri);
-            console.log("upload size:" + size);
-            if(size>=_self.get("uploadLimitSize")){
-              _self.uploadFailAct(1);
-              _self.set("showProgress",false);
-            }
-            let extfix = filenameOri.substring(filenameOri.lastIndexOf('.')+1);
-            let filename = CommonUtil.Common_GenerateGuid() + "." + extfix;
-            console.log("upload file:" + filename);
-            //显示进度条
-            _self.set("showProgress",false);
-            //遮罩
-            var formdata = new FormData();
-            if(_self.get("isResizeImage")){
-              formdata.append("file",fileImg);
-            }else{
-              formdata.append("file",file);
-            }
-            formdata.append("businessType",_self.get("businessType"));
-            formdata.append("Content-Type","image/jpeg");
-            formdata.append("name",filenameOri);
-            $.ajax({
-              url         : _self.get("uploadUrl"),
-              data        : formdata,
-              cache       : false,
-              contentType : false,
-              processData : false,
-              type        : 'POST',
-              success     : function(data, textStatus, jqXHR){
-                console.log("upload suc,data",data);
-                // set(image, 'url', data.headers.Location);
-                // file.destroy();
-                _self.set("showProgress",false);
-                //去掉遮罩
-                _self.$(".img-container").removeClass("mask-background");
-                _self.set("errorText"," ");
-                //上传成功后调用外
-                _self.sendAction("uploadSucc",data,_self.get("businessType"));
-              },
-              error     : function(XMLHttpRequest, textStatus, errorThrown){
-                _self.uploadFailAct(2);
-                _self.set("showProgress",false);
-                // alert("上传失败，请检查网络后重试");
-                // Callback code
-              },
-            });
-
-          });
-        };
-        reader.readAsDataURL(file);
+  isCordova: Ember.computed(function(){
+    return window.cordova;
+  }),
+  imgSrcReal: Ember.computed("imgSrc",function(){
+    var imgSrc = this.get("imgSrc");
+    console.log("imgSrc in component:",imgSrc);
+    if(!imgSrc){return null;}
+    let index = imgSrc.lastIndexOf(".");
+    let smallImgName = imgSrc.substring(0, index) + "_small" + imgSrc.substring(index);
+    return smallImgName;
+  }),
+  // isCameraFlag: Ember.computed("isCamera",function(){
+  //   if(window.cordova){
+  //     return this.get("isCamera");
+  //   }else{
+  //     return false;
+  //   }
+  // }),
+  imgProcess(file,imageBaseData){
+    let _self = this;
+    App.lookup('controller:business.mainpage').showMobileLoading();
+    _self.$(".img-container").addClass("mask-background");
+    //取得图片并压缩后，进行上传处理
+    let uploadFunc = function(imgData){
+      _self.set('imgSrc',imgData);
+      _self.set("imgSrcReal", imgData);
+      let filenameOri = file.name;
+      let size = imgData.length;
+      console.log("upload filenameOri:" + filenameOri);
+      console.log("upload size:" + size);
+      if(size>=_self.get("uploadLimitSize")){
+        _self.uploadFailAct(1);
+        _self.set("showProgress",false);
+        return;
+      }
+      let extfix = filenameOri.substring(filenameOri.lastIndexOf('.')+1);
+      let filename = CommonUtil.Common_GenerateGuid() + "." + extfix;
+      console.log("upload file:" + filename);
+      //显示进度条
+      _self.set("showProgress",false);
+      //遮罩
+      var formdata = new FormData();
+      //统一使用压缩后的数据作为上传文件对象数据
+      let blob = CommonUtil.b64toBlob(imgData);
+      formdata.append("file",blob);
+      formdata.append("businessType",_self.get("businessType"));
+      formdata.append("Content-Type","image/jpeg");
+      formdata.append("name",filename);
+      $.ajax({
+        url         : _self.get("uploadUrl"),
+        data        : formdata,
+        cache       : false,
+        contentType : false,
+        processData : false,
+        type        : 'POST',
+        success     : function(data, textStatus, jqXHR){
+          console.log("upload suc,data",data);
+          // set(image, 'url', data.headers.Location);
+          // file.destroy();
+          _self.set("showProgress",false);
+          //去掉遮罩
+          _self.$(".img-container").removeClass("mask-background");
+          _self.set("errorText"," ");
+          //上传成功后调用外
+          _self.sendAction("uploadSucc",data,_self.get("businessType"));
+          App.lookup('controller:business.mainpage').closeMobileLoading();
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown){
+          _self.uploadFailAct(2);
+          _self.set("showProgress",false);
+        },
       });
-    });
+    };
+    //取得图片数据，并压缩
+    let loadFunc = function(imgData){
+      //无论是否设置，都进行图片压缩，里面根据设置决定是否不压缩
+      _self.resizeImage(imgData,function(fileImg){
+        uploadFunc(imgData);
+      });
+    };
+    if(_self.get("isCameraFlag")){
+      loadFunc(imageBaseData);
+    }else{
+      var reader = new FileReader();
+      //web模式使用文件读取方式，取得图片数据
+      reader.onload = function(readerEvent){
+        loadFunc(readerEvent.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
   },
-  resizeImage(readerEvent,callback) {
+  resizeImage(imgData,callback) {
     var _self = this;
     var image = new Image();
     image.onload = function (imageEvent) {
         // Resize the image
-        var canvas = document.createElement('canvas'),
-            max_size = _self.get("resizeNumber"),// TODO : pull max size from a site config
-            width = image.width,
-            height = image.height;
-        if (width > height) {
+        var canvas = document.createElement('canvas');
+        var max_size = _self.get("resizeNumber");
+        var width = image.width;
+        var height = image.height;
+        //如果需要进行压缩，则在此计算，否则保持原来的大小
+        if(_self.get("isResizeImage")){
+          if (width > height) {
             if (width > max_size) {
-                height *= max_size / width;
-                width = max_size;
+              height *= max_size / width;
+              width = max_size;
             }
-        } else {
+          } else {
             if (height > max_size) {
-                width *= max_size / height;
-                height = max_size;
+              width *= max_size / height;
+              height = max_size;
             }
+          }
         }
         canvas.width = width;
         canvas.height = height;
@@ -138,7 +159,7 @@ export default BaseItem.extend(InViewportMixin, ImageLoadMixin, LazyImageMixin,G
         console.log("resizedImage",resizedImage);
         callback(resizedImage);
     };
-    image.src = readerEvent.target.result;
+    image.src = imgData;
   },
     /* Utility function to convert a canvas to a BLOB */
   dataURLToBlob(dataURL) {
@@ -172,8 +193,8 @@ export default BaseItem.extend(InViewportMixin, ImageLoadMixin, LazyImageMixin,G
     _self.$(".img-container").removeClass("mask-background");
     if(failType===1){
       _self.set("showProgress",false);
-      console.log("errorText:文件大小超出限制");
-      _self.set("errorText","文件大小超出限制");
+      console.log("errorText:文件大大超出限制");
+      _self.set("errorText","文件大大超出限制");
     }else if(failType===2){
       console.log('errorText==文件上传失败');
       _self.set("errorText","文件上传失败");
@@ -203,29 +224,74 @@ export default BaseItem.extend(InViewportMixin, ImageLoadMixin, LazyImageMixin,G
     });
   },
   didInsertElement() {
+    let _self = this;
     this._super(...arguments);
+    this.$("img").error(function() {
+      console.log("run in error");
+      _self.set("imgSrcReal",_self.get("imgSrc"));
+    });
+    console.log("uploadFlag::",this.get("uploadFlag"));
     //直接在dom上设置宽度130
     this.$().css('width', this.get("width"));
+    // if(!_self.get("isCameraFlag")){
+      //不上传则不定义
+      if(!this.get("hasUploader")){
+        return;
+      }
+      //web方式定义文件拍照选择
+      var uploadId = "#uploader-" + _self.get("name");
+      console.log("upload dom",$(uploadId));
+      $(uploadId).change(function(event){
+        _self.set("isCameraFlag",false);
+        _self.set('showUploadAllModal',false);
+        console.log("upload file change in",event);
+        var file = event.target.files[0];
+        _self.imgProcess(file);
+      });
+      return;
+    // }else{
+    //   //app方式定义拍照点击
+    //   let dom = this.$().find("label[name='takePicAct']");
+    //   console.log("dom in pic",dom);
+    //   dom.click(function(){
+    //     _self.send("takePic");
+    //   });
+    // }
+
   },
   /*外部方法*/
   useDimensionsAttrs: Ember.computed('width', 'height', function() {
     return !this.get('width') || !this.get('height') ? false : true;
   }),
 
-  /*dom事件处理*/
-  // mouseEnter:function(){
-  //   this.set("upBarShow",true);
-  // },
-  // mouseLeave:function(){
-  //   this.set("upBarShow",false);
-  // },
+
   /*事件处理*/
   actions: {
-    // tapUpload: function(){
-    //   let uploadId = '#uploader-' + this.get("name");
-    //   console.log("uploadId:",uploadId);
-    //   $(uploadId).click();
-    // },
+    //app模式下进行拍照
+    takePic(){
+      let _self = this;
+      _self.set('showUploadAllModal',false);
+      _self.set("isCameraFlag",true);
+      console.log("takePic in");
+      //cordova模式调用
+      navigator.camera.getPicture(function(imageData){
+        imageData = "data:image/jpeg;base64," + imageData;
+        //随机生成图片名称
+        let ranName = Math.random() + ".jpg";
+        _self.imgProcess({name:ranName},imageData);
+      }, function(message){
+        console.warn("get pic fail:" + message);
+      }, { quality: 50,  destinationType: Camera.DestinationType.DATA_URL });
+    },
+    //点击显示选择上传方式弹出层
+    showUploadAllAction: function() {
+      console.log("tap run in");
+      this.set('showUploadAllModal',true);
+    },
+    //选择上传方式弹出层取消显示
+    invitationClose: function() {
+      this.set('showUploadAllModal',false);
+    },
     //点击显示大图弹出层
     showBigImgAction: function() {
       console.log("tap run in");
@@ -234,6 +300,9 @@ export default BaseItem.extend(InViewportMixin, ImageLoadMixin, LazyImageMixin,G
     //大图弹出层取消显示
     invitation: function() {
       this.set('showBigImageModal',false);
+    },
+    showUploadAllOpened() {
+
     },
     imageOpened() {
       console.log("imageOpened in");
@@ -268,21 +337,6 @@ export default BaseItem.extend(InViewportMixin, ImageLoadMixin, LazyImageMixin,G
     },
     //图片上传功能
     uploadImage: function (file) {
-      // var img = new Image();        //
-      // if($(".cccc >div img").width() >= $(".cccc >div img").height()){
-      //     $(".cccc >div ").addClass("intergration_normal");
-      //     $(".cccc >div img").css("height", "110px");
-      //     $(".cccc >div img").css("width", "auto");
-      //     console.log("this.width==========",$(".cccc >div img").width());
-      //     console.log('==========intergration_normal_height',$(".cccc >div img").height(),$(".cccc >div img").width());
-      //
-      // }else {
-      //     $(".cccc >div ").addClass("intergration_normal");
-      //     $(".cccc >div img").css("width", "110px");
-      //     $(".cccc >div img").css("height", "auto");
-      //     console.log("this.height==========",$(".cccc >div img").height());
-      //     console.log('==========intergration_normal',$(".cccc >div img").height(),$(".cccc >div img").width());
-      // }
       console.log("uploadImage in,name:" + this.get("name"));
       console.log("file get",file);
       var _self = this;
@@ -297,8 +351,8 @@ export default BaseItem.extend(InViewportMixin, ImageLoadMixin, LazyImageMixin,G
         _self.$().removeClass("mask-background");
         if(failType===1){
           _self.set("showProgress",false);
-          console.log("errorText:文件大小超出限制");
-          _self.set("errorText","文件大小超出限制");
+          console.log("errorText:文件大大超出限制");
+          _self.set("errorText","文件大大超出限制");
         }else if(failType===2){
           console.log('errorText==文件上传失败');
           _self.set("errorText","文件上传失败");
@@ -364,5 +418,8 @@ export default BaseItem.extend(InViewportMixin, ImageLoadMixin, LazyImageMixin,G
         _self.set("progressValue",file.percent);
       });
     },
+    uploadFail(msg){
+      console.log("uploadFail in:" + msg);
+    }
   }
 });

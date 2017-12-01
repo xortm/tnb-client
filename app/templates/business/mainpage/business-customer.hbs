@@ -65,7 +65,6 @@
                     {{/each}}
                 </tbody>
                 {{else}}
-                <div class="nodate">暂无数据</div>
                 {{/if}}
             </table>
             {{#if flowList }}
@@ -110,9 +109,9 @@
   {{/bs-modal-header}}
   {{#bs-modal-body}}
   <div class="">
-    <div class="box" style="max-height:500px;overflow-y:auto;">
+    <div class="box" style="height:500px;overflow-y:auto;">
       <div class="box-body">
-      <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+      <div id="consultinfo-block" class="dataTables_wrapper form-inline" role="grid">
         <div class="row">
           <!--搜索-->
           <!-- 条件搜索 -->
@@ -141,13 +140,13 @@
               <th class="center" rowspan="1" colspan="1" class="" width="">操作</th>
             </tr>
           </thead>
-          {{#if consultList}}
+
         <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
             {{#each consultList as |consult|}}
             <tr class="gradeA odd">
               <td class=" ellipsis sorting_1">{{consult.advName}}</td>
               <td class=" ellipsis " >{{consult.advTel}}</td>
-              <td class="ellipsis">{{consult.advDateString}}</td>
+              <td class="ellipsis">{{consult.advDateStringList}}</td>
               <td class=" ellipsis">{{consult.receiveStaff.name}}</td>
               {{#if consult.computedStatus}}
               <td class=""></td>
@@ -157,9 +156,6 @@
             </tr>
             {{/each}}
          </tbody>
-         {{else}}
-         <div class="nodate">暂无数据</div>
-         {{/if}}
           </table>
         </div>
       </div>

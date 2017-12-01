@@ -8,7 +8,40 @@ import lookupValidator from 'ember-changeset-validations';
 
 export default Ember.Controller.extend(ScoreValidations,EvaValidations,{
   dataLoader: Ember.inject.service("data-loader"),
+  statusService: Ember.inject.service("current-status"),
   queryCondition:'',
+  //判断是否是基本租户
+  isBaseTenant:Ember.computed('statusService',function(){
+    let statusService = this.get('statusService');
+    let tenantId = statusService.get('tenantId');
+    if(tenantId == '111'){
+      return true;
+    }else{
+      return false;
+    }
+  }),
+  //判断模板是否是规范类模板
+  isStandardModel:Ember.computed('evaInfo',function(){
+    let evaInfo = this.get('evaInfo');
+    if(!evaInfo){
+      return ;
+    }
+    let sourceRemark = evaInfo.get('modelSource.remark');
+    if(!sourceRemark||sourceRemark=='qita'){
+      return false;
+    }else{
+      return true;
+    }
+  }),
+  //判断是否为感知觉模板
+  isCommunication:Ember.computed('evaInfo',function(){
+    let evaInfo = this.get('evaInfo');
+    if(evaInfo.get('modelType.code') !== 'perceptionAndCommunication'){
+      return false;
+    }else{
+      return true;
+    }
+  }),
   questionInfo:Ember.Object.create({
     page_errors:Ember.Object.create({}),
   }),
@@ -54,6 +87,9 @@ export default Ember.Controller.extend(ScoreValidations,EvaValidations,{
     let _self = this;
     let maxScore = 0;
     let questionList = this.get('questionList');
+    if(!questionList){
+      return;
+    }
     questionList.forEach(function(question){
       let answerList = question.get('answers');
       let scoreList = [];
@@ -78,6 +114,9 @@ export default Ember.Controller.extend(ScoreValidations,EvaValidations,{
     let _self = this;
     let minScore = 0;
     let questionList = this.get('questionList');
+    if(!questionList){
+      return;
+    }
     questionList.forEach(function(question){
       let answerList = question.get('answers');
       let scoreList = [];
@@ -142,13 +181,19 @@ export default Ember.Controller.extend(ScoreValidations,EvaValidations,{
     selectLevel(score,level){
       score.set('level',level);
     },
-
+    selectActionLevel(score,level){
+      score.set('actionLevel',level);
+    },
     //取消按钮
     detailCancel:function(){
       let id=this.get('id');
       let editMode=this.get('editMode');
       if(id&&editMode=='edit'){
         this.set('detailEdit',false);
+        this.set('questionList',this.get('oldQuestionList'));
+        this.get('questionList').forEach(function(question){
+          question.rollbackAttributes();
+        });
       }else{
         let mainpageController = App.lookup('controller:business.mainpage');
         mainpageController.switchMainPage('eva-plan');
@@ -157,8 +202,20 @@ export default Ember.Controller.extend(ScoreValidations,EvaValidations,{
     },
     //弹窗取消按钮
     invitation(){
+      if(this.get('popQuestion')){
+        this.get('popQuestion.allAnswerList').forEach(function(answer){
+          if(answer.get('id')){
+            answer.rollbackAttributes();
+          }
+
+        });
+      }
+      if(this.get('curScore')){
+        this.get('curScore').rollbackAttributes();
+      }
       this.set("detailQuestion",false);
       this.set('detailScoreScope',false);
+
     },
     //编辑按钮
     detailEditClick:function(){
@@ -169,6 +226,11 @@ export default Ember.Controller.extend(ScoreValidations,EvaValidations,{
           App.lookup('controller:business.mainpage').showAlert("此模板无法编辑");
         }else{
           _self.set('detailEdit',true);
+          let list = new Ember.A();
+          _self.get('questionList').forEach(function(question){
+            list.pushObject(question);
+          });
+          _self.set('oldQuestionList',list);
         }
       });
 
@@ -256,42 +318,73 @@ export default Ember.Controller.extend(ScoreValidations,EvaValidations,{
       }
       //设置模板类型，护理类
       let type = this.get("dataLoader").findDict("evaluateType2");
-      console.log('模板类型：',type.get('typename'));
       evaInfo.set('type',type);
       evaModel.validate().then(function(){
-        if(scoreScopes.get('length') === 0){
-          App.lookup('controller:business.mainpage').showAlert("得分范围不能为空！");
-          _self.get('dataLoader').btnClick();
-        }else if(questions.get('length') === 0){
-          App.lookup('controller:business.mainpage').showAlert("问题数量不能为空！");
-          _self.get('dataLoader').btnClick();
-        }else{
-          if(evaModel.get('errors.length')===0){
-            App.lookup('controller:business.mainpage').openPopTip("正在保存");
-            if(editMode=='add'){
-              evaInfo.set('delStatus',0);
-              evaInfo.save().then(function(){
-                //清除垃圾数据
-                _self.store.unloadAll('evaluateanswer');
-                App.lookup('controller:business.mainpage').showPopTip("保存成功");
-                var route = App.lookup('route:business.mainpage.eva-plan-detail');
-                let mainpageController = App.lookup('controller:business.mainpage');
-                mainpageController.switchMainPage('eva-plan');
-                _self.get('dataLoader').btnClick();
-              });
-            }else{
-              evaInfo.save().then(function(){
-                  App.lookup('controller:business.mainpage').showPopTip("保存成功");
-                  _self.set('detailEdit',false);
-                  _self.get('dataLoader').btnClick();
-              });
-            }
-          }else{
+      //判断模板类型，属于感知觉的，取消评分范围的验证
+        if(evaModel.get('modelType.code') !== 'perceptionAndCommunication'){
+          if(scoreScopes.get('length') === 0){
+            App.lookup('controller:business.mainpage').showAlert("得分范围不能为空！");
             _self.get('dataLoader').btnClick();
-            evaModel.set('validFlag',Math.random());
+          }else if(questions.get('length') === 0){
+            App.lookup('controller:business.mainpage').showAlert("问题数量不能为空！");
+            _self.get('dataLoader').btnClick();
+          }else{
+            if(evaModel.get('errors.length')===0){
+              App.lookup('controller:business.mainpage').openPopTip("正在保存");
+              if(editMode=='add'){
+                evaInfo.set('delStatus',0);
+                evaInfo.save().then(function(){
+                  //清除垃圾数据
+                  _self.store.unloadAll('evaluateanswer');
+                  App.lookup('controller:business.mainpage').showPopTip("保存成功");
+                  var route = App.lookup('route:business.mainpage.eva-plan-detail');
+                  let mainpageController = App.lookup('controller:business.mainpage');
+                  mainpageController.switchMainPage('eva-plan');
+                  _self.get('dataLoader').btnClick();
+                });
+              }else{
+                evaInfo.save().then(function(){
+                    App.lookup('controller:business.mainpage').showPopTip("保存成功");
+                    _self.set('detailEdit',false);
+                    _self.get('dataLoader').btnClick();
+                });
+              }
+            }else{
+              _self.get('dataLoader').btnClick();
+              evaModel.set('validFlag',Math.random());
+            }
+          }
+        }else{
+          if(questions.get('length') === 0){
+            App.lookup('controller:business.mainpage').showAlert("问题数量不能为空！");
+            _self.get('dataLoader').btnClick();
+          }else{
+            if(evaModel.get('errors.length')===0){
+              App.lookup('controller:business.mainpage').openPopTip("正在保存");
+              if(editMode=='add'){
+                evaInfo.set('delStatus',0);
+                evaInfo.save().then(function(){
+                  //清除垃圾数据
+                  _self.store.unloadAll('evaluateanswer');
+                  App.lookup('controller:business.mainpage').showPopTip("保存成功");
+                  var route = App.lookup('route:business.mainpage.eva-plan-detail');
+                  let mainpageController = App.lookup('controller:business.mainpage');
+                  mainpageController.switchMainPage('eva-plan');
+                  _self.get('dataLoader').btnClick();
+                });
+              }else{
+                evaInfo.save().then(function(){
+                    App.lookup('controller:business.mainpage').showPopTip("保存成功");
+                    _self.set('detailEdit',false);
+                    _self.get('dataLoader').btnClick();
+                });
+              }
+            }else{
+              _self.get('dataLoader').btnClick();
+              evaModel.set('validFlag',Math.random());
+            }
           }
         }
-
       });
     },
     delScore(){
@@ -352,12 +445,23 @@ export default Ember.Controller.extend(ScoreValidations,EvaValidations,{
       let scoreScopeList = this.get('scoreScopeList');
       let list = new Ember.A();
       let scoreModel = this.get('scoreModel');
+
       scoreModel.validate().then(function(){
         if(Number(scoreModel.get("maxScore"))<Number(scoreModel.get("minScore"))){
           scoreModel.addError('maxScore',['最高分必须大于等于最低分']);
         }
+        if(_self.get('sourceType')){
+          console.log('自理能力等级：',scoreModel.get('actionLevel'));
+          if(!scoreModel.get('actionLevel.typename')){
+            scoreModel.addError('actionLevel',['能力等级不能为空']);
+          }
+        }else{
+          if(!scoreModel.get('level.name')){
+            scoreModel.addError('level',['护理等级不能为空']);
+          }
+        }
         if(scoreModel.get('errors.length')===0){
-          if(Number(scoreModel.get("maxScore"))>Number(scoreModel.get("minScore"))){
+          if(Number(scoreModel.get("maxScore"))>=Number(scoreModel.get("minScore"))){
             scoreModel.save().then(function(){
               _self.get('dataLoader').btnClick();
               _self.set('detailScoreScope',false);
@@ -392,11 +496,12 @@ export default Ember.Controller.extend(ScoreValidations,EvaValidations,{
         popQuestion.set("id",question.get("id"));
         popQuestion.set("seq",question.get("seq"));
         popQuestion.set("content",question.get("content"));
+        popQuestion.set('code',question.get('code'));
       }
       let _self = this;
       if(this.get('detailEdit')){
         this.set('detailQuestion',true);
-        let answers = question.get('answers');
+        let answers = question.get('answerList');
         let list = new Ember.A();
         let seq = ['A','B','C','D','E'];
         answers.forEach(function(answer){
@@ -423,9 +528,7 @@ export default Ember.Controller.extend(ScoreValidations,EvaValidations,{
       let seq = ['A','B','C','D','E'];
       for(let i=0;i<5;i++){
         if(!list.objectAt(i)){
-          list.pushObject(_self.store.createRecord('evaluateanswer',{
-
-          }));
+          list.pushObject(_self.store.createRecord('evaluateanswer',{}));
         }
       }
       for(let i=0;i<5;i++){
@@ -438,8 +541,12 @@ export default Ember.Controller.extend(ScoreValidations,EvaValidations,{
     },
     //保存编辑过后的问题和答案
     saveCurQuestion(){
+      this.get('dataLoader').disableClick();
       let questionList = this.get('questionList');
       let _self = this;
+      setTimeout(function(){
+        _self.get('dataLoader').btnClick();
+      },3000);
       let list = new Ember.A();
       let question = _self.get('popQuestion');
       let curquestion = null;
@@ -448,6 +555,7 @@ export default Ember.Controller.extend(ScoreValidations,EvaValidations,{
         curquestion = this.get("store").peekRecord("evaluatequestion",question.get("id"));
         curquestion.set("content",question.get("content"));
         curquestion.set("seq",question.get("seq"));
+        curquestion.set("code",question.get("code"));
         curquestion.set("allAnswerList",question.get("allAnswerList"));
       }else{
         curquestion = question;
@@ -467,12 +575,13 @@ export default Ember.Controller.extend(ScoreValidations,EvaValidations,{
         num = curquestion.get('order');
       }
 
-      for(let i=num-1;i<questionList.get('length');i++){
-        let seq = i+2;
-        let q = questionList.objectAt(i);
-        console.log("set seq:" + seq + " with q:" + q.get("content"));
-        q.set('seq',seq);
-      }
+      // for(let i=num-1;i<questionList.get('length');i++){
+      //   let seq = i+2;
+      //   let q = questionList.objectAt(i);
+      //   console.log('seq in questionList',seq);
+      //   q.set('seq',seq);
+      // }
+      console.log('num in questionList',num);
       curquestion.set('seq',num);
       let answerList = this.get('popQuestion.allAnswerList');
       //封装成可校验的对象
@@ -495,7 +604,6 @@ export default Ember.Controller.extend(ScoreValidations,EvaValidations,{
         }
       });
       questionModel.validate().then(function(){
-        console.log("questionModel val,er:" , questionModel.get('errors'));
         _self.set("questionModel",questionModel);
         if(list.get('length')===0){
           App.lookup('controller:business.mainpage').showAlert("答案不能为空！");
@@ -503,33 +611,31 @@ export default Ember.Controller.extend(ScoreValidations,EvaValidations,{
         if(questionModel.get('errors.length')===0){
           if(count==list.get('length')&&count>0){
             curquestion.set('answers',list);
+            curquestion.set('answerList',list);
             //校验通过后进行保存
-            console.log("curquestion validate",curquestion);
             let newFlag = true;
             if(curquestion.get('id')){
               newFlag = false;
             }
             curquestion.save().then(function(questionData){
               //如果是新增，放入已有的问题列表
-              console.log("newFlag is:" + newFlag);
               if(newFlag){
                 questionList.pushObject(curquestion);
               }
-              console.log("questionList after:" + questionList.get("length"));
               _self.set('detailQuestion',false);
               let list = questionList.sortBy('seq');
+
+              for(let i=0;i<list.get('length');i++){
+                list.objectAt(i).set('seq',i+1);
+              }
               _self.set('questionList',list);
               let allAnswer = _self.store.peekAll("evaluateanswer");
-              console.log('allAnswer is+++++',allAnswer);
               allAnswer.forEach(function(answer){
                 if(!answer.get('id')&&!(answer.get('content'))){
                   answer.set('hasHidden',true);
-                  console.log('answer is++++'+':'+curquestion.get('id'),answer.get('question.id')+':'+answer);
                 }else {
-                  console.log('haveanswer is++++'+':'+curquestion.get('id'),answer.get('question.id')+':'+answer);
                 }
               });
-              console.log("need roll");
             });
           }
         }else{

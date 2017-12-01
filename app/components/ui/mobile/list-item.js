@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import InViewportMixin from 'ember-in-viewport';
 
 export default Ember.Mixin.create({
   // recognizers:"tap",
@@ -53,7 +52,7 @@ export default Ember.Mixin.create({
     //可移动区域为本级的子元素
     var moveDom = this.$();
     this.set("moveDom",moveDom);
-    console.log("dom in",moveDom);
+    console.log("dom in"+moveDom);
     moveDom.hammer({}).bind("panstart", function(e){
       console.log("panstart in,scrollFlag:" + _self.getScrollFlag());
       e.preventDefault();

@@ -19,15 +19,10 @@ export default BaseBusiness.extend(Pagination, {
             var dateQueryCondition = curController.get('dateQueryCondition');
             if (curController.get('queryCondition')) {
                 filter = $.extend({}, filter, {'[customer][bed][room][name@$like]@$like@$or1':curController.get('queryCondition')});
-                //filter = $.extend({}, filter, {'[customer][bed][name@$like]@$like@$or1':curController.get('queryCondition')});
                 filter = $.extend({}, filter, {'[customer][name@$like]@$or1': curController.get('queryCondition')});
-                filter = $.extend({}, filter, {'[customer][customerStatus][typecode@$like]@$or2---1':'customerStatusIn'});
-                filter = $.extend({}, filter, {'[customer][customerStatus][typecode@$like]@$or2---2':'customerStatusTry'});
-                filter = $.extend({}, filter, {'[customer][customerStatus][typecode@$like]@$or2---3':'customerStatus0'});
+                filter = $.extend({}, filter, {'[customer][customerStatus][typecode@$not]@$or2':'customerStatusOut'});
             }else {
-              filter = $.extend({}, filter, {'[customer][customerStatus][typecode@$like]@$or1---1':'customerStatusIn'});
-              filter = $.extend({}, filter, {'[customer][customerStatus][typecode@$like]@$or1---2':'customerStatusTry'});
-              filter = $.extend({}, filter, {'[customer][customerStatus][typecode@$like]@$or1---3':'customerStatus0'});
+              filter = $.extend({}, filter, {'[customer][customerStatus][typecode@$not]@$or1':'customerStatusOut'});
             }
             if (dateQueryCondition) {
                 var compareDate = null;
@@ -64,7 +59,7 @@ export default BaseBusiness.extend(Pagination, {
         }
         params.filter = filter;
         sort = {
-            '[createDateTime]': 'desc',
+            'createDateTime': 'desc',
         };
         params.sort = sort;
         console.log("params is:", params);
@@ -83,27 +78,11 @@ export default BaseBusiness.extend(Pagination, {
         this.getCurrentController().set("evaluateList", evaluateList);
         console.log("evaluateList is", evaluateList);
     },
-    actions: {
-        // search: function(flag) {
-        //     this.getCurrentController().set("dateQueryCondition", flag);
-        //     this.get("controller").set("beginDate", null);
-        //     this.get("controller").set("endDate", null);
-        //     this.doQuery();
-        // },
-        // showDate: function() {
-        //     this.get("controller").set('dateShow', true);
-        // },
-        // //隐藏时间选择器
-        // hideDate: function() {
-        //     this.get("controller").set('dateShow', false);
-        //     this.doQuery();
-        // },
-    },
     setupController(controller, model) {
-        this.doQuery();
         var queryCondition = controller.get('input');
         controller.set('queryCondition', queryCondition);
         controller.set("dateQueryCondition", "");
+        this.doQuery();
         this._super(controller, model);
     }
 });

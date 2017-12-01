@@ -12,7 +12,7 @@ export default {
   remark:[
     validatePresence({ presence: true, message: '习惯描述不能为空' })
   ],
-  startTime:[
-    validatePresence({ presence: true, message: '习惯时间不能为空' })
-  ],
+  // startTime:[
+  //   validatePresence({ presence: true, message: '习惯时间不能为空' })
+  // ],
 };

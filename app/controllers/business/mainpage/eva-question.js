@@ -84,25 +84,6 @@ export default Ember.Controller.extend(InfiniteScroll, {
             });
         }
     },
-    // queryLevel: function() {
-    //     var _self = this;
-    //     var filterLevel = {};
-    //     if (this.get("scores")) {
-    //         var computedScores = this.get("scores");
-    //         console.log("computedScores is", computedScores);
-    //         filterLevel = $.extend({}, {
-    //             'lowScore@$lte': computedScores
-    //         }, {
-    //             'highScore@$gte': computedScores
-    //         });
-    //         console.log("filterLevel is", filterLevel);
-    //     }
-    //     this.get("store").query('nursinglevel', {
-    //         filter: filterLevel
-    //     }).then(function(level) {
-    //         console.log("level is what", level);
-    //     });
-    // },
     actions: {
         dpShowAction(e) {
 
@@ -125,13 +106,6 @@ export default Ember.Controller.extend(InfiniteScroll, {
             });
 
         },
-        // changeBeginDateAction(date) {
-        //     this.set("beginDate", date);
-        // },
-        // changeEndDateAction(date) {
-        //     console.log("is true", typeof date);
-        //     this.set("endDate", date);
-        // },
         search(flag){
           this.set("dateQueryCondition", flag);
           this.set("beginDate", null);

@@ -1,9 +1,8 @@
 import Ember from 'ember';
 import BaseBusiness from '../base-business';
-import Pagination from '../pagination';
 const { taskStatus_begin,taskStatus_isPassed,taskApplyStatus_apply,taskApplyStatus_applySuc,taskApplyStatus_applyFail,taskApplyStatus_invited,taskApplyStatus_SuccNotLocateSeat,taskApplyStatus_refuseInvitation} = Constants;
 
-export default BaseBusiness.extend(Pagination,{
+export default BaseBusiness.extend({
   pageyModelListName: "content",
   feedService: Ember.inject.service('feed-bus'),
   header_title: "咨询信息详情",

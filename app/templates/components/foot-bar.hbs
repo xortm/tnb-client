@@ -1,4 +1,4 @@
-<div id="footer" class="ui-footer border-top-1 {{unless service_PageConstrut.showFootBar 'hidden'}} {{if global_curStatus.isOrgMobile 'noicon'}}">
+<div id="footer" class="ui-footer border-top-1 {{unless service_PageConstrut.showFootBar 'hidden'}} {{if global_curStatus.isOrgMobile 'noicon'}} {{if showHeaderAndFooter "" "hide"}}">
   {{#each menus as |menu|}}
     {{ log 'menu in hbs:' menu }}
     {{#if isConsumer}}

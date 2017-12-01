@@ -11,10 +11,14 @@
                 <ul class="nopadding-left bgcolor-white margin-0-10px">
                     <li class="input_noneborder top30 textarea">
                       {{#if (eq textType 'text')}}
-                        {{input type="text"  class='edit fullWidth3 padding-left-8' value=edit placeholder=editPlaceholder autofocus=true bubbles=false }}
+                        <!-- {{input type="text"  class='edit fullWidth3 padding-left-8' value=edit placeholder=editPlaceholder autofocus=true bubbles=false }} -->
+                        {{#callbusi/mobile/text-input value=edit placeholder=editPlaceholder}}
+                        {{/callbusi/mobile/text-input}}
                       {{/if}}
                       {{#if (eq textType 'textarea')}}
-                        {{textarea type="text"  class='edit fullWidth3 padding-left-8' value=edit placeholder=editPlaceholder autofocus=true bubbles=false }}
+                      {{#callbusi/mobile/text-textarea value=edit maxlength=500 placeholder="最大字数500"}}
+                      {{/callbusi/mobile/text-textarea}}
+                        <!-- {{textarea type="text" maxlength='500'  class='edit fullWidth3 padding-left-8' value=edit placeholder="最大字数500" autofocus=true bubbles=false }} -->
                       {{/if}}
                     </li>
                     <li class="top10 center"></li>

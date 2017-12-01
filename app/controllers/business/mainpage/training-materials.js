@@ -159,9 +159,9 @@ export default Ember.Controller.extend({
     },
     chooseType(type){
       this.get('typeList').forEach(function(item){
-        item.set('hasChoosed',false);
+        item.set('hasSelected',false);
       });
-      type.set('hasChoosed',true);
+      type.set('hasSelected',true);
       this.set('curDocType',type);
     },
     chooseDoc(doc){
@@ -178,12 +178,15 @@ export default Ember.Controller.extend({
         Ember.run.schedule('afterRender',function(){
           let str = doc.get('remark');
           let base = new Base64();
-          let remark = base.decode(str);
-          if(str == _self.get('dateService').base64_encode(_self.get('dateService').base64_decode(str))) {//判断是否经过base64转码
-             $('#'+doc.get('id')).append(remark);
-           }else{
-             $('#'+doc.get('id')).append(str);
-           }
+          if(str){
+            let remark = base.decode(str);
+            if(str == _self.get('dateService').base64_encode(_self.get('dateService').base64_decode(str))) {//判断是否经过base64转码
+               $('#'+doc.get('id')).append(remark);
+             }else{
+               $('#'+doc.get('id')).append(str);
+             }
+          }
+
         });
       }
       //base64处理函数
@@ -295,6 +298,7 @@ export default Ember.Controller.extend({
     invitation(){
       this.set('addModel',false);
       this.set('addNewModel',false);
+      this.set('addNewTypeModel',false);
     },
     add(){
       this.set('addNewModel',true);
@@ -302,7 +306,28 @@ export default Ember.Controller.extend({
       this.set('newData',data);
       this.set('addName','新增');
     },
+    addType(){
+      this.set('addNewTypeModel',true);
+      let data = this.store.createRecord('document-type',{});
+      this.set('newType',data);
+      this.set('addTypeName','新增培训类型');
+    },
+    saveNewType(){
+      let _self = this;
+      let date = this.get('newType');
 
+      if(date.get('name')){
+        console.log('new type :',date.get('name'));
+        date.save().then(function(item){
+          _self.set('addNewTypeModel',false);
+          _self.send('chooseType',item);
+          var route = App.lookup('route:business.mainpage.training-materials');
+          App.lookup('controller:business.mainpage').refreshPage(route);
+        });
+      }else{
+        App.lookup('controller:business.mainpage').showAlert('请填写类型名称');
+      }
+    },
     saveNewData(){
       let _self = this;
       let data = this.get('newData');
@@ -341,18 +366,23 @@ export default Ember.Controller.extend({
       }
 
     },
-    delById(doc){
+    delById(doc,str){
       var _self = this;
-      App.lookup('controller:business.mainpage').showConfirm("是否确定删除此记录",function(){
-        _self.send('cancelPassSubmit',doc);
+      App.lookup('controller:business.mainpage').showConfirm("是否确定删除？",function(){
+        _self.send('cancelPassSubmit',doc,str);
       });
     },
-    cancelPassSubmit(doc){
+    cancelPassSubmit(doc,str){
+      let _self = this;
       doc.set('delStatus',1);
       doc.save().then(function(){
         App.lookup('controller:business.mainpage').showPopTip('删除成功');
         var route = App.lookup('route:business.mainpage.training-materials');
         App.lookup('controller:business.mainpage').refreshPage(route);
+        if(str){
+          let type = _self.get('typeList.firstObject');
+          _self.send('chooseType',type);
+        }
       });
     },
     hoverDoc(doc){
@@ -360,6 +390,15 @@ export default Ember.Controller.extend({
     },
     leaveDoc(doc){
       doc.set('hover',false);
+    },
+    edit(type){
+      type.set('edited',true);
+    },
+    saveType(type){
+      type.save().then(function(){
+        App.lookup('controller:business.mainpage').showSimPop('保存成功');
+        type.set('edited',false);
+      });
     },
     toUpLoad(){
       let _self = this;

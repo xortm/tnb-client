@@ -6,16 +6,19 @@ export default Ember.Controller.extend(InfiniteScroll,{
   infiniteModelName: "",
   infiniteContainerName:"userMemberAccountContainer",
 
-  moment: Ember.inject.service(),
   service_PageConstrut:Ember.inject.service("page-constructure"),
   mainController: Ember.inject.controller('business.mainpage'),
   pathConfiger: Ember.inject.service("path-configer"),
   service_notification:Ember.inject.service("notification"),
-
   constants:Constants,
 
   uploadUrl: Ember.computed('property', function() {return this.get("pathConfiger").get("uploadUrl");}),
-  queryFlagIn: function(){return;},
+  queryFlagIn: function(){
+    this.hideAllLoading();
+  },
+  init:function(){
+    this.hideAllLoading();
+  },
 
   actions:{
     switchPage:function (menuLink,elementId) {//个人信息 界面

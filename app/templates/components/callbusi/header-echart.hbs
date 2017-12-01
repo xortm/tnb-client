@@ -1,0 +1,32 @@
+<div class="box-title fullwidth clearfix" style="position:absolute;height:30px;width:100%;padding:5px 10px 5px;">
+    <h4 class="font16">{{titleShow}}</h4>
+    <!-- 弹框设置 -->
+    <div class="tools hidden-xs {{if listShow '' 'hidden'}}" style="position:absolute;right:2px;z-index:2;top:29px;" focus-out='setClick' >
+        <ul style="width:100px;padding-left:0px;background-color:#fff;">
+            <li class="pointer hoverPon {{if chartContainer '' 'hidden'}}" style="border:1px solid #5ea5bd;height:40px;font-size:14px;text-align:center;line-height:40px;border-right:none;border-bottom:none;" {{action 'listClick' on='click'}}><a style="text-decoration:none;"><i class="fa fa-list-ul" style="padding-right:5px;"></i>显示列表</a></li>
+            <li class="pointer hoverPon {{if listContainer '' 'hidden'}}" style="border:1px solid #5ea5bd;height:40px;font-size:14px;text-align:center;line-height:40px;border-right:none;border-bottom:none;" {{action 'chartClick' on='click'}}><a style="text-decoration:none;"><i class="fa fa-bar-chart-o" style="padding-right:5px;"></i>显示图表</a></li>
+            <li class="pointer hoverPon"  style="border:1px solid #5ea5bd;height:40px;font-size:14px;text-align:center;line-height:40px;border-right:none;border-bottom:none;"><a style="text-decoration:none;"><i class="fa fa-file" style="padding-right:5px;"></i>导出文件</a></li>
+            <li class="pointer hoverPon" style="border:1px solid #5ea5bd;height:40px;font-size:14px;text-align:center;line-height:40px;border-right:none;"><a style="text-decoration:none;"><i class="fa fa-print" style="padding-right:5px;"></i>数据打印</a></li>
+        </ul>
+    </div>
+    <div class="tools hidden-xs width80" >
+      {{#if setClickFlag}}
+        {{#ui/icon-button iconClass="fa-cog right8 pull-right line-height-20"
+        data-toggle="tooltip"  title="设置"  data-placement="top" data-original-title="设置"
+        clickAction="setClick" setClick="setClick"}}
+        {{/ui/icon-button}}
+      {{/if}}
+      <!-- {{#if bigFlag}}
+        {{#ui/icon-button iconClass="fa-compress right8 pull-right line-height-20"
+        data-toggle="tooltip"  title="缩小"  data-placement="top" data-original-title="缩小"
+        clickAction="bigClick" bigClick="bigClick"}}
+        {{/ui/icon-button}}
+      {{else}}
+        {{#ui/icon-button iconClass="fa-expand right8 pull-right line-height-20"
+        data-toggle="tooltip"  title="放大"  data-placement="top" data-original-title="放大"
+        clickAction="bigClick" bigClick="bigClick"}}
+        {{/ui/icon-button}}
+      {{/if}} -->
+    </div>
+
+</div>

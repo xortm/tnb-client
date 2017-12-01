@@ -76,6 +76,13 @@ export default Ember.Controller.extend(DrugValidations,{
     //编辑按钮
     detailEditClick:function(){
       this.set('detailEdit',true);
+      let unitList = this.get('unitList');
+      let drugInfo = this.get('drugInfo');
+      let unit = unitList.findBy('name',drugInfo.get('name'));
+      this.set('defaultUnit',unit);
+      let printList = this.get('printList');
+      let print = printList.findBy('value',drugInfo.get('printType'));
+      this.set('drugModel.printTypeValue',print);
     },
     //取消按钮
     detailCancel:function(){
@@ -84,7 +91,8 @@ export default Ember.Controller.extend(DrugValidations,{
       this.pageDestory();
       if(id&&editMode=='edit'){
         this.set('detailEdit',false);
-        this.get('drugitemInfo').rollbackAttributes();
+        this.get('drugInfo').rollbackAttributes();
+        console.log(this.get('drugInfo'));
         var route=App.lookup('route:business.mainpage.drug-detail');
         route.refresh();//刷新页面
       }else{

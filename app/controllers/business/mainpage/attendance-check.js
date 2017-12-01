@@ -27,18 +27,27 @@ export default Ember.Controller.extend(InfiniteScroll,{
     this.set("employeeId",employeeId);
     console.log("ynamicsList in employeeId",employeeId);
     let params = {};
+    let filter = {};
     if(employeeId != "all"){
-      params = {filter:{
-        employee:{id:employeeId},
-      }};
+      filter={
+          employee:{id:employeeId},
+      };
     }
+    //时间搜索，拼接filter
+    if(this.get("global_curStatus.attendanceTimeSearchFlag")){
+      let firstSecond = this.get('global_curStatus.searchTimeFirst');
+      let lastSecond = this.get('global_curStatus.searchTimeLast');
+      filter = $.extend({}, filter, {'attendanceTime@$gte':firstSecond,'attendanceTime@$lte':lastSecond});
+    }
+
     let sort = {
-      createDateTime:"desc",
+      attendanceTime:"desc",
     };
+    params.filter = filter;
     params.sort = sort;
     console.log("params:",params);
     this.infiniteQuery('staffattendance',params);
-  }.observes("attendanceEmployeeId").on("init"),
+  }.observes("attendanceEmployeeId","global_curStatus.attendanceTimeSearchFlag").on("init"),
 
 //只有当当前页面时route是service-care时,才会把切换以后的老人id传递给组件,使其加载数据
   attendanceEmployeeIdObs: function(){
@@ -55,6 +64,9 @@ export default Ember.Controller.extend(InfiniteScroll,{
       //当第一次进入页面时,才把全部选好的老人id传给组件
       var employeeId = this.get("global_curStatus.attendanceEmployeeId");
       this.set("attendanceEmployeeId",employeeId);
+      this.set('global_curStatus.searchTimeFirst',null);
+      this.set('global_curStatus.searchTimeLast',null);
+      this.set("global_curStatus.attendanceTimeSearchFlag",0);
     },
 
   },

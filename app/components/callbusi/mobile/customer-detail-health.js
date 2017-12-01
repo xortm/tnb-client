@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import BaseUiItem from '../../ui/base-ui-item';
-import Echarts from "npm:echarts";
+
 import InfiniteScroll from '../../../controllers/infinite-scroll';
 
 export default BaseUiItem.extend(InfiniteScroll,{
@@ -902,7 +902,7 @@ export default BaseUiItem.extend(InfiniteScroll,{
   //     var pwBlood = theWidth ;
   //     console.log("pwBlood is:" + pwBlood);
   //     $("#myChartBlood").width(pwBlood);
-  //     var myChartBlood = Echarts.init(document.getElementById('myChartBlood'));
+  //     var myChartBlood = echarts.init(document.getElementById('myChartBlood'));
   //     this.set("myChartBlood", myChartBlood);
   //     //初始化图表-血氧
   //     if (this.get("hasInitChartOxygen")) {
@@ -913,7 +913,7 @@ export default BaseUiItem.extend(InfiniteScroll,{
   //     // var pwOxygen = ($("#health-area").width()) ;
   //     console.log("pwOxygen is:" + pwOxygen);
   //     $("#myChartOxygen").width(pwOxygen);
-  //     var myChartOxygen = Echarts.init(document.getElementById('myChartOxygen'));
+  //     var myChartOxygen = echarts.init(document.getElementById('myChartOxygen'));
   //     this.set("myChartOxygen", myChartOxygen);
   //     //初始化图表-呼吸频率
   //     if (this.get("hasInitChartBreath")) {
@@ -924,7 +924,7 @@ export default BaseUiItem.extend(InfiniteScroll,{
   //     // var pwBreath = ($("#health-area").width());
   //     console.log("pwBreath is:" + pwBreath);
   //     $("#myChartBreath").width(pwBreath);
-  //     var myChartBreath = Echarts.init(document.getElementById('myChartBreath'));
+  //     var myChartBreath = echarts.init(document.getElementById('myChartBreath'));
   //     this.set("myChartBreath", myChartBreath);
   //     //初始化图表-体重
   //     if (this.get("hasInitChartWeight")) {
@@ -935,7 +935,7 @@ export default BaseUiItem.extend(InfiniteScroll,{
   //     // var pwWeight = ($("#health-area").width()) ;
   //     console.log("pwWeight is:" + pwWeight);
   //     $("#myChartWeight").width(pwWeight);
-  //     var myChartWeight = Echarts.init(document.getElementById('myChartWeight'));
+  //     var myChartWeight = echarts.init(document.getElementById('myChartWeight'));
   //     this.set("myChartWeight", myChartWeight);
   //     //初始化图表-空腹血糖
   //     if (this.get("hasInitChartEmpty")) {
@@ -946,7 +946,7 @@ export default BaseUiItem.extend(InfiniteScroll,{
   //     // var pwEmpty = ($("#health-area").width()) ;
   //     console.log("pwEmpty is:" + pwEmpty);
   //     $("#myChartEmpty").width(pwEmpty);
-  //     var myChartEmpty = Echarts.init(document.getElementById('myChartEmpty'));
+  //     var myChartEmpty = echarts.init(document.getElementById('myChartEmpty'));
   //     this.set("myChartEmpty", myChartEmpty);
   //     //初始化图表-餐前血糖
   //     if (this.get("hasInitChartBefore")) {
@@ -957,7 +957,7 @@ export default BaseUiItem.extend(InfiniteScroll,{
   //     // var pwBefore = ($("#health-area").width()) ;
   //     console.log("pwBefore is:" + pwBefore);
   //     $("#myChartBefore").width(pwBefore);
-  //     var myChartBefore = Echarts.init(document.getElementById('myChartBefore'));
+  //     var myChartBefore = echarts.init(document.getElementById('myChartBefore'));
   //     this.set("myChartBefore", myChartBefore);
   //     //初始化图表-餐后血糖
   //     if (this.get("hasInitChartAfter")) {
@@ -968,7 +968,7 @@ export default BaseUiItem.extend(InfiniteScroll,{
   //     // var pwAfter = ($("#health-area").width()) ;
   //     console.log("pwAfter is:" + pwAfter);
   //     $("#myChartAfter").width(pwAfter);
-  //     var myChartAfter = Echarts.init(document.getElementById('myChartAfter'));
+  //     var myChartAfter = echarts.init(document.getElementById('myChartAfter'));
   //     this.set("myChartAfter", myChartAfter);
   //     //初始化图表-脂肪数据
   //     if (this.get("hasInitChartFat")) {
@@ -979,7 +979,7 @@ export default BaseUiItem.extend(InfiniteScroll,{
   //     // var pwFat = ($("#health-area").width()) ;
   //     console.log("pwFat is:" + pwFat);
   //     $("#myChartFat").width(pwFat);
-  //     var myChartFat = Echarts.init(document.getElementById('myChartFat'));
+  //     var myChartFat = echarts.init(document.getElementById('myChartFat'));
   //     this.set("myChartFat", myChartFat);
   //     //初始化图表-心率数据
   //     if (this.get("hasInitChartHeart")) {
@@ -990,7 +990,7 @@ export default BaseUiItem.extend(InfiniteScroll,{
   //     // var pwHeart = ($("#health-area").width());
   //     console.log("pwHeart is:" + pwHeart);
   //     $("#myChartHeart").width(pwHeart);
-  //     var myChartHeart = Echarts.init(document.getElementById('myChartHeart'));
+  //     var myChartHeart = echarts.init(document.getElementById('myChartHeart'));
   //     this.set("myChartHeart", myChartHeart);
   //     //初始化图表-体温数据
   //     if (this.get("hasInitChartTemperature")) {
@@ -1001,7 +1001,7 @@ export default BaseUiItem.extend(InfiniteScroll,{
   //     // var pwTemperature = ($("#health-area").width());
   //     console.log("pwHeart is:" + pwTemperature);
   //     $("#myChartTemperature").width(pwTemperature);
-  //     var myChartTemperature = Echarts.init(document.getElementById('myChartTemperature'));
+  //     var myChartTemperature = echarts.init(document.getElementById('myChartTemperature'));
   //     this.set("myChartTemperature", myChartTemperature);
   // },
 

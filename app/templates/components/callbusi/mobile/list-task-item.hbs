@@ -1,13 +1,15 @@
 <div id="{{if item.initial (concat infiniteContainerName item.initial) ""}}" itemId="{{item.itemId}}" name="listContainer" class="contentArea contentAreaList" style=" margin-left:-87px;">
   {{#if item.hasApply}}
-  <div class="finish-tag">{{item.finishTime}}</div>
+  {{log "red:" item.finishLevel.remark}}
+  {{log "red11:" constants.servicefinishlevelDefault1}}
+  <div class="finish-tag {{if (eq item.finishLevel.remark constants.servicefinishlevelDefault3) "color-border-red" ""}}">{{item.finishTime}}</div>
   <div class="finish-notfinish clearfix col-xs-left pull-left">
-    已执行
+    已完成
   </div>
   {{else}}
     {{ui/mobile/finish-button needDoubleClickPrevent=true touchStartAction="finish" finish="finish"}}
   <!-- <div class="finish-notfinish clearfix col-xs-left pull-left" {{action "finish" on="tap"}}>
-    执行
+    完成
   </div> -->
   {{/if}}
   <div class="col-xs-middle-task time-content nopadding-horizontal pull-left" id="item_{{item.busiId}}_{{item.itemId}}" {{action "tapAct" on="tap"}}>
@@ -52,12 +54,12 @@
   </div>
   {{#if item.hasApply}}
   <div class="finish-notfinish clearfix col-xs-left pull-left">
-    已执行
+    已完成
   </div>
   {{else}}
     {{ui/mobile/finish-button needDoubleClickPrevent=true touchStartAction="finish" finish="finish"}}
   <!-- <div class="finish-notfinish clearfix col-xs-left pull-left" {{action "finish" on="tap"}}>
-    执行
+    完成
   </div> -->
   {{/if}}
 </div>

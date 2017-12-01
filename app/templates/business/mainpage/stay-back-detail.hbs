@@ -17,9 +17,11 @@
 								{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply"  text='返回'
 								clickAction="detailCancel" detailCancel="detailCancel" }}
 								{{/ui/mix-button}}
+								{{#if customerflow.detailBack}}
 								{{#ui/form-function editAction="detailEditClick" detailEditClick="detailEditClick"
 								editClickParams=customerflow deleteNone=true}}
 								{{/ui/form-function}}
+								{{/if}}
 							{{/if}}
 						{{/if}}
 					</p>
@@ -94,7 +96,7 @@
 							{{else}}
 								{{#if detailEdit}}
 								{{#bs-form-element class="inline-block form-input-group" controlType="leaveRecordDate"  property="leaveRecordDate" }}
-										{{ui/addon/bs-datetimepicker date=customerflowdModel.theLeaveRecordDate  placeholder='登记日期(必填)' minDate=theToday
+										{{ui/addon/bs-datetimepicker date=customerflowdModel.theLeaveRecordDate  placeholder='登记日期(必填)' maxDate=secondDay
 										locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD' value=customerflowdModel.leaveRecordDate
 										show="dpShowAction" change="changeAction" }}
 									{{/bs-form-element}}

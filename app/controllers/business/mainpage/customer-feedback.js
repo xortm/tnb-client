@@ -5,9 +5,8 @@ export default Ember.Controller.extend(InfiniteScroll,{
   infiniteContentPropertyName: "",
   infiniteModelName: "",
   infiniteContainerName:"customerFeedbackContainer",
-  preventInfinite:true,
+  stopScroll: true,//阻止下拉刷新的所有操作
 
-  moment: Ember.inject.service(),
   service_PageConstrut:Ember.inject.service("page-constructure"),
   mainController: Ember.inject.controller('business.mainpage'),
   pathConfiger: Ember.inject.service("path-configer"),

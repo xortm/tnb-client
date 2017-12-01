@@ -17,29 +17,24 @@ export default BaseBusiness.extend({
     },
     setupController(controller, model) {
         this._super(controller, model);
+        let _self = this;
         var editMode = this.getCurrentController().get('editMode');
         var id = this.getCurrentController().get('id');
         if (editMode == 'edit') {
             controller.set('detailEdit', false);
             controller.set("flagEdit", true);
             this.store.findRecord('customerserverchange', id).then(function(change) {
-                console.log("set change:", change);
                 controller.set('change', change);
-                console.log("controller.set('change', change)",controller.get('change.foodLevelOld.typename'));
-
-                // if(change.status.typecode=='applyStatus1'){
-                //   alert('applyStatus1');
-                //   controller.set('isOkEdit', true);
-                // }
-                // if(change.status.typecode=='applyStatus2'){
-                //   alert('applyStatus2');
-                //   controller.set('isOkEdit', false);
-                // }
+                if(change.get('customer.chargeType.typecode')=='chargeTypeY'){
+                  controller.set('chargeTypeFlag',true);
+                }else{
+                  controller.set('chargeTypeFlag',false);
+                }
             });
         } else {
             controller.set("flagEdit", false);
             controller.set('detailEdit', true);
-            controller.set('change', this.store.createRecord('customerserverchange', {}));
+            controller.set('change', this.store.createRecord('customerserverchange', {newFlowFlag:false}));
         }
         this.store.query('customer', {filter:{
           "applyFlag":0,
@@ -48,7 +43,6 @@ export default BaseBusiness.extend({
           'addRemark':'normal'
         }}).then(function(customerList) {
             customerList.forEach(function(customer) {
-                //customer.set('namePinyin', pinyinUtil.getFirstLetter(customer.get("name")));
                 customer.set('namePinyin', customer.get("name"));
             });
             controller.set('customerList', customerList);
@@ -72,13 +66,6 @@ export default BaseBusiness.extend({
             controller.set('bedListFirst', bedList.get('firstObject'));
             console.log("bedList is",bedList);
         });
-        // this.store.query("user", {}).then(function(staffList) {
-        //     console.log("staffList is", staffList);
-        //     staffList.forEach(function(staff) {
-        //         staff.set('operaterPinyin', pinyinUtil.getFirstLetter(staff.get("name")));
-        //     });
-        //     controller.set("staffList", staffList);
-        //     controller.set('staffListFirst', staffList.get('firstObject'));
-        // });
+        controller.set('levelList',_self.get('dataLoader.serviceLevel'));
     }
 });

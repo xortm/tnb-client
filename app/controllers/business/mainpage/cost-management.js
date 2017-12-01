@@ -6,6 +6,7 @@ export default Ember.Controller.extend({
     constants: Constants,
     queryCondition:'',
     mainController: Ember.inject.controller('business.mainpage'),
+    dataLoader:Ember.inject.service('data-loader'),
     statusList:Ember.computed(function(){
       let list = new Ember.A();
       let status0 = Ember.Object.create({
@@ -70,7 +71,30 @@ export default Ember.Controller.extend({
       },
       toAdd(){
         this.get("mainController").switchMainPage('cost-detail',{editMode:"add"});
-      }
+      },
+      //提交
+      commit(bill){
+        this.set('popSubmit',true);
+        this.set('curBill',bill)
+      },
+      submit(){
+        let _self = this;
+        let billInfo = this.get('curBill');
+        let status = this.get("dataLoader").findDict("billStatus1");
+        billInfo.set('billStatus',status);
+        billInfo.save().then(function(){
+          App.lookup('controller:business.mainpage').openPopTip("正在提交");
+          _self.set('popSubmit',false);
+          let mainpageController = App.lookup('controller:business.mainpage');
+          mainpageController.switchMainPage('cost-management');
+          App.lookup('controller:business.mainpage').showPopTip("提交成功");
+          _self.set('curBill',null);
+        });
+      },
+      recall(){
+        this.set('popSubmit',false);
+        this.set('curBill',null)
+      },
     }
 
 });

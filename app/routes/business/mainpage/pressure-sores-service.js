@@ -81,15 +81,26 @@ export default BaseBusiness.extend(Pagination, {
     doQuery: function() {
         var _self = this;
         var params = this.buildQueryParams(); //拼查询条件
-        var evaluateList = this.findPaged('evaluateresult', params, function(evaluates) {
-          _self.getCurrentController().set("evaluateList", evaluateList);
-          _self.getCurrentController().set('evaShow',true);
+        var evaluateList = this.findPaged('evaluateresult', params).then(function(evaluateList){
+          _self.store.query('risk-level',{filter:{assess:{code:'pressureSores'}}}).then(function(riskLevelList){//压疮等级列表
+            evaluateList.forEach(function(evaluate){
+              let score = evaluate.get('score');
+              riskLevelList.forEach(function(level){
+                if((score<=level.get('maxScore'))&&(score>=level.get('minScore'))){
+                  evaluate.set('levelName',level.get('levelName'));
+                }
+              });
+            });
+            _self.set('feedBus.pressureLevelList',riskLevelList);
+            _self.getCurrentController().set("evaluateList", evaluateList);
+          });
         });
+
 
     },
     setupController(controller, model) {
         let _self = this;
-
+        _self.getCurrentController().set('evaShow',true);
         var queryCondition = controller.get('input');
         controller.set('queryCondition', queryCondition);
         controller.set("dateQueryCondition", "");
@@ -110,6 +121,57 @@ export default BaseBusiness.extend(Pagination, {
           _self.set('feedBus.evaluateQuestions',questionList);
           _self.set('feedBus.evaluateAnswers',list);
         });
+        //取所有的压疮类表格
+        this.store.query('risk-record-model',{filter:{riskModel:{code:'pressureSores'}}}).then(function(riskList){
+          controller.set('allRiskList',riskList);
+          riskList.forEach(function(risk){
+            console.log('risk name in service',risk.get('name'));
+          });
+          console.log('allRiskList in service',riskList);
+        });
+        //取所有压疮类内容项
+        this.store.query('risk-record-field',{}).then(function(fieldList){
+          controller.set('allFieldList',fieldList);
+          let firstFieldList = new Ember.A();//列表第一级
+          let secondFieldList = new Ember.A();//列表第二级
+          let num = 2;
+          fieldList.forEach(function(field){
+            console.log('field name in service',field.get('name'));
+            if(field.get('children.length')>0){
+              console.log('has children length',field.get('children.length'));
+              field.set('hasChildren',true);
+              num += field.get('children.length');
+            }else{
+              num +=1;
+              field.set('hasChildren',false);
+            }
+
+            if(field.get('parent.id')){
+              secondFieldList.pushObject(field);
+              num += -1;
+            }else{
+              firstFieldList.pushObject(field)
+            }
+            console.log('td num :',num);
+          });
+          controller.set('allFieldList',fieldList);
+          controller.set('firstFieldList',firstFieldList);
+          controller.set('secondFieldList',secondFieldList);
+          console.log('allFieldList in service',fieldList);
+        })
+        //取所有的压疮表记录
+        this.store.query('risk-record-result',{filter:{model:{riskModel:{code:'pressureSores'}}},sort:{id:'desc'}}).then(function(resultList){
+          controller.set('allResultList',resultList);
+          resultList.forEach(function(result){
+            console.log('result in service',result.get('customer.name'),result.get('recordTimeStr'));
+          });
+          console.log('allResultList in service',resultList);
+        });
+        //取所有压疮结果子记录
+        this.store.query('risk-field-result',{}).then(function(fieldResultList){
+          console.log('all risk field result length:',fieldResultList.get('length'));
+          controller.set('allRiskFieldList',fieldResultList);
+        })
         this.doQuery();
     }
 });

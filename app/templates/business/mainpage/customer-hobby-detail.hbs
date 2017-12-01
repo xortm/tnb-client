@@ -1,0 +1,44 @@
+<div id="customerHobbyDetailContainer" class="mainContent {{if global_pageConstructure.showLoader 'hide' ''}}">
+  <div class="wrapperInner">
+    {{#ui/mobile/gestures-container}}
+      <div class="clearfix" style="margin-top:16px;">
+        {{#if (eq flag "interest")}}
+          <div class="color333333 line-height-30 text-indent5 font14">兴趣爱好: </div>
+          {{#callbusi/mobile/text-textarea value=customerInfo.interest}}
+          {{/callbusi/mobile/text-textarea}}
+        {{else if (eq flag "dietFeatures")}}
+          <div class="color333333 line-height-30 text-indent5 font14">饮食特点: </div>
+          {{#callbusi/mobile/text-textarea value=customerInfo.dietFeatures}}
+          {{/callbusi/mobile/text-textarea}}
+        {{else if (eq flag "character")}}
+          <div class="color333333 line-height-30 text-indent5 font14">性格特点: </div>
+          {{#callbusi/mobile/text-textarea value=customerInfo.character}}
+          {{/callbusi/mobile/text-textarea}}
+        {{else if (eq flag "taboo")}}
+          <div class="color333333 line-height-30 text-indent5 font14">反感忌讳: </div>
+          {{#callbusi/mobile/text-textarea value=customerInfo.taboo}}
+          {{/callbusi/mobile/text-textarea}}
+        {{else if (eq flag "experiences")}}
+          <div class="color333333 line-height-30 text-indent5 font14">人生经历: </div>
+          {{#callbusi/mobile/text-textarea value=customerInfo.experiences}}
+          {{/callbusi/mobile/text-textarea}}
+        {{else if (eq flag "preference")}}
+          <div class="color333333 line-height-30 text-indent5 font14">生活习惯: </div>
+          {{#callbusi/mobile/text-input value=customerInfo.name}}
+          {{/callbusi/mobile/text-input}}
+          <div class="color333333 line-height-30 text-indent5 font14">习惯描述: </div>
+          {{#callbusi/mobile/text-textarea value=customerInfo.remark}}
+          {{/callbusi/mobile/text-textarea}}
+        {{/if}}
+        {{#if (eq source "edit")}}
+          {{ui/mobile/task-detail-button needDoubleClickPrevent=true touchStartAction="saveDetail" saveDetail="saveDetail" butContent="保存" outerClass="customerHobbyDetail"}}
+          {{ui/mobile/task-detail-button needDoubleClickPrevent=true touchStartAction="deleteDetail" deleteDetail="deleteDetail" butContent="删除" outerClass="customerHobbyDeleteDetail" deleteButton=true}}
+        {{else}}
+          {{ui/mobile/task-detail-button needDoubleClickPrevent=true touchStartAction="addDetail" addDetail="addDetail" butContent="添加" outerClass="customerHobbyAddDetail"}}
+        {{/if}}
+      </div>
+  {{/ui/mobile/gestures-container}}
+  </div>
+</div>
+{{ui/container/infinite-scroll moniteData=""
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

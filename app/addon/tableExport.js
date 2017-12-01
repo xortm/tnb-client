@@ -3,9 +3,6 @@
  * excel导出实现
  */
 
-import CommonUtil from '../utils/common';
-
-(function($){
   $.fn.extend({
     tableExport: function(options) {
       var defaults = {
@@ -350,4 +347,3 @@ import CommonUtil from '../utils/common';
 
     }
   });
-})(jQuery);

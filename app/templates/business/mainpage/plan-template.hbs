@@ -4,10 +4,10 @@
     <div class="box-body">
       <div class="row bottom-border-plan2">
         <div class="pull-left font20 bottom-border-template  padding-bottom10 margin-bottom-f2">
-          年度设置
+          年度计划
         </div>
         <div class="pointer pull-left left26 font20" {{action 'toPlan' on="click"}}>
-          单周设置
+          单周计划
         </div>
         <div class="pull-right  nopadding-right nopadding-left bottom5">
           {{#ui/mix-button class="user-btn pull-left font16" iconClass="fa-users" paddingBorder="padding4 border-1-plantem" text='其他老人'  clickAction="editCustomer" editCustomer="editCustomer"}}
@@ -23,16 +23,6 @@
           <div class="pull-right top20 line-height-30 nopadding-left font-black font16">
               <span class="right10 font20">{{curCustomer.name}}</span><span class="fontColor">{{curBed.room.floor.building.name}}{{curBed.room.floor.name}}:{{curBed.room.name}}-{{curBed.name}}</span>
           </div>
-
-          <!-- <div class="pull-right" style="line-height:43px;">
-            {{#unless detailEdit}}
-            <p class="user-add-btn">
-                {{#ui/form-function editAction="detailEdit" detailEdit="detailEdit"
-                 deleteNone=true}}
-                {{/ui/form-function}}
-            </p>
-            {{/unless}}
-          </div> -->
           {{/if}}
         </div>
 
@@ -71,8 +61,8 @@
 
             {{#if dayServiceList}}
               <div class="position_absolute" id="position_absolute">
-                {{#each dayServiceList as |service|}}
-                  <div class="white_space dayHover pull-left font16 left8 pointer padding-0-5 border-radius5 {{if service.selected 'dayColor' ''}}" {{action 'setService' service 'day' on="click"}}>
+                {{#each dayServiceList as |service index|}}
+                  <div id="{{concat 'day-service-loop-' index}}" class="white_space dayHover pull-left font16 left8 pointer padding-0-5 border-radius5 {{if service.selected 'dayColor' ''}}" {{action 'setService' service 'day' on="click"}}>
                     <span>{{service.name}}</span><span>({{service.hasFrequency}}/{{service.frequency}})</span>
                   </div>
                 {{/each}}
@@ -109,8 +99,8 @@
         <div class="position_relativePlan top10 height30 line-height-25 overflow-hidden" id="weekSelect">
             {{#if weekServiceList}}
             <div class="position_absolute" id="position_absoluteWeek">
-            {{#each weekServiceList as |service|}}
-              <div class="white_space weekHover pull-left font16 left8 pointer padding-0-5 border-radius5 {{if service.selected 'weekColor' ''}}" {{action 'setService' service 'week' on="click"}}>
+            {{#each weekServiceList as |service index|}}
+              <div id="{{concat 'week-service-loop-' index}}" class="white_space weekHover pull-left font16 left8 pointer padding-0-5 border-radius5 {{if service.selected 'weekColor' ''}}" {{action 'setService' service 'week' on="click"}}>
                 <span>{{service.name}}</span><span>({{service.hasFrequency}}/{{service.frequency}})</span>
               </div>
             {{/each}}
@@ -150,6 +140,10 @@
                       <!-- {{#if date.selected}}
                       <span>已选</span>
                       {{/if}} -->
+                      {{#if date.serviceFull}}
+                      {{#callbusi/hints-tip hasArrow=true tipValue=tipValue }}
+                      {{/callbusi/hints-tip}}
+                      {{/if}}
                     </div>
                   </div>
                 {{/each}}
@@ -162,6 +156,10 @@
                   <div class="bottom10 border-1-solid padding4 center {{if date.selected 'dayColor' ''}}" {{action "chooseTime" date on="click"}}>
                     <img src={{date.icon}} style="height:20px" />
                     <span>{{date.name}}</span>
+                    {{#if date.serviceFull}}
+                    {{#callbusi/hints-tip hasArrow=true tipValue=tipValue }}
+                    {{/callbusi/hints-tip}}
+                    {{/if}}
                   </div>
                 </div>
               {{/each}}

@@ -20,12 +20,12 @@
       {{#if showModal}}
           {{#bs-modal body=false footer=false header=false closedAction=(action "invitation")}}
               {{#bs-modal-header}}
-                  <h4 class="modal-title">您的手机号:</h4>
+                  <h4 class="modal-title">中心电话:</h4>
               {{/bs-modal-header}}
               {{#bs-modal-body}}
                   <div class="modal-body clearfix">
                       <div class="width100B" style="text-align: center; margin:0 auto; font-size:26px; line-height:46px; color:#008040;">
-                        <a style="color:#008040;" href="tel://{{curCustomer.phone}}">{{curCustomer.phone}}</a>
+                        <a style="color:#008040;" href="tel://{{kangyiTell}}">{{kangyiTell}}</a>
                         <!-- <span>{{curCustomer.phone}}</span> -->
                       </div>
                   </div>

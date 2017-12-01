@@ -8,6 +8,7 @@ export default Ember.Controller.extend({
     toTemplateFlag:0,
     isSubmit:"disabled",
     couldCopy:true,
+    tipValue:'此服务项目已经排满，请先取消其他时间安排。',
     couldCopyObs:function(){
       let flag = this.get('flag');
       if(flag===0){
@@ -18,6 +19,8 @@ export default Ember.Controller.extend({
     }.observes('flag'),
     searchCustomer:true,
     statusService: Ember.inject.service("current-status"),
+    allDayServiceName:'暂无',
+    allWeekServiceName:'暂无',
     //当前周
     curTime:function(){
       let date = this.get('currentFirstDate');
@@ -686,7 +689,7 @@ export default Ember.Controller.extend({
         let weekService = weekServices.findBy('item.id',service.get('item.id'));
         services.findBy('item.id',service.get('item.id')).set('leftFrequency',weekService.get('leftFrequency'));
       });
-    }.observes('curdate'),
+    }.observes('curdate','serviceList'),
 
     //新的护理计划表格
     //该老人的所属方案的周项目列表
@@ -859,6 +862,19 @@ export default Ember.Controller.extend({
           for(let i = 0 ; i<7;i++){
             newCustomerPlanList.pushObject(list.objectAt(i));
           }
+          let serviceName = list.get('firstObject.remark').split('@');
+          let allDayServiceName = serviceName[1];
+          let allWeekServiceName = serviceName[0];
+          if(allDayServiceName.length>0){
+            _self.set('allDayServiceName',allDayServiceName);
+          }else{
+            _self.set('allDayServiceName','暂无');
+          }
+          if(allWeekServiceName.length>0){
+            _self.set('allWeekServiceName',allWeekServiceName);
+          }else{
+            _self.set('allWeekServiceName','暂无');
+          }
           _self.set('newCustomerPlanList',newCustomerPlanList);
           _self.set('allPlanDetailList',list);
         });
@@ -897,7 +913,9 @@ export default Ember.Controller.extend({
       },
       //选择老人弹层
       editCustomer(){
-        this.set('editCustomer',true);
+        // this.set('editCustomer',true);
+        var mainpageController = App.lookup('controller:business.mainpage');
+        mainpageController.switchMainPage('nursing-template');
       },
       selectCustomer(customer){
         this.set('theCustomer',customer);
@@ -1012,6 +1030,7 @@ export default Ember.Controller.extend({
         this.set('curdate',null);
         this.set('curDate',null);
         this.set('detailService',false);
+        this.set('serviceFull',false);
       },
       //项目弹层标签选择
       chooseTab(service){
@@ -1024,14 +1043,13 @@ export default Ember.Controller.extend({
       },
       //选择项目
       clickService(service){
+        let _self = this;
         let chooseService = this.get('chooseService');
         if(service.get('selected')){
           if(chooseService.get('chooseFrequency')>0){
             service.set('selected',false);
             let serviceDetailDate = this.get('serviceDetailDate');
-            console.log('chooseService',chooseService.get('item.id'));
             let serv = serviceDetailDate.get('serviceList').findBy('item.id',chooseService.get('item.id'));
-            console.log(serv);
             serv.get('dateList').findBy('startTimeTab',service.get('startTimeTab')).set('selected',false);
             let num = chooseService.get('chooseFrequency') - 1;
             chooseService.set('chooseFrequency',num);
@@ -1044,6 +1062,11 @@ export default Ember.Controller.extend({
             serv.get('dateList').findBy('startTimeTab',service.get('startTimeTab')).set('selected',true);
             let num = chooseService.get('chooseFrequency') + 1;
             chooseService.set('chooseFrequency',num);
+          }else{
+            service.set('serviceFull',true);
+            setTimeout(function(){
+              service.set('serviceFull',false);
+            },3000);
           }
         }
 
@@ -1082,6 +1105,19 @@ export default Ember.Controller.extend({
             for(let i = 0 ; i<7;i++){
               newCustomerPlanList.pushObject(list.objectAt(i));
             }
+            let serviceName = list.get('firstObject.remark').split('@');
+            let allDayServiceName = serviceName[1];
+            let allWeekServiceName = serviceName[0];
+            if(allDayServiceName.length>0){
+              _self.set('allDayServiceName',allDayServiceName);
+            }else{
+              _self.set('allDayServiceName','暂无');
+            }
+            if(allWeekServiceName.length>0){
+              _self.set('allWeekServiceName',allWeekServiceName);
+            }else{
+              _self.set('allWeekServiceName','暂无')
+            }
             _self.set('newCustomerPlanList',newCustomerPlanList);
             _self.set('allPlanDetailList',list);
             App.lookup('controller:business.mainpage').showPopTip("保存成功");
@@ -1090,7 +1126,6 @@ export default Ember.Controller.extend({
         },function(err){
           App.lookup('controller:business.mainpage').showPopTip("保存失败",false);
           let error = err.errors[0];
-          console.log('错误信息：',error);
           if(error.code==='11'){
             App.lookup('controller:business.mainpage').showAlert('只能修改今天之后的护理计划！');
           }

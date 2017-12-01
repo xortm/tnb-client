@@ -1,0 +1,22 @@
+<div id="serviceCheckContainer" class="mainContent {{if global_pageConstructure.showLoader 'hide' ''}}">
+  <div class="wrapperInner">
+    {{#if serviceCheckList}}
+      <div class="bgcolor-white">
+      {{#each serviceCheckList as |serviceCheck|}}
+        {{#callbusi/mobile/service-check-item item=serviceCheck outerClass="col-sm-6 col-xs-12 height-auto" delAction="delAction"}}
+        {{/callbusi/mobile/service-check-item}}
+      {{/each}}
+      </div>
+    {{else}}
+      <div class="nodate">暂无数据</div>
+    {{/if}}
+  </div>
+</div>
+{{#ui/mobile/gestures-container}}
+<div class="detail-dynamicsbtn" id="service-check-add" {{action 'addCheck' on="tap"}} style="bottom:40px;">
+  <img class="bottom2" width='15' src="assets/images/mobile/add.png" alt="">
+  <span class="padding-left-10">添加检查</span>
+</div>
+{{/ui/mobile/gestures-container}}
+{{ui/container/infinite-scroll moniteData="serviceCheckList"
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

@@ -51,6 +51,38 @@ module.exports = function(environment) {
       // when it is created
     }
   };
+  if (environment === 'public') {
+    ENV.isMinify = true;
+    ENV['ember-faker'] = {
+      enabled: true
+    };
+    ENV.SRI = {
+      enabled: false
+    };
+    ENV.baseURL = null;
+    ENV.resourceHost = "http://resource.tnb99.cn";
+    ENV.socketHost = "http://47.93.78.97:7090";
+    ENV.host = "http://api.tnb99.cn";
+    ENV.imgHost = "http://img.tnb99.cn";
+    ENV.wxScanurl = "http://pub.tnb99.cn/index.html";
+    ENV.locationType = 'none';
+  }
+  if (environment === 'android') {
+    ENV.isMinify = true;
+    ENV['ember-faker'] = {
+      enabled: true
+    };
+    ENV.SRI = {
+      enabled: false
+    };
+    ENV.baseURL = null;
+    ENV.resourceHost = "http://resource.tnb99.cn";
+    ENV.socketHost = "http://47.93.78.97:7090";
+    ENV.host = "http://api.tnb99.cn";
+    ENV.imgHost = "http://img.tnb99.cn";
+    ENV.wxScanurl = "http://web.tnb99.cn/index.html";
+    ENV.locationType = 'none';
+  }
   if (environment === 'production') {
     ENV.isMinify = true;
     ENV['ember-faker'] = {

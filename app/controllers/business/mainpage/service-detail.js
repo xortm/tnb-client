@@ -243,9 +243,15 @@ export default Ember.Controller.extend(ServiceitemValidations,ServicemerchValida
         }
         if(serviceitemModel.get('errors.length')===0){
           App.lookup('controller:business.mainpage').openPopTip("正在保存");
+          serviceitemModel.set('delStatus',0);
           serviceitemModel.save().then(function(serviceitemInfo){
             App.lookup('controller:business.mainpage').showPopTip("保存成功");
             let list = _self.get('serviceitemInfo.merchList');
+            if(!list){
+              _self.set('detailEdit',false);
+              _self.set('serviceitemInfo',serviceitemInfo);
+              return ;
+            }
             _self.get('serviceitemInfo.merchList').forEach(function(merch){
               if(!merch.get('id')){
                 list.removeObject(merch);
@@ -256,12 +262,13 @@ export default Ember.Controller.extend(ServiceitemValidations,ServicemerchValida
             _self.set('serviceitemInfo',serviceitemInfo);
             _self.set('serviceitemInfo.merchList',list);
         },function(err){
+          App.lookup('controller:business.mainpage').showPopTip("保存失败",false);
           let error = err.errors[0];
           if(error.code==="4"){
             serviceitemModel.validate().then(function(){
               serviceitemModel.addError('name',['该名称已被占用']);
               serviceitemModel.set("validFlag",Math.random());
-              App.lookup('controller:business.mainpage').showPopTip("保存失败",false);
+
             });
           }
         });
@@ -285,14 +292,17 @@ export default Ember.Controller.extend(ServiceitemValidations,ServicemerchValida
     },
     serviceValueTypeSelect(serviceValueType){
       this.set('serviceitemInfo.serviceValueType',serviceValueType);
+      this.set('serviceitemModel.serviceValueType',serviceValueType);
     },
     //选择护理类型
     careTypeSelect(careType){
       this.set('serviceitemInfo.careType',careType);
+      this.set('serviceitemModel.careType',careType);
     },
     //选择周期
     periodSelect(period){
       this.set('serviceitemInfo.period',period);
+      this.set('serviceitemModel.period',period);
     },
     serviceTypeSelect(serviceType){
       this.set('serviceitemInfo.serviceType',serviceType);
@@ -303,6 +313,7 @@ export default Ember.Controller.extend(ServiceitemValidations,ServicemerchValida
       this.set('serviceitemInfo.countType',countType);
       this.set('serviceitemModel.countType',countType);
       if(countType.get('typecode')=='countTypeByTime'){
+        this.set('serviceitemModel.period',null);
         this.set('count',true);
       }
       if(countType.get('typecode')=='countTypeByFrequency'){

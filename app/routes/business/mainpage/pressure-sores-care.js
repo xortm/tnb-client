@@ -21,6 +21,7 @@ export default BaseBusiness.extend({
   },
   setupController(controller, model){
     let _self = this;
+
     this.store.query('evaluateanswer',{filter:{question:{model:{riskAssessModel:{code:'pressureSores'},useFlag:0,delStatus:0}}}}).then(function(list){
       let questionList = new Ember.A();
       list.forEach(function(answer){
@@ -42,6 +43,12 @@ export default BaseBusiness.extend({
       controller.set('riskList',riskList);
       _self.set('feedService.recordModelList',riskList);
     });
+    let riskLevelList = this.get('feedService.riskLevelList');
+    if(!riskLevelList){
+      this.store.query('risk-level',{filter:{assess:{code:'pressureSores'}}}).then(function(riskLevelList){
+        _self.set('feedService.riskLevelList',riskLevelList);
+      });
+    }
     this._super(controller, model);
   },
 });

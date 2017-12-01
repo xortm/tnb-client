@@ -1,36 +1,86 @@
 {{#ui/mobile/gestures-container}}
 <div id="customerPointContainer" class="mainContent border-top-1 {{if global_pageConstructure.showLoader 'hide' ''}}">
   <div class="wrapperInner">
-  {{#if preferenceList}}
+    <!-- <div class="position-relative bk-color-2FA7FD padding-5-18-15 top5"  id="customer_point_{{customer.id}}" {{action 'gotoHobbyDetail' customer.id on="tap"}}>
+       <div class="font18 color-white line-height-30 center">老人喜好</div>
+       {{#if customer.customerHobby}}
+         <p class="color2FA7FD topF12 font14 line-height-20 bottom0 padding-right-10">{{customer.customerHobby}}</p>
+       {{else}}
+         <p class="color2FA7FD topF12 font14 line-height-20 bottom0 padding-right-10">暂无</p>
+       {{/if}}
+       <i class="pull-right fa-angle-right img-right font30 color2FA7FD topF12 abs-right-8"></i>
+    </div> -->
     <div class="bgcolor-white">
-    {{log "preferenceList hbs" preferenceList}}
-    <ul class="bk-color-white padding-left-0">
-    {{#each preferenceList as |preference|}}
-      <li class="padding-15-18 bk-color-white">
-        <div class="width100B clearfix line-height-20 font-black font15">
-          <span class="pull-left width80B">{{preference.name}}:</span>
-          <span class="pull-right">{{preference.startStr}}</span>
-        </div>
-        <p class="color999999 font13 line-height-16 margin-top-10 bottom0">{{preference.remark}}</p>
-      </li>
-      <li class="border-bottom-1"></li>
-    {{/each}}
-    </ul>
+      <ul class="bk-color-white padding-left-0">
+        <li class="padding-15-25-15-30 bk-color-white position-relative interest_{{customerExtend.id}}" {{action "goDetail" "interest" customerExtend on="tap"}}>
+          <i class="profile-i abs-top-15 abs-left-5"><img class="a-img" src="assets/images/mobile/customerPoint.png"/></i>
+          <div class="width100B clearfix line-height-20 font-black font15">
+            <p class="color999999 font13 line-height-16 margin-top-10 bottom0 width100B pull-left top0 word-wrap"><span class="font-black font14">兴趣爱好: </span>{{if customerExtend.interest customerExtend.interest "无"}}</p>
+          </div>
+          <i class="pull-right fa-angle-right img-right font24 color2FA7FD topF12"></i>
+        </li>
+        <li class="border-bottom-1"></li>
+        <li class="padding-15-25-15-30 bk-color-white position-relative dietFeatures_{{customerExtend.id}}" {{action "goDetail" "dietFeatures" customerExtend on="tap"}}>
+          <i class="profile-i abs-top-15 abs-left-5"><img class="a-img" src="assets/images/mobile/customerPoint.png"/></i>
+          <div class="width100B clearfix line-height-20 font-black font15">
+            <p class="color999999 font13 line-height-16 margin-top-10 bottom0 width100B pull-left top0 word-wrap"><span class="font-black font14">饮食特点: </span>{{if customerExtend.dietFeatures customerExtend.dietFeatures "无"}}</p>
+          </div>
+          <i class="pull-right fa-angle-right img-right font24 color2FA7FD topF12"></i>
+        </li>
+        <li class="border-bottom-1"></li>
+        <li class="padding-15-25-15-30 bk-color-white position-relative character_{{customerExtend.id}}" {{action "goDetail" "character" customerExtend on="tap"}}>
+          <i class="profile-i abs-top-15 abs-left-5"><img class="a-img" src="assets/images/mobile/customerPoint.png"/></i>
+          <div class="width100B clearfix line-height-20 font-black font15">
+            <p class="color999999 font13 line-height-16 margin-top-10 bottom0 width100B pull-left top0 word-wrap"><span class="font-black font14">性格特点: </span>{{if customerExtend.character customerExtend.character "无"}}</p>
+          </div>
+          <i class="pull-right fa-angle-right img-right font24 color2FA7FD topF12"></i>
+        </li>
+        <li class="border-bottom-1"></li>
+        <li class="padding-15-25-15-30 bk-color-white position-relative taboo_{{customerExtend.id}}" {{action "goDetail" "taboo" customerExtend on="tap"}}>
+          <i class="profile-i abs-top-15 abs-left-5"><img class="a-img" src="assets/images/mobile/customerPoint.png"/></i>
+          <div class="width100B clearfix line-height-20 font-black font15">
+            <p class="color999999 font13 line-height-16 margin-top-10 bottom0 width100B pull-left top0 word-wrap"><span class="font-black font14">反感忌讳: </span>{{if customerExtend.taboo customerExtend.taboo "无"}}</p>
+          </div>
+          <i class="pull-right fa-angle-right img-right font24 color2FA7FD topF12"></i>
+        </li>
+        <li class="border-bottom-1"></li>
+        <li class="padding-15-25-15-30 bk-color-white position-relative experiences_{{customerExtend.id}}" {{action "goDetail" "experiences" customerExtend on="tap"}}>
+          <i class="profile-i abs-top-15 abs-left-5"><img class="a-img" src="assets/images/mobile/customerPoint.png"/></i>
+          <div class="width100B clearfix line-height-20 font-black font15">
+            <p class="color999999 font13 line-height-16 margin-top-10 bottom0 width100B pull-left top0 word-wrap"><span class="font-black font14">人生经历: </span>{{if customerExtend.experiences customerExtend.experiences "无"}}</p>
+          </div>
+          <i class="pull-right fa-angle-right img-right font24 color2FA7FD topF12"></i>
+        </li>
+        <li class="border-bottom-1"></li>
+        <li class="padding-15-25-15-30 bk-color-white position-relative">
+          <i class="profile-i abs-top-15 abs-left-5"><img class="a-img" src="assets/images/mobile/customerPoint.png"/></i>
+          <div class="width100B clearfix line-height-20 font-black font15">
+            <p class="color999999 font13 line-height-16 margin-top-10 bottom0 width100B pull-left top0 word-wrap"><span class="font-black font14">生活习惯: </span></p>
+          </div>
+        </li>
+        <li class="border-bottom-1"></li>
+        {{#if preferenceList}}
+          {{log "preferenceList hbs" preferenceList}}
+          {{#each preferenceList as |preference|}}
+            <li class="bk-color-white padding-10-25-10-40 position-relative preference_{{preference.id}}" {{action "goDetail" "preference" preference on="tap"}}>
+              <div class="width100B clearfix line-height-20 color666666 font15">
+                <p class="color999999 font13 line-height-20 margin-top-10 bottom0 width100B pull-left top0 word-wrap"><span class="font-black font14">{{preference.name}}: </span>{{preference.remark}}</p>
+                <i class="pull-right fa-angle-right img-right font24 color2FA7FD topF12"></i>
+                <!-- <span class="pull-right color999999">{{preference.startStr}}</span> -->
+              </div>
+            </li>
+            <li class="border-bottom-1"></li>
+          {{/each}}
+        {{/if}}
+      </ul>
     </div>
-  {{else}}
-    {{#if nocustomerId}}
-      <div class="center" style="margin-top:40px;">
-        请在上方选择老人
-      </div>
-    {{else}}
-      <div class="nodate">暂无数据</div>
-    {{/if}}
-  {{/if}}
-
-
 
   </div>
 
+</div>
+<div class="detail-dynamicsbtn" id="customer_point_add" {{action 'addPoint' on="tap"}} style="bottom:0px;">
+  <img class="bottom2" width='15' src="assets/images/mobile/add.png" alt="">
+  <span class="padding-left-10">添加生活习惯</span>
 </div>
 {{/ui/mobile/gestures-container}}
 {{ui/container/infinite-scroll moniteData=""

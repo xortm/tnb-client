@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import BaseBusiness from '../base-business';
 import Pagination from '../pagination';
-const {leaveStatus1,leaveStatus2,leaveStatus3,leaveStatus4,leaveStatus5,consultStatus6,consultStatus7} = Constants;
+const {leaveStatus1,leaveStatus2,leaveStatus3,leaveStatus4,leaveStatus5,leaveStatus6,consultStatus6,consultStatus7} = Constants;
 
 export default BaseBusiness.extend(Pagination, {
     header_title: '退住管理',
@@ -26,6 +26,7 @@ export default BaseBusiness.extend(Pagination, {
             'leaveStatus---3':{'typecode@$or1---3':Constants.leaveStatus3},
             'leaveStatus---4':{'typecode@$or1---4':Constants.leaveStatus4},
             'leaveStatus---5':{'typecode@$or1---5':Constants.leaveStatus5},//没了 直接delStatus
+            'leaveStatus---6':{'typecode@$or1---6':Constants.leaveStatus6},
             // status:{typecode:Constants.consultStatus6}
           };
         }else{

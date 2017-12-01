@@ -177,6 +177,7 @@ export default Ember.Controller.extend(InfiniteScroll, {
                               source: 'edit',
                               itemIdFlag:Math.random()
                           };
+                          _self.get("feedService").set("conDataFlag",true);
                           var mainController = App.lookup("controller:business.mainpage");
                           console.log('2222222');
                           mainController.switchMainPage("backvist-detail-mobile",params);
@@ -213,6 +214,7 @@ export default Ember.Controller.extend(InfiniteScroll, {
                       source: 'edit',
                       itemIdFlag:Math.random()
                   };
+                    _self.get("feedService").set("conDataFlag",true);
                     var mainController = App.lookup("controller:business.mainpage");
                     console.log('33333333');
                     mainController.switchMainPage("backvist-detail-mobile",params);
@@ -243,6 +245,7 @@ export default Ember.Controller.extend(InfiniteScroll, {
                       source: 'edit',
                       itemIdFlag:Math.random()
                   };
+                    _self.get("feedService").set("conDataFlag",true);
                     var mainController = App.lookup("controller:business.mainpage");
                     console.log('44444444444');
                     mainController.switchMainPage("backvist-detail-mobile",params);

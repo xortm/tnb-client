@@ -1,0 +1,24 @@
+<div id="serviceCheckDetailContainer" class="mainContent {{if global_pageConstructure.showLoader 'hide' ''}}">
+  <div class="wrapperInner">
+    {{#ui/mobile/gestures-container}}
+      <ul class="self nopadding-left margin-top-10">
+        <li class="" style="position:relative;">
+          <strong>检查时间:</strong>
+          <span class="pull-right" style="margin-right:10px;">{{serviceCheck.createTimeStr}}</span>
+        </li>
+        <li class="margin-leftright10 border-bottom-1"></li>
+        <li id="serviceCheck_type" class="" style="position:relative;" {{action 'toChooseType' serviceCheck 'serviceCheckItem' on="tap"}}>
+          <strong>检查内容:</strong>
+          <span class="pull-right" style="margin-right:10px;">{{serviceCheck.item.typename}}&nbsp;<i class="fa-angle-right font20 my-right color-ccc"></i></span>
+        </li>
+        <li class="margin-leftright10 border-bottom-1"></li>
+        <li id="serviceCheck_remark" class="" style="position:relative;" {{action 'toChooseType' serviceCheck 'remark' on="tap"}}>
+          <strong>检查结果:</strong>
+          <span class="pull-right" style="margin-right:10px;max-width:200px;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;">{{serviceCheck.remark}}&nbsp;<i class="fa-angle-right font20 my-right color-ccc"></i></span>
+        </li>
+      </ul>
+  {{/ui/mobile/gestures-container}}
+  </div>
+</div>
+{{ui/container/infinite-scroll moniteData=""
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

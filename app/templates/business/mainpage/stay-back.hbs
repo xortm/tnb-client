@@ -31,7 +31,9 @@
                   <th rowspan="1" colspan="1" width="">身份证号</th>
                   <th rowspan="1" colspan="1" width="">床位号</th>
                   <th rowspan="1" colspan="1" width="">申请状态</th>
-                  <th rowspan="1" colspan="1" width="">退住日期</th>
+                  <th rowspan="1" colspan="1" width="">申请退住日期</th>
+                  <th rowspan="1" colspan="1" width="">实际退住日期</th>
+                  <th rowspan="1" colspan="1" width="">账单状态</th>
                   <th class="center" rowspan="1" colspan="1" width="">操作</th>
               </tr>
           </thead>
@@ -41,24 +43,32 @@
                       <tr>
                           <td class="ellipsis" {{action "toStayBackDetail" customer.id on="click"}}>{{customer.customer.name}}</td>
                           <td class="ellipsis " {{action "toStayBackDetail" customer.id on="click"}}>{{customer.customer.cardCode}}</td>
-                          <td class="ellipsis " {{action "toStayBackDetail" customer.id on="click"}}>{{customer.customer.bed.buildingFloorName}}:{{customer.customer.bed.roomBedName}}</td>
+                          <td class="ellipsis " {{action "toStayBackDetail" customer.id on="click"}}>{{customer.customer.bed.allBedName}}</td>
                           <td class="ellipsis " {{action "toStayBackDetail" customer.id on="click"}}>{{customer.customerstatus}}</td>
                           <td class="ellipsis " {{action "toStayBackDetail" customer.id on="click"}}>{{customer.leaveDateString}}</td>
+                          <td class="ellipsis " {{action "toStayBackDetail" customer.id on="click"}}>{{customer.leaveDateRealTimeString}}</td>
+                          <td class="ellipsis " {{action "toStayBackDetail" customer.id on="click"}}>{{customer.billStatusName}}</td>
                           <td class="ellipsis center">
+                            {{#if customer.couldBack}}
+                              <a class=""  {{action "completeFlow" customer  on="click"}}>完成退住</a>
+                            {{/if}}
                             {{#if (eq customer.leaveStatusTypecodNumber 1)}}
                             {{else}}
                             <a class="" {{action "chengeState" customer on="click"}}>{{customer.customerStatusClick}}</a>
                               {{#if (eq customer.leaveStatusTypecodNumber 2)}}
+                              {{else if (eq customer.leaveStatusTypecodNumber 3)}}
                               {{else}}
-                                <a class=""  {{action "theToVoid" customer  on="click"}}>作废</a>
+                                {{#unless customer.couldBack}}
+                                  <a class=""  {{action "theToVoid" customer  on="click"}}>作废</a>
+                                {{/unless}}
                               {{/if}}
                             {{/if}}
+
                           </td>
                       </tr>
                   {{/each}}
           </tbody>
           {{else}}
-          <div class="nodate">暂无数据</div>
           {{/if}}
       </table>
 

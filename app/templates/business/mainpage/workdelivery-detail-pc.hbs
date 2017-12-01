@@ -1,0 +1,167 @@
+<div class="col-md-12">
+    <div class="box margin-middle max-width">
+        <!-- BOX-BODY -->
+        <div class="box-body">
+            {{#bs-form formLayout=formLayout model=dataModel invalid=(action "invalid")}}
+                <!-- 编辑的功能-->
+                <!-- <div class="row clear">
+                    <div class="col-xs-12">
+                        <p class="user-add-btn">
+                            {{#if detailEdit}}
+
+                            {{else}}
+                                {{#ui/icon-button class="user-btn trash-btn pull-right incon-button-font" iconClass="fa fa-trash-o" text='删除' clickAction="delById" delById="delById" clickActParams=data}}
+                                    {{bs-tooltip title="删除" class="light-tooltip"}}
+                                {{/ui/icon-button}}
+                                {{#ui/icon-button class="user-btn edit-btn pull-right incon-button-font" iconClass="fa fa-edit" text='编辑' clickAction="detailEditClick" detailEditClick="detailEditClick" }}
+                                    {{bs-tooltip title="编辑" class="light-tooltip"}}
+                                {{/ui/icon-button}}
+                            {{/if}}
+                        </p>
+                    </div> -->
+
+
+
+                <div class="col-xs-12 nopadding-horizontal mt20">
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-input-group">
+                            <span class="input-group-addon">交&nbsp;班&nbsp;&nbsp;人：</span>
+                            {{#if detailEdit}}
+                                <!-- {{input class="input-group-content" value=nursing.caller.name}} -->
+                                {{#if flagEdit}}
+                                    <div class="input-group-content">{{data.sender.name}}</div>
+                                {{else}}
+                                    {{#bs-form-element class="inline-block form-input-group" controlType="nurscustomer" property="nurscustomer" }}
+                                        {{#power-select class="inline-block input-group-content" placeholder="必填项" options=customerList selected=defaultCustomer searchField="namePinyin" noMatchesMessage="没有相关内容" allowClear=false onchange=(action "selectNursing" ) as |name|}}
+                                            {{name.name}}
+                                        {{/power-select}}
+                                    {{/bs-form-element}}
+                                {{/if}}
+                            {{else}}
+                                <div class="input-group-content">{{data.sender.name}}</div>
+                            {{/if}}
+                        </div>
+
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-input-group">
+                            <span class="input-group-addon">交班日期：</span>
+                            {{#if detailEdit}}
+                                {{ui/addon/bs-datetimepicker date=dataModel.nursinglogDate placeholder="护理日期"
+											locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'
+											show="dpShowAction" change="changeNursinglogDateAction" }}
+                            {{else}}
+                                <div class="input-group-content">{{dataModel.createDateString}}</div>
+                            {{/if}}
+                        </div>
+                    </div>
+
+
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-input-group">
+                            <span class="input-group-addon">接&nbsp;班&nbsp;&nbsp;人：</span>
+                            {{#if detailEdit}}
+                                <div class="input-group-content">{{dataModel.receiver.name}}</div>
+
+                            {{else}}
+                                <div class="input-group-content">{{dataModel.receiver.name}}</div>
+                            {{/if}}
+                        </div>
+
+                    </div>
+
+
+
+
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-input-group">
+                            <span class="input-group-addon">接班日期：</span>
+                            {{#if detailEdit}}
+                                {{ui/addon/bs-datetimepicker date=dataModel.nursinglogDate placeholder="护理日期"
+											locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'
+											show="dpShowAction" change="changeNursinglogDateAction" }}
+                            {{else}}
+                                <div class="input-group-content">{{dataModel.receiveDateString}}</div>
+                            {{/if}}
+                        </div>
+                    </div>
+
+                    <!-- <div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+								<span class="input-group-addon" >记录时间：</span>
+								{{#if detailEdit}}
+									<div class="input-group-content" >{{dataModel.recordTimeString}}</div>
+								{{/if}}
+							</div>
+
+						</div> -->
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-input-group">
+                            <span class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;状态：</span>
+                            {{#if detailEdit}}
+                                <div class="input-group-content" style="padding:0">
+                                    {{callbusi/dict-selector class="" curDict=dataModel.logStatus
+										 groupCode=constants.nurseTag showName="选择日志的状态" dictSelect="statusSelect" preselected=false}}
+                                </div>
+                            {{else}}
+                                <div class="input-group-content">{{dataModel.status.typename}}</div>
+                            {{/if}}
+                        </div>
+
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12">
+                        <div class="form-input-group">
+                            <span class="input-group-addon">老人情况：</span>
+                            {{#if detailEdit}}
+                                {{textarea type="text" class="full-width inline-block form-input-group
+								 label-normal form-control" value=dataModel.illChange placeholder='老人情况'}}
+                            {{else}}
+                                <div class="input-group-content height-auto">{{{dataModel.illChange}}}</div>
+                            {{/if}}
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12">
+                        <div class="form-input-group">
+                            <span class="input-group-addon">注意事项：</span>
+                            {{#if detailEdit}}
+                                {{textarea type="text" class="full-width inline-block form-input-group
+                 label-normal form-control" value=dataModel.specialRemark placeholder='注意事项'}}
+                            {{else}}
+                                <div class="input-group-content height-auto">{{{dataModel.specialRemark}}}</div>
+                            {{/if}}
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12">
+                        <div class="form-input-group">
+                            <span class="input-group-addon">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;备注：</span>
+                            {{#if detailEdit}}
+                                {{textarea type="text" class="full-width inline-block form-input-group
+								 label-normal form-control" value=dataModel.remarkContent placeholder='日志内容'}}
+                            {{else}}
+                                <div class="input-group-content height-auto">{{{dataModel.remark}}}</div>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+
+        <!-- 保存取消的按钮方法 -->
+        <div class="padding-top30 center">
+            <p class="text-center user-add-btn margin0auto inlineBlock">
+                {{#if detailEdit}}
+                    {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check" text='保存' clickParams=nursing clickAction="saveNursing" saveNursing="saveNursing" }}
+                    {{/ui/mix-button}}
+                    {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply" text='取消' clickAction="detailCancel" detailCancel="detailCancel" }}
+                    {{/ui/mix-button}}
+                {{/if}}
+            </p>
+        </div>
+
+        {{/bs-form}}
+    </div>
+    <!-- /BOX-BODY -->
+</div>
+</div>

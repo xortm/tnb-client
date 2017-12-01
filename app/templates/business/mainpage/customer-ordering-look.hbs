@@ -1,0 +1,60 @@
+{{#ui/mobile/gestures-container}}
+<div id="customerOrderingLookContainer" class="mainContent color-white {{if global_pageConstructure.showLoader 'hide' ''}}">
+  <div class="wrapperInner foodOrderingClass">
+  {{#if allList}}
+    {{#if lookFlag}}
+    <!-- 查看模式 -->
+      <div class="font18 line-height-30 center margin-top-10">{{diningDateStr}}订餐情况</div>
+      {{#each allList as |allListItem|}}
+        <div class="title">{{allListItem.foodTimeTypeName}}</div>
+        {{#each allListItem.foodTypelist as |foodTypelistItem|}}
+        {{log "foodlist.length" foodTypelistItem.selectLength}}
+          {{#if foodTypelistItem.selectLength}}
+            <div class="hang clearfix">
+              <div class="preItem">{{foodTypelistItem.foodTypeName}}:</div>
+              {{#each foodTypelistItem.foodlist as |foodlistItem|}}
+                {{#if foodlistItem.selected}}
+                  <div class="item">{{foodlistItem.item.name}}</div>
+                {{/if}}
+              {{/each}}
+            </div>
+          {{/if}}
+        {{/each}}
+      {{/each}}
+      <!-- {{ui/mobile/task-detail-button needDoubleClickPrevent=true touchStartAction="editCustomerOrder" editCustomerOrder="editCustomerOrder" butContent="编辑菜单" outerClass="editCustomerOrderBut"}} -->
+    {{else}}
+    <!-- 编辑模式 -->
+      <div class="font18 line-height-30 center margin-top-10">{{diningDateStr}}订餐情况</div>
+      {{#each allList as |allListItem|}}
+        <div class="title">{{allListItem.foodTimeTypeName}}</div>
+        {{#each allListItem.foodTypelist as |foodTypelistItem|}}
+          <div class="hang clearfix">
+            <div class="preItem">{{foodTypelistItem.foodTypeName}}:</div>
+            {{#each foodTypelistItem.foodlist as |foodlistItem|}}
+              <div class="item itemBorder {{if foodlistItem.selected "itemBorderSelect" ""}}" {{action "tapIten" foodlistItem foodTypelistItem.foodType allListItem.foodTimeType  on="tap"}}>
+                <span>{{foodlistItem.item.name}}</span>
+                {{#if foodlistItem.loadingFlag}}
+                  <div class="cover">
+                    <i class="fa-spinner"></i>
+                  </div>
+                {{/if}}
+              </div>
+            {{/each}}
+          </div>
+        {{/each}}
+      {{/each}}
+
+    {{/if}}
+  {{else}}
+    <div class="nodate">暂无数据</div>
+  {{/if}}
+
+
+
+  </div>
+
+</div>
+{{/ui/mobile/gestures-container}}
+
+{{ui/container/infinite-scroll moniteData="customerserviceitemList"
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

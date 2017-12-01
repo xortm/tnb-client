@@ -1,0 +1,20 @@
+{{#ui/mobile/gestures-container}}
+<div id="scoreByEmployeeContainer" class="mainContent" style="padding-top:40px;">
+  <div class="wrapperInner">
+    {{#if employeeList}}
+      <div class="bgcolor-white">
+      {{log "employeeList hbs" employeeList}}
+      {{#each employeeList as |employeeItem|}}
+        {{#callbusi/mobile/view-score-list item=employeeItem employeeFlag=true outerClass="height-auto"}}
+        {{/callbusi/mobile/view-score-list}}
+      {{/each}}
+      </div>
+    {{else}}
+      <div class="nodate">暂无数据</div>
+    {{/if}}
+
+  </div>
+</div>
+{{/ui/mobile/gestures-container}}
+{{ui/container/infinite-scroll moniteData=""
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

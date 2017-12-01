@@ -123,9 +123,14 @@ export default Ember.Controller.extend({
     consultation(){
       let _self = this;
       this.set('toScheduled',true);
-      this.store.query('consultinfo',{filter:{consultStatus:{'typecode@$not':"consultStatus3"}}}).then(function(consultList){
+      console.log($('#consultinfo-block'));
+      Ember.run.schedule('afterRender',function(){
+        $('#consultinfo-block').append("<div class='pageLoading center position-relative'><img class='loadingMainShow' src='./assets/images/logo/loading.gif'></div>");
+      });
+      this.store.query('consultinfo',{filter:{consultStatus:{'typecode@$not':"consultStatus3"},'advName@$isNotNull': 'null','advTel@$isNotNull': 'null'},sort:{'createDateTime':'desc'}}).then(function(consultList){
         _self.set('consultList',consultList);
         _self.set('allconsultList',consultList);
+        $('.pageLoading').remove();
       });
     },
     searchConsult(){

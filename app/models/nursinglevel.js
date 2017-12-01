@@ -9,9 +9,21 @@ var nursinglevel = BaseModel.extend({
   createUser:DS.belongsTo('user'),//创建者ID
   remark:DS.attr('string'),//备注
   selfCareLevel:DS.hasMany('dicttype'),//对应的自理等级
-  price:DS.attr('string'),//价格
+  price:DS.attr('string'),//日价格
+  totalPrice:DS.attr('string'),//月价格
   highScore:DS.attr('number'),//最高分
   lowScore:DS.attr('number'),//最低分
+  sourceRemark:DS.attr('string'),//类型编码
+  modelSource:DS.belongsTo('evaluatemodelsource'),
+  sourceCode:DS.attr('string'),
+  delFlag:Ember.computed('sourceRemark',function(){
+    let sourceRemark = this.get('sourceRemark');
+    if(sourceRemark == 'beijing'){
+      return false;
+    }else{
+      return true;
+    }
+  }),
   services:DS.hasMany('nursinglevelitem'),
   servicesName:Ember.computed('services',function(){
     var name='';

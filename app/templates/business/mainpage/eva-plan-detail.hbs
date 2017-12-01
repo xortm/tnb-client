@@ -1,5 +1,5 @@
 
-<div class="col-sm-12 ml10">
+<div class="col-sm-12 ml10" name="eva-plan-detail">
 	<!-- BOX -->
 	<div class="box content-color nopadding-vertical nopadding-left ">
 		<div class="box-body">
@@ -7,12 +7,25 @@
 				<div class="panel-box shadow">
 					<div class="col-xs-12 nopadding-left">
 							<p class="user-add-btn inline-block">
-								{{#if detailEdit}}
+								{{#if isBaseTenant}}
+									{{#if detailEdit}}
+									{{else}}
+										{{#ui/form-function editAction="detailEditClick" detailEditClick="detailEditClick"
+										removeAction="delPlan" delPlan="delPlan" clickActParams=evaInfo}}
+										{{/ui/form-function}}
+									{{/if}}
 								{{else}}
-									{{#ui/form-function editAction="detailEditClick" detailEditClick="detailEditClick"
-									removeAction="delPlan" delPlan="delPlan" clickActParams=evaInfo}}
-									{{/ui/form-function}}
+									{{#if isStandardModel}}
+									{{else}}
+										{{#if detailEdit}}
+										{{else}}
+											{{#ui/form-function editAction="detailEditClick" detailEditClick="detailEditClick"
+											removeAction="delPlan" delPlan="delPlan" clickActParams=evaInfo}}
+											{{/ui/form-function}}
+										{{/if}}
+									{{/if}}
 								{{/if}}
+
 							</p>
 					</div>
 
@@ -68,7 +81,7 @@
 									data-toggle="tooltip"  title="删除问题"  data-placement="top" data-original-title="删除"
 									clickAction="delTheQuestion" delTheQuestion="delTheQuestion"}}
 									{{/ui/icon-button}}
-									{{#ui/icon-button iconClass="fa fa-plus-circle pull-right incon-button-font"
+									{{#ui/icon-button iconClass="fa fa-plus-circle pull-right incon-button-font" name="add-question"
 									data-toggle="tooltip"  title="新增问题"  data-placement="top" data-original-title="新增"
 									clickAction="addNewQuestion" addNewQuestion="addNewQuestion"}}
 									{{/ui/icon-button}}
@@ -77,7 +90,7 @@
 
 							</div>
 						</div>
-						<div class="col-sm-12 question-list">
+						<div class="col-sm-12 question-list" name="question-list">
 							<div class="box-body overflow-hidden fullWidth">
 								<div class="list-content">
 									{{#each questionList as |question index|}}
@@ -117,7 +130,7 @@
 									data-toggle="tooltip"  title="删除分数等级"  data-placement="top" data-original-title="删除"
 									clickAction="delScore" delScore="delScore"}}
 									{{/ui/icon-button}}
-									{{#ui/icon-button iconClass="fa fa-plus-circle pull-right incon-button-font"
+									{{#ui/icon-button iconClass="fa fa-plus-circle pull-right incon-button-font" name="add-score"
 									data-toggle="tooltip"  title="新增分数等级"  data-placement="top" data-original-title="新增"
 									clickAction="addNewScoreScope" addNewScoreScope="addNewScoreScope"}}
 									{{/ui/icon-button}}
@@ -138,7 +151,7 @@
 										            {{#each scoreScopeList as |score|}}
 										            <tr>
 
-																	<td class="ellipsis nopadding-right" style="line-height:37px;font-size:14px;">
+																	<td class="ellipsis nopadding-right" style="line-height:37px;font-size:14px;vertical-align: middle;">
 																		{{#if detailEdit}}
 																		<i class="{{if score.hasSelected 'fa-check-square-o' 'fa-square-o'}}" {{action 'chooseScoreScope' score on="click"}}></i>
 																		{{else}}
@@ -157,13 +170,18 @@
 										              <td class="ellipsis"  {{action 'detailScoreScope' score on="click"}}>
 																		<div class="form-input-group">
 																			<span class="input-group-addon">之间为：</span>
-																			<div class="input-group-content">{{score.remark}}</div>
+																			<div class="consult-content-group">{{score.remark}}</div>
 																		</div>
 																	</td>
 										              <td class="ellipsis" {{action 'detailScoreScope' score on="click"}} width=30%>
 																		<div class="form-input-group">
+																			{{#if sourceType}}
+																			<span class="input-group-addon">自理能力等级：</span>
+																			<div class="input-group-content">{{score.actionLevel.typename}}</div>
+																			{{else}}
 																			<span class="input-group-addon">对应护理等级：</span>
 																			<div class="input-group-content">{{score.level.name}}</div>
+																			{{/if}}
 																		</div>
 																	</td>
 										            </tr>
@@ -225,13 +243,23 @@
 	</div>
 	<div class="col-sm-5 nopadding-left">
 		<div class="form-input-group">
-			<span class="input-group-addon">护理等级：</span>
-			{{#bs-form-element class="inline-block form-input-group" controlType="level"  property="level" }}
-			{{#power-select class="input-group-content" placeholder='护理等级' options=levelList  selected=scoreModel.level searchField="name"
-			noMatchesMessage="没有相关内容"	allowClear=false onchange=(action "selectLevel" scoreModel ) as |level|}}
-				{{level.name}}
-			{{/power-select}}
-			{{/bs-form-element}}
+			{{#if sourceType}}
+			<span class="input-group-addon">老人能力等级：</span>
+				{{#bs-form-element class="inline-block form-input-group" controlType="actionLevel"  property="actionLevel" }}
+						{{#power-select class="input-group-content" placeholder='必填' options=actionLevelList  selected=scoreModel.actionLevel searchField="name"
+						noMatchesMessage="没有相关内容"	allowClear=false onchange=(action "selectActionLevel" scoreModel ) as |level|}}
+							{{level.typename}}
+						{{/power-select}}
+				{{/bs-form-element}}
+			{{else}}
+				<span class="input-group-addon">护理等级：</span>
+				{{#bs-form-element class="inline-block form-input-group" controlType="level"  property="level" }}
+					{{#power-select class="input-group-content" placeholder='必填' options=levelList  selected=scoreModel.level searchField="name"
+					noMatchesMessage="没有相关内容"	allowClear=false onchange=(action "selectLevel" scoreModel ) as |level|}}
+						{{level.name}}
+					{{/power-select}}
+				{{/bs-form-element}}
+			{{/if}}
 		</div>
 	</div>
 {{/bs-form}}
@@ -248,7 +276,7 @@
 {{#if detailQuestion}}
 {{#bs-modal body=false footer=false header=false closedAction=(action "invitation")}}
 {{#bs-modal-body}}
-{{#bs-form formLayout=formLayout model=questionModel invalid=(action "invalid")}}
+{{#bs-form name="que-pop" formLayout=formLayout model=questionModel invalid=(action "invalid")}}
 	<div class="col-sm-7 nopadding-left">
 		<div class="form-input-group">
 			<span class="input-group-addon">序号：</span>
@@ -264,6 +292,18 @@
 			<span class="input-group-addon">(问题在模板中的顺序)</span>
 		</div>
 	</div>
+	{{#if isCommunication}}
+	<div class="col-sm-5 nopadding-left">
+		<div class="form-input-group">
+			<span class="input-group-addon">编码：</span>
+			{{#if popQuestion.create}}
+			{{input class="form-control" type="text" value=popQuestion.code placeholder=''}}
+			{{else}}
+			{{input class="form-control" type="text" value=popQuestion.code placeholder=''}}
+			{{/if}}
+		</div>
+	</div>
+	{{/if}}
 	<div class="col-sm-12 nopadding-left">
 		<div class="form-input-group">
 			<span class="input-group-addon">问题：</span>
@@ -280,7 +320,7 @@
 	</div>
 	{{#each popQuestion.allAnswerList as |answer index|}}
 	{{#bs-form formLayout=formLayout model=answer.answerModel invalid=(action "invalid")}}
-	<div class="col-sm-6 nopadding-left">
+	<div class="col-sm-6 nopadding-left" name="answer-content">
 		<div class="form-input-group">
 			<span class="input-group-addon">{{answer.curIndex}}</span>
 			<div class="input-group full-width">
@@ -290,7 +330,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-sm-6 nopadding-left">
+	<div class="col-sm-6 nopadding-left" name="answer-score">
 		<div class="form-input-group">
 			<span class="input-group-addon">得分</span>
 			<div class="input-group full-width">

@@ -8,13 +8,17 @@
                     </li>
                     <li class="top10 center"></li>
                 </ul> -->
-                <ul class="nopadding-left bgcolor-white margin-0-10px">
-                    <li class="input_noneborder top30 textarea">
+                <ul class="nopadding-left">
+                    <li class=" top30">
                       {{#if (eq textType 'text')}}
-                        {{input type="text"  class='edit fullWidth3 padding-left-8' value=edit placeholder=editPlaceholder autofocus=true bubbles=false }}
+                        <!-- {{input type="text"  class='edit fullWidth3 padding-left-8' value=edit placeholder=editPlaceholder autofocus=true bubbles=false }} -->
+                        {{#callbusi/mobile/text-input value=edit placeholder=editPlaceholder}}
+                        {{/callbusi/mobile/text-input}}
                       {{/if}}
                       {{#if (eq textType 'textarea')}}
-                        {{textarea type="text"  class='edit fullWidth3 padding-left-8' value=edit placeholder=editPlaceholder autofocus=true bubbles=false }}
+                        <!-- {{textarea type="text"  class='edit fullWidth3 padding-left-8' value=edit placeholder=editPlaceholder autofocus=true bubbles=false }} -->
+                        {{#callbusi/mobile/text-textarea value=edit placeholder=editPlaceholder}}
+                        {{/callbusi/mobile/text-textarea}}
                       {{/if}}
                     </li>
                     <li class="top10 center"></li>

@@ -199,7 +199,10 @@
                                     <span class="input-group-addon">老人性别：</span>
                                     {{#if detailEdit}}
                                         {{#bs-form-element class="inline-block form-input-group" controlType="customerGender" property="customerGender" }}
-                                            {{callbusi/dict-selector curDict=consultModel.customerGender groupCode=constants.sexType showName="" dictSelect="customerSexSelect" value=consultModel.customerGender preselected=false}}
+                                            <div class="col-sm-12 nopadding-left nopadding-right pull-right" style="line-height:30px;font-size:13px;">
+                                                <i class="pointer {{if consult.customerGenderFlag.man 'fa-dot-circle-o' 'fa-circle-o'}}" {{action 'customerSexSelect' 'man' on="click"}}><span>男</span></i>
+                                                <i class="pointer {{if consult.customerGenderFlag.woman 'fa-dot-circle-o' 'fa-circle-o'}}" {{action 'customerSexSelect' 'woman' on="click"}}><span>女</span></i>
+                                            </div>
                                         {{/bs-form-element}}
                                     {{else}}
                                         <div class="font-light input-group-content">{{consultModel.customerGender.typename}}</div>
@@ -232,6 +235,18 @@
                                     {{/if}}
                                 </div>
                             </div>
+                            <div class="col-xs-12 col-sm-6">
+                              <div class="form-input-group label-normal">
+                                  <span class="input-group-addon">咨询形式：</span>
+                                  {{#if detailEdit}}
+                                      {{#bs-form-element class="inline-block form-input-group" controlType="relationType" property="relationType" }}
+                                          {{callbusi/dict-selector curDict=consultModel.relationType groupCode=constants.conRelationType showName="" dictSelect="relationTypeSelect" value=consultModel.relationType preselected=false}}
+                                      {{/bs-form-element}}
+                                  {{else}}
+                                      <div class="font-light input-group-content">{{consultModel.relationType.typename}}</div>
+                                  {{/if}}
+                              </div>
+                            </div>
                         </div>
                     <div class="padding-bottom10 sign col-sm-12 nopadding-left mt20">
                         <strong class="font-large">关心内容</strong>
@@ -246,7 +261,7 @@
                                             {{callbusi/dict-selector class="inline-block" curDict=consultModel.inPreference groupCode=constants.inPreference showName="" chooseMany=true preselected=false dictSelect="inPreferenceSelect" value=consultModel.inPreference preselected=false}}
                                         {{/bs-form-element}}
                                     {{else}}
-                                        <div class="font-light input-group-content">{{consultModel.inPreferenceName}}</div>
+                                        <div class="font-light consult-content-group"><div>{{consultModel.inPreferenceString}}</div></div>
                                     {{/if}}
                                 </div>
                             </div>
@@ -256,7 +271,7 @@
                                     {{#if detailEdit}}
                                         {{bs-form-element property="care" class="inline-block form-input-group" controlType="care" placeholder=""}}
                                     {{else}}
-                                        <div class="font-light input-group-content">{{consultModel.care}}</div>
+                                        <div class="font-light consult-content-group"><div>{{consultModel.care}}</div></div>
                                     {{/if}}
                                 </div>
                             </div>
@@ -268,7 +283,7 @@
                                     {{#if detailEdit}}
                                         {{bs-form-element property="dietRequirements" class="inline-block form-input-group" controlType="dietRequirements" placeholder=""}}
                                     {{else}}
-                                        <div class="font-light input-group-content">{{consultModel.dietRequirements}}</div>
+                                        <div class="font-light consult-content-group"><div>{{consultModel.dietRequirements}}</div></div>
                                     {{/if}}
                                 </div>
                             </div>
@@ -278,7 +293,7 @@
                                     {{#if detailEdit}}
                                         {{bs-form-element property="roomRequirements" class="inline-block form-input-group" controlType="roomRequirements" placeholder=""}}
                                     {{else}}
-                                        <div class="font-light input-group-content">{{consultModel.roomRequirements}}</div>
+                                        <div class="font-light consult-content-group"><div>{{consultModel.roomRequirements}}</div></div>
                                     {{/if}}
                                 </div>
                             </div>
@@ -290,7 +305,7 @@
                                     {{#if detailEdit}}
                                         {{bs-form-element property="serviceRequirements" class="inline-block form-input-group" controlType="serviceRequirements" placeholder=""}}
                                     {{else}}
-                                        <div class="font-light input-group-content">{{consultModel.serviceRequirements}}</div>
+                                        <div class="font-light consult-content-group"><div>{{consultModel.serviceRequirements}}</div></div>
                                     {{/if}}
                                 </div>
                             </div>
@@ -300,7 +315,7 @@
                                     {{#if detailEdit}}
                                         {{bs-form-element property="otherRequirements" class="inline-block form-input-group" controlType="otherRequirements" placeholder=""}}
                                     {{else}}
-                                        <div class="font-light input-group-content">{{consultModel.otherRequirements}}</div>
+                                      <div class="font-light consult-content-group"><div>{{consultModel.otherRequirements}}</div></div>
                                     {{/if}}
                                 </div>
                             </div>
@@ -312,7 +327,7 @@
                                     {{#if detailEdit}}
                                         {{bs-form-element property="psychologicalPrice" class="inline-block form-input-group" controlType="psychologicalPrice" placeholder=""}}
                                     {{else}}
-                                        <div class="font-light input-group-content">{{consultModel.psychologicalPrice}}</div>
+                                      <div class="font-light consult-content-group"><div>{{consultModel.psychologicalPrice}}</div></div>
                                     {{/if}}
                                 </div>
                             </div>
@@ -322,7 +337,7 @@
                                     {{#if detailEdit}}
                                         {{bs-form-element property="discontent" class="inline-block form-input-group" controlType="discontent" placeholder=""}}
                                     {{else}}
-                                        <div class="font-light input-group-content">{{consultModel.discontent}}</div>
+                                      <div class="font-light consult-content-group"><div>{{consultModel.discontent}}</div></div>
                                     {{/if}}
                                 </div>
                             </div>
@@ -334,7 +349,6 @@
                 <div class="padding-bottom10 sign col-sm-12 nopadding-left mt20">
                     <strong class="font-large margin-right-40">跟进记录</strong>
                     <div class="inlineBlock font16 margin-right-40">共{{consult.backVistInfos.length}}条</div>
-                    <!-- <div class="inlineBlock font-large pointer mouseHover" {{action "addBackvist"  on="click"}}>添加记录</div> -->
                     <div class="user-add-btn inlineBlock pull-right button0" style="margin-bottom:-8px;">
                         {{#ui/mix-button class="user-btn" iconClass="fa-plus" text='添加记录' clickAction="addBackvist" addBackvist="addBackvist" }}
                         {{/ui/mix-button}}

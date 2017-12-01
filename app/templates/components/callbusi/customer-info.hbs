@@ -95,7 +95,12 @@
                     {{#if detailModify}}
                         <!-- {{callbusi/dict-selector class="inline-block " curDict=customerInfo.sex groupCode=constants.sexType showName="必填项" dictSelect="sexSelect" preselected="false"}} -->
                         {{#bs-form-element class="inline-block form-input-group" controlType="sex" property="sex" }}
-                            {{callbusi/dict-selector curDict=customerModel.sex dictChange=customerModel.sexChange groupCode=constants.sexType showName="必填项" dictSelect="sexSelect" value=customerModel.sex preselected=false}}
+                            <!-- {{callbusi/dict-selector curDict=customerModel.sex dictChange=customerModel.sexChange groupCode=constants.sexType showName="必填项"
+                            dictSelect="sexSelect" value=customerModel.sex preselected=false}} -->
+                            <div class="col-sm-12 nopadding-left nopadding-right pull-right" style="line-height:30px;font-size:13px;">
+                                <i class="pointer {{if customerInfo.sexFlag.man 'fa-dot-circle-o' 'fa-circle-o'}}" {{action 'sexSelect' 'man' on="click"}}><span>男</span></i>
+                                <i class="pointer {{if customerInfo.sexFlag.woman 'fa-dot-circle-o' 'fa-circle-o'}}" {{action 'sexSelect' 'woman' on="click"}}><span>女</span></i>
+                            </div>
                         {{/bs-form-element}}
                     {{else}}
                         <div class="font-light input-group-content">{{customerModel.sex.typename}}</div>
@@ -132,9 +137,10 @@
                 <div class="form-input-group label-normal">
                     <span class="input-group-addon">生日习惯：</span>
                     {{#if detailModify}}
-                        {{#bs-form-element class="inline-block form-input-group" controlType="customerBirthdayHabit" property="customerBirthdayHabit" }}
-                            {{callbusi/dict-selector curDict=customerModel.customerBirthdayHabit groupCode=constants.birtydayType showName="" dictSelect="birthdayHabitSelect" value=customerModel.customerBirthdayHabit preselected=false}}
-                        {{/bs-form-element}}
+                        <div class="col-sm-12 nopadding-left nopadding-right pull-right" style="line-height:30px;font-size:13px;">
+                            <i class="pointer {{if customerInfo.birthdayFlag.lunar 'fa-dot-circle-o' 'fa-circle-o'}}" {{action 'birthdayHabitSelect' 'lunar' on="click"}}><span>农历生日</span></i>
+                            <i class="pointer {{if customerInfo.birthdayFlag.solar 'fa-dot-circle-o' 'fa-circle-o'}}" {{action 'birthdayHabitSelect' 'solar' on="click"}}><span>阳历生日</span></i>
+                        </div>
                     {{else}}
                         <div class="font-light input-group-content">{{customerModel.customerBirthdayHabit.typename}}</div>
                     {{/if}}

@@ -2,11 +2,6 @@
   <!--移动端header-->
   {{#unless global_curStatus.isJujia}}
     {{log "cus-pickerHBS business" queryCustomer}}
-    {{#if showHeaderAndFooter}}
-      {{#callbusi/mobile/header-bar transPage="changeMainPage" mobileAllMenus=mobileAllMenus}}
-      hasntApplyed=hasntApplyed
-      {{/callbusi/mobile/header-bar}}
-    {{/if}}
   {{else}}
     {{#callbusi/mobile/header-bar-jujia transPage="changeMainPage"}}
     hasntApplyed=hasntApplyed
@@ -19,7 +14,7 @@
   <!--移动端底部菜单-->
   {{#unless global_curStatus.isJujia}}
     {{log "mobileMenus" mobileMenus}}
-    {{#if showHeaderAndFooter}}
+    {{#if mobileMenus.length}}
       {{#foot-bar menus=mobileMenus changeMainPage="changeMainPage" isConsumer=global_curStatus.isConsumer}}
       {{/foot-bar}}
     {{/if}}
@@ -30,8 +25,10 @@
   {{/unless}}
   <!-- 提示条部分 -->
   <div id="footerTor" class="footerMsg center col-xs-12">
-    <div class="col-xs-2 transparent">.</div><div class="col-xs-8">{{toriseMessage}}</div>
+    <div class="col-xs-1 transparent">.</div><div class="col-xs-10">{{toriseMessage}}</div>
   </div>
+  <!-- select-bar提示条部分 -->
+  <div id="selectBarTor" class="selectBarMsg center col-xs-12">{{selectBarMessage}}</div>
 {{else}}
   <section id="page">
   			<!-- SIDEBAR -->

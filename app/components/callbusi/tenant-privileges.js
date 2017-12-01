@@ -30,10 +30,11 @@ export default BaseItem.extend({
     privilegeList: Ember.computed("global_dataLoader.allprivileges", "currentTenant", "resetCnt","systemType", function() {
         //  if (this.get("computedFlag") === 0) {
         var _self = this;
-        console.log("pri now", this.get("currentTenant.privileges"));
+        console.log("pri now"+this.get("currentTenant.privileges"));
         var privilegesWhole = this.get("global_dataLoader.allprivileges");
         privilegesWhole = privilegesWhole.filterBy("systemType",this.get("systemType"));
         var curPrivileges = this.get("currentTenant.privileges"); //  遍历提取 privilege   huibati
+        console.log('*-*-*-*-*--*-*--',curPrivileges.get('length'));
         if (!curPrivileges) {
             return null;
         }
@@ -58,9 +59,6 @@ export default BaseItem.extend({
             if (p && p.get("id")) {
                 hasSelected = true;
             }
-            // if (privilege.get("hasSelected")) { // huibati
-            //     hasSelected = true;
-            // }
             var vo = _self.toPrivilegeObj(privilege, hasSelected);
             arr.pushObject(vo);
         });
@@ -74,25 +72,29 @@ export default BaseItem.extend({
         var node, roots = new Ember.A();
         for (var i = 0; i < privileges.get("length"); i += 1) {
             node = privileges.objectAt(i);
-            // //非pc端权限不在权限树里显示
-            // if (node.type>3) {
-            //   continue;
-            // }
-            node.set("children", new Ember.A());
-            map.set(node.get("id"), i); // use map to look-up the parents
-            var parentId = node.get("parent.id");
-            if (parentId && parentId !== "0" && map.get(parentId) !== undefined) {
-                console.log("parentId:" + parentId + 　"|map.get(parentId):" + map.get(parentId));
-                privileges.get(map.get(parentId)).get("children").pushObject(node);
-            } else {
-                roots.pushObject(node);
+            if(node){
+              // //非pc端权限不在权限树里显示
+              if (node.type>3) {
+                continue;
+              }
+              node.set("children", new Ember.A());
+              map.set(node.get("id"), i); // use map to look-up the parents
+              var parentId = node.get("parent.id");
+              if (parentId && parentId !== "0" && map.get(parentId) !== undefined) {
+                  console.log("parentId:" + parentId + 　"|map.get(parentId):" + map.get(parentId));
+                  privileges.get(map.get(parentId)).get("children").pushObject(node);
+              } else {
+                  roots.pushObject(node);
+              }
             }
+
         }
         console.log("tree is:", roots);
         return roots;
     },
     //权限data对象转object对象
     toPrivilegeObj: function(privilege, hasSelected, detailEdit) {
+      if(privilege.get('remark')){
         var voItem = Ember.Object.create({
             id: privilege.get("id"),
             showName: privilege.get("showName"),
@@ -108,6 +110,8 @@ export default BaseItem.extend({
             childPrivleges: privilege.get("childPrivleges")
         });
         return voItem;
+      }
+
     },
     saveFlagChange: Ember.observer('saveFlag', function() {
         var _self = this;
@@ -123,9 +127,8 @@ export default BaseItem.extend({
         let privilegeArr = new Ember.A();
         for (let i = 0; i < _self.get("privilegeList.length"); i++) {
             var privilege = _self.get("privilegeList").objectAt(i);
-            if (privilege.get("hasSelected")) {
+            if (privilege&&privilege.get("hasSelected")) {
                 //得到已选择的，查出对应的privilege数据实体，并放入角色
-                console.log("hasSelected " + privilege.get("hasSelected") + " " + privilege.get("showName"));
                 let privilegeEnt = _self.get("store").peekRecord("privilege", privilege.get("id"));
                 let tenantPrivilege = _self.get("store").createRecord("tenantprivilege", {
                     privilege: privilegeEnt,
@@ -162,6 +165,7 @@ export default BaseItem.extend({
             var remarkFetchStr = "";
             for (let i = 0; i < spArr.length - 1; i++) {
                 remarkFetchStr = remarkFetchStr + spArr[i];
+                console.log('*--**-*-*-*-*-',remarkFetchStr);
                 let node = this.get("privilegeList").findBy("remark", remarkFetchStr);
                 node.set("hasSelected", true);
             }
@@ -174,7 +178,7 @@ export default BaseItem.extend({
             this.get("currentTenant").set("privileges", new Ember.A());
             for (let i = 0; i < this.get("privilegeList.length"); i++) {
                 var privilege = this.get("privilegeList").objectAt(i);
-                if (privilege.get("hasSelected")) {
+                if (privilege&&privilege.get("hasSelected")) {
                     //得到已选择的，查出对应的privilege数据实体，并放入角色
                     var privilegeEnt = this.get("store").peekRecord("privilege", privilege.get("id"));
                     var tenantPrivilege = this.get("store").createRecord("tenantprivilege", {});

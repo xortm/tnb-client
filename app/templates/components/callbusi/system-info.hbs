@@ -6,12 +6,12 @@
                 {{else}}
                     {{#if detailModify}}
                     {{else}}
-                    {{#ui/form-function editAction="detailModifyClick" detailModifyClick="detailModifyClick" removeAction="delById" delById="delById" }}
-                    {{/ui/form-function}}
-                    <!-- {{#ui/icon-button iconClass="fa-edit pull-right incon-button-font"
+                    <!-- {{#ui/form-function editAction="detailModifyClick" detailModifyClick="detailModifyClick" removeAction="delById" delById="delById" }}
+                    {{/ui/form-function}} -->
+                    {{#ui/icon-button iconClass="fa-edit pull-right incon-button-font"
                     data-toggle="tooltip"  title="编辑"  data-placement="top" data-original-title="编辑"
                     clickAction="detailModifyClick" detailModifyClick="detailModifyClick"}}
-                    {{/ui/icon-button}} -->
+                    {{/ui/icon-button}}
                     {{/if}}
                 {{/if}}
             </div>
@@ -20,22 +20,26 @@
         <div class="line">
             <div class="col-xs-12 col-sm-6 nopadding-left ">
                 <div class="form-input-group label-normal">
-                    <span class="input-group-addon s">用户名：</span>
-                        <div class="font-light input-group-content">{{systemModel.loginName}}</div>
+                    <span class="input-group-addon">用户名：</span>
+                    {{#if detailModify}}
+                      {{bs-form-element property="loginName" class="inline-block form-input-group label-normal" controlType="loginName" placeholder=""}}
+                    {{else}}
+                      <div class="font-light input-group-content">{{systemModel.loginName}}</div>
+                    {{/if}}
                 </div>
             </div>
             <div class="col-xs-12 col-sm-6">
                 <div class="form-input-group label-normal">
                     <span class="input-group-addon">密码：</span>
                     {{#if detailModify}}
-                    {{bs-form-element property="passcode" class="inline-block form-input-group label-normal" controlType="password" placeholder=""}}
+                      {{bs-form-element property="passcode" class="inline-block form-input-group label-normal" controlType="password" placeholder=""}}
                     {{else}}
                     <!-- <div class="font-light input-group-content">{{systemModel.passcode}}</div> -->
-                    {{#if systemModel.passcode}}
-                    <div class="font-light input-group-content">******</div>
-                    {{else}}
-                      <div class="font-light input-group-content"></div>
-                        {{/if}}
+                      {{#if systemModel.passcode}}
+                        <div class="font-light input-group-content">******</div>
+                      {{else}}
+                        <div class="font-light input-group-content"></div>
+                      {{/if}}
                     {{/if}}
                 </div>
             </div>

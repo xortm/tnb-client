@@ -1,22 +1,22 @@
 import Application from './application';
 import DS from 'ember-data';
-import _ from 'lodash/lodash';
+
 
 export default Application.extend({
   payload: null,
 
   normalizeFindRecordResponse: function(store, primaryModelClass, payload, id, requestType) {
-    let payloadFloor = _.filter(payload.included, function (obj) {
+    let payloadFloor = payload.included.filter( function (obj) {
       if(obj.type==="floor"){
         return true;
       }
     });
-    let payloadRoom = _.filter(payload.included, function (obj) {
+    let payloadRoom = payload.included.filter( function (obj) {
       if(obj.type==="room"){
         return true;
       }
     });
-    let payloadBuilding = _.filter(payload.included, function (obj) {
+    let payloadBuilding = payload.included.filter( function (obj) {
       if(obj.type==="building"){
         return true;
       }

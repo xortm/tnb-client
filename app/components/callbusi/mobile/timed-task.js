@@ -17,6 +17,7 @@ export default BaseUiItem.extend(InfiniteScroll,{
   global_curStatus: Ember.inject.service("current-status"),
   constants: Constants,
   i: 0,
+  selectStartTimeFlag: 0,
   scrollToPosition: false,//刷新后使滚动
   // infiniteContentPropertyName: Ember.computed(function(){
   //   return this.get("infiniteContentPropertyName");
@@ -33,6 +34,7 @@ export default BaseUiItem.extend(InfiniteScroll,{
     this.sendAction("queryFlagInAction");
   },
   //根据时间节点的变化,滑动到相应id的位置
+  /*
   selectStartTimeObs: function(){
     let _self = this;
     console.log("run in selectStartTimeObs");
@@ -174,14 +176,74 @@ export default BaseUiItem.extend(InfiniteScroll,{
       _self.set("scrollHasReady",false);
     });
   }.observes("selectStartTime","selectStartTime","selectStartTimeFlag","_scroller").on("init"),
+  */
 //观察者:只刷新jroll,保证滚动的位置不变
   directInitScollFlagObs:function(){
     console.log("scollFlag in obs",this.get("scollFlag"));
     if(this.get("scollFlag") == "1"){return;}
     console.log("run scollFlag in directInitScollFlagObs time");
-    this.set("scrollToPosition",false);
+    // this.set("scrollToPosition",false);
     this.refreshScrollerAction();
   }.observes("scollFlag"),
+  //观察者:只刷新jroll,保证滚动的位置不变
+  showLoadingImgFlagObs:function(){
+    console.log("run in showLoadingImgFlagObs");
+    this.set("serviceList",null);
+    this.hideAllLoading();
+    this.directInitScoll(true);
+  }.observes("showLoadingImgFlag","timeedTaskFlag"),
+  //观察id变化,右侧进行相应的处理
+   observesFlagId: function(){
+     let _self = this;
+     console.log("itemId run in observesFlagId:");
+     let selectStartTimeFlag = this.get("selectStartTimeFlag");
+     if(!selectStartTimeFlag){return;}
+    //  let flagId = this.get("infiniteContainerName") + "flag";
+     let selectStartTime = this.get("selectStartTime");
+     let liClass = "." + _self.get("infiniteContainerName") + "-";
+     let filterUlClass = "." + _self.get("infiniteContainerName") + "-filterUl";
+     $(filterUlClass+ " li").each(function(){
+       $(this).removeClass("color2FA7FDandBold");
+     });
+     if(selectStartTime == "0"){
+       $(liClass + "li0_6").addClass("color2FA7FDandBold");
+       $(liClass + "li0_6").prev().addClass("color2FA7FDandBold");
+       $(liClass + "li0_6").next().addClass("color2FA7FDandBold");
+     }else if(selectStartTime == "6"){
+       $(liClass + "li6_8").addClass("color2FA7FDandBold");
+       $(liClass + "li6_8").prev().addClass("color2FA7FDandBold");
+       $(liClass + "li6_8").next().addClass("color2FA7FDandBold");
+     }else if(selectStartTime == "8"){
+       $(liClass + "li8_10").addClass("color2FA7FDandBold");
+       $(liClass + "li8_10").prev().addClass("color2FA7FDandBold");
+       $(liClass + "li8_10").next().addClass("color2FA7FDandBold");
+     }else if(selectStartTime == "10"){
+       console.log("render ok");
+       $(liClass + "li10_12").addClass("color2FA7FDandBold");
+       $(liClass + "li10_12").prev().addClass("color2FA7FDandBold");
+       $(liClass + "li10_12").next().addClass("color2FA7FDandBold");
+     }else if(selectStartTime == "12"){
+       $(liClass + "li12_14").addClass("color2FA7FDandBold");
+       $(liClass + "li12_14").prev().addClass("color2FA7FDandBold");
+       $(liClass + "li12_14").next().addClass("color2FA7FDandBold");
+     }else if(selectStartTime == "14"){
+       $(liClass + "li14_16").addClass("color2FA7FDandBold");
+       $(liClass + "li14_16").prev().addClass("color2FA7FDandBold");
+       $(liClass + "li14_16").next().addClass("color2FA7FDandBold");
+     }else if(selectStartTime == "16"){
+       $(liClass + "li16_18").addClass("color2FA7FDandBold");
+       $(liClass + "li16_18").prev().addClass("color2FA7FDandBold");
+       $(liClass + "li16_18").next().addClass("color2FA7FDandBold");
+     }else if(selectStartTime == "18"){
+       $(liClass + "li18_20").addClass("color2FA7FDandBold");
+       $(liClass + "li18_20").prev().addClass("color2FA7FDandBold");
+       $(liClass + "li18_20").next().addClass("color2FA7FDandBold");
+     }else if(selectStartTime == "20"){
+       $(liClass + "li20_24").addClass("color2FA7FDandBold");
+       $(liClass + "li20_24").prev().addClass("color2FA7FDandBold");
+       $(liClass + "li20_24").next().addClass("color2FA7FDandBold");
+     }
+   }.observes("selectStartTimeFlag","directInitScollFlag").on("init"),
 
 
   actions:{
@@ -199,26 +261,38 @@ export default BaseUiItem.extend(InfiniteScroll,{
         }
       }
       if(i >= list.get("length")){
-        this.set("btnFlag",false);
         console.log("LoadingImgInss999");
-        this.sendAction("showLoadingImgInClose");//关闭加载图片
+        // this.sendAction("showLoadingImgInClose");//关闭加载图片
+        //jq调节列表项宽度
+        let contentWidth = 200;
+        console.log("backTranspage:" + this.get("feedBus").get("backTranspage"));
+        //动态计算content部分宽度,只有前台转场才设置
+        var winW = document.documentElement.clientWidth|| document.body.clientWidth;
+        $('#time-task-parent').find(".col-xs-middle-task").width(winW);
+        var maxW = winW + 172;
+        $('#time-task-parent').find(".contentArea").width(maxW);
+        if(!this.get("feedBus").get("backTranspage")||this.get("feedBus").get("backTranspage")!=="task-square"){
+          let totalWidth = $('#time-task-parent').find(".col-xs-middle-task").width();
+          let titleWidth = $('#time-task-parent').find(".col-xs-middle-task .title").width();
+          contentWidth = totalWidth - titleWidth -10;
+          console.log("totalWidth:" + totalWidth + " and titleWidth:" + titleWidth);
+          // this.set("contentWidth",contentWidth);
+          $('#time-task-parent').find(".col-xs-middle-task .content").width(contentWidth);
+        }
+        console.log("isRemoveLoading in:"+this.get("isRemoveLoading"));
         _self.hideAllLoading();
+        this.set("global_curStatus.headerBarHide",false);
         this.set("i",0);
         console.log("rend over");
         //如果查找的是全部老人,则不回到顶部,且滚动到指定位置
-        if(_self.get("showRightFlag")){
-          this.set("scrollToPosition",false);//可控制第一次加载是否滚动到指定的时间段
-          this.directInitScoll();
-        }else{
-          this.directInitScoll(true);
-        }
+        this.directInitScoll(true);
         //定义viewport事件,如果是android
         if(window.cordova){
           inView('.list-task-item-class')
           .on('enter', el => {
             console.log("in viewport:" + $(el).attr("name"));
             _self.send("removeItemMask",$(el).attr("name"));
-            _self.send("observesFlagId",$(el).children("div").attr("id"));
+            // _self.send("observesFlagId",$(el).children("div").attr("id"));
           })
           .on('exit', el => {
             console.log("exit viewport:" + $(el).attr("name"));
@@ -227,60 +301,6 @@ export default BaseUiItem.extend(InfiniteScroll,{
         }
       }
     },
-    //观察id变化,右侧进行相应的处理
-     observesFlagId(itemId){
-       let _self = this;
-       let flagId = this.get("infiniteContainerName") + "flag";
-       let liClass = "." + _self.get("infiniteContainerName") + "-";
-       let filterUlClass = "." + _self.get("infiniteContainerName") + "-filterUl";
-       console.log("observesFlagId itemId:",itemId);
-       if(itemId){
-         console.log("itemId run in:",itemId);
-         $(filterUlClass+ " li").each(function(){
-           $(this).removeClass("color2FA7FDandBold");
-         });
-         if(itemId == flagId + "0"){
-           $(liClass + "li0_6").addClass("color2FA7FDandBold");
-           $(liClass + "li0_6").prev().addClass("color2FA7FDandBold");
-           $(liClass + "li0_6").next().addClass("color2FA7FDandBold");
-         }else if(itemId == flagId + "6"){
-           $(liClass + "li6_8").addClass("color2FA7FDandBold");
-           $(liClass + "li6_8").prev().addClass("color2FA7FDandBold");
-           $(liClass + "li6_8").next().addClass("color2FA7FDandBold");
-         }else if(itemId == flagId + "8"){
-           $(liClass + "li8_10").addClass("color2FA7FDandBold");
-           $(liClass + "li8_10").prev().addClass("color2FA7FDandBold");
-           $(liClass + "li8_10").next().addClass("color2FA7FDandBold");
-         }else if(itemId == flagId + "10"){
-           console.log("render ok");
-           $(liClass + "li10_12").addClass("color2FA7FDandBold");
-           $(liClass + "li10_12").prev().addClass("color2FA7FDandBold");
-           $(liClass + "li10_12").next().addClass("color2FA7FDandBold");
-         }else if(itemId == flagId + "12"){
-           $(liClass + "li12_14").addClass("color2FA7FDandBold");
-           $(liClass + "li12_14").prev().addClass("color2FA7FDandBold");
-           $(liClass + "li12_14").next().addClass("color2FA7FDandBold");
-         }else if(itemId == flagId + "14"){
-           $(liClass + "li14_16").addClass("color2FA7FDandBold");
-           $(liClass + "li14_16").prev().addClass("color2FA7FDandBold");
-           $(liClass + "li14_16").next().addClass("color2FA7FDandBold");
-         }else if(itemId == flagId + "16"){
-           $(liClass + "li16_18").addClass("color2FA7FDandBold");
-           $(liClass + "li16_18").prev().addClass("color2FA7FDandBold");
-           $(liClass + "li16_18").next().addClass("color2FA7FDandBold");
-         }else if(itemId == flagId + "18"){
-           $(liClass + "li18_20").addClass("color2FA7FDandBold");
-           $(liClass + "li18_20").prev().addClass("color2FA7FDandBold");
-           $(liClass + "li18_20").next().addClass("color2FA7FDandBold");
-         }else if(itemId == flagId + "20"){
-           $(liClass + "li20_24").addClass("color2FA7FDandBold");
-           $(liClass + "li20_24").prev().addClass("color2FA7FDandBold");
-           $(liClass + "li20_24").next().addClass("color2FA7FDandBold");
-         }else if(itemId == flagId + "HasApply"){
-           $(liClass + "li_hasApply").addClass("color2FA7FDandBold");
-         }
-       }
-     },
     //添加单项的遮罩this.get("infiniteContainerName") +
      addItemMask(itemName){
        let el = $("div[name='" + itemName + "']");
@@ -299,29 +319,32 @@ export default BaseUiItem.extend(InfiniteScroll,{
      },
      //右侧点击完时间节点,做相应的操作
      queryTime(param1,param2){
-       let flagId = "#" + this.get("infiniteContainerName") + "flag";
-       if(param1 == "hasApply"){
-         console.log("flagId in queryTime has:",flagId+"param1");
-         if($(flagId+"HasApply").length){
-           // App.lookup("controller:business").popTorMsg("查看已完成项目");
-         }else{
-           App.lookup("controller:business").popTorMsg("没有已完成项目");
-           return;
-         }
-       }else{
-         console.log("flagId in queryTime:",flagId+"param1");
-         if($(flagId + param1).length){
-           // App.lookup("controller:business").popTorMsg("正在定位");
-         }else{
-           App.lookup("controller:business").popTorMsg("此时间段没有项目");
-           return;
-         }
-       }
-       this.set("scrollToPosition",true);
-       let scrollToPosition = this.get("scrollToPosition");
-       console.log("scrollToPosition in queryTime:",scrollToPosition);
+
+      //  let flagId = "#" + this.get("infiniteContainerName") + "flag";
+      //  if(param1 == "hasApply"){
+      //    console.log("flagId in queryTime has:",flagId+"param1");
+      //    if($(flagId+"HasApply").length){
+      //      // App.lookup("controller:business").popTorMsg("查看已完成项目");
+      //    }else{
+      //      App.lookup("controller:business").popTorMsg("没有已完成项目");
+      //      return;
+      //    }
+      //  }else{
+      //    console.log("flagId in queryTime:",flagId+"param1");
+      //    if($(flagId + param1).length){
+      //      // App.lookup("controller:business").popTorMsg("正在定位");
+      //    }else{
+      //      App.lookup("controller:business").popTorMsg("此时间段没有项目");
+      //      return;
+      //    }
+      //  }
+      //  this.set("scrollToPosition",true);
+      //  let scrollToPosition = this.get("scrollToPosition");
+       console.log("tap in queryTime1",param1);
+       console.log("tap in queryTime2",param2);
+       console.log("tap in queryTime");
        this.set("selectStartTime",param1);
-       this.set("selectEndTime",param2);
+       this.sendAction("refreshData",param1,param2);
        this.incrementProperty("selectStartTimeFlag");
      },
      //左右滑动的处理

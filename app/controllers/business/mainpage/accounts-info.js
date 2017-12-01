@@ -10,6 +10,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
   infiniteModelName: "",
   infiniteContainerName:"accountsInfoContainer",
   accountsInfoFlag: 0,
+  stopScroll: true,//阻止下拉刷新的所有操作
 
   queryFlagIn:function(){
     this.incrementProperty("accountsInfoFlag");
@@ -72,10 +73,12 @@ export default Ember.Controller.extend(InfiniteScroll,{
               customer.set('employeesName', str);
           }
         });
+        _self.hideAllLoading();
+        _self.directInitScoll(true);
       });
       //老人对应设备
       //修改版(查所有的设备类型和设备表，分出对应的数组)
-      this.get('store').query('devicetype', {}).then(function(devicetypeList) { //所有的设备类型表
+/*      this.get('store').query('devicetype', {}).then(function(devicetypeList) { //所有的设备类型表
           _self.get('store').query('device', {
               filter: {
                   '[status][typecode]': 'deviceStatus1',
@@ -146,7 +149,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
                   });
               });
           });
-      });
+      });*/
   }.observes("accountsInfoFlag").on('init'),
 
 

@@ -5,6 +5,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
   infiniteContentPropertyName: "",
   infiniteModelName: "",
   infiniteContainerName:"fileImplementDetailContainer",
+  stopScroll:true,
   queryFlagIn: function(){return;},
 
   observeGotoWork:function(){
@@ -13,6 +14,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
     let executionReport = this.store.peekRecord('executionReport',id);
     this.set('executionReport',executionReport);
     console.log('executionReport',executionReport);
+    this.hideAllLoading();
   }.observes('executionReportId'),
 
   checkScoreObject:Ember.computed('executionReport',function(){
@@ -22,7 +24,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
     var num = this.get('executionReport').get('checkScore');
     var checkScore = {};
     checkScore.num = num;
-    var list = [0,0,0,0,0,0,0];
+    var list = [0,0,0,0,0];
     for (var i = 0; i < num; i++) {
       list[i] = true;
     }
@@ -65,7 +67,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
     var num = this.get('executionReport').get('mealScore');
     var mealScore = {};
     mealScore.num = num;
-    var list = [0,0,0,0,0,0,0];
+    var list = [0,0,0,0,0];
     for (var i = 0; i < num; i++) {
       list[i] = true;
     }
@@ -108,7 +110,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
     var num = this.get('executionReport').get('sportScore');
     var sportScore = {};
     sportScore.num = num;
-    var list = [0,0,0,0,0,0,0];
+    var list = [0,0,0,0,0];
     for (var i = 0; i < num; i++) {
       list[i] = true;
     }
@@ -151,7 +153,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
     var num = this.get('executionReport').get('medicationScore');
     var medicationScore = {};
     medicationScore.num = num;
-    var list = [0,0,0,0,0,0,0];
+    var list = [0,0,0,0,0];
     for (var i = 0; i < num; i++) {
       list[i] = true;
     }
@@ -194,7 +196,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
     var num = this.get('executionReport').get('recoveryScore');
     var recoveryScore = {};
     recoveryScore.num = num;
-    var list = [0,0,0,0,0,0,0];
+    var list = [0,0,0,0,0];
     for (var i = 0; i < num; i++) {
       list[i] = true;
     }

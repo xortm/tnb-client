@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import BaseBusiness from '../base-business';
 export default BaseBusiness.extend({
-  header_title:'反馈',
+  header_title:'建议反馈',
   model(){
     console.log("healthy-file-test model");
     var model = Ember.Object.create({});

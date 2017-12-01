@@ -58,6 +58,11 @@ export default Ember.Controller.extend(DeviceValidations,{
               item.set('code','02');
               item.set('typecode','huami');
               break;
+            case 'video':
+              item.set('typename','视频');
+              item.set('code','04');
+              item.set('typecode','video');
+              break;
           }
           if(!list.findBy('code',item.get('code'))){
             list.pushObject(item);
@@ -176,7 +181,12 @@ export default Ember.Controller.extend(DeviceValidations,{
 
         let mainpageController = App.lookup('controller:business.mainpage');
         mainpageController.switchMainPage('device-management');
-        mainpageController.switchMainPage('device-detail',{code:code});
+        if(code=='04'){
+          mainpageController.switchMainPage('video-detail',{code:code});
+        }else{
+          mainpageController.switchMainPage('device-detail',{code:code});
+        }
+
     },
     //选择设备类型
     deviceTypeSearchSelect(device){
@@ -333,6 +343,9 @@ export default Ember.Controller.extend(DeviceValidations,{
           case 'deviceType6'://card 卡，绑定老人
               _self.get('customerList').findBy('device.id',device.get('id')).set('device',null);
             break;
+          case 'deviceTypeVideo'://video 视频
+            _self.get('videoBindList').findBy('device.id',device.get('id')).set('device',null);
+            break;
         }
 
         App.lookup("route:business.mainpage.device-detail").doQuery('search');
@@ -348,9 +361,19 @@ export default Ember.Controller.extend(DeviceValidations,{
       let id = device.get('bindInfo.id');
       let bindInfo;//需要绑定的信息字符串
       //判断不同的设备类型，构造不同的绑定信息
-      if(device.get('isBindCustomer')){
+      if(device.get('deviceType.typecode') == 'deviceTypeVideo'){
+        if(device.get('isBindRoom')){
+          bindInfo = 'roomId:' + id;
+        }else if(device.get('isBindBed')){
+          bindInfo = 'bedId:' + id;
+        }
+      }else if(device.get('isBindCustomer')){
         //老人绑定手环
         bindInfo = 'customer:' + id;
+      }else if(device.get('isBindRoom')){
+        bindInfo = 'room:' + id;
+      }else if(device.get('isBindBed')){
+        bindInfo = 'bed:' + id;
       }else{
         switch (device.get('deviceType.typecode')) {
           case 'deviceType2'://scanner 扫描器，绑定房间
@@ -372,25 +395,34 @@ export default Ember.Controller.extend(DeviceValidations,{
       }
       deviceInfo.set('operateTarget',bindInfo);
       deviceInfo.save().then(function(){
+        App.lookup('controller:business.mainpage').showPopTip('绑定成功');
         deviceInfo.set('operateFlag','');
         deviceInfo.set('operateTarget','');
         //重新请求数据刷新页面
-        _self.store.query('customerdevice',{}).then(function(customerList){
-          _self.set('customerList',customerList);
-          _self.store.query('employee',{}).then(function(employeeList){
-            _self.set('employeeList',employeeList);
-            //维护全局的roomlist和bedlist
-            switch (device.get('deviceType.typecode')) {
-              case 'deviceType2'://scanner 扫描器，绑定房间
-                _self.get('dataLoader.allRoomList').findBy('id',id).set('scanner',deviceInfo);
-                break;
-              case 'deviceType3'://button 按键，绑定床位
-                _self.get('dataLoader.allBedList').findBy('id',id).set('button',deviceInfo);
-                break;
-            }
+        if(device.get('isVideo')){
+          _self.store.query('devicebindmore',{}).then(function(videoBindList){
+            _self.set('videoBindList',videoBindList);
             App.lookup("route:business.mainpage.device-detail").doQuery('search');
           });
-        });
+        }else{
+          _self.store.query('customerdevice',{}).then(function(customerList){
+            _self.set('customerList',customerList);
+            _self.store.query('employee',{}).then(function(employeeList){
+              _self.set('employeeList',employeeList);
+              //维护全局的roomlist和bedlist
+              switch (device.get('deviceType.typecode')) {
+                case 'deviceType2'://scanner 扫描器，绑定房间
+                  _self.get('dataLoader.allRoomList').findBy('id',id).set('scanner',deviceInfo);
+                  break;
+                case 'deviceType3'://button 按键，绑定床位
+                  _self.get('dataLoader.allBedList').findBy('id',id).set('button',deviceInfo);
+                  break;
+              }
+              App.lookup("route:business.mainpage.device-detail").doQuery('search');
+            });
+          });
+        }
+
       },function(err){
         let error = err.errors[0];
         if(error.code === '13'){
@@ -492,5 +524,18 @@ export default Ember.Controller.extend(DeviceValidations,{
       this.set('deviceType',deviceType);
       this.set('deviceModel.type',deviceType.get('type'));//设置设备的方案类型
     },
+    //开通直播
+    startLive(device){
+      console.log('*-*-*-*-*-*-*-*-');
+      device.set('operateFlag','startLive');
+      device.save().then(function(){
+        console.log('直播开通成功');
+      },function(err){
+        let error = err.errors[0];
+        if(error.code === '0'){
+          App.lookup('controller:business.mainpage').showAlert('开通失败');
+        }
+      });
+    }
   }
 });

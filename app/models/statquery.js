@@ -10,4 +10,13 @@ export default DS.Model.extend({
   statResult: DS.attr('number'),//结果数据
   statItemType:DS.belongsTo('dicttype'),//口径类型
   statDate:DS.attr('number'),//结果日期
+  level:DS.belongsTo('nursinglevel'),//护理等级
+  employee:DS.belongsTo('employee'),//对应员工
+  // passengers:DS.attr('number'),//人次
+  passengersGrade: DS.attr('string'), //各个护理等级对应人次
+  // passengersGradeObj:Ember.computed('passengersGrade',function(){
+  //   let passengersGrade = this.get('passengersGrade');
+  //   console.log("passengersGradeObj in model:",JSON.parse(passengersGrade));
+  //   return JSON.parse(passengersGrade);
+  // }),
 });

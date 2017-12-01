@@ -1,0 +1,24 @@
+<div class="video-wrapper-classs clearfix overflow-auto {{if videoBoxBig "video-box-big-pc" "video-box-small-pc"}} {{if isShowVideoDetail "" "hide"}}">
+  <div class="video-box-small-text {{if videoBoxBig "hide" ""}}" {{action "switchVideoBoxToBig" on="click" bubbles=false}}>打开实时监控</div>
+  <div class="button-class">
+    <div class="button button1" {{action "closeAllVideoBox" on="click" bubbles=false}}>关闭所有视频</div>
+    <div class="button button2" {{action "switchVideoBoxToSmall" on="click" bubbles=false}}>最小化视频</div>
+  </div>
+  {{#each maxDeviceList as |maxDevice|}}
+   <!-- style="display:none;" -->
+    <div class="video-wrapper pull-left position-relative border-3solid-fff width50B {{if maxDevice.device "" "hide"}}">
+      <div class="device-close" {{action "closeVideoBox" maxDevice on="click" bubbles=false}}>关闭</div>
+      {{#unless maxDevice.device.hasConnectFlag}}
+        <div class="loading-text">正在加载...</div>
+      {{/unless}}
+      {{#if (eq maxDevice.device.type "room")}}
+        <p class="device-message">{{maxDevice.device.buildingSeq}}-{{maxDevice.device.floorSeq}}-{{maxDevice.device.roomName}}</p>
+      {{else if (eq maxDevice.device.type "bed")}}
+        <p class="device-message">{{maxDevice.device.buildingSeq}}-{{maxDevice.device.floorSeq}}-{{maxDevice.device.roomName}}-{{maxDevice.device.bedName}}-{{maxDevice.device.customer.name}}</p>
+      {{/if}}
+      <video id="{{maxDevice.videoId}}" class="video-js vjs-default-skin width100B video-js-pc">
+      </video>
+    </div>
+  {{/each}}
+
+</div>

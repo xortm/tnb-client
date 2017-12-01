@@ -41,35 +41,49 @@ export default Ember.Component.extend({
   //可以绑定的床位列表
   bindBedList:Ember.computed('allBedList','flag',function(){
     let allBedList = this.get('allBedList');
+    let device = this.get('device');
     if(!allBedList){
       return null;
     }
     let list = new Ember.A();
+    if(device.get('isVideo')){
+      console.log('video床位个数：',allBedList.get('length'));
+      return allBedList;
+    }else{
+      allBedList.forEach(function(bed){
+        if(!bed.get('button.id')){
 
-    allBedList.forEach(function(bed){
-      if(!bed.get('button.id')){
+          list.pushObject(bed);
+        }
+      });
+      console.log('床位个数：',list.get('length'));
+      return list;
+    }
 
-        list.pushObject(bed);
-      }
-    });
-    console.log('床位个数：',list.get('length'));
-    return list;
   }),
   //可以绑定的房间列表
   bindRoomList:Ember.computed('allRoomList',function(){
     let allRoomList = this.get('allRoomList');
+    let device = this.get('device');
     if(!allRoomList){
+
       return null;
     }
     let list = new Ember.A();
+    if(device.get('isVideo')){
+      console.log('video房间个数：',allRoomList.get('length'));
+      return allRoomList;
+    }else{
+      allRoomList.forEach(function(room){
+        if(!room.get('scanner.id')){
+          list.pushObject(room);
+        }
+      });
+      return list;
+    }
 
-    allRoomList.forEach(function(room){
-      if(!room.get('scanner.id')){
-        list.pushObject(room);
-      }
-    });
-    return list;
   }),
+
   //楼宇楼层列表
   buildList:Ember.computed('bindRoomList','bindBedList','device','flag',function(){
     let device = this.get('device');
@@ -99,6 +113,22 @@ export default Ember.Component.extend({
           let seq = bed.get('room.floor.id');
           item.set('name',name);
           item.set('seq',seq);
+          if(!list.findBy('seq',seq)){
+            list.pushObject(item);
+          }
+        }
+      });
+    }else if(device.get('isVideo')){
+      //视频楼宇列表
+      bindBedList.forEach(function(bed){
+        console.log(bed.get('buildingFloorName'),bed.get('id'));
+        let item = Ember.Object.create({});
+        if(bed.get('buildingFloorName')){
+          let name = bed.get('buildingFloorName');
+          let seq = bed.get('room.floor.id')?bed.get('room.floor.id'):bed.get('floor.id');
+          item.set('name',name);
+          item.set('seq',seq);
+          console.log('floorId seq ',seq);
           if(!list.findBy('seq',seq)){
             list.pushObject(item);
           }
@@ -138,6 +168,28 @@ export default Ember.Component.extend({
         bed.set('namePinyin',pinyinUtil.getFirstLetter(bed.get('roomBedName')));
       });
       list = list.sortBy('roomBedName');
+    }else if(device.get('isVideo')){
+      if(device.get('isBindRoom')){
+        //房间列表
+        list = bindRoomList.filter(function(room){
+          return room.get('floorId') == chooseBuild.get('seq');
+        });
+        list.forEach(function(room){
+          room.set('namePinyin',pinyinUtil.getFirstLetter(room.get("name")));
+        });
+        list = list.sortBy("name");
+      }else{
+        console.log('绑定的床位个数1：',bindBedList.get('length'));
+        list = bindBedList.filter(function(bed){
+          console.log('可绑定的床位详情',bed.get('id'),bed.get('room.id'),bed.get('roomId'));
+          return bed.get('floorId') == chooseBuild.get('seq');
+        });
+        console.log('绑定的床位个数2：',list.get('length'));
+        list.forEach(function(bed){
+          bed.set('namePinyin',pinyinUtil.getFirstLetter(bed.get('roomBedName')));
+        });
+        list = list.sortBy('roomBedName');
+      }
     }
     return list;
   }),
@@ -171,6 +223,10 @@ export default Ember.Component.extend({
             dom.addClass('card-color-hover');
             dom.removeClass('card-color');
             break;
+          case 'deviceTypeVideo':
+            dom.addClass('video-color-hover');
+            dom.removeClass('video-color');
+            break;
         }
       }
 
@@ -202,6 +258,10 @@ export default Ember.Component.extend({
           case 'deviceType6':
             dom.addClass('card-color');
             dom.removeClass('card-color-hover');
+            break;
+          case 'deviceTypeVideo':
+            dom.addClass('video-color');
+            dom.removeClass('video-color-hover');
             break;
         }
       }
@@ -240,7 +300,11 @@ export default Ember.Component.extend({
     unBindMask(device){
       device.set('unBindDevice',true);
     },
+    openLive(device){
+      device.set('liveMask',true);
+    },
     undo(device){
+      device.set('liveMask',false);
       device.set('unBindDevice',false);
       device.set('delDeviceMask',false);
       device.set('bindDeviceMask',false);
@@ -302,6 +366,11 @@ export default Ember.Component.extend({
         case 'deviceType6':
           device.set('isCard',true);
           break;
+        case 'deviceTypeVideo':
+          device.set('isVideo',true);
+          device.set('isBindRoom',true);
+          device.set('isBindBed',false);
+          break;
         default:
       }
       this.incrementProperty('flag');
@@ -324,6 +393,32 @@ export default Ember.Component.extend({
     },
     isBindEmployee(){
       this.set('device.isBindCustomer',false);
+    },
+    isBindRoom(){
+      this.set('device.isBindRoom',true);
+      this.set('device.isBindBed',false);
+      this.set('chooseBuild',null);
+    },
+    isBindBed(){
+      this.set('device.isBindBed',true);
+      this.set('device.isBindRoom',false);
+      this.set('chooseBuild',null);
+    },
+    //开通直播
+    startLive(device){
+      device.set('liveMask',false);
+      device.set('operateFlag','startLive');
+      device.save().then(function(){
+        console.log('直播开通成功');
+      },function(err){
+        let error = err.errors[0];
+        if(error.code === '14'){
+          App.lookup('controller:business.mainpage').showAlert('开通失败');
+        }
+
+      });
+      this.preventDefault();
+      this.stopPropagation();
     },
     clickBtn(){},
   }

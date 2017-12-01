@@ -4,6 +4,7 @@ import PageItems from 'ember-cli-pagination/lib/page-items';
 import Validate from 'ember-cli-pagination/validate';
 
 export default Ember.Component.extend({
+  statusService: Ember.inject.service("current-status"),
   currentPageBinding: "content.page",
   totalPagesBinding: "content.totalPages",
   totalCount: Ember.computed("changeFlagCnt","content",function(){
@@ -50,14 +51,27 @@ export default Ember.Component.extend({
   },
 
   pageItemsObj: Ember.computed(function(){
-    return PageItems.create({
-      parent: this,
-      currentPageBinding: "parent.currentPage",
-      totalPagesBinding: "parent.totalPages",
-      truncatePagesBinding: "parent.truncatePages",
-      numPagesToShowBinding: "parent.numPagesToShow",
-      showFLBinding: "parent.showFL"
-    });
+    if(this.get('currentPage')>this.get('totalPages')){
+      this.set('currentPage',this.get('totalPages'));
+      return PageItems.create({
+        parent: this,
+        currentPageBinding: "parent.currentPage",
+        totalPagesBinding: "parent.totalPages",
+        truncatePagesBinding: "parent.truncatePages",
+        numPagesToShowBinding: "parent.numPagesToShow",
+        showFLBinding: "parent.showFL"
+      });
+    }else{
+      return PageItems.create({
+        parent: this,
+        currentPageBinding: "parent.currentPage",
+        totalPagesBinding: "parent.totalPages",
+        truncatePagesBinding: "parent.truncatePages",
+        numPagesToShowBinding: "parent.numPagesToShow",
+        showFLBinding: "parent.showFL"
+      });
+    }
+
   }),
 
   //pageItemsBinding: "pageItemsObj.pageItems",
@@ -80,6 +94,7 @@ export default Ember.Component.extend({
 
   actions: {
     pageClicked: function(number) {
+      this.set('statusService.pageChangeFlag',false);
       Util.log("PageNumbers#pageClicked number " + number);
       this.set("currentPage", number);
       this.sendAction('pageChange',number);
@@ -100,6 +115,7 @@ export default Ember.Component.extend({
       if(this.get('exportCurPage')){
         this.sendAction("exportCurPageExcel");
       }else{
+        console.log($(".dataTables_wrapper table"));
         $(".dataTables_wrapper table").tableExport({type:'excel',escape:'false'});
       }
 

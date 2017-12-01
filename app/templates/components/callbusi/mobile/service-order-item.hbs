@@ -1,0 +1,20 @@
+<div class="clearfix width100B height142 padding-15-10 border-bottom-E7E7E7 position-relative" id="itemOrder_{{item.id}}" {{action "gotoDetail" on="tap"}}>
+  <div class="title pull-left" style="width:112px;height:112px;">
+    <img src="{{item.avatarUrl}}" alt="" class="width100B height100B">
+  </div>
+  <div class="padding-left-130 padding-right-10 width100B height-auto position_absolute">
+    <div class="font14 color000000 line-height-30 height30 extend weight-bold width70B">{{item.name}}</div>
+    <div class="font13 color2FA7FD line-height-20 height20 extend clearfix">
+      <span class="padding-0-3 bk-color-E4F7E3 border-radius3 color4BC845 height20 line pull-left">{{item.serviceType.typename}}</span>
+    </div>
+    {{#if item.serviceTime}}
+      <div class="font13 color707070 line-height-30 height30 extend">{{item.serviceTime}}分钟/次</div>
+    {{/if}}
+    {{#if item.price}}
+      <div class="font13 colorE54B00 line-height-30 width80 height30 extend position_absolute abs-top-0 abs-right-20 text-right">{{item.price}}元</div>
+    {{/if}}
+    {{#if item.remark}}
+      <div class="font13 color707070 line-height-30 height30 extend">{{item.remark}}</div>
+    {{/if}}
+  </div>
+</div>

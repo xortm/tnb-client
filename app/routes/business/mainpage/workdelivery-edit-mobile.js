@@ -58,19 +58,25 @@ export default BaseBusiness.extend({
         }
         if(source === 'title'){
            controller.set('textType', 'text');
-        }else if(source === 'remark'){
+        }else {
            controller.set('textType', 'textarea');
         }
         controller.set('succeed', '');
         _self.set('editType', editType);
       var workdelivery=  this.store.peekRecord('workdelivery', infoId);
-
+                controller.set('edit', '');
              if (source === 'remark') {
                 controller.set('edit', workdelivery.get('remark'));
-                _self.set('header_title', '交接内容');
+                _self.set('header_title', '备注');
             } else if (source === 'receiver') { //
                 controller.set('theChoose', workdelivery.get('receiver'));
                 _self.set('header_title', '接班人');
+            } else if (source === 'specialRemark') { //
+                controller.set('edit', workdelivery.get('specialRemark'));
+                _self.set('header_title', '注意事项');
+            } else if (source === 'illChange') { //
+                controller.set('edit', workdelivery.get('illChange'));
+                _self.set('header_title', '老人情况 ');
             }
 
     },

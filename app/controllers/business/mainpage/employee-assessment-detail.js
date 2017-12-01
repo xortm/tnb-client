@@ -18,7 +18,17 @@ export default Ember.Controller.extend(InfiniteScroll,{
   assessmentIndicatorLoad:0, //加载完成标志
   // afterSaveFlag:false, //新建标志
   // showLoadingImg:false, //刚进页面不要加载标志
-
+  defaultDateObs:function(){
+    let examTime = this.get('assessment.examTime');
+    let date ;
+    if(examTime){
+      let time = this.get('dateService').timestampToTime(examTime);
+      date = this.get('dateService').dateFormat(time,'yyyy-MM-dd');
+    }else{
+      date = this.get('dateService').dateFormat(new Date(),'yyyy-MM-dd');
+    }
+    this.set('defaultDate',date);
+  }.observes('assessment').on('init'),
   init: function(){
     var _self = this;
     _self._showLoading();
@@ -59,6 +69,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
     let employee = _self.get("global_curStatus").get("attendanceEmployee");
     _self.set("employee",employee);
     console.log("employee:",employee);
+    console.log('source flag',source);
     if(source === "add"){
       _self.set("showAssessment",true);
       //默认选中日常考核
@@ -71,14 +82,39 @@ export default Ember.Controller.extend(InfiniteScroll,{
       let employee = _self.get("employee");
       // let curuser = _self.get("global_curStatus").get('user');
       console.log("curuser:",curuser);
-      let assessmentInfo = _self.store.createRecord('assessment',{examiner:employee,examOfficerUser:curuser,type:assessmentType});
-      _self.set("assessmentInfo",assessmentInfo);
-      console.log("healthInfo11111",assessmentInfo);
-      Ember.run.schedule("afterRender",this,function() {
-        let selector = $("#assessmentTypeSelector");
-        console.log("selector is",selector);
-        selector.comboSelect({focusInput:false});
+      let assessmentInfo = _self.store.createRecord('assessment',{examiner:employee,examOfficerUser:curuser,type:assessmentType,examTime:_self.get('dateService').getCurrentTime()});
+      assessmentInfo.set('delStatus',1);
+      assessmentInfo.save().then(function(assessment){
+        _self.set("assessmentInfo",assessment);
+          _self.set("assessment",assessment);
+          let assessmentIndicatorResultList = assessment.get("results");
+          let assessmentResults = new Ember.A();
+          let assessmentIndicatorList = _self.get("assessmentIndicatorList");
+          console.log("assessmentIndicatorList in obs:",assessmentIndicatorList);
+          if(assessmentIndicatorResultList.get("length")){
+            console.log("run in length");
+            App.lookup("controller:business").popTorMsg("该天考核数据已存在");
+          }
+          assessmentIndicatorList.forEach(function(assessmentIndicator){
+            let hasItem = assessmentIndicatorResultList.findBy("assessmentIndicator.id",assessmentIndicator.get("id"));
+            if(!hasItem){
+              let assessmentIndicatorResult = _self.store.createRecord('assessmentIndicatorResult',{assessment:assessment,assessmentIndicator:assessmentIndicator,score:0});
+              assessmentResults.pushObject(assessmentIndicatorResult);
+            }else{
+              assessmentResults.pushObject(hasItem);
+            }
+          });
+          _self.set("assessmentResults",assessmentResults);
+
       });
+      // _self.set("assessmentInfo",assessmentInfo);
+      // _self.send('typeName',Constants.assessmentType2);
+      // console.log("healthInfo11111",assessmentInfo);
+      // Ember.run.schedule("afterRender",this,function() {
+      //   let selector = $("#assessmentTypeSelector");
+      //   console.log("selector is",selector);
+      //   selector.comboSelect({focusInput:false});
+      // });
       _self.hideAllLoading();
       _self.directInitScoll(true);
     }else if(source === "look"){
@@ -111,7 +147,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
         _self.directInitScoll(true);
       }
     }
-  }.observes("itemIdFlag","itemId","source","assessmentIndicatorLoad"),
+  }.observes("itemIdFlag","assessmentIndicatorLoad"),
 
   mobileAlertMess: function(text) {
     var _self = this;
@@ -139,6 +175,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
         Ember.run.later(function(){
           let $FromDate = $("#assessmentFromDate");
           let date = $FromDate.val();
+          console.log('choose date',date);
           let examTime = new Date(date).getTime()/1000;
           console.log("11111111111date",examTime);
           let theTypecode = _self.get("theTypecode");
@@ -152,7 +189,8 @@ export default Ember.Controller.extend(InfiniteScroll,{
           _self.set('assessmentInfo.examTime',examTime);
           let assessmentInfo = _self.get("assessmentInfo");
           console.log("assessmentInfo:",_self.get("assessmentInfo"));
-          // _self.set("showLoadingImg",true);
+          _self.set("showLoadingImg",true);
+          assessmentInfo.set('delStatus',0);
           assessmentInfo.save().then(function(assessment){
             console.log("assessment:",assessment);
             let examTimeStr = _self.get("dateService").formatDate(assessment.get("examTime"),"yyyy-MM-dd");
@@ -188,7 +226,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
     },
     //跳转选择 self-choose
     toSelfChoose:function (maxScore,name,elementId,assessmentResult,index) {
-      var params = {maxScore:maxScore,name:name,assessmentIndicatorId:elementId};
+      var params = {maxScore:maxScore,name:name,assessmentIndicatorId:elementId,strType:null};
       var _self = this;
       var itemId = "indicator_" + index;
       console.log("itemId in to:",itemId);
@@ -203,7 +241,25 @@ export default Ember.Controller.extend(InfiniteScroll,{
         },100);
       },200);
     },
-
+    toChooseType(assessment,str){
+      let itemId ;
+      let params = {assessmentId:assessment.get('id'),strType:str};
+      let _self = this;
+      if(str=='remark'){
+        itemId = "#indicator_remark";
+      }
+      if(str=="assessmentType"){
+        itemId = "#indicator_type";
+      }
+      $(itemId).addClass("tapped");
+      Ember.run.later(function(){
+        $(itemId).removeClass("tapped");
+        Ember.run.later(function(){
+          //通过全局服务进行上下文传值
+          _self.get("mainController").switchMainPage('full-select',params);
+        },100);
+      },200);
+    },
     gotoAssessmentDetail(){
       console.log("go assessment detail");
       var _self = this;
@@ -227,7 +283,6 @@ export default Ember.Controller.extend(InfiniteScroll,{
     switchShowAction(){
       $("#assessmentTypeSelector").val("1");
       $("#assessmentTypeSelector .combo-input").val("");
-      $("#assessmentFromDate").val("");
     },
 
   }

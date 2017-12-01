@@ -36,6 +36,13 @@ export default BaseUiItem.extend(InfiniteScroll,{
     console.log("run scollFlag in directInitScollFlagObs anytime");
     this.refreshScrollerAction();
   }.observes("scollFlag"),
+  //观察者:只刷新jroll,保证滚动的位置不变
+  showLoadingImgFlagObs:function(){
+    console.log("run in showLoadingImgFlagObs");
+    this.set("countList",null);
+    this.hideAllLoading();
+    this.directInitScoll(true);
+  }.observes("showLoadingImgFlag","antTimeedTaskFlag"),
 
   actions:{
     saveNursingLog(customerId,detailContent,callback){
@@ -55,19 +62,18 @@ export default BaseUiItem.extend(InfiniteScroll,{
     },
     //这个是判断 list是否在hbs加载完毕标示
     didInsertActCustomer(code){
+      let _self = this;
       var countList = this.get("countList");
       var k = this.get("k");
       k++;
       this.set("k",k);
       console.log("k and countListLenght",k,countList.get("length"));
       if(k >= countList.get("length")){
-        this.set("btnFlag",false);
         console.log("LoadingImgInss101010");
-        this.sendAction("showLoadingImgInClose");//关闭加载图片
-        this.hideAllLoading();
+        _self.hideAllLoading();
         this.set("k",0);
         console.log("k and countListLenght",k);
-        this.directInitScoll();
+        this.directInitScoll(true);
       }
     },
 

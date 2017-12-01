@@ -3,7 +3,7 @@
         <div class="bottom12">
             <ul class="nopadding-left border-bottom">
                 <li class="pull-left margin-right30 {{unless  inLeaving " jujia-select-bottom-border"}}" {{action "changeTab" false on="click"}} >
-                    <a href="#tab_1_1" data-toggle="tab" class="{{if inLeaving 'noselect-title'  'jujia-select-title' }} the-a">请假申请管理</a>
+                    <a href="#tab_1_1" data-toggle="tab" class="{{if inLeaving 'noselect-title'  'jujia-select-title' }} the-a">请假申请</a>
                 </li>
                 <li class="pull-left margin-right30  {{if inLeaving " jujia-select-bottom-border"}}" {{action "changeTab" true on="click"}}>
                     <a href="#tab_1_2" data-toggle="tab" class="{{if inLeaving 'jujia-select-title'  'noselect-title' }} the-a">当前请假老人</a>
@@ -48,7 +48,9 @@
                         <th rowspan="1" colspan="1" width="">老人</th>
                         <th rowspan="1" colspan="1" width="">房间床位</th>
                         <th rowspan="1" colspan="1" width="">请假日期</th>
-                        <th rowspan="1" colspan="1" width="">销假日期</th>
+                        <th rowspan="1" colspan="1" width="">预计销假日期</th>
+                        <th rowspan="1" colspan="1" width="">实际销假日期</th>
+                        <th rowspan="1" colspan="1" width="">请假原因</th>
                         <th rowspan="1" colspan="1" width="">状态</th>
                         {{#unless inLeaving}}
                             <th rowspan="1" colspan="1" width="">操作</th>
@@ -62,12 +64,12 @@
                         <td class="ellipsis" {{action "toDetailPage" leave on="click"}}>{{leave.customer.bed.allBedName}}</td>
                         <td class="ellipsis" {{action "toDetailPage" leave on="click"}}>{{leave.startTimeStr}}</td>
                         <td class="ellipsis" {{action "toDetailPage" leave on="click"}}>
-                          {{#if  leave.endTime}}
-                              {{leave.endTimeStr}}
-                          {{else}}
                               {{leave.expectEndTimeStr}}
-                          {{/if}}
                         </td>
+                        <td class="ellipsis" {{action "toDetailPage" leave on="click"}}>
+                              {{leave.endTimeStr}}
+                        </td>
+                        <td style="max-width:200px;" {{action "toDetailPage" leave on="click"}}><div  class="nowrap">{{leave.leaveReason.typename}}</div></td>
                         <td class="ellipsis" {{action "toDetailPage" leave on="click"}}>{{leave.statusStr}}</td>
                         {{#unless inLeaving}}
                           <td class="ellipsis">

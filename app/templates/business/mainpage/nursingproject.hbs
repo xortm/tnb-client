@@ -28,7 +28,7 @@
             <tr role="row">
               <th rowspan="1" colspan="1" width="">姓名</th>
               <th rowspan="1" colspan="1" width="">护理等级</th>
-              <th rowspan="1" colspan="1" width="">价格(元/天)</th>
+              <th rowspan="1" colspan="1" width="">价格</th>
               <th rowspan="1" colspan="1" width="">创建人</th>
             </tr>
           </thead>
@@ -38,13 +38,19 @@
             <tr {{action "toDetailPage" project on="click"}}>
               <td class="ellipsis" >{{project.customer.name}}</td>
               <td class="ellipsis" >{{project.level.name}}</td>
-              <td class="ellipsis" >{{project.price}}</td>
+              <td class="ellipsis" >
+                {{project.price}}
+                {{#if project.month}}
+                  (元/月)
+                {{else}}
+                  (元/天)
+                {{/if}}
+              </td>
               <td class="ellipsis" >{{project.createUser.name}}</td>
             </tr>
             {{/each}}
           </tbody>
           {{else}}
-          <div class="nodate">暂无数据</div>
           {{/if}}
         </table>
         {{#if projectList }}

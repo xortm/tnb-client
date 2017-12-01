@@ -1,4 +1,4 @@
-
+<!--
 <div class="nodate font20 top150">
   <span class="pointer dayHover padding10 border-radius5" {{action "editCustomer" on="click"}}>
     先选择老人呦！
@@ -6,7 +6,6 @@
   </span>
 </div>
 
-<!--选择老人-->
 {{#if editcustomer}}
 {{#bs-modal body=false footer=false header=false closedAction=(action "exitCustomer")}}
 
@@ -29,4 +28,79 @@
 {{/ui/mix-button}}
 {{/bs-modal-footer}}
 {{/bs-modal}}
-{{/if}}
+{{/if}} -->
+
+
+
+    <!--pc端-->
+    <div class="col-sm-12">
+        <div class="box">
+            <!-- BOX-BODY -->
+            <div class="box-body">
+                <div class="row clearfix" style="margin-bottom:15px">
+                    <div class="col-sm-4">
+                        <div class="pull-left">
+                            <div class="input-group bottom8">
+                                {{input class="form-control" type="text" placeholder="搜索姓名/房间/床位号" value=queryCondition enter="search"}}
+                                <!-- <input class="form-control" type="text" placeholder="搜索姓名/房间号/护工姓名"> -->
+                                <span class="input-group-btn">
+                <button class="btn btn-primary btn-reduce" type="button" style="touch-action: manipulation; -ms-touch-action: manipulation;" {{action "search" on="click"}}>
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+                            </div>
+                        </div>
+                        <!--搜索-->
+                    </div>
+                </div>
+                <!-- 列表式 -->
+                <div class="clearfix">
+                    <div class="row">
+                      <div class="col-sm-12">
+                          <div class="box-body">
+                          <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+                            <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable mt15" aria-describedby="datatable1_info">
+                              <thead>
+                                <tr role="row">
+                                  <th rowspan="1" colspan="1" width="">姓名</th>
+                                  <th rowspan="1" colspan="1" width="">性别</th>
+                                  <th rowspan="1" colspan="1" width="">年龄</th>
+                                  <th rowspan="1" colspan="1" width="">房间/床位号</th>
+                                  <th rowspan="1" colspan="1" width="">是否设置单周计划</th>
+                                  <th rowspan="1" colspan="1" width="">是否设置年度计划</th>
+                                  <th rowspan="1" colspan="1" width="">是否设置护理方案</th>
+                                </tr>
+                              </thead>
+                              {{#if customerList}}
+                            <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+                                {{#each customerList as |customer|}}
+                                <tr class="gradeA odd" {{action "confirm" customer on="click"}}>
+                                  <td class=" ellipsis sorting_1">{{customer.name}}</td>
+                                  <td class=" ellipsis ">{{customer.sex.typename}}</td>
+                                  <td class=" ellipsis ">{{customer.age}}</td>
+                                  <td class=" ellipsis ">{{customer.realBed.allBedName}}</td>
+                                  <td class=" ellipsis ">{{customer.flagRemarkObj.detail}}</td>
+                                  <td class=" ellipsis ">{{customer.flagRemarkObj.model}}</td>
+                                  <td class=" ellipsis ">{{customer.flagRemarkObj.project}}</td>
+                            	  </tr>
+                                {{/each}}
+                             </tbody>
+
+                             {{else}}
+                             {{/if}}
+                              </table>
+                              {{#if customerList }}
+                                  {{page-numbers content=customerList showFL=true numPagesToShow=5 memoryPage="memoryPage"}}
+                                  {{else}}
+                                      <h1 class="col-sm-12 center unTask"></h1>
+                              {{/if}}
+                            </div>
+                          </div>
+                        <!-- /BOX -->
+                      </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

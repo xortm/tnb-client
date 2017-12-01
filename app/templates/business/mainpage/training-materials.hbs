@@ -2,13 +2,36 @@
   <!-- BOX -->
   <div class="box nopadding-left nopadding-right">
     <div class="box-body nopadding-left nopadding-right" >
-      <div id="" class="dataTables_wrapper form-inline col-sm-4" style="padding-left:20px;" role="grid">
-        <div class="col-sm-12 nopadding-left" style="font-size:14px;margin-bottom:5px;font-weight: bold;color:#8d8d8d;">培训类型</div>
+      <div id="" class="dataTables_wrapper form-inline col-sm-4 nopadding-right" style="padding-left:20px;" role="grid">
+        <div class="row" style="margin-bottom:5px;">
+            <div class="user-add-btn col-sm-12 nopadding-right">
+              {{#ui/mix-button class="user-btn pull-left" iconClass="fa-plus"  text='新增培训类型'  clickAction="addType" addType="addType" }}
+              {{/ui/mix-button}}
+            </div>
+        </div>
         {{#if typeList}}
         {{#each typeList as |type|}}
-          <div class="customer-drug-list col-sm-12 nopadding-left pointer {{if type.hasChoosed 'drugcolor' ''}}" style="font-size:13px;" {{action "chooseType" type on="click"}}>
+        <div class="customer-drug-list col-sm-12 pointer {{if type.hasSelected 'drugcolor' ''}} " style="font-size:14px;padding-left:4px;"
+         {{action "chooseType" type on="click"}} {{action 'hoverDoc' type on="mouseEnter" bubbles=false}}
+         {{action 'leaveDoc' type on="mouseLeave" bubbles=false}}>
+           {{#if type.edited}}
+              {{input class="form-control " value=type.name type="text" focusOut=(action "saveType" type) bubbles=false}}
+           {{else}}
             {{type.name}}
-          </div>
+           {{/if}}
+          {{#if type.hover}}
+          {{#unless type.edited}}
+            <div class="pull-right">
+              <i class="fa fa-edit" {{action 'edit' type on="click" bubbles=false}}>
+                {{bs-tooltip title="编辑" class="light-tooltip"}}
+              </i>
+              <i class="fa fa-trash-o" {{action 'delById' type 'type' on="click" bubbles=false}}>
+                {{bs-tooltip title="删除" class="light-tooltip"}}
+              </i>
+            </div>
+          {{/unless}}
+          {{/if}}
+        </div>
         {{/each}}
         <div class="col-sm-12" style="height:16px;"></div>
         {{else}}
@@ -17,7 +40,7 @@
       </div>
       {{#if curDocType}}
 
-        <div id="datatable2_wrapper" class="dataTables_wrapper form-inline col-sm-8  curcustomer-drug-list"  role="grid" >
+        <div id="datatable2_wrapper" class="dataTables_wrapper form-inline col-sm-8 nopadding-left  curcustomer-drug-list"  role="grid" >
             <div class="col-sm-2 pull-left  nopadding-left nopadding-right" style="font-weight: bold;color:#8d8d8d;">
               培训资料
             </div>
@@ -25,12 +48,12 @@
               {{#ui/mix-button class="user-btn pull-left" iconClass="fa-plus"  text='新增资料'  clickAction="add" add="add"}}
               {{/ui/mix-button}}
             </div>
-            <div class="col-sm-12 nopadding-left " style="margin-top:4px;">
-              <div class="col-md-12 box-container ui-sortable">
+            <div class="col-sm-12 nopadding-left nopadding-right" style="margin-top:4px;">
+              <div class="col-md-12 box-container ui-sortable nopadding-left nopadding-right">
 
 								<!-- BOX SOLID-->
                   {{#each docList as |doc|}}
-                    <div class="panel panel-default full-width col-sm-12 nopadding-left nopadding-right">
+                    <div class="panel panel-default full-width col-sm-12 nopadding-left nopadding-right" style="margin-bottom:0;border:none;">
                       <div class="panel-heading">
                         <div class="panel-title pointer"  style="font-size:13px;"
                           {{action 'hoverDoc' doc on="mouseEnter" bubbles=false}}
@@ -56,7 +79,7 @@
                       {{#if doc.hasChoosed}}
                       <div id="collapseOne" class="panel-collapse collapse in pointer" style="font-size:13px;" {{action 'editDoc' doc on="click" bubbles=false}}>
                         {{#if doc.editModel}}
-                        {{#callbusi/kind-editor value=curData.remark mediaUrl=mediaUrl}}
+                        {{#callbusi/kind-editor value=curData.remark}}
                         {{/callbusi/kind-editor}}
                         {{else}}
                         <div class="panel-body " style="overflow:auto" id={{doc.id}}>
@@ -146,6 +169,30 @@
     {{/bs-modal-body}}
     {{#bs-modal-footer class="user-add-btn"}}
       {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="saveNewData" saveNewData="saveNewData"}}
+      {{/ui/mix-button}}
+      {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="invitation" invitation="invitation"}}
+      {{/ui/mix-button}}
+		{{/bs-modal-footer}}
+  {{/bs-modal}}
+{{/if}}
+
+{{#if addNewTypeModel}}
+  {{#bs-modal body=false footer=false header=false closeAction='invitation'}}
+    {{#bs-modal-header}}
+      <h3 class="modal-title">{{addTypeName}}</h3>
+    {{/bs-modal-header}}
+    {{#bs-modal-body}}
+      <div>
+        <div class="col-xs-12 nopadding-left">
+          <div class="form-input-group">
+            <span class="input-group-addon">名称：</span>
+            {{input class="form-control " value=newType.name type="text" placeholder="必填"}}
+          </div>
+        </div>
+      </div>
+    {{/bs-modal-body}}
+    {{#bs-modal-footer class="user-add-btn"}}
+      {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='确定' clickAction="saveNewType" saveNewType="saveNewType"}}
       {{/ui/mix-button}}
       {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="invitation" invitation="invitation"}}
       {{/ui/mix-button}}

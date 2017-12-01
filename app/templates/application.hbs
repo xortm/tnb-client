@@ -1,5 +1,30 @@
 {{partial 'setting'}}
-{{outlet}}
-{{#ember-notify closeAfter=3000 messageStyle='bootstrap' as |message close|}}
-   <div class='center'>{{message.text}}</div>
- {{/ember-notify}}
+<!-- 当网络不好时弹出层 -->
+<div class="{{if statusService.netConnected 'hide'}} bomb-box">
+  <div class="">
+    <i class="fa-ban"></i>当前网络不稳定，请稍候...
+  </div>
+</div>
+<!-- 转场遮罩 -->
+<div class="{{unless pageConstucture.pageInLoading 'hide'}} bomb-box-switch">
+  <div class="">
+    <i class="fa-spinner"></i>正在跳转...
+  </div>
+</div>
+<!-- 当保存失败时弹框 -->
+<div class="{{if statusService.saveErrorFlag 'hide'}} bomb-box-bar">
+  <div class="">
+    <i class="fa-exclamation-circle"></i>
+    <span>操作失败，请稍候重试...</span>
+    <i class="fa-close after" {{action "saveErrorClose" on="click"}}></i>
+  </div>
+</div>
+<div class="{{unless statusService.appHasCompleteFlag 'hide'}}">
+  {{log 'is complete'}}
+  {{outlet}}
+</div>
+<div class="{{if statusService.appHasCompleteFlag 'hide'}}">
+  <div class="center padding-top10" style="font-size:16px;background:#ffffff;position:fixed;top:0;right:0;bottom:0;left:0;">
+    <img class="width44" src="assets/images/logo/loading.gif" alt="">
+  </div>
+</div>

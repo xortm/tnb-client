@@ -32,6 +32,7 @@ export default {
   leaveStatus3:"leaveStatus3",//完成退住
   leaveStatus4:"leaveStatus4",//审核通过
   leaveStatus5:"leaveStatus5",//作废
+  leaveStatus6:"leaveStatus6",//费用结算完成
   tenantStatus:"tenantStatus",
   exeStatus1:"exeStatus1",//完成-客户配合
   exeStatus2:"exeStatus2",//完成-客户不配合
@@ -66,6 +67,7 @@ export default {
   religion:"religion",
   bloodType:"bloodType",
   selfCareLevel:"selfCareLevel",//自理等级
+  conRelationType:"conRelationType",//咨询形式
   sexType: "sexType",//性别
   sportType: "sportType",//运动类型
   feedbackType: "feedbackType",//反馈类型
@@ -167,6 +169,8 @@ export default {
   billStatus1:"billStatus1",//已提交
   billStatus2:"billStatus2",//审核通过
   billStatus3:"billStatus3",//审核未通过
+  dayBillStatus:"dayBillStatus",//日账单状态
+  billStatType:"billStatType",//账单统计类型
   createType1:"createType1",//系统生成
   createType2:"createType2",//手动生成
   consumeType:"consumeType",//消费类型
@@ -206,7 +210,9 @@ export default {
   hbeaconWarningCancelByHand:"hbeaconWarningCancelByHand",//已处理的typecode
   hbeaconWarningCancelBySys:"hbeaconWarningCancelBySys",//已复位的typecode
   hbeaconWarningCalling:"hbeaconWarningCalling",//未处理的typecode
-  servicefinishlevelDefault:"default1",//默认标签选择id号
+  servicefinishlevelDefault1:"default1",//默认标签选择id号
+  servicefinishlevelDefault2:"default2",//默认标签选择id号,暂时未用
+  servicefinishlevelDefault3:"default3",//默认标签选择id号
   leave:"leave",//员工请假在remark中的标识
   assessmentType:'assessmentType',//员工考核类型
   assessmentType1:'assessmentType1',//员工考核类型-抽查考核
@@ -222,11 +228,23 @@ export default {
   dynamicType2:'dynamicType2',//语音
   dynamicType3:'dynamicType3',//图片
   dynamicType4:'dynamicType4',//文字
-
+  serviceItem:'serviceItem',//检查项
+  actionLevel:"actionLevel",//老人能力等级
+  jujiaServiceStatus:"jujiaServiceStatus",//居家订单服务状态
+  jujiaServiceStatus1:"jujiaServiceStatus1",//居家订单服务状态-待分配
+  jujiaServiceStatus2:"jujiaServiceStatus2",//居家订单服务状态-已分配
+  payType:"payType",//居家订单支付方式
+  serviceSource:"serviceSource",//项目分类，居家或机构
+  foodTimeType:"foodTimeType",//菜品时间  早中晚
+  foodType:"foodType",//食物类型
+  goodsType:'goodsType',//物品类型
+  purchaseType:'purchaseType',//采购类型
   /*界面部分*/
   uickey_careChoice:"UIC_careChoice",//界面选择记忆，护理选项
+  uickey_tenantId:"UIC_tenantId",//界面选择记忆，租户id
+  uickey_homePage:"UIC_homePage",//界面选择记忆，直接进入公众号的某个菜单
   addDrugType:"addDrugType",//老人用药添加类型
-
+  chargeType:"chargeType",
   /*全局方法，用于特殊事件处理*/
   //老人生日进入选择框
   LOF_inputDateFocus: function(dom){

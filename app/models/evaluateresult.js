@@ -18,7 +18,9 @@ var Evaluate = BaseModel.extend({
     batch:DS.attr('number'),//问卷批次
     remark:DS.attr('string'), //问卷备注
     answers:DS.hasMany('evaluateexameranswer',{inverse:"result"}),//对应答案表
+    answersTemp:DS.hasMany('evaluateexameranswer'),
     level:DS.belongsTo('nursinglevel'), //评估等级
+    actionLevel:DS.belongsTo('dicttype'),//老人自理能力等级
     contents:DS.attr('string'),
     completeStatus:DS.attr('number'),//问卷完成状态，0，未完成，1，已完成
     serviceArray: new Ember.A(),

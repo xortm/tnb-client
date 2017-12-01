@@ -2,11 +2,16 @@
   <div class="wrapperInner">
   {{#ui/mobile/gestures-container}}
     <div class="col-xs-middle time-content nopadding-horizontal width100B clearfix position-relative">
-      {{log "customerItem in hbs:" customerItem}}
-      {{#each customerItem.services as |service|}}
+      {{log "item in hbs:" item}}
+      {{#each item.services as |service|}}
       {{log "service in hbs:" service}}
-        {{#callbusi/mobile/score-item scoreQusetionitem=service hasReadyFlag=service.hasReady}}
-        {{/callbusi/mobile/score-item}}
+        {{#if (eq source "customerFlag")}}
+          {{#callbusi/mobile/score-item scoreQusetionitem=service hasReadyFlag=service.hasReady employeeFlag=false}}
+          {{/callbusi/mobile/score-item}}
+        {{else if (eq source "employeeFlag")}}
+          {{#callbusi/mobile/score-item scoreQusetionitem=service hasReadyFlag=service.hasReady employeeFlag=true}}
+          {{/callbusi/mobile/score-item}}
+        {{/if}}
       {{/each}}
     </div>
   {{/ui/mobile/gestures-container}}

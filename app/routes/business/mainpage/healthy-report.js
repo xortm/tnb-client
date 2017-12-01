@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import BaseBusiness from '../base-business';
-import Echarts from "npm:echarts";
+
 // const {healthExamType9,healthExamType8,healthExamType7} = Constants;
 export default BaseBusiness.extend({
   statusService: Ember.inject.service("current-status"),

@@ -6,7 +6,6 @@ export default Ember.Controller.extend(InfiniteScroll,{
   infiniteModelName: "",
   infiniteContainerName:"userActivityOrderContainer",
 
-  moment: Ember.inject.service(),
   feedService: Ember.inject.service('feed-bus'),
   service_PageConstrut:Ember.inject.service("page-constructure"),
   mainController: Ember.inject.controller('business.mainpage'),
@@ -15,10 +14,13 @@ export default Ember.Controller.extend(InfiniteScroll,{
   dataLoader: Ember.inject.service("data-loader"),
   statusService: Ember.inject.service("current-status"),
   constants:Constants,
-  queryFlagIn: function(){return;},
+  queryFlagIn: function(){
+    this.hideAllLoading();
+  },
   //初始化select
   init:function(){
     var _self = this;
+    this.hideAllLoading();
     Ember.run.schedule("afterRender",this,function() {
       // _self.showOrderItem();
     });

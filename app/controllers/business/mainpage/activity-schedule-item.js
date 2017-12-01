@@ -9,6 +9,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
   observeGotoWork:function(){
     //获取activityid
     var _self = this;
+    _self._showLoading();
     var id = this.get("id");
     console.log("activity id:",id);
     //获取activitytitle
@@ -21,6 +22,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
       }
     }).then(function(activityPlanList){
       _self.set("activityPlanList",activityPlanList);
+      _self.hideAllLoading();
     });
   }.observes('id','title'),
 

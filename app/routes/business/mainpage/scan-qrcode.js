@@ -1,9 +1,8 @@
 import Ember from 'ember';
 import BaseBusiness from '../base-business';
-import Pagination from '../pagination';
 import config from '../../../config/environment';
 
-export default BaseBusiness.extend(Pagination, {
+export default BaseBusiness.extend({
     header_title: '扫码',
     service_PageConstrut:Ember.inject.service("page-constructure"),
     global_curStatus: Ember.inject.service("current-status"),

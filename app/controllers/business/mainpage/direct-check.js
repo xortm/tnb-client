@@ -11,11 +11,12 @@ export default Ember.Controller.extend(CheckinValidations,ScheduleValidations,{
   pathConfiger: Ember.inject.service("path-configer"),
   mainController: Ember.inject.controller('business.mainpage'),
   constants: Constants,
+  chargeMonth:true,
+  chargeDay:false,
   detailEdit:true,
   bedList:Ember.computed('customerbusinessflowInfo',function(){
     let allBedList = this.get('dataLoader.allBedList');
     let allRoomList = this.get('dataLoader.allRoomList');
-    // let allFloorList = this.get('dataLoader.allFloorList');
     let allBuildingList = this.get('dataLoader.allBuildingList');
     if(allBedList.length===0){
       return null;
@@ -66,26 +67,46 @@ export default Ember.Controller.extend(CheckinValidations,ScheduleValidations,{
     let _self = this;
     let busi = App.lookup("route:business");
     //通过刷新数据来同步
-    busi.rebuildBuiding(function(){
+    this.get('dataLoader').rebuildBuiding(function(){
       callback();
     });
   },
   checkInReferencePrice:Ember.computed('customerbusinessflowModel',function(){
     let price ,bedPrice ,levelPrice ,diningStandardPrice;
-    if(this.get('customerbusinessflowModel.nursinglevel.price')){
-      levelPrice = parseInt(this.get('customerbusinessflowModel.nursinglevel.price'));
-    }else{
-      levelPrice = 0;
+
+    if(this.get('chargeDay')){
+      if(this.get('customerbusinessflowModel.nursinglevel.price')){
+        levelPrice = parseInt(this.get('customerbusinessflowModel.nursinglevel.price'));
+      }else{
+        levelPrice = 0;
+      }
+      if(this.get('customerbusinessflowModel.checkInBed.price')){
+        bedPrice = parseInt(this.get('customerbusinessflowModel.checkInBed.price'));
+      }else{
+        bedPrice = 0;
+      }
+      if(this.get('customerbusinessflowModel.diningStandard.typeValue')){
+        diningStandardPrice = parseInt(this.get('customerbusinessflowModel.diningStandard.typeValue'));
+      }else{
+        diningStandardPrice = 0;
+      }
     }
-    if(this.get('customerbusinessflowModel.checkInBed.price')){
-      bedPrice = parseInt(this.get('customerbusinessflowModel.checkInBed.price'));
-    }else{
-      bedPrice = 0;
-    }
-    if(this.get('customerbusinessflowModel.diningStandard.typeValue')){
-      diningStandardPrice = parseInt(this.get('customerbusinessflowModel.diningStandard.typeValue'));
-    }else{
-      diningStandardPrice = 0;
+    if(this.get('chargeMonth')){
+      if(this.get('customerbusinessflowModel.nursinglevel.totalPrice')){
+        levelPrice = parseInt(this.get('customerbusinessflowModel.nursinglevel.totalPrice'));
+      }else{
+        levelPrice = 0;
+      }
+      if(this.get('customerbusinessflowModel.checkInBed.totalPrice')){
+        bedPrice = parseInt(this.get('customerbusinessflowModel.checkInBed.totalPrice'));
+      }else{
+        bedPrice = 0;
+      }
+      if(this.get('customerbusinessflowModel.diningStandard.totalPrice')){
+        diningStandardPrice = parseInt(this.get('customerbusinessflowModel.diningStandard.totalPrice'));
+      }else{
+        diningStandardPrice = 0;
+      }
     }
     price = levelPrice + bedPrice + diningStandardPrice;
     if(price>0){
@@ -96,24 +117,44 @@ export default Ember.Controller.extend(CheckinValidations,ScheduleValidations,{
   }),
   checkInReferencePriceObs:function(){
     let price ,bedPrice ,levelPrice ,diningStandardPrice;
-    if(this.get('customerbusinessflowModel.nursinglevel.price')){
-      levelPrice = parseInt(this.get('customerbusinessflowModel.nursinglevel.price'));
-    }else{
-      levelPrice = 0;
+
+    if(this.get('chargeDay')){
+      if(this.get('customerbusinessflowModel.nursinglevel.price')){
+        levelPrice = parseInt(this.get('customerbusinessflowModel.nursinglevel.price'));
+      }else{
+        levelPrice = 0;
+      }
+      if(this.get('customerbusinessflowModel.checkInBed.price')){
+        bedPrice = parseInt(this.get('customerbusinessflowModel.checkInBed.price'));
+      }else{
+        bedPrice = 0;
+      }
+      if(this.get('customerbusinessflowModel.diningStandard.typeValue')){
+        diningStandardPrice = parseInt(this.get('customerbusinessflowModel.diningStandard.typeValue'));
+      }else{
+        diningStandardPrice = 0;
+      }
     }
-    if(this.get('customerbusinessflowModel.checkInBed.price')){
-      bedPrice = parseInt(this.get('customerbusinessflowModel.checkInBed.price'));
-    }else{
-      bedPrice = 0;
-    }
-    if(this.get('customerbusinessflowModel.diningStandard.typeValue')){
-      diningStandardPrice = parseInt(this.get('customerbusinessflowModel.diningStandard.typeValue'));
-    }else{
-      diningStandardPrice = 0;
+    if(this.get('chargeMonth')){
+      if(this.get('customerbusinessflowModel.nursinglevel.totalPrice')){
+        levelPrice = parseInt(this.get('customerbusinessflowModel.nursinglevel.totalPrice'));
+      }else{
+        levelPrice = 0;
+      }
+      if(this.get('customerbusinessflowModel.checkInBed.totalPrice')){
+        bedPrice = parseInt(this.get('customerbusinessflowModel.checkInBed.totalPrice'));
+      }else{
+        bedPrice = 0;
+      }
+      if(this.get('customerbusinessflowModel.diningStandard.totalPrice')){
+        diningStandardPrice = parseInt(this.get('customerbusinessflowModel.diningStandard.totalPrice'));
+      }else{
+        diningStandardPrice = 0;
+      }
     }
     price = levelPrice + bedPrice + diningStandardPrice;
     this.set('checkInReferencePrice',price);
-  }.observes('customerbusinessflowModel.nursinglevel.price','customerbusinessflowModel.checkInBed.price','customerbusinessflowModel.diningStandard.typeValue'),
+  }.observes('customerbusinessflowModel.nursinglevel','customerbusinessflowModel.checkInBed','customerbusinessflowModel.diningStandard',"chargeMonth",'chargeDay'),
   checkInPrice:Ember.computed('customerbusinessflowModel',function(){
     let price ,bedPrice ,levelPrice ,diningStandardPrice;
     if(this.get('customerbusinessflowModel.levelPrice')>0){
@@ -167,7 +208,9 @@ export default Ember.Controller.extend(CheckinValidations,ScheduleValidations,{
     nav(nav){
       let title = document.getElementsByClassName('breadcrumb')[0];
       let title2 = title.getElementsByTagName('li')[2];
-      title2.innerText=nav;
+      if(title2){
+        title2.innerText=nav;
+      }
     },
     //取消
     cancelClick(){
@@ -200,6 +243,7 @@ export default Ember.Controller.extend(CheckinValidations,ScheduleValidations,{
       }
       customerbusinessflowModel.set('status',status);
       customerbusinessflowModel.set('checkInPrice',this.get('checkInPrice'));
+      customerbusinessflowModel.set('totalPrice',this.get('totalPrice'));
       customerbusinessflowModel.validate().then(function(){
         if(Number(customerbusinessflowModel.get("checkInEndTime"))<=Number(customerbusinessflowModel.get("checkInStartTime"))){
           customerbusinessflowModel.addError('checkInEndTime',['入住结束日期必须大于入住开始日期']);
@@ -209,7 +253,31 @@ export default Ember.Controller.extend(CheckinValidations,ScheduleValidations,{
         }
         if(customerbusinessflowModel.get('errors.length')===0){
           App.lookup('controller:business.mainpage').openPopTip("正在保存");
-          customerbusinessflowModel.save().then(function(){
+          let list  = new Ember.A();
+          let advWayList = customerbusinessflowModel.get('advWay');
+          advWayList.forEach(function(item){
+            list.pushObject(item);
+          });
+          customerbusinessflowModel.set('advWay',list);
+          console.log(customerbusinessflowModel.get('inPreference'));
+          let inPreferenceList = new Ember.A();
+          customerbusinessflowModel.get('inPreference').forEach(function(item){
+            inPreferenceList.pushObject(item);
+          });
+          customerbusinessflowModel.set('inPreference',inPreferenceList);
+          customerbusinessflowModel.save().then(function(flow){
+            //保存成功后，同步本地的床位状态
+            let allBedList = _self.get('dataLoader.allBedList');
+            let bed = allBedList.findBy('id',flow.get('checkInBed.id'));
+            let status = flow.get('status');
+            let bedStatus ;
+            if(status.get('typecode')=='consultStatus4'){
+              bedStatus = _self.get('dataLoader').findDict('bedStatusTryIn');
+            }
+            if(status.get('typecode')=='consultStatus5'){
+              bedStatus = _self.get('dataLoader').findDict('bedStatusCheckIn');
+            }
+            bed.set('status',bedStatus);
             App.lookup('controller:business.mainpage').showPopTip("保存成功");
             _self.bedDataAdjust(function(){
               _self.get("mainController").switchMainPage('try-and-stay');
@@ -251,6 +319,9 @@ export default Ember.Controller.extend(CheckinValidations,ScheduleValidations,{
       let status = this.get("dataLoader").findDict("consultStatus3");
       //将业务表的状态设为预定
       customerbusinessflowModel.set('status',status);
+      let customerStatus = this.get('dataLoader').findDict('customerStatus0');
+      //将业务表的老人状态设为预订
+      customerbusinessflowModel.set('customerStatus',customerStatus);
       customerbusinessflowModel.validate().then(function(){
         if(Number(customerbusinessflowModel.get("orderInTime"))<Number(customerbusinessflowModel.get("orderDate"))){
           customerbusinessflowModel.addError('orderInTime',['入院日期必须不小于预定办理日期']);
@@ -260,7 +331,14 @@ export default Ember.Controller.extend(CheckinValidations,ScheduleValidations,{
         }
         if(customerbusinessflowModel.get('errors.length')===0){
           App.lookup('controller:business.mainpage').openPopTip("正在保存");
-          customerbusinessflowModel.save().then(function(){
+          customerbusinessflowModel.set('chargeType',null);
+          customerbusinessflowModel.set('bedPrice',null);
+          customerbusinessflowModel.save().then(function(flow){
+            //保存成功后，同步本地的床位状态
+            let allBedList = _self.get('dataLoader.allBedList');
+            let bed = allBedList.findBy('id',flow.get('orderBed.id'));
+            let bedStatus = _self.get('dataLoader').findDict('bedStatusAppointment');
+            bed.set('status',bedStatus);
             App.lookup('controller:business.mainpage').showPopTip("保存成功");
             _self.bedDataAdjust(function(){
               _self.get("mainController").switchMainPage('business-customer');
@@ -304,7 +382,17 @@ export default Ember.Controller.extend(CheckinValidations,ScheduleValidations,{
     selectStatus(status){
       this.set('customerbusinessflowModel.customerStatus',status);
       this.set('customerbusinessflowInfo.customerStatus',status);
-      console.log('入住类型：',this.get('customerbusinessflowModel.customerStatus.typename'));
+      console.log('status name',status.get('typecode'),status.get('typename'));
+      if(status.get('typecode')=='customerStatusTry'){
+        this.set('tryModel',true);
+      }else{
+        let chargeType = this.get('dataLoader').findDict('chargeTypeY');
+        this.set('customerbusinessflowModel.chargeType',chargeType);
+        this.get('customerbusinessflowInfo.chargeType',chargeType);
+        this.set('tryModel',false);
+        this.set('chargeMonth',true);
+        this.set('chargeDay',false);
+      }
     },
     educationSelect: function(educationDict) {
         this.set("customerbusinessflowModel.customerEducation", educationDict);
@@ -312,8 +400,16 @@ export default Ember.Controller.extend(CheckinValidations,ScheduleValidations,{
     oldManTypeSelect(oldManType){
       this.set("customerbusinessflowModel.customerOldManType", educationDict);
     },
-    sexSelect(sex){
-      this.get("customerbusinessflowModel").set("customerGender", sex);
+    sexSelect(str){
+      let sexType;
+      if(str=='man'){//男
+        sexType = this.get("dataLoader").findDict('sexTypeMale');
+      }
+      if(str=='woman'){//女
+        sexType = this.get("dataLoader").findDict('sexTypeFemale');
+      }
+      this.set('customerbusinessflowModel.customerGender',sexType);
+      this.get("customerbusinessflowInfo").set("customerGender", sexType);
     },
     medicalInsuranceSelect(customerMedicalInsuranceCategory){
       this.set("customerbusinessflowModel.customerMedicalInsuranceCategory", customerMedicalInsuranceCategory);
@@ -339,7 +435,12 @@ export default Ember.Controller.extend(CheckinValidations,ScheduleValidations,{
     diningStandardSelect(diningStandard){
       this.set('customerbusinessflowModel.diningStandard',diningStandard);
       this.set('customerbusinessflowInfo.diningStandard',diningStandard);
-      this.set('customerbusinessflowModel.diningStandardPrice',diningStandard.get('typeValue'));
+      if(this.get('chargeDay')){
+        this.set('customerbusinessflowModel.diningStandardPrice',diningStandard.get('typeValue'));
+      }
+      if(this.get('chargeMonth')){
+        this.set('customerbusinessflowModel.diningStandardPrice',diningStandard.get('totalPrice'));
+      }
     },
     //选择入住偏好
     inPreferenceSelect(inPreference){
@@ -349,7 +450,13 @@ export default Ember.Controller.extend(CheckinValidations,ScheduleValidations,{
     //选择护理等级
     selectLevel(level){
       this.set('customerbusinessflowModel.nursinglevel',level);
-      this.set('customerbusinessflowModel.levelPrice',level.get('price'));
+      if(this.get('chargeDay')){
+        this.set('customerbusinessflowModel.levelPrice',level.get('price'));
+      }
+      if(this.get('chargeMonth')){
+        this.set('customerbusinessflowModel.levelPrice',level.get('totalPrice'));
+      }
+
     },
     //床位弹层
 
@@ -362,7 +469,14 @@ export default Ember.Controller.extend(CheckinValidations,ScheduleValidations,{
       }else{
         this.set('customerbusinessflowModel.checkInBed',Bed);
       }
-      this.set('customerbusinessflowModel.bedPrice',Bed.get('price'));
+      if(this.get('chargeDay')){
+        this.set('customerbusinessflowModel.bedPrice',Bed.get('price'));
+      }
+      if(this.get('chargeMonth')){
+        let totalPrice = Bed.get('totalPrice')||0;
+        this.set('customerbusinessflowModel.bedPrice',totalPrice);
+      }
+
     },
     //选择楼宇
     selectBuild(build){
@@ -438,36 +552,60 @@ export default Ember.Controller.extend(CheckinValidations,ScheduleValidations,{
           this.get('customerbusinessflowModel').set('customerAge',computedAge);
         }
 
-        // //计算性别
-        // if(cardCode.length==18){
-        //   if (parseInt(cardCode.substr(16, 1)) % 2 == 1) {
-        //       let manObj = this.get("dataLoader").findDict(Constants.sexTypeMale);
-        //       this.get("customerbusinessflowModel").set("customerGender", manObj);
-        //   } else {
-        //       let womanObj = this.get("dataLoader").findDict(Constants.sexTypeFemale);
-        //       this.get("customerbusinessflowModel").set("customerGender", womanObj);
-        //   }
-        // }
+        //计算性别
+        if(cardCode.length==18){
+          if (parseInt(cardCode.substr(16, 1)) % 2 == 1) {
+              let manObj = this.get("dataLoader").findDict(Constants.sexTypeMale);
+              this.get("customerbusinessflowModel").set("customerGender", manObj);
+              this.get("customerbusinessflowInfo").set("customerGender", manObj);
+          } else {
+              let womanObj = this.get("dataLoader").findDict(Constants.sexTypeFemale);
+              this.get("customerbusinessflowModel").set("customerGender", womanObj);
+              this.get("customerbusinessflowInfo").set("customerGender", womanObj);
+          }
+        }
 
     },
     //根据联系人身份证计算性别
-    // computedFirstCardCode(){
-    //   let guardianFirstCardCode = this.get("customerbusinessflowModel.guardianFirstCardCode");
-    //   //计算性别
-    //   if(guardianFirstCardCode.length==18){
-    //     if (parseInt(guardianFirstCardCode.substr(16, 1)) % 2 == 1) {
-    //         let manObj = this.get("dataLoader").findDict(Constants.sexTypeMale);
-    //         this.get("customerbusinessflowModel").set("guardianFirstGener", manObj);
-    //     } else {
-    //         let womanObj = this.get("dataLoader").findDict(Constants.sexTypeFemale);
-    //         this.get("customerbusinessflowModel").set("guardianFirstGener", womanObj);
-    //     }
-    //   }
-    //
-    // }
-    sexSelectFirst(sex){
-      this.get("customerbusinessflowModel").set("guardianFirstGener", sex);
-    }
+    computedFirstCardCode(){
+      let guardianFirstCardCode = this.get("customerbusinessflowModel.guardianFirstCardCode");
+      //计算性别
+      if(guardianFirstCardCode.length==18){
+        if (parseInt(guardianFirstCardCode.substr(16, 1)) % 2 == 1) {
+            let manObj = this.get("dataLoader").findDict(Constants.sexTypeMale);
+            this.get("customerbusinessflowModel").set("guardianFirstGener", manObj);
+            this.get("customerbusinessflowInfo").set("guardianFirstGener", manObj);
+        } else {
+            let womanObj = this.get("dataLoader").findDict(Constants.sexTypeFemale);
+            this.get("customerbusinessflowModel").set("guardianFirstGener", womanObj);
+            this.get("customerbusinessflowInfo").set("guardianFirstGener", womanObj);
+        }
+      }
 
+    },
+    sexSelectFirst(str){
+      let sexType;
+      if(str=='man'){//男
+        sexType = this.get("dataLoader").findDict('sexTypeMale');
+      }
+      if(str=='woman'){//女
+        sexType = this.get("dataLoader").findDict('sexTypeFemale');
+      }
+      this.set('customerbusinessflowModel.guardianFirstGener',sexType);
+      this.get("customerbusinessflowInfo").set("guardianFirstGener", sexType);
+    },
+    //缴费类型选择
+    chargeTypeSelect(chargeType){
+      this.set('customerbusinessflowInfo.chargeType',chargeType);
+      this.set('customerbusinessflowModel.chargeType',chargeType);
+      if(chargeType.get('typecode')=="chargeTypeY"){
+        this.set('chargeMonth',true);
+        this.set('chargeDay',false);
+      }
+      if(chargeType.get('typecode')=="chargeTypeD"){
+        this.set('chargeMonth',false);
+        this.set('chargeDay',true);
+      }
+    },
   }
 });

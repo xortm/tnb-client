@@ -45,7 +45,7 @@ export default BaseModel.extend({
   }),
   endTimeStr: Ember.computed("endTime", function() {
     var time = this.get("endTime");
-    return time ? this.get("dateService").formatDate(time, "yyyy-MM-dd") : null;
+    return time ? this.get("dateService").formatDate(time, "yyyy-MM-dd") : '无';
   }),
   endTimeDate:Ember.computed("endTime",function(){
     var time=this.get("endTime");
@@ -53,7 +53,7 @@ export default BaseModel.extend({
   }),
   expectEndTimeStr: Ember.computed("expectEndTime", function() {
     var time = this.get("expectEndTime");
-    return time ? this.get("dateService").formatDate(time, "yyyy-MM-dd") : null;
+    return time ? this.get("dateService").formatDate(time, "yyyy-MM-dd") : '无';
   }),
   expectEndTimeDate:Ember.computed("expectEndTime",function(){
     var time=this.get("expectEndTime");

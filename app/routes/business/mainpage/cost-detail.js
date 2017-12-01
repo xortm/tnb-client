@@ -25,9 +25,9 @@ export default BaseBusiness.extend({
     if(editMode=='detail'){
       controller.set('detailEdit',false);
       controller.set('readOnly',false);
+      controller.set('addModel',false);
       _self.store.findRecord('customerbill',id).then(function(billInfo){
         controller.set('billInfo',billInfo);
-        if(billInfo.get('billCreateType.typecode')!==createType2){
           let customer = billInfo.get('customer.id');
           let filter = {};
           if(billInfo.get('billType.typecode')==constants.billType4){
@@ -42,9 +42,20 @@ export default BaseBusiness.extend({
           let params = {};
           params.filter = filter;
 
-          _self.store.query('customerdaybill',params).then(function(dayBillList){
-            controller.set('dayBillList',dayBillList);
-          });
+          if(billInfo.get('billStatType.typecode')=='billStatTypeJC'){
+            _self.store.query('customerdaybill',params).then(function(dayBillList){
+              controller.set('dayBillList',dayBillList);
+              controller.set('appreciationBillList',null);
+              controller.set('appreciationBill',false);
+            });
+          }
+          if(billInfo.get('billStatType.typecode')=="billStatTypeZZ"){
+            _self.store.query('customerservicebill',params).then(function(dayBillList){
+              controller.set('appreciationBillList',dayBillList);
+              controller.set('appreciationBill',true);
+              controller.set('dayBillList',null);
+            });
+          }
           controller.set('createModel',true);
           controller.set('autoModel',false);
           _self.store.query('nursingproject',{filter:{customer:{id:billInfo.get('customer.id')}}},{sort:{createDateTime:'asc'}}).then(function(projectList){
@@ -56,7 +67,7 @@ export default BaseBusiness.extend({
             controller.set('diningPrice',diningPrice);
             controller.set('experiencePrice',bedPrice+diningPrice+proPrice);
           });
-        }
+
         if(billInfo.get('billCreateType.typecode')==createType2){
           if(billInfo.get('billStatus.typecode')==billStatus0){
             controller.set('autoModel',true);
@@ -92,9 +103,19 @@ export default BaseBusiness.extend({
           }
           let params = {};
           params.filter = filter;
-          _self.store.query('customerdaybill',params).then(function(dayBillList){
-            controller.set('dayBillList',dayBillList);
-          });
+          console.log('billInfo.billStatType',billInfo.get('billStatType.typecode'));
+          if(billInfo.get('billStatType.typecode')=='billStatTypeJC'){
+            _self.store.query('customerdaybill',params).then(function(dayBillList){
+              controller.set('dayBillList',dayBillList);
+              controller.set('appreciationBillList',null);
+            });
+          }
+          if(billInfo.get('billStatType.typecode')=="billStatTypeZZ"){
+            _self.store.query('customerservicebill',params).then(function(dayBillList){
+              controller.set('appreciationBillList',dayBillList);
+              controller.set('dayBillList',null);
+            });
+          }
           controller.set('createModel',true);
           controller.set('autoModel',false);
           _self.store.query('nursingproject',{filter:{customer:{id:billInfo.get('customer.id')}}},{sort:{createDateTime:'asc'}}).then(function(projectList){
@@ -140,7 +161,6 @@ export default BaseBusiness.extend({
       controller.set('readOnly',true);
       _self.store.findRecord('customerbill',id).then(function(billInfo){
         controller.set('billInfo',billInfo);
-        if(billInfo.get('billCreateType.typecode')!==constants.createType2){
           let customer = billInfo.get('customer.id');
           let filter = {};
           if(billInfo.get('billType.typecode')==constants.billType4){
@@ -167,7 +187,7 @@ export default BaseBusiness.extend({
               controller.set('appreciationBillList',dayBillList);
               controller.set('dayBillList',null);
             });
-          }
+
         }
       });
     }

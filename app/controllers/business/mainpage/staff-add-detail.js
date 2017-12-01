@@ -13,7 +13,6 @@ export default Ember.Controller.extend(StaffValidations, {
 
     staffModel: Ember.computed("staff", function() {
         var model = this.get("staff");
-        console.log('staffModelMMMM   ' + model);
         if (!model) {
             return null;
         }
@@ -73,32 +72,13 @@ export default Ember.Controller.extend(StaffValidations, {
             $(".cccc >div ").addClass("intergration_normal");
             $(".cccc >div img").css("height", "110px  ");
             $(".cccc >div img").css("width", "auto");
-            console.log("this.widthcccccccccccccc==========", $(".cccc >div img").width());
-            console.log('==========cccccccccccccccintergration_normal_height', $(".cccc >div img").height(), $(".cccc >div img").width());
         } else {
             $(".cccc >div ").addClass("intergration_normal");
             $(".cccc >div img").css("width", "110px ");
             $(".cccc >div img").css("height", "auto");
-            console.log("this.heightccccc==========", $(".cccc >div img").height());
-            console.log('==========cccccccccccccccintergration_normal', $(".cccc >div img").height(), $(".cccc >div img").width());
         }
     },
     editModel: null,
-    /*editFlag: Ember.computed(function () {
-      //console.log("isMobile in:", this.get("global_curStatus").get("isMobile"));
-      if(this.editModel){
-        console.log("editFlag1111");
-        return true;
-      }else{
-        console.log("editFlag0000");
-        return false;
-      }
-    }),*/
-    /*init() {
-      this._super(...arguments);
-      let model = this.get("store").createRecord('staff', {});
-      this.staff = model;
-    },*/
     refreshStaffList: function() {
         var route = App.lookup('route:business.mainpage.staff-management');
         // route.doQuery();
@@ -109,20 +89,10 @@ export default Ember.Controller.extend(StaffValidations, {
       leaveIdCard:function(){
         var UUserCard = this.get("staffModel.staffCardCode");
         if(!UUserCard){return;}
-        //取得系统时间
-        let sysTime = this.get("dataLoader").getNowTime();
-        if(sysTime){
-          sysTime = sysTime ;
-        }else {
-          sysTime = new Date().getTime()/1000;
-        }
-        var myDate = this.get("dateService").timestampToTime(sysTime);
-        var month = myDate.getMonth() + 1;
-        var day = myDate.getDate();
-        var age = myDate.getFullYear() - UUserCard.substring(6, 10) - 1;
-        if (UUserCard.substring(10, 12) <= month && UUserCard.substring(12, 14) <= day) {
-            age++;
-        }
+        var momentDate=this.get('dateService').getCurrentTime();
+        var momentString=this.get("dateService").formatDate(momentDate, "yyyy");
+        var computedStr=UUserCard.substring(6, 10);
+        var age=parseInt(momentString)-parseInt(computedStr);
         var staffModel = this.get("staffModel");
         staffModel.set("age",age);
         var tmpStr = "";
@@ -143,7 +113,6 @@ export default Ember.Controller.extend(StaffValidations, {
           tmpStr = UUserCard.substring(6, 14);
           tmpStr = tmpStr.substring(0, 4) + "-" + tmpStr.substring(4, 6) + "-" + tmpStr.substring(6);
           tmpStrNumber = new Date(tmpStr).getTime()/1000;
-          console.log("tmpStrNumber111111",tmpStrNumber);
           staffBirthDate = this.get("dateService").timestampToTime(tmpStrNumber);
           staffModel.set("staffBirth",tmpStrNumber);
           staffModel.set("staffBirthString",tmpStr);
@@ -154,11 +123,9 @@ export default Ember.Controller.extend(StaffValidations, {
         if (parseInt(UUserCard.substr(16, 1)) % 2 == 1) {
             var manObj = this.get("dataLoader").findDict(Constants.sexTypeMale);
             staffModel.set("staffSex", manObj);
-            console.log("11111111111111111111111111111  nan",staffModel.get("staffSex"));
         } else {
             var womanObj = this.get("dataLoader").findDict(Constants.sexTypeFemale);
             staffModel.set("staffSex", womanObj);
-            console.log("11111111111111111111111111111  nv",staffModel.get("staffSex"));
         }
         },
         uploadSuccHead: function(response) {
@@ -168,7 +135,6 @@ export default Ember.Controller.extend(StaffValidations, {
             this.get("staff").set("avatar", res.relativePath);
             this.set('staffModel.avatar', res.relativePath);
             console.log("res.relativePath:", res.relativePath);
-            // this.get("staff").save();
         },
         uploadSucc: function(response) {
             var model = this.get('model');
@@ -177,12 +143,7 @@ export default Ember.Controller.extend(StaffValidations, {
             this.get("staff").set("certificateImage", res.relativePath);
             this.set('staffModel.certificateImage', res.relativePath);
             console.log("res.relativePath:", res.relativePath);
-            // this.get("staff").save();
         },
-        // avatarUpload:function(){
-        //   var imgIntergrationComponent = App.lookup('component:ui.img-intergration');
-        //   imgIntergrationComponent.send("avatarUpload");
-        // },
         invalid() {
             //alert("error");
         },
@@ -199,6 +160,12 @@ export default Ember.Controller.extend(StaffValidations, {
             var staff = this.get("staff");
             staffModel.validate().then(
                 function() {
+                  //如果是员工离职，增加离职日期的验证
+                  if(staffModel.get('staffStatus.typecode')=='staffStatusLeave'){
+                    if(!staffModel.get('departureDate')){
+                      staffModel.addError('departureDate',['离职日期不能为空']);
+                    }
+                  }
                     if (staffModel.get('errors.length') === 0) {
                         var sysPas = _self.get("sysPassWord");
                         var appPas = _self.get("appPassWord");
@@ -210,17 +177,15 @@ export default Ember.Controller.extend(StaffValidations, {
                             staffModel.set('passcode', $.md5(sysPas));
                         }
                         App.lookup('controller:business.mainpage').openPopTip("正在保存");
+                        staffModel.set("delStatus", 0);
                         staffModel.save().then(function(staff) {
                                 if (staff.get('errcode') === 0) {
-                                    //  _self.get("staffModel").addError('loginName', '登录名已存在');
                                     App.lookup('controller:business.mainpage').showPopTip("登录名已存在");
                                     return false;
                                 } else if (staff.get('errcode') === 1) {
-                                    //   _self.get("staffModel").addError('staffCardCode', '该身份证号已注册');
                                     App.lookup('controller:business.mainpage').showPopTip("该身份证号已注册");
                                     return false;
                                 }if (staff.get('errcode') === 3) {
-                                    //   _self.get("staffModel").addError('staffCardCode', '该身份证号已注册');
                                     App.lookup('controller:business.mainpage').showPopTip("身份证号重复");
                                     return false;
                                 } else if (staff.get('errcode') == 4) {
@@ -230,12 +195,8 @@ export default Ember.Controller.extend(StaffValidations, {
                                     if (_self.get('operateFlag')) {
                                         console.log("edit   detailSaveClick");
                                         _self.set('editModel', null);
-                                        /*_self.get("mainController").switchMainPage('staff-management', {
-                                            flag: 'edit'
-                                        });*/
                                         App.lookup('controller:business.mainpage').showPopTip("保存成功");
                                     }else {
-                                      //  _self.set('staffModel', null);
                                       App.lookup('controller:business.mainpage').showPopTip("保存成功");
                                       _self.get("mainController").switchMainPage('staff-management');
                                     }
@@ -316,9 +277,6 @@ export default Ember.Controller.extend(StaffValidations, {
         },
         cancelEdit: function() {
             this.set('editModel', false);//下面bug 先注释掉
-            // console.log("name  " + this.get("staff").get("staffName") + " " + this.get("staffModel").get("staffName"));
-            // this.get("staff").rollbackAttributes();
-            // this.set("staffModel", new Changeset(this.get("staff"), lookupValidator(StaffValidations), StaffValidations));
         },
         sexSelect: function(dict) {
             this.set("staff.staffSex", dict);
@@ -343,6 +301,9 @@ export default Ember.Controller.extend(StaffValidations, {
         statusSelect: function(dict) {
             this.set("staff.staffStatus", dict);
             this.set('staffModel.staffStatus', dict);
+            if(dict.get('typecode')!=='staffStatusLeave'){
+              this.set('staffModel.departureDate',null);
+            }
         },
         systemUserSelect: function(systemUser) {
             this.set("staff.systemusers", systemUser);
@@ -380,6 +341,10 @@ export default Ember.Controller.extend(StaffValidations, {
             var stamp = this.get("dateService").getLastSecondStampOfDay(date);
             this.set("staffModel.contractEndDate", stamp);
         },
+        departureAction(date) {
+            var stamp = this.get("dateService").getLastSecondStampOfDay(date);
+            this.set("staffModel.departureDate", stamp);
+        },
         birthAction(date) {
             var stamp = this.get("dateService").getLastSecondStampOfDay(date);
             this.set("staffModel.staffBirth", stamp);
@@ -392,13 +357,11 @@ export default Ember.Controller.extend(StaffValidations, {
             }
             var myDate = this.get("dateService").timestampToTime(sysTime);
             var employeeDate = this.get("dateService").timestampToTime(stamp);
-            console.log("employeeDate", employeeDate);
-            console.log("employeeDate myDate", myDate);
             var month = myDate.getMonth() + 1;
             var employeeMonth = employeeDate.getMonth() + 1;
             var day = myDate.getDate();
             var employeeDay = employeeDate.getDate();
-            var age = myDate.getFullYear() - employeeDate.getFullYear() - 1;
+            var age = myDate.getFullYear() - employeeDate.getFullYear();
             if (employeeMonth <= month && employeeDay <= day) {
                 age++;
             }

@@ -4,13 +4,7 @@ import CommonUtil from '../utils/common';
 
 export function initialize(application) {
   application.store = application.lookup("service:store");
-  //var localStore = DS.Store.extend({
-  //  adapter: LocalstorageAdapter.extend({
-  //  })
-  //});
-  //application.register('service:localStore', localStore, {instantiate: true});
-  //application.inject('route', 'localStore', 'service:localStore');
-  window.App = application;  // or window.Whatever
+  window.App = application;
   window.Constants = Constants;
   window.CommonUtil = CommonUtil;
   window.RouteMap = {};

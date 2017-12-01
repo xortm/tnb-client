@@ -12,12 +12,18 @@ export default Ember.Controller.extend(InfiniteScroll,{
   infiniteContentPropertyName: "customerdynamicList",
   infiniteModelName: "customerdynamic",
   infiniteContainerName:"customerDynamicContainer",
-  queryFlagInFlag: 1,
+  "page[size]": 10,
+  pageScrollY: 120,
   uploadUrl: Ember.computed(function() {return this.get("pathConfiger").get("uploadUrl");}),
   constants:Constants,
 
   customerObs: function(){
     let _self = this;
+    var commonInitHasCompleteFlag = this.get("global_curStatus.commonInitHasCompleteFlag");
+    console.log("queryObs run commonInitHasCompleteFlag",commonInitHasCompleteFlag);
+    if(!commonInitHasCompleteFlag){
+      return;
+    }
     let curCustomer = this.get("statusService").getCustomer();//获取curCustomer
     let curCustomerId = curCustomer.get("id");
     var params = {
@@ -30,7 +36,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
     };
     console.log("infiniteQuery run");
     this.infiniteQuery('customerdynamic',params);
-  }.observes("queryFlagInFlag").on("init"),
+  }.observes("global_curStatus.commonInitHasCompleteFlag").on("init"),
 
   actions:{
     switchShowAction(){

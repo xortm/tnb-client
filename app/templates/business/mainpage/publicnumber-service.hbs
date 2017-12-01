@@ -1,81 +1,104 @@
-<div id="nursingplanexeContainer" class="mainContent {{if global_pageConstructure.showLoader 'hide' ''}}">
+{{#ui/mobile/gestures-container}}
+<div id="publicnumberServiceContainer" class="mainContent {{if global_pageConstructure.showLoader 'hide' ''}}">
   <div class="wrapperInner">
-
-    {{#ui/mobile/gestures-container}}
-    {{#if list}}
-      {{#each list as |service|}}
-        {{#if (eq service.type 2)}}
+    {{#if serviceexeList}}
+      {{log "serviceexeList in hbs:" serviceexeList}}
+      {{#each serviceexeList as |serviceexe|}}
+        {{#if serviceexe.dateTabString}}
           <div class="padding-0-10 height35">
-            <span class="font16 font-black">{{service.dayStr}}</span>
-            <span class="color666666">{{service.dateTimeSeq}}</span>
+            <span class="color666666">{{serviceexe.dateTabString}}</span>
           </div>
-        {{else if (eq service.type 1)}}
+        {{else}}
           <ul class="padding-0-10 bottom4 bk-color-white padding-bottom10">
             <li class="border-bottom-1F0F0F0 height44 line-height-44">
-              {{#if (eq service.serviceTypeCode 'serviceType1')}}
-                <img class="topF2" src="assets/images/mobile/healthcare-icon.png" width="18"/>
-              {{else if (eq service.serviceTypeCode 'serviceType2')}}
-                <img class="topF2" src="assets/images/mobile/bed.png" width="18"/>
-              {{else if (eq service.serviceTypeCode 'serviceType3')}}
-                <img class="topF2" src="assets/images/mobile/images.png" width="18"/>
+              {{#if serviceexe.itemExe}}
+                {{#if (eq serviceexe.itemExe.itemProject.item.serviceType.typecode 'serviceType1')}}
+                  <img class="topF2" src="assets/images/mobile/healthcare-icon.png" width="18"/>
+                {{else if (eq serviceexe.itemExe.itemProject.item.serviceType.typecode 'serviceType2')}}
+                  <img class="topF2" src="assets/images/mobile/bed.png" width="18"/>
+                {{else if (eq serviceexe.itemExe.itemProject.item.serviceType.typecode 'serviceType3')}}
+                  <img class="topF2" src="assets/images/mobile/images.png" width="18"/>
+                {{/if}}
+                <span class="font14 font-black padding-left-5">{{serviceexe.itemExe.itemProject.item.name}}</span>
+                <span class="padding-left-15 font12 color999999">{{serviceexe.itemExe.createDateTimeString}}</span>
               {{else}}
                 <img class="topF2" src="assets/images/mobile/medication.png" width="18"/>
+                <span class="font14 font-black padding-left-5">用药情况</span>
+                <span class="padding-left-15 font12 color999999">{{serviceexe.drugExe.createTimeHourS}}</span>
               {{/if}}
-              <span class="font14 font-black padding-left-5">{{service.title}}</span>
-              <span class="padding-left-15 font12 color999999">{{service.timeStr}}</span>
             </li>
-            {{#if service.drugFlag}}
+            {{#if serviceexe.drugExe}}
               <li class="font12 padding-top10">
                 <span class="color666666">药品名:</span>
                 <span class="">
-                  {{service.customerDrugName}}
+                  {{serviceexe.drugExe.customerDrug.drug.name}}
                 </span>
               </li>
               <li class="font12 padding-top5">
-                <!-- <span class="color666666">实际用药:</span>
-                <span class="">
-                  {{service.actualUse}} {{service.drugSpecName}}；
-                </span> -->
                 <span class="color666666">计划用药:</span>
                 <span class="">
-                  计划用药时间:{{service.useDrugDateString}}，计划用药数量:{{service.drugNumPlan}}{{service.drugSpecName}}。
+                  计划用药时间:{{serviceexe.drugExe.useDrugDate}}:00，计划用药数量:{{serviceexe.drugExe.drugNumPlan}}{{serviceexe.drugExe.drugSpec.typename}}
                 </span>
               </li>
               <li class="font12 padding-top5">
                 <span class="color666666">实际用药:</span>
                 <span class="">
-                  <!-- 实际用药时间:{{service.exeDateString}}，实际用药数量:{{service.actualUse}}{{service.drugSpecName}}。 -->
-                  {{service.actualUse}}{{service.drugSpecName}}。
+                  {{serviceexe.drugExe.drugNum}}{{serviceexe.drugExe.drugSpec.typename}}。
                 </span>
               </li>
-            {{/if}}
-            <li class="font12 padding-top10">
-              <span class="color666666">完成情况:</span>
-              <span class="">
-                {{service.finishLevelName}}
-              </span>
-            </li>
-            {{#if service.remark}}
-              <li class="font12 padding-top5">
-                <span class="color666666">备注:</span>
+              <li class="font12 padding-top10">
+                <span class="color666666">完成情况:</span>
                 <span class="">
-                  {{service.remark}}
+                  {{serviceexe.drugExe.finishLevel.name}}
                 </span>
               </li>
-            {{/if}}
-            <li class="font12 padding-top5">
-              <span class="color666666">服务人员:</span>
-              <span class="">{{service.personName}}</span>
-            </li>
-            {{#if service.drugFlag}}
-              {{#if (gte service.littleDrugDetail 0)}}
+              {{#if serviceexe.drugExe.remark}}
                 <li class="font12 padding-top5">
-                  <span class="color666666">缺药提醒:</span>
+                  <span class="color666666">备注:</span>
                   <span class="">
-                    剩余药量{{service.allDrugNum}}{{service.drugTypename}},可供{{service.littleDrugDetail}}天使用
+                    {{serviceexe.drugExe.remark}}
                   </span>
                 </li>
               {{/if}}
+              <li class="font12 padding-top5">
+                <span class="color666666">服务人员:</span>
+                <span class="">{{serviceexe.drugExe.lastUpdateUser.name}}</span>
+              </li>
+              {{#if serviceexe.drugExe.remarkAdd}}
+                <li class="font12 padding-top5">
+                  <span class="color666666">缺药提醒:</span>
+                  <span class="">
+                    剩余药量{{serviceexe.drugExe.drugProject.customerDrug.drugNum}}{{serviceexe.drugExe.drugSpec.typename}},可供{{serviceexe.drugExe.remarkAdd}}天使用
+                  </span>
+                </li>
+              {{/if}}
+            {{else}}
+              <li class="font12 padding-top10">
+                <span class="color666666">完成情况:</span>
+                <span class="">
+                  {{serviceexe.itemExe.finishLevel.name}}
+                </span>
+              </li>
+              {{#if serviceexe.itemExe.exeTabRemark}}
+                <li class="font12 padding-top5">
+                  <span class="color666666">执行情况:</span>
+                  <span class="">
+                    {{serviceexe.itemExe.exeTabRemark}}
+                  </span>
+                </li>
+              {{/if}}
+              {{#if serviceexe.itemExe.remark}}
+                <li class="font12 padding-top5">
+                  <span class="color666666">备注:</span>
+                  <span class="">
+                    {{serviceexe.itemExe.remark}}
+                  </span>
+                </li>
+              {{/if}}
+              <li class="font12 padding-top5">
+                <span class="color666666">服务人员:</span>
+                <span class="">{{serviceexe.itemExe.exeStaff.name}}</span>
+              </li>
             {{/if}}
           </ul>
 
@@ -85,9 +108,9 @@
     {{else}}
       <div class="nodate">暂无数据</div>
     {{/if}}
-    {{/ui/mobile/gestures-container}}
   </div>
 </div>
+{{/ui/mobile/gestures-container}}
 
 {{ui/container/infinite-scroll moniteData="serviceWeekList" didRenderAction="didRender"
 didInsertElementAction="didInsertElement"}}

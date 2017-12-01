@@ -74,8 +74,19 @@ export default BaseBusiness.extend(Pagination, {
         });
         //查询偏好表
         this.store.query('customer-preference',{filter:{customer:{id:controller.get('id')}}}).then(function(preferenceList){
-          let list = preferenceList.sortBy('startNum');
+          let list = new Ember.A();
+          preferenceList.forEach(function(preference){
+            list.pushObject(preference);
+          })
           controller.set('preferenceList',list);
+        });
+        //查询老人事件
+        this.store.query('customer-event',{filter:{customer:{id:controller.get('id')}},sort:{"eventTime":'desc'}}).then(function(eventList){
+          var list  = new Ember.A();
+          eventList.forEach(function(item){
+               list.pushObject(item);
+          });
+          controller.set('eventList',list);
         });
         controller.incrementProperty('refresh');
     },

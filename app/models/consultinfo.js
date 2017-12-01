@@ -20,12 +20,26 @@ var consult = BaseModel.extend({
   dietRequirements: DS.attr('string'),//饮食要求
   discontent: DS.attr('string'),//不满意的地方
   customerAddr: DS.attr('string'),//老人住址
-  customerBrith: DS.attr('number'),//老人生日
+  customerBrith: DS.attr('number'),//老人年龄
   customerCardCode: DS.attr('number'),//老人身份证号
   customerConsumingAbility: DS.attr('string'),//老人消费水平
   customerTel: DS.attr('number'),//老人电话
   customerEducation: DS.belongsTo('dicttype'),//老人教育级别
   customerGender: DS.belongsTo('dicttype'),//老人性别,1男2女
+  relationType: DS.belongsTo('dicttype'),//个人  夫妻
+  customerGenderFlag:Ember.computed('customerGender',function(){
+    let customerGender = this.get('customerGender');
+    let customerGenderFlag = {};
+    if(customerGender){
+      if(customerGender.get('typecode')=="sexTypeMale"){
+        customerGenderFlag.man = true;
+      }
+      if(customerGender.get('typecode')=="sexTypeFemale"){
+        customerGenderFlag.woman = true;
+      }
+    }
+    return customerGenderFlag;
+  }),
   customerName: DS.attr('string'),//老人名字
   customerNative: DS.belongsTo('dicttype'),//老人籍贯
   customerPS: DS.attr('string'),//老人身体状况
@@ -49,26 +63,45 @@ var consult = BaseModel.extend({
   //咨询人性别
   advGenderName:Ember.computed('advGender',function(){
     let advGender = this.get('advGender');
+    if(!advGender.get('typename')){
+      return '女士';
+    }
     if(advGender.get('typename') == '男'){
       return '先生';
     }
     if(advGender.get('typename') == '女'){
       return '女士';
     }
+
   }),
   advWayName:Ember.computed('advWay',function(){
     var str ='';
     this.get('advWay').forEach(function(advWayObj){
-      str+=advWayObj.get('typename')+',';
+      str+=advWayObj.get('typename')+' ';
     });
-    return str.substring(0,str.length - 1);
+    if(str.length>10){
+      return   str.substring(0, 9)+"...";
+    }else{
+      return str;
+    }
   }),
   inPreferenceName:Ember.computed('inPreference',function(){
     var str ='';
     this.get('inPreference').forEach(function(inPreferenceObj){
-      str+=inPreferenceObj.get('typename')+',';
+      str+=inPreferenceObj.get('typename')+' ';
     });
-    return str.substring(0,str.length - 1);
+    if(str.length>10){
+      return   str.substring(0, 9)+"...";
+    }else{
+      return str;
+    }
+  }),
+  inPreferenceString:Ember.computed('inPreference',function(){
+    var str ='';
+    this.get('inPreference').forEach(function(inPreferenceObj){
+      str+=inPreferenceObj.get('typename')+' ';
+    });
+      return str;
   }),
   //咨询日期
   advDateComputed:Ember.computed("advDate",function(){
@@ -98,16 +131,17 @@ var consult = BaseModel.extend({
       var createDateTime = this.get("appointmentDate");
       if(!createDateTime){return null;}
       var timeStr = this.get("dateService").formatDate(createDateTime, "yyyy-MM-dd hh:mm");
-      var timeString = timeStr.replace(/-0/,"年");
-      timeString = timeString.replace(/-/,"月");
-      timeString = timeString.replace(/ /,"日 ");
-      console.log("timeString.charAt(0):",timeString.charAt(0));
-      if(timeString.charAt(0) == "0"){
-        var createDateTimeShortString = timeString.substring(1);
-        return createDateTimeShortString;
-      }else{
-        return timeString;
-      }
+      // var timeString = timeStr.replace(/-0/,"年");
+      // timeString = timeString.replace(/-/,"月");
+      // timeString = timeString.replace(/ /,"日 ");
+      // console.log("timeString.charAt(0):",timeString.charAt(0));
+      // if(timeString.charAt(0) == "0"){
+      //   var createDateTimeShortString = timeString.substring(1);
+      //   return createDateTimeShortString;
+      // }else{
+      //   return timeString;
+      // }
+      return timeStr;
   }),
     remarkString:Ember.computed("remark",function(){
       var remark=this.get("remark");
@@ -212,16 +246,17 @@ var consult = BaseModel.extend({
       var createDateTime = this.get("advDate");
       if(!createDateTime){return null;}
       var timeStr = this.get("dateService").formatDate(createDateTime, "yyyy-MM-dd hh:mm");
-      var timeString = timeStr.replace(/-0/,"年");
-      timeString = timeString.replace(/-/,"月");
-      timeString = timeString.replace(/ /,"日 ");
-      console.log("timeString.charAt(0):",timeString.charAt(0));
-      if(timeString.charAt(0) == "0"){
-        var createDateTimeShortString = timeString.substring(1);
-        return createDateTimeShortString;
-      }else{
-        return timeString;
-      }
+      // var timeString = timeStr.replace(/-0/,"年");
+      // timeString = timeString.replace(/-/,"月");
+      // timeString = timeString.replace(/ /,"日 ");
+      // console.log("timeString.charAt(0):",timeString.charAt(0));
+      // if(timeString.charAt(0) == "0"){
+      //   var createDateTimeShortString = timeString.substring(1);
+      //   return createDateTimeShortString;
+      // }else{
+      //   return timeString;
+      // }
+      return timeStr;
   }),
   //是否已预定
   computedStatus:Ember.computed("consultStatus",function(){

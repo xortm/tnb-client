@@ -1,13 +1,12 @@
 import Ember from 'ember';
 import InfiniteScroll from '../../infinite-scroll';
-import Echarts from "npm:echarts";
+
 
 export default Ember.Controller.extend(InfiniteScroll,{
   infiniteContentPropertyName: "",
   infiniteModelName: "",
   infiniteContainerName:"userHealthyFileCheckContainer",
 
-  moment: Ember.inject.service(),
   statusService: Ember.inject.service("current-status"),
   store: Ember.inject.service("store"),
   dateService: Ember.inject.service("date-service"),
@@ -53,6 +52,8 @@ export default Ember.Controller.extend(InfiniteScroll,{
       console.log("sortByOver",sortByOver);
       console.log("healthInfoList model",healthInfoList);
       _self.set("healthInfoList",sortByOver);
+      _self.hideAllLoading();
+      _self.directInitScoll(true);
     });
   },
   showChartData() {
@@ -100,7 +101,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
         var chartType = chartHealth.get('itemtype.typecode'); //体检类型
         var chartResult = chartHealth.get('result'); //体检结果
         var chartResultAddtion = chartHealth.get('resultAddtion'); //低压
-        var itemDate = chartHealth.get('examDateStringMobile'); //体检时间
+        var itemDate = chartHealth.get('examDateString'); //体检时间
         console.log("itemDate1111111",itemDate);
         //console.log("chartType is",chartType);
         //血压
@@ -198,7 +199,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
             boundaryGap: false,
             data: bloodDate, //x轴(时间)
             axisLabel: {
-                interval: 0
+                interval: "auto"
             }
         }],
         yAxis: {
@@ -257,7 +258,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
             boundaryGap: false,
             data: oxygenDate, //x轴(时间)
             axisLabel: {
-                interval: 0
+                interval: "auto"
             }
         }],
         yAxis: {
@@ -308,7 +309,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
             boundaryGap: false,
             data: breathDate, //x轴(时间)
             axisLabel: {
-                interval: 0
+                interval: "auto"
             }
         }],
         yAxis: {
@@ -359,7 +360,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
             boundaryGap: false,
             data: weightDate, //x轴(时间)
             axisLabel: {
-                interval: 0
+                interval: "auto"
             }
         }],
         yAxis: {
@@ -410,7 +411,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
             boundaryGap: false,
             data: emptyDate, //x轴(时间)
             axisLabel: {
-                interval: 0
+                interval: "auto"
             }
         }],
         yAxis: {
@@ -461,7 +462,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
             boundaryGap: false,
             data: fatDate, //x轴(时间)
             axisLabel: {
-                interval: 0
+                interval: "auto"
             }
         }],
         yAxis: {
@@ -512,7 +513,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
             boundaryGap: false,
             data: heartDate, //x轴(时间)
             axisLabel: {
-                interval: 0
+                interval: "auto"
             }
         }],
         yAxis: {
@@ -563,7 +564,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
             boundaryGap: false,
             data: temperatureDate, //x轴(时间)
             axisLabel: {
-                interval: 0
+                interval: "auto"
             }
         }],
         yAxis: {
@@ -603,7 +604,7 @@ initChart() {
     var pwBlood = theWidth ;
     console.log("pwBlood is:" + pwBlood);
     $("#myChartBloodCheck").width(pwBlood);
-    var myChartBlood = Echarts.init(document.getElementById('myChartBloodCheck'));
+    var myChartBlood = echarts.init(document.getElementById('myChartBloodCheck'));
     this.set("myChartBlood", myChartBlood);
     //初始化图表-血氧
     // if (this.get("hasInitChartOxygen")) {
@@ -614,7 +615,7 @@ initChart() {
     // var pwOxygen = ($("#health-area").width()) ;
     console.log("pwOxygen is:" + pwOxygen);
     $("#myChartOxygenCheck").width(pwOxygen);
-    var myChartOxygen = Echarts.init(document.getElementById('myChartOxygenCheck'));
+    var myChartOxygen = echarts.init(document.getElementById('myChartOxygenCheck'));
     this.set("myChartOxygen", myChartOxygen);
     //初始化图表-呼吸频率
     // if (this.get("hasInitChartBreath")) {
@@ -625,7 +626,7 @@ initChart() {
     // var pwBreath = ($("#health-area").width());
     console.log("pwBreath is:" + pwBreath);
     $("#myChartBreathCheck").width(pwBreath);
-    var myChartBreath = Echarts.init(document.getElementById('myChartBreathCheck'));
+    var myChartBreath = echarts.init(document.getElementById('myChartBreathCheck'));
     this.set("myChartBreath", myChartBreath);
     //初始化图表-体重
     // if (this.get("hasInitChartWeight")) {
@@ -636,7 +637,7 @@ initChart() {
     // var pwWeight = ($("#health-area").width()) ;
     console.log("pwWeight is:" + pwWeight);
     $("#myChartWeightCheck").width(pwWeight);
-    var myChartWeight = Echarts.init(document.getElementById('myChartWeightCheck'));
+    var myChartWeight = echarts.init(document.getElementById('myChartWeightCheck'));
     this.set("myChartWeight", myChartWeight);
     //初始化图表-空腹血糖
     // if (this.get("hasInitChartEmpty")) {
@@ -647,7 +648,7 @@ initChart() {
     // var pwEmpty = ($("#health-area").width()) ;
     console.log("pwEmpty is:" + pwEmpty);
     $("#myChartEmptyCheck").width(pwEmpty);
-    var myChartEmpty = Echarts.init(document.getElementById('myChartEmptyCheck'));
+    var myChartEmpty = echarts.init(document.getElementById('myChartEmptyCheck'));
     this.set("myChartEmpty", myChartEmpty);
     //初始化图表-脂肪数据
     // if (this.get("hasInitChartFat")) {
@@ -658,7 +659,7 @@ initChart() {
     // var pwFat = ($("#health-area").width()) ;
     console.log("pwFat is:" + pwFat);
     $("#myChartFatCheck").width(pwFat);
-    var myChartFat = Echarts.init(document.getElementById('myChartFatCheck'));
+    var myChartFat = echarts.init(document.getElementById('myChartFatCheck'));
     this.set("myChartFat", myChartFat);
     //初始化图表-心率数据
     // if (this.get("hasInitChartHeart")) {
@@ -669,7 +670,7 @@ initChart() {
     // var pwHeart = ($("#health-area").width());
     console.log("pwHeart is:" + pwHeart);
     $("#myChartHeartCheck").width(pwHeart);
-    var myChartHeart = Echarts.init(document.getElementById('myChartHeartCheck'));
+    var myChartHeart = echarts.init(document.getElementById('myChartHeartCheck'));
     this.set("myChartHeart", myChartHeart);
     //初始化图表-体温数据
     // if (this.get("hasInitChartTemperature")) {
@@ -680,7 +681,7 @@ initChart() {
     // var pwTemperature = ($("#health-area").width());
     console.log("pwHeart is:" + pwTemperature);
     $("#myChartTemperatureCheck").width(pwTemperature);
-    var myChartTemperature = Echarts.init(document.getElementById('myChartTemperatureCheck'));
+    var myChartTemperature = echarts.init(document.getElementById('myChartTemperatureCheck'));
     console.log("myChartTemperature", myChartTemperature);
     this.set("myChartTemperature", myChartTemperature);
   },

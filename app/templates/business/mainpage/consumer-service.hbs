@@ -1,0 +1,30 @@
+{{#ui/mobile/gestures-container}}
+<div id="consumerServiceContainer" class="mainContent {{if global_pageConstructure.showLoader 'hide' ''}}">
+  <div class="wrapperInner">
+    <ul class="padding-0-10 bk-color-white top10">
+      <li class="border-bottom-1"></li>
+      <li class="height44 line-height-44" id="publicnumber_service" {{action 'switchPage' 'publicnumber-service' 'publicnumber_service' on="tap"}}>
+        <i class="pull-left padding-left-10 line-height-44"><img class="a-img" src="assets/images/mobile/publicnumberService.png"/></i>
+        <span class="padding-left-10 color666666 font14 pull-left">服务记录 </span>
+        <i class="fa-angle-right font20 color-ccc pull-right line-height-44"></i>
+      </li>
+      <li class="border-bottom-1"></li>
+      <li class="height44 line-height-44" id="service_order_list" {{action 'switchPage' 'service-order-list' 'service_order_list' on="tap"}}>
+        <i class="pull-left padding-left-10 line-height-44"><img class="a-img" src="assets/images/mobile/serviceOrderList.png"/></i>
+        <span class="padding-left-10 color666666 font14 pull-left">服务预约 </span>
+        <i class="fa-angle-right font20 color-ccc pull-right line-height-44"></i>
+      </li>
+      <li class="border-bottom-1"></li>
+      <li class="height44 line-height-44" id="service_order_look" {{action 'switchPage' 'service-order-look' 'service_order_look' on="tap"}}>
+        <i class="pull-left padding-left-10 line-height-44"><img class="a-img" src="assets/images/mobile/serviceOrderLook.png"/></i>
+        <span class="padding-left-10 color666666 font14 pull-left">订单查看 </span>
+        <i class="fa-angle-right font20 color-ccc pull-right line-height-44"></i>
+      </li>
+      <li class="border-bottom-1"></li>
+    </ul>
+  </div>
+</div>
+{{/ui/mobile/gestures-container}}
+
+{{ui/container/infinite-scroll moniteData="theCustomerList" didRenderAction="didRender"
+didInsertElementAction="didInsertElement"}}

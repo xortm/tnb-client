@@ -11,6 +11,19 @@ export default BaseItem.extend(CustomerValidations, {
     dateService: Ember.inject.service("date-service"),
     pathConfiger: Ember.inject.service("path-configer"),
     dataLoader: Ember.inject.service("data-loader"),
+    chargeTypeDay:Ember.computed('customerInComp',function(){
+      let customerInComp = this.get('customerInComp');
+      console.log('chargeType',customerInComp.get('chargeType.typecode'));
+      if(!customerInComp.get('chargeType.typecode')){
+        return true;
+      }
+      if(customerInComp.get('chargeType.typecode')=="chargeTypeY"){
+        return false;
+      }
+      if(customerInComp.get('chargeType.typecode')=='chargeTypeD'){
+        return true;
+      }
+    }),
     customerModel: Ember.computed("customerInComp", function() {
         var model = this.get("customerInComp");
         console.log("model customerInComp", model);

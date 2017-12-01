@@ -16,6 +16,7 @@
               <th rowspan="1" colspan="1" width="">开始时间</th>
               <th rowspan="1" colspan="1" width="">结束时间</th>
               <th rowspan="1" colspan="1" width="">班次颜色</th>
+              <th rowspan="1" colspan="1" width="">看护老人</th>
               <th rowspan="1" colspan="1" width="">备注</th>
             </tr>
           </thead>
@@ -26,7 +27,8 @@
               <td >{{worktimesetting.startTime}}</td>
               <td >{{worktimesetting.endTime}}</td>
               <td ><div class="{{worktimesetting.colorName}} work-color"></div></td>
-              <td >{{worktimesetting.remark}}</td>
+              <td style="max-width:200px;"><div  class="nowrap" title={{worktimesetting.customerName}}>{{worktimesetting.customerName}}</div></td>
+              <td style="max-width:200px;"><div  class="nowrap">{{worktimesetting.remark}}</div></td>
             </tr>
             {{/each}}
           </tbody>

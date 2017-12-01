@@ -1,0 +1,81 @@
+
+<div class="col-sm-12">
+  <div class="box">
+  	<!-- BOX-BODY -->
+  	<div class="box-body">
+    <div id="datatable1_wrapper" class="dataTables_wrapper form-inline" role="grid">
+      <div class="row ">
+        <div class="col-sm-5">
+          <div class="input-group">
+            {{input class="form-control" type="text" placeholder="搜索套餐名称" value=queryCondition enter="search"}}
+            <span class="input-group-btn">
+              <button class="btn btn-primary btn-reduce" type="button" style="touch-action: manipulation; -ms-touch-action: manipulation;" {{action "search" on="click"}}>
+                <i class="fa fa-search"></i>
+              </button>
+            </span>
+          </div>
+        </div>
+        <div class="user-add-btn col-sm-3 pull-right nopadding-right" >
+          {{#ui/mix-button class=" user-btn pull-right" iconClass="fa-plus"  text='新增套餐信息'  clickAction="toAddFoodpackage" toAddFoodpackage="toAddFoodpackage"}}
+          {{/ui/mix-button}}
+        </div>
+      </div>
+          <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable mt15" aria-describedby="datatable1_info">
+            <thead>
+              <tr role="row">
+                <th rowspan="1" colspan="1" width="">套餐名称</th>
+                <th rowspan="1" colspan="1" width="">创建人</th>
+                {{#each foodTimeList as |foodTime|}}
+                <th rowspan="1" colspan="1" width="">{{foodTime.typename}}</th>
+                {{/each}}
+              </tr>
+            </thead>
+            {{#if foodpackageList}}
+          <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+              {{#each foodpackageList as |foodpackage|}}
+              <tr class="gradeA odd" {{action "toDetailPage" foodpackage on="click"}}>
+                <td class=" ellipsis sorting_1">{{foodpackage.name}}</td>
+                <td class=" ellipsis ">{{foodpackage.createUser.name}}</td>
+                {{#each foodpackage.tableList as |list|}}
+                  <td class=" ellipsis " style='max-width:200px;'><div  class="nowrap" title={{list}}>{{list}}</div></td>
+                {{/each}}
+          	  </tr>
+              {{/each}}
+           </tbody>
+           {{else}}
+           {{/if}}
+            </table>
+      {{#if foodpackageList }}
+          {{page-numbers content=foodpackageList showFL=true numPagesToShow=3}}
+      {{else}}
+          <h1 class="col-sm-12 center unTask"></h1>
+      {{/if}}
+    </div>
+    </div>
+  </div>
+</div>
+
+{{#if addfoodpackageModel}}
+	{{#bs-modal body=false footer=false header=false closedAction=(action "invitation")}}
+
+		{{#bs-modal-header}}
+			<h3 class="modal-title">新增套餐</h3>
+		{{/bs-modal-header}}
+		{{#bs-modal-body}}
+    {{#bs-form formLayout=formLayout model=foodpackageModel invalid=(action "invalid")}}
+        <div class="col-xs-12 nopadding-horizontal">
+  					<div class="form-input-group">
+  						<span class="input-group-addon">套餐名称：</span>
+
+  					</div>
+  				</div>
+      {{/bs-form}}
+		{{/bs-modal-body}}
+		{{#bs-modal-footer class="user-add-btn confirmCreate"}}
+      {{#ui/mix-button class="user-btn edit-btn"  iconClass="fa fa-save"  text='确定' clickAction="saveNewFoodpackage" saveNewFoodpackage="saveNewFoodpackage"}}
+      {{/ui/mix-button}}
+      {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="invitation" invitation="invitation"}}
+      {{/ui/mix-button}}
+		{{/bs-modal-footer}}
+	{{/bs-modal}}
+{{/if}}

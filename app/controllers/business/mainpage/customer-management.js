@@ -46,7 +46,12 @@ export default Ember.Controller.extend({
     //用户统计-查询条件(默认按用户分析)
     var customerAnalysisList=['statType18','statType19','statType20'];
     this.set('paramList',customerAnalysisList);
-    this.set('paramShow','customerAnalysis');
+    let activeShow = this.get("activeShow");
+    if(activeShow){
+      this.set('paramShow',activeShow);
+    }else{
+      this.set('paramShow','customerAnalysis');
+    }
     //默认时间(当月第一天第一分第一秒至当前时间)
     this.set('durTypeFlag','day');
     var momentTime=this.get("dateService").getCurrentTime();//当前时间戳
@@ -71,8 +76,13 @@ export default Ember.Controller.extend({
     },
     customerAnalysisClick:function(customerAnalysis){//入住
       this.set('paramShow',customerAnalysis);//标识组件里面显示哪些图表
+      this.set('activeShow',customerAnalysis);//标识组件里面显示哪些图表
       var customerAnalysisList=['statType18','statType19','statType20'];//查询哪些统计类型
       this.set('paramList',customerAnalysisList);
+    },
+    customerDataClick:function(customerData){//入住
+      this.set('paramShow',customerData);//标识组件里面显示哪些图表
+      this.set('activeShow',customerData);//标识组件里面显示哪些图表
     },
     submmit(durTypeFlag,beginseaconFlag,endseaconFlag,showStartDate,showEndDate,beginDate,endDate,showBeginSeaconDate,beginseaconDate,endseaconDate,showEndSeaconDate){
       console.log('durTypeFlag is',durTypeFlag);

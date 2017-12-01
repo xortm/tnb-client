@@ -118,6 +118,7 @@ export default Ember.Controller.extend({
           App.lookup("route:business.mainpage.consultation-management").doQuery();
         },
         searchAp(flag){
+          console.log('预约日期',flag);
           this.set("dateQueryConditionAp", flag);
           this.set("beginDateAp", null);
           this.set("endDateAp", null);

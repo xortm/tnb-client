@@ -8,6 +8,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
   infiniteContentPropertyName: "nursinglogDetailList",
   infiniteModelName: "nursinglog",
   infiniteContainerName:"nursinglogDetailContainer",
+  stopScroll: true,//阻止下拉刷新的所有操作
   speechFlag:false,
   dynamicsFlag:0,
   //通过event service监控顶部菜单的选择事件，并进行相关方法调用

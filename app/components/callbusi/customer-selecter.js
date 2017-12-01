@@ -104,6 +104,7 @@ export default BaseItem.extend({
     },
     //选择某个老人
     choiceCustomer(cid,leaveStatus){
+      console.log('choiceCustomer in customer-selecter');
       let _self = this;
       // var queryCustomer = this.get("queryCustomer");
       let isSquare = this.get("isSquare");
@@ -145,7 +146,9 @@ export default BaseItem.extend({
           this.set("logCustomerId",cid);
         }
         if(isSquare == 12){
+          this.set('global_curStatus.timeSearch',false);
           this.set("attendanceEmployeeId",cid);
+
         }
         if(isSquare == 15){
           this.set('evaluateCustomerId',cid);

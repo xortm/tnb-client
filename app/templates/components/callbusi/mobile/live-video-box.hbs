@@ -1,0 +1,16 @@
+<div class="video-box {{if videoBoxBig "video-box-big" "video-box-small"}} {{if showBoxFlag "" "hide"}}" {{action "switchVideoBoxToBig" on="tap" bubbles=false}}>
+  {{#ui/mobile/gestures-container}}
+  <h2 class="top10 center font18 line-height-30 color666666 bottom30 {{if videoBoxBig "" "hide"}}"><span class="color2FA7FD padding-0-5">{{customerName}}</span>老人实时视频</h2>
+  <div class="width100B position-relative">
+    {{#if videoHasDoneFlag}}
+      <div class="video-has-done-class {{if videoBoxBig "font20 line-height-200" "font12 line-height-80"}}">正在加载...</div>
+    {{/if}}
+    <video id="my-video" class="c-h5 video-js vjs-default-skin width100B video-js-mobile" x5-video-player-type='h5' x5-video-player-fullscreen="true" playsinline="true" webkit-playsinline="true" controls>
+    </video>
+  </div>
+  <div class="button-class {{if videoBoxBig "" "hide"}}">
+    <div class="button button1" {{action "closeVideoBox" on="tap" bubbles=false}}>关闭视频</div>
+    <div class="button button2" {{action "switchVideoBoxToSmall" on="tap" bubbles=false}}>最小化视频</div>
+  </div>
+  {{/ui/mobile/gestures-container}}
+</div>

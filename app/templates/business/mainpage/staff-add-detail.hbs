@@ -56,46 +56,6 @@
                   </div>
                 </div>
 
-                <div class="line">
-                  <!-- <div class="col-xs-12 col-sm-6 nopadding-left">
-                      <div class="form-input-group label-normal">
-                          <span class="input-group-addon">挂接用户：</span>
-                          {{#if operateFlag}}
-                              {{#if editModel}}
-                                  {{#power-select placeholder='挂接用户' options=systemUserList selected=staffModel.systemUser searchField="name" noMatchesMessage="没有相关内容" allowClear=allowClear onchange=(action "systemUserSelect" ) as |systemUser|}}
-                                      {{systemUser.name}}
-                                  {{/power-select}}
-                              {{else}}
-                                  <div class="font-light input-group-content">{{staffModel.systemUser.name}}</div>
-                              {{/if}}
-                          {{else}}
-                            {{#power-select placeholder='挂接用户' options=systemUserList selected=staffModel.systemUser searchField="name" noMatchesMessage="没有相关内容" allowClear=allowClear onchange=(action "systemUserSelect" ) as |systemUser|}}
-                                {{systemUser.name}}
-                            {{/power-select}}
-                          {{/if}}
-                      </div>
-                  </div> -->
-                  <!-- <div class="col-xs-12 col-sm-6 nopadding-left">
-                      <div class="form-input-group label-normal">
-                          <span class="input-group-addon">对应岗位：</span>
-                          {{#if operateFlag}}
-                              {{#if editModel}}
-                                {{#bs-form-element class="inline-block form-input-group label-normal" controlType="careType" property="careType" }}
-                                    {{callbusi/dict-selector curDict=staffModel.careType groupCode=constants.careType showName="护理类别" dictSelect="careTypeSelect" value=staffModel.careType preselected=false}}
-                                {{/bs-form-element}}
-                              {{else}}
-                                  <div class="font-light input-group-content">{{staffModel.careType.typename}}</div>
-                              {{/if}}
-                          {{else}}
-                            {{#bs-form-element class="inline-block form-input-group label-normal" controlType="careType" property="careType" }}
-                                {{callbusi/dict-selector curDict=staffModel.staffSex groupCode=constants.careType showName="护理类别" dictSelect="careTypeSelect" value=staffModel.careType preselected=false}}
-                            {{/bs-form-element}}
-                          {{/if}}
-                      </div>
-                  </div> -->
-
-                </div>
-
                     <div class="bottom12 sign col-sm-12 nopadding-left">
                         <strong class="font16 font-black">个人资料</strong>
                     </div>
@@ -176,8 +136,6 @@
                                     {{else}}
                                       <div class="font-light input-group-content">请填写身份证号码，填写后将自动计算年龄</div>
                                     {{/if}}
-                                    <!-- {{bs-form-element property="age" class="inline-block form-input-group label-normal" controlType="age" placeholder="年龄"}} -->
-                                    <!-- {{input class="font-light input-group-content padding-left-12" value=staffModel.age placeholder="请填写身份证号码，填写后将自动计算年龄" readonly="readonly"}} -->
                                   {{/if}}
                               </div>
                           </div>
@@ -208,11 +166,6 @@
                                         locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'
                                         show="dpShowAction" change="birthAction" }}
                                       {{/bs-form-element}}
-                                    <!-- {{#if staffModel.staffBirth}}
-                                      <div class="font-light input-group-content">{{staffModel.staffBirthString}} </div>
-                                    {{else}}
-                                      <div class="font-light input-group-content">请填写身份证号码，填写后将自动计算生日</div>
-                                    {{/if}} -->
                                   {{/if}}
                               </div>
                           </div>
@@ -510,8 +463,6 @@
                         <div class="col-xs-12 col-sm-6 nopadding-left">
                             <div class="form-input-group label-normal">
                                 <span class="input-group-addon">合同截止日期：</span>
-                                {{log "sfsafasfa" staffModel.theContractEndDateDate}}
-                                {{log "sfsafasfa" staffModel.contractEndDateString}}
                                 {{#if operateFlag}}
                                     {{#if editModel}}
                                     {{#bs-form-element class="inline-block form-input-group" controlType="contractEndDate"  property="contractEndDate" }}
@@ -565,6 +516,30 @@
                                 {{/if}}
                             </div>
                         </div>
+                        {{#if staff.departureFlag}}
+                        <div class="col-xs-12 col-sm-6 nopadding-left">
+                            <div class="form-input-group label-normal">
+                                <span class="input-group-addon">离职日期：</span>
+                                {{#if operateFlag}}
+                                    {{#if editModel}}
+                                      {{#bs-form-element class="inline-block form-input-group" controlType="departureDate"  property="departureDate" }}
+                                        {{ui/addon/bs-datetimepicker date=staffModel.departureDateTime  placeholder="离职日期(必填)"
+                                        locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'
+                                        show="dpShowAction" change="departureAction" }}
+                                      {{/bs-form-element}}
+                                    {{else}}
+                                        <div class="font-light input-group-content">{{staffModel.departureDateString}}</div>
+                                    {{/if}}
+                                {{else}}
+                                  {{#bs-form-element class="inline-block form-input-group" controlType="departureDate"  property="departureDate" }}
+                                    {{ui/addon/bs-datetimepicker date=staffModel.departureDateTime  placeholder="离职日期(必填)"
+                                    locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'
+                                    show="dpShowAction" change="departureAction" }}
+                                  {{/bs-form-element}}
+                                {{/if}}
+                            </div>
+                        </div>
+                        {{/if}}
                     </div>
 
                     <div style="clear:both" />
@@ -576,10 +551,6 @@
                                   {{/ui/mix-button}}
                                   {{#ui/mix-button class="user-btn edit-btn body-text-color  pull-right" iconClass="fa-check" text='保存' clickAction="saveClick" saveClick="saveClick"}}
                                   {{/ui/mix-button}}
-                                    <!-- {{#ui/mix-button class="user-btn edit-btn" iconClass="fa-save" text='保存' }}
-                                    {{/ui/mix-button}}
-                                    {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo" text='取消' clickAction="cancelEdit" cancelEdit="cancelEdit" clickActParams=testParams}}
-                                    {{/ui/mix-button}} -->
                                 {{/if}}
                             {{else}}
                                 {{#ui/mix-button class="user-btn edit-btn body-text-color" iconClass="fa-check" text='保存'  clickAction="saveClick" saveClick="saveClick"}}

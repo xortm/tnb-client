@@ -45,7 +45,8 @@ export default DS.JSONAPIAdapter.extend({
     //如果是提交类验证错误，则重新登录
     // console.log("handleResponse in ,status:" + status);
     // console.log("handleResponse in ,requestData:" , requestData);
-    if(status===401&&(requestData.method==="POST"||requestData.method==="PATCH"||requestData.method==="DELETE")){
+    if((status===401||status===500||status===502||status===504)&&(requestData.method==="POST"||requestData.method==="PATCH"||requestData.method==="DELETE")){
+      _self.get("curStatus").set("saveErrorFlag",true);
       if(this.get("timeoutTransfer")){
         return;
       }

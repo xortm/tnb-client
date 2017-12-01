@@ -1,0 +1,23 @@
+{{callbusi/mobile/service-order-tabbar menus=tabFuncs switchTab="switchTab"}}
+{{#ui/mobile/gestures-container}}
+<div id="serviceOrderLookingContainer" class="mainContent border-top-1 {{if global_pageConstructure.showLoader 'hide' ''}}" style="padding-top:40px;">
+  <div class="wrapperInner bgcolor-white">
+  {{#if nursingplandetailList}}
+    {{log "nursingplandetailList in hbs:" nursingplandetailList}}
+    {{#each nursingplandetailList as |item|}}
+      {{#callbusi/mobile/order-look-item item=item isConsumer=false}}
+      {{/callbusi/mobile/order-look-item}}
+    {{/each}}
+  {{else}}
+    <div class="nodate">暂无订单</div>
+  {{/if}}
+
+
+
+  </div>
+
+</div>
+{{/ui/mobile/gestures-container}}
+
+{{ui/container/infinite-scroll moniteData="customerserviceitemList"
+didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

@@ -14,7 +14,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
     var _self = this;
     console.log("queryFlagInFlag:",this.get("queryFlagInFlag"));
     this.infiniteQuery('hbeaconwarning',{filter:{'scannerId@$isNotNull':'null'},sort:{callTime:'desc'}});
-  }.observes("queryFlagInFlag").on("init"),
+  }.observes("queryFlagInFlag","customerListFlag").on("init"),
 
   //当添加完说明后执行此操作
   customerListObs: function(){
@@ -39,6 +39,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
           hbeaconwarning.set("flag",warningItem.get("flag"));
           hbeaconwarning.set("operater",warningItem.get("operater"));
           hbeaconwarning.set("operateNote",warningItem.get("operateNote"));
+          hbeaconwarning.set("exeRemark",warningItem.get("exeRemark"));
           hbeaconwarning.set("operateTime",warningItem.get("operateTime"));
           hbeaconwarning.set("operateTimeShortString",_self.operateTimeShortString(warningItem.get("operateTime")));
           console.log("hbeaconwarning after in forEach:",hbeaconwarning);

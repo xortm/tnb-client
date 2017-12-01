@@ -7,6 +7,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
   mainController: Ember.inject.controller('business.mainpage'),
   nocustomerId:false,
   infiniteContainerName:"pressureCareContainer",
+  stopScroll: true,//阻止下拉刷新的所有操作
   actions:{
     toEvaluation(){
       let _self = this;

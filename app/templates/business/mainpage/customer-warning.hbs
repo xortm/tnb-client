@@ -3,7 +3,6 @@
   <div class="wrapperInner">
   {{#if hbeaconwarningList}}
     <div class="bgcolor-white">
-    {{log "hbeaconwarningList hbs" hbeaconwarningList}}
     {{#each hbeaconwarningList as |hbeaconwarning|}}
       {{#callbusi/mobile/customer-warning-list item=hbeaconwarning outerClass="col-sm-6 col-xs-12 height-auto"}}
       {{/callbusi/mobile/customer-warning-list}}

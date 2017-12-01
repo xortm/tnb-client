@@ -12,8 +12,11 @@ export default Ember.Controller.extend(InfiniteScroll,{
     let physicalReport = this.store.peekRecord('physicalReport',id);
     this.set('physicalReport',physicalReport);
     console.log('physicalReport',physicalReport);
+    this.hideAllLoading();
   }.observes('physicalReportId'),
-  queryFlagIn: function(){return;},
+  queryFlagIn: function(){
+    this.hideAllLoading();
+  },
 
   actions:{
 

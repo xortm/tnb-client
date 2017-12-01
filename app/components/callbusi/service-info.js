@@ -13,7 +13,6 @@ export default Ember.Component.extend(informationValidations, {
     pathConfiger: Ember.inject.service("path-configer"),
     informationModel: Ember.computed("information", function() {
         var model = this.get("information");
-        console.log("model information", model);
         if (!model) {
             return null;
         }
@@ -29,7 +28,6 @@ export default Ember.Component.extend(informationValidations, {
         },
         //删除
         delateClick: function(information) {
-            console.log("del information is", information);
             var _self = this;
             _self.set('showpopInvitePassModal', false);
             this.get("store").query("customer", {
@@ -39,7 +37,7 @@ export default Ember.Component.extend(informationValidations, {
             }).then(function(customerList) {
                 if (customerList.get("content.length")) {
                     console.log("del customerList is", customerList);
-                    App.lookup('controller:business.mainpage').showPopTip("您删除的餐饮等级正在使用，不能删除");
+                    App.lookup('controller:business.mainpage').showPopTip("您删除的餐饮等级正在使用，不能删除",false);
                 } else {
                     App.lookup('controller:business.mainpage').showConfirm("是否确定删除此服务信息", function() {
                         App.lookup('controller:business.mainpage').openPopTip("正在删除");
@@ -60,17 +58,17 @@ export default Ember.Component.extend(informationValidations, {
             this.set("information", information);
             this.set("addDict", false);
             this.set("showData", false);
-            console.log("toDetailPage addDict is", this.get("addDict"));
         },
         //添加按钮
         addData: function() {
             var _self = this;
             this.set('showpopInvitePassModal', true);
             let information = this.get("store").createRecord('dicttypetenant', {});
+            information.set('typeValue',0);
+            information.set('totalPrice',0);
             this.set('information', information);
             this.set("addDict", true);
             this.set("showData", true);
-            console.log("addData addDict is", this.get("addDict"));
         },
         //弹窗取消
         invitation() {
@@ -93,7 +91,6 @@ export default Ember.Component.extend(informationValidations, {
                         App.lookup('controller:business.mainpage').showPopTip("保存成功");
                         _self.send('refreshStaffList');
                     },function(err){
-                      console.log('错误码为',err);
                       let error = err.errors[0];
                       if(error.code==="4"){
                         informationModel.validate().then(function(){
@@ -105,14 +102,10 @@ export default Ember.Component.extend(informationValidations, {
                     });
                 } else {
                     informationModel.set("validFlag", Math.random());
-                    //alert("校验失败");
                 }
             });
         },
         refreshStaffList: function() {
-          //alert('11');
-            // var route = App.lookup('route:business.mainpage.service-management');
-            // App.lookup('controller:business.mainpage').refreshPage(route);
             this.sendAction('refreshStaffList');
         },
     }

@@ -1,24 +1,31 @@
 {{log "customerdynamic in hbs:" customerdynamic}}
-<div class="width100B height-auto padding-5-10 position-relative bk-color-white bottom-border-plan1" {{action 'showDelBut' on="press"}}>
-  <div class="width100B height40 clearfix">
-    <div class="pull-left font14 line-height-40 color333333">记录人:{{customerdynamic.createUser.name}}</div>
-    <div class="pull-right font14 line-height-40 color333333">{{customerdynamic.createTimeStr}}</div>
-  </div>
-  <div class="width100B height-auto">
-    {{#if (eq customerdynamic.dynamicType.typecode constants.dynamicType1)}}
-    <!-- 视频 -->
-    {{else if (eq customerdynamic.dynamicType.typecode constants.dynamicType2)}}
-    <!-- 语音 -->
-    {{else if (eq customerdynamic.dynamicType.typecode constants.dynamicType3)}}
-    <!-- 图片 -->
-      <!-- {{#ui/img-intergration-simple name="dynamicShowImg" isMobile=true businessFlag="clickShowBigImgUpload" showBigImageModal=showBigImageModal hasUploader=true isResizeImage=true imgSrc=customerdynamic.picPathUrl height=60 width=60 margin-left=0 uploadUrl=uploadUrl uploadSucc="uploadSucc" uploadFail="uploadFail" businessType=constants.uploadBusinessType_headimg as |component|
-      }}
-      {{/ui/img-intergration-simple}} -->
-      <img src="{{customerdynamic.picPathUrl}}" alt="" class="width100B">
-    {{else if (eq customerdynamic.dynamicType.typecode constants.dynamicType4)}}
-    <!-- 文字类 -->
-      <p class="font14 line-height-20 color999999">{{customerdynamic.contents}}</p>
-    {{/if}}
+<div class="width100B position-relative bk-color-ebebeb padding10 {{if (eq customerdynamic.dynamicType.typecode constants.dynamicType3) "height135" "height-auto"}}" {{action 'showDelBut' on="press"}}>
+  <div class="width100B height-auto clearfix position-relative">
+    <div class="width40 height40 position_absolute abs-top-left-0">
+      {{log "imgSrc111 in hbs:" customerdynamic.createUser.employee.avatarUrl}}
+      {{#ui/img-intergration-simple name="dynamicHeadImg" isMobile=true imgSrc=customerdynamic.createUser.employee.avatarUrl height=40 width=40 margin-left=0}}
+      {{/ui/img-intergration-simple}}
+    </div>
+    <div class="width100B padding-left-50 padding-right-30">
+      <div class="">{{customerdynamic.createUser.employee.name}}</div>
+      <div class="width100B height-auto">
+        {{#if (eq customerdynamic.dynamicType.typecode constants.dynamicType1)}}
+          <!-- 视频 -->
+        {{else if (eq customerdynamic.dynamicType.typecode constants.dynamicType2)}}
+          <!-- 语音 -->
+        {{else if (eq customerdynamic.dynamicType.typecode constants.dynamicType3)}}
+          <!-- 图片 -->
+          {{log "imgSrc in hbs:" customerdynamic.picPathUrl}}
+          {{#ui/img-intergration-simple name="dynamicShowImg" isMobile=true businessFlag="clickShowBigImgUpload" showBigImageModal=showBigImageModal hasUploader=true outerClass="width-auto height97" imgSrc=customerdynamic.picPathUrl margin-left=0}}
+          {{/ui/img-intergration-simple}}
+          <!-- <img src="{{customerdynamic.picPathUrl}}" alt="" class="width-auto height60"> -->
+        {{else if (eq customerdynamic.dynamicType.typecode constants.dynamicType4)}}
+          <!-- 文字类 -->
+          <p class="font14 line-height-20 color333333 bk-color-white padding-5-8 border-radius5">{{customerdynamic.contents}}</p>
+        {{/if}}
+      </div>
+    </div>
+    <div class="pull-right font12 line-height-18 color666666 position_absolute abs-top-right-0">{{customerdynamic.createTimeStr}}</div>
   </div>
   {{#if showDelButFlag}}
     <div class="width100B height100B position_absolute bk-color-000000-D5" style="top:0;left:0;" {{action 'hideDelBut' on="tap"}}>

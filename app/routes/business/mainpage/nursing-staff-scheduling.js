@@ -1,7 +1,12 @@
 import Ember from 'ember';
 import BaseBusiness from '../base-business';
 import Pagination from '../pagination';
-
+const {
+    staffStatus,
+    staffStatusIn,
+    taskApplyStatus_applyFail,
+    taskApplyStatus_refuseInvitation
+} = Constants;
 export default BaseBusiness.extend(Pagination,{
   header_title:'护理排班列表',
   model() {
@@ -9,6 +14,7 @@ export default BaseBusiness.extend(Pagination,{
   },
   feedBus: Ember.inject.service("feed-bus"),
   dateService: Ember.inject.service("date-service"),
+  dataLoader:Ember.inject.service('data-loader'),
   buildQueryParams:function(){
     var params=this.pagiParamsSet();
     var curController = this.getCurrentController();
@@ -41,6 +47,7 @@ export default BaseBusiness.extend(Pagination,{
     this.set('typeID','');
     this.doQuery();
     var _self=this;
+    controller.set('staffList',this.get('dataLoader.staffList'));
     this.store.query('staffschedule',{}).then(function(staffschedules){
       controller.set('staffschedules',staffschedules);
     });
@@ -59,7 +66,11 @@ export default BaseBusiness.extend(Pagination,{
     var queryCondition = controller.get('input');
     controller.set('queryCondition', queryCondition);
     this._super(controller,model);
-    controller.set('staffList',this.get('feedBus.workerList'));
+    //取所有在职员工
+    // this.store.query('employee',{filter:{staffStatus:{typecode:Constants.staffStatusIn}}}).then(function(staffList){
+    //   controller.set('staffList',staffList);
+    // });
+
     Ember.run.schedule("afterRender",this,function() {
       controller.setDate(new Date());
       let copyWeek = controller.get('copyWeekList').findBy('week',controller.get('curWeek')+1);

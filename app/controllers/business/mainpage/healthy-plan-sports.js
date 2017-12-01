@@ -6,7 +6,6 @@ export default Ember.Controller.extend(InfiniteScroll,{
   infiniteModelName: "",
   infiniteContainerName:"userHealthyPlanSportContainer",
 
-  moment: Ember.inject.service(),
   service_PageConstrut:Ember.inject.service("page-constructure"),
   mainController: Ember.inject.controller('business.mainpage'),
   pathConfiger: Ember.inject.service("path-configer"),
@@ -20,6 +19,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
     var curCustomer = this.get("statusService").getCustomer();//获取居家curCustomer
     var curCustomerId = curCustomer.get("id");//获取居家curCustomerId
      var _self = this;
+     _self._showLoading();
     _self.store.query("relCustomerScheme",{
       filter:{
         customer:{id:curCustomerId},
@@ -35,6 +35,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
       let relCustomerScheme =  relCustomerSchemeList.get("firstObject");
       console.log("relCustomerScheme",relCustomerScheme);
       _self.set("relCustomerScheme",relCustomerScheme);
+      _self.hideAllLoading();
     });
 },
 

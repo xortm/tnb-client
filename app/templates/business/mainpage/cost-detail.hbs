@@ -30,7 +30,7 @@
 
 							<div class="col-xs-12 col-sm-6">
 								<div class="form-input-group">
-									<span class="input-group-addon">账单类别：</span>
+									<span class="input-group-addon">结算类别：</span>
 	                {{callbusi/dict-selector class="inline-block" curDict=billInfo.billType groupCode=constants.billType
 	                  showName=billInfo.billType.typename value=billInfo.billType}}
 								</div>
@@ -126,26 +126,34 @@
 				<div class="row">
 					<div class="col-xs-12">
 						<p class="user-add-btn">
-								{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="detailCancel" detailCancel="detailCancel" }}
+								{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='保存' clickAction="detailSaveClick" detailSaveClick="detailSaveClick" clickActParams=billInfo}}
 								{{/ui/mix-button}}
-								{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='提交' clickAction="commit" commit="commit"}}
+								{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="cancel" cancel="cancel" }}
 								{{/ui/mix-button}}
 						</p>
 					</div>
 					<!-- 列表详细介绍 -->
 					<div class="col-xs-12 nopadding-left">
 						<div class="col-xs-12 nopadding-horizontal mt20">
+							<div class="bottom12 col-sm-12  border-bottom" style="height:26px;">
+									<strong class="font16 font-black">账单信息</strong>
+							</div>
+							<div class="divide-10" style="clear:both" />
 							<div class="col-xs-12 col-sm-6">
 								<div class="form-input-group">
 								<span class="input-group-addon">用户姓名：</span>
 									<div class="input-group-content">{{billInfo.customer.name}}</div>
 								</div>
-
 							</div>
-
 							<div class="col-xs-12 col-sm-6">
 								<div class="form-input-group">
-								<span class="input-group-addon">账单类别：</span>
+									<span class="input-group-addon">对应服务：</span>
+									<div class="input-group-content">{{billInfo.billStatType.typename}}</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="form-input-group">
+								<span class="input-group-addon">结算类别：</span>
 									<div class="input-group-content">{{billInfo.billType.typename}}</div>
 								</div>
 
@@ -182,7 +190,13 @@
 							<div class="col-xs-12 col-sm-6">
 								<div class="form-input-group">
 								<span class="input-group-addon">参考金额(元)：</span>
-										<div class="input-group-content">{{bedPrice}}(床位价格)+{{diningPrice}}(餐饮价格)+{{proPrice}}(护理价格)={{experiencePrice}}</div>
+										<div class="input-group-content">
+											{{#if appreciationBill}}
+												{{billInfo.total}}
+											{{else}}
+												{{billInfo.customer.actualPrice}}
+											{{/if}}
+										</div>
 								</div>
 							</div>
 
@@ -199,6 +213,74 @@
 										{{textarea type="text" class="full-width inline-block form-input-group label-normal form-control" value=billInfo.remark}}
 								</div>
 							</div>
+
+							<div class="bottom12 col-sm-12  border-bottom" style="height:26px;">
+									<strong class="font16 font-black">账单详情</strong>
+							</div>
+							<div class="divide-10" style="clear:both" />
+							{{#if dayBillList}}
+							<div class="col-sm-12">
+								<div class=" nopadding-left nopadding-right nopadding-vertical">
+									<div class=" overflow-hidden fullWidth">
+										<table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+											<thead>
+												<tr role="row">
+													<th rowspan="1" colspan="1" width="">用户姓名</th>
+													<th rowspan="1" colspan="1" width="">账单日期</th>
+													<th rowspan="1" colspan="1" width="">入住状态</th>
+													<th rowspan="1" colspan="1" width="">床位(价格)</th>
+													<th rowspan="1" colspan="1" width="">餐饮等级(价格)</th>
+													<th rowspan="1" colspan="1" width="">护理等级(价格)</th>
+													<th rowspan="1" colspan="1" width="">总价格(元/天)</th>
+												</tr>
+											</thead>
+											<tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+												{{#each dayBillList as |dayBill|}}
+												<tr >
+													<td class="ellipsis" >{{dayBill.customer.name}}</td>
+													<td class="ellipsis" >{{dayBill.billTimeString}}</td>
+													<td class="ellipsis" >{{dayBill.customerStatus.typename}}</td>
+													<td class="ellipsis" >{{dayBill.customer.bed.roomBedName}}({{dayBill.total1}}元/天)</td>
+													<td class="ellipsis" >{{dayBill.diningStandard.typename}}({{dayBill.total2}}元/天)</td>
+													<td class="ellipsis" >{{dayBill.level.name}}({{dayBill.total3}}元/天)</td>
+													<td class="ellipsis" >{{dayBill.total}}</td>
+												</tr>
+												{{/each}}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							{{/if}}
+
+							{{#if appreciationBillList}}
+							<div class="col-sm-12">
+								<div class=" nopadding-left nopadding-right nopadding-vertical">
+									<div class=" overflow-hidden fullWidth">
+										<table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+											<thead>
+												<tr role="row">
+													<th rowspan="1" colspan="1" width="">用户姓名</th>
+													<th rowspan="1" colspan="1" width="">账单日期</th>
+													<th rowspan="1" colspan="1" width="">项目名称</th>
+													<th rowspan="1" colspan="1" width="">账单金额(元)</th>
+												</tr>
+											</thead>
+											<tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+												{{#each appreciationBillList as |dayBill|}}
+												<tr >
+													<td class="ellipsis" >{{dayBill.customer.name}}</td>
+													<td class="ellipsis" >{{dayBill.billTimeString}}</td>
+													<td class="ellipsis" >{{dayBill.exe.itemProject.item.name}}</td>
+													<td class="ellipsis" >{{dayBill.total}}</td>
+												</tr>
+												{{/each}}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							{{/if}}
 						</div>
 					</div>
 					<!-- 列表详细介绍 -->
@@ -220,21 +302,32 @@
 					        {{/ui/mix-button}}
 									{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='返回'  clickAction="detailCancel" detailCancel="detailCancel" }}
 					        {{/ui/mix-button}}
+									{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='提交' clickAction="commit" commit="commit"}}
+									{{/ui/mix-button}}
 							</p>
 						</div>
 						<!-- 列表详细介绍 -->
 						<div class="col-xs-12 nopadding-left">
 							<div class="col-xs-12 nopadding-horizontal mt20">
+								<div class="bottom12 col-sm-12  border-bottom" style="height:26px;">
+										<strong class="font16 font-black">账单信息</strong>
+								</div>
+								<div class="divide-10" style="clear:both" />
 								<div class="col-xs-12 col-sm-6">
 									<div class="form-input-group">
 									<span class="input-group-addon">用户姓名：</span>
 										<div class="input-group-content">{{billInfo.customer.name}}</div>
 									</div>
 								</div>
-
 								<div class="col-xs-12 col-sm-6">
 									<div class="form-input-group">
-									<span class="input-group-addon">账单类别：</span>
+										<span class="input-group-addon">对应服务：</span>
+										<div class="input-group-content">{{billInfo.billStatType.typename}}</div>
+									</div>
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<div class="form-input-group">
+									<span class="input-group-addon">结算类别：</span>
 										<div class="input-group-content">{{billInfo.billType.typename}}</div>
 									</div>
 								</div>
@@ -270,7 +363,13 @@
 								<div class="col-xs-12 col-sm-6">
 									<div class="form-input-group">
 									<span class="input-group-addon">参考金额(元)：</span>
-											<div class="input-group-content">{{bedPrice}}(床位价格)+{{diningPrice}}(餐饮价格)+{{proPrice}}(护理价格)={{experiencePrice}}</div>
+											<div class="input-group-content">
+											{{#if appreciationBill}}
+												{{billInfo.total}}
+											{{else}}
+												{{billInfo.customer.actualPrice}}
+											{{/if}}
+										</div>
 									</div>
 								</div>
 
@@ -287,6 +386,74 @@
 											<div class="input-group-content">{{billInfo.remark}}</div>
 									</div>
 								</div>
+
+								<div class="bottom12 col-sm-12  border-bottom" style="height:26px;">
+										<strong class="font16 font-black">账单详情</strong>
+								</div>
+								<div class="divide-10" style="clear:both" />
+								{{#if dayBillList}}
+								<div class="col-sm-12">
+									<div class=" nopadding-left nopadding-right nopadding-vertical">
+										<div class=" overflow-hidden fullWidth">
+											<table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+												<thead>
+													<tr role="row">
+														<th rowspan="1" colspan="1" width="">用户姓名</th>
+														<th rowspan="1" colspan="1" width="">账单日期</th>
+														<th rowspan="1" colspan="1" width="">入住状态</th>
+														<th rowspan="1" colspan="1" width="">床位(价格)</th>
+														<th rowspan="1" colspan="1" width="">餐饮等级(价格)</th>
+														<th rowspan="1" colspan="1" width="">护理等级(价格)</th>
+														<th rowspan="1" colspan="1" width="">总价格(元/天)</th>
+													</tr>
+												</thead>
+												<tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+													{{#each dayBillList as |dayBill|}}
+													<tr >
+														<td class="ellipsis" >{{dayBill.customer.name}}</td>
+														<td class="ellipsis" >{{dayBill.billTimeString}}</td>
+														<td class="ellipsis" >{{dayBill.customerStatus.typename}}</td>
+														<td class="ellipsis" >{{dayBill.customer.bed.roomBedName}}({{dayBill.total1}}元/天)</td>
+														<td class="ellipsis" >{{dayBill.diningStandard.typename}}({{dayBill.total2}}元/天)</td>
+														<td class="ellipsis" >{{dayBill.level.name}}({{dayBill.total3}}元/天)</td>
+														<td class="ellipsis" >{{dayBill.total}}</td>
+													</tr>
+													{{/each}}
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+								{{/if}}
+
+								{{#if appreciationBillList}}
+								<div class="col-sm-12">
+									<div class=" nopadding-left nopadding-right nopadding-vertical">
+										<div class=" overflow-hidden fullWidth">
+											<table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+												<thead>
+													<tr role="row">
+														<th rowspan="1" colspan="1" width="">用户姓名</th>
+														<th rowspan="1" colspan="1" width="">账单日期</th>
+														<th rowspan="1" colspan="1" width="">项目名称</th>
+														<th rowspan="1" colspan="1" width="">账单金额(元)</th>
+													</tr>
+												</thead>
+												<tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+													{{#each appreciationBillList as |dayBill|}}
+													<tr >
+														<td class="ellipsis" >{{dayBill.customer.name}}</td>
+														<td class="ellipsis" >{{dayBill.billTimeString}}</td>
+														<td class="ellipsis" >{{dayBill.exe.itemProject.item.name}}</td>
+														<td class="ellipsis" >{{dayBill.total}}</td>
+													</tr>
+													{{/each}}
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+								{{/if}}
 							</div>
 						</div>
 						<!-- 列表详细介绍 -->
@@ -313,31 +480,33 @@
 						<p class="user-add-btn">
 								{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='保存' clickAction="detailSaveClick" detailSaveClick="detailSaveClick" clickActParams=billInfo}}
 								{{/ui/mix-button}}
-								{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="detailCancel" detailCancel="detailCancel" }}
+								{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="cancel" cancel="cancel" }}
 				        {{/ui/mix-button}}
-								{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='提交' clickAction="commit" commit="commit"}}
-								{{/ui/mix-button}}
 						</p>
 					</div>
 					<!-- 列表详细介绍 -->
 					<div class="col-xs-12 nopadding-left">
 						<div class="col-xs-12 nopadding-horizontal mt20">
+							<div class="bottom12 col-sm-12  border-bottom" style="height:26px;">
+									<strong class="font16 font-black">账单详情</strong>
+							</div>
 							<div class="col-xs-12 col-sm-6">
 								<div class="form-input-group">
 								<span class="input-group-addon">用户姓名：</span>
-									{{#power-select class="input-group-content" placeholder='用户姓名' options=customerList  selected=defaultCustomer searchField="name"
-									noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "selectCustomer" ) as |customer|}}
-										{{customer.name}}
-									{{/power-select}}
+								<div class="input-group-content">{{billInfo.customer.name}}</div>
 								</div>
 
 							</div>
-
 							<div class="col-xs-12 col-sm-6">
 								<div class="form-input-group">
-								<span class="input-group-addon">账单类别：</span>
-	                {{callbusi/dict-selector class="inline-block" curDict=billInfo.billType groupCode=constants.billType
-	                  showName=billInfo.billType.typename value=billInfo.billType}}
+									<span class="input-group-addon">对应服务：</span>
+									<div class="input-group-content">{{billInfo.billStatType.typename}}</div>
+								</div>
+							</div>
+							<div class="col-xs-12 col-sm-6">
+								<div class="form-input-group">
+								<span class="input-group-addon">结算类别：</span>
+										<div class="input-group-content">{{billInfo.billType.typename}}</div>
 								</div>
 							</div>
 
@@ -345,10 +514,7 @@
 	              <div class="col-xs-12 col-sm-6">
 	  							<div class="form-input-group">
 	  							<span class="input-group-addon">账单年份：</span>
-	                  {{#power-select class="input-group-content" placeholder='账单年份' options=yearList  selected=defaultYear searchField="name"
-	                  noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "selectYear" ) as |year|}}
-	                    {{year.name}}
-	                  {{/power-select}}
+										<div class="input-group-content">{{billInfo.year}}</div>
 	  							</div>
 	  						</div>
 
@@ -356,10 +522,7 @@
 	  						<div class="col-xs-12 col-sm-6">
 	  							<div class="form-input-group">
 	  							<span class="input-group-addon">账单月份：</span>
-	                  {{#power-select class="input-group-content" placeholder='账单月份' options=monthList  selected=defaultMonth searchField="name"
-	                  noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "selectMonth" ) as |month|}}
-	                    {{month.name}}
-	                  {{/power-select}}
+										<div class="input-group-content">{{billInfo.month}}</div>
 	  							</div>
 	  						</div>
 	              {{/if}}
@@ -368,10 +531,7 @@
 	              <div class="col-xs-12 col-sm-6">
 	  							<div class="form-input-group">
 	  							<span class="input-group-addon">账单季度：</span>
-	                  {{#power-select class="input-group-content" placeholder='账单季度' options=quarterList  selected=defaultQuarter searchField="name"
-	                  noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "selectQuarter" ) as |quarter|}}
-	                    {{quarter.name}}
-	                  {{/power-select}}
+										<div class="input-group-content">{{billInfo.quarter}}</div>
 	  							</div>
 	  						</div>
 	              {{/if}}
@@ -391,6 +551,74 @@
 										{{textarea type="text" class="full-width inline-block form-input-group label-normal form-control" value=billInfo.remark placeholder='备注'}}
 								</div>
 							</div>
+
+							<div class="bottom12 col-sm-12  border-bottom" style="height:26px;">
+									<strong class="font16 font-black">账单详情</strong>
+							</div>
+							<div class="divide-10" style="clear:both" />
+							{{#if dayBillList}}
+							<div class="col-sm-12">
+								<div class=" nopadding-left nopadding-right nopadding-vertical">
+									<div class=" overflow-hidden fullWidth">
+										<table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+											<thead>
+												<tr role="row">
+													<th rowspan="1" colspan="1" width="">用户姓名</th>
+													<th rowspan="1" colspan="1" width="">账单日期</th>
+													<th rowspan="1" colspan="1" width="">入住状态</th>
+													<th rowspan="1" colspan="1" width="">床位(价格)</th>
+													<th rowspan="1" colspan="1" width="">餐饮等级(价格)</th>
+													<th rowspan="1" colspan="1" width="">护理等级(价格)</th>
+													<th rowspan="1" colspan="1" width="">总价格(元/天)</th>
+												</tr>
+											</thead>
+											<tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+												{{#each dayBillList as |dayBill|}}
+												<tr >
+													<td class="ellipsis" >{{dayBill.customer.name}}</td>
+													<td class="ellipsis" >{{dayBill.billTimeString}}</td>
+													<td class="ellipsis" >{{dayBill.customerStatus.typename}}</td>
+													<td class="ellipsis" >{{dayBill.customer.bed.roomBedName}}({{dayBill.total1}}元/天)</td>
+													<td class="ellipsis" >{{dayBill.diningStandard.typename}}({{dayBill.total2}}元/天)</td>
+													<td class="ellipsis" >{{dayBill.level.name}}({{dayBill.total3}}元/天)</td>
+													<td class="ellipsis" >{{dayBill.total}}</td>
+												</tr>
+												{{/each}}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							{{/if}}
+
+							{{#if appreciationBillList}}
+							<div class="col-sm-12">
+								<div class=" nopadding-left nopadding-right nopadding-vertical">
+									<div class=" overflow-hidden fullWidth">
+										<table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+											<thead>
+												<tr role="row">
+													<th rowspan="1" colspan="1" width="">用户姓名</th>
+													<th rowspan="1" colspan="1" width="">账单日期</th>
+													<th rowspan="1" colspan="1" width="">项目名称</th>
+													<th rowspan="1" colspan="1" width="">账单金额(元)</th>
+												</tr>
+											</thead>
+											<tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+												{{#each appreciationBillList as |dayBill|}}
+												<tr >
+													<td class="ellipsis" >{{dayBill.customer.name}}</td>
+													<td class="ellipsis" >{{dayBill.billTimeString}}</td>
+													<td class="ellipsis" >{{dayBill.exe.itemProject.item.name}}</td>
+													<td class="ellipsis" >{{dayBill.total}}</td>
+												</tr>
+												{{/each}}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							{{/if}}
 						</div>
 					</div>
 					<!-- 列表详细介绍 -->
@@ -408,10 +636,10 @@
 						<div class="row">
 							<div class="col-xs-12">
 								<p class="user-add-btn">
-										{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="detailCancel" detailCancel="detailCancel" }}
-						        {{/ui/mix-button}}
-										{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='提交' clickAction="commit" commit="commit"}}
+										{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='保存' clickAction="detailSaveClick" detailSaveClick="detailSaveClick" clickActParams=billInfo}}
 										{{/ui/mix-button}}
+										{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消'  clickAction="cancel" cancel="cancel" }}
+						        {{/ui/mix-button}}
 								</p>
 							</div>
 							<!-- 列表详细介绍 -->
@@ -424,10 +652,15 @@
 										<div class="input-group-content">{{billInfo.customer.name}}</div>
 										</div>
 									</div>
-
 									<div class="col-xs-12 col-sm-6">
 										<div class="form-input-group">
-										<span class="input-group-addon">账单类别：</span>
+											<span class="input-group-addon">对应服务：</span>
+											<div class="input-group-content">{{billInfo.billStatType.typename}}</div>
+										</div>
+									</div>
+									<div class="col-xs-12 col-sm-6">
+										<div class="form-input-group">
+										<span class="input-group-addon">结算类别：</span>
 			              <div class="input-group-content">{{billInfo.billType.typename}}</div>
 										</div>
 									</div>
@@ -499,21 +732,31 @@
 									{{/ui/mix-button}}
 									{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='返回'  clickAction="detailCancel" detailCancel="detailCancel" }}
 									{{/ui/mix-button}}
+									{{#ui/mix-button class="user-btn edit-btn" id='commit' iconClass="fa fa-save"  text='提交' clickAction="commit" commit="commit"}}
+									{{/ui/mix-button}}
 								</p>
 							</div>
 							<!-- 列表详细介绍 -->
 							<div class="col-xs-12 nopadding-left">
 								<div class="col-xs-12 nopadding-horizontal mt20">
+									<div class="bottom12 col-sm-12  border-bottom" style="height:26px;">
+											<strong class="font16 font-black">账单信息</strong>
+									</div>
 									<div class="col-xs-12 col-sm-6">
 										<div class="form-input-group">
 										<span class="input-group-addon">用户姓名：</span>
 										<div class="input-group-content">{{billInfo.customer.name}}</div>
 										</div>
 									</div>
-
 									<div class="col-xs-12 col-sm-6">
 										<div class="form-input-group">
-										<span class="input-group-addon">账单类别：</span>
+											<span class="input-group-addon">对应服务：</span>
+											<div class="input-group-content">{{billInfo.billStatType.typename}}</div>
+										</div>
+									</div>
+									<div class="col-xs-12 col-sm-6">
+										<div class="form-input-group">
+										<span class="input-group-addon">结算类别：</span>
 										<div class="input-group-content">{{billInfo.billType.typename}}</div>
 										</div>
 									</div>
@@ -559,6 +802,74 @@
 											<div class="input-group-content">{{billInfo.remark}}</div>
 										</div>
 									</div>
+
+									<div class="bottom12 col-sm-12  border-bottom" style="height:26px;">
+											<strong class="font16 font-black">账单详情</strong>
+									</div>
+									<div class="divide-10" style="clear:both" />
+									{{#if dayBillList}}
+									<div class="col-sm-12">
+										<div class=" nopadding-left nopadding-right nopadding-vertical">
+											<div class=" overflow-hidden fullWidth">
+												<table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+													<thead>
+														<tr role="row">
+															<th rowspan="1" colspan="1" width="">用户姓名</th>
+															<th rowspan="1" colspan="1" width="">账单日期</th>
+															<th rowspan="1" colspan="1" width="">入住状态</th>
+															<th rowspan="1" colspan="1" width="">床位(价格)</th>
+															<th rowspan="1" colspan="1" width="">餐饮等级(价格)</th>
+															<th rowspan="1" colspan="1" width="">护理等级(价格)</th>
+															<th rowspan="1" colspan="1" width="">总价格(元/天)</th>
+														</tr>
+													</thead>
+													<tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+														{{#each dayBillList as |dayBill|}}
+														<tr >
+															<td class="ellipsis" >{{dayBill.customer.name}}</td>
+															<td class="ellipsis" >{{dayBill.billTimeString}}</td>
+															<td class="ellipsis" >{{dayBill.customerStatus.typename}}</td>
+															<td class="ellipsis" >{{dayBill.customer.bed.roomBedName}}({{dayBill.total1}}元/天)</td>
+															<td class="ellipsis" >{{dayBill.diningStandard.typename}}({{dayBill.total2}}元/天)</td>
+															<td class="ellipsis" >{{dayBill.level.name}}({{dayBill.total3}}元/天)</td>
+															<td class="ellipsis" >{{dayBill.total}}</td>
+														</tr>
+														{{/each}}
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+									{{/if}}
+
+									{{#if appreciationBillList}}
+									<div class="col-sm-12">
+										<div class=" nopadding-left nopadding-right nopadding-vertical">
+											<div class=" overflow-hidden fullWidth">
+												<table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+													<thead>
+														<tr role="row">
+															<th rowspan="1" colspan="1" width="">用户姓名</th>
+															<th rowspan="1" colspan="1" width="">账单日期</th>
+															<th rowspan="1" colspan="1" width="">项目名称</th>
+															<th rowspan="1" colspan="1" width="">账单金额(元)</th>
+														</tr>
+													</thead>
+													<tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+														{{#each appreciationBillList as |dayBill|}}
+														<tr >
+															<td class="ellipsis" >{{dayBill.customer.name}}</td>
+															<td class="ellipsis" >{{dayBill.billTimeString}}</td>
+															<td class="ellipsis" >{{dayBill.exe.itemProject.item.name}}</td>
+															<td class="ellipsis" >{{dayBill.total}}</td>
+														</tr>
+														{{/each}}
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+									{{/if}}
 								</div>
 							</div>
 							<!-- 列表详细介绍 -->
@@ -580,22 +891,31 @@
 									{{/ui/mix-button}}
 									{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='返回'  clickAction="detailCancel" detailCancel="detailCancel" }}
 									{{/ui/mix-button}}
+									{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save"  text='提交' clickAction="commit" commit="commit"}}
+									{{/ui/mix-button}}
 								</p>
 							</div>
 							<!-- 列表详细介绍 -->
 							<div class="col-xs-12 nopadding-left">
 								<div class="col-xs-12 nopadding-horizontal mt20">
-
+									<div class="bottom12 col-sm-12  border-bottom" style="height:26px;">
+											<strong class="font16 font-black">账单详情</strong>
+									</div>
 									<div class="col-xs-12 col-sm-6">
 										<div class="form-input-group">
 										<span class="input-group-addon">用户姓名：</span>
 										<div class="input-group-content">{{billInfo.customer.name}}</div>
 										</div>
 									</div>
-
 									<div class="col-xs-12 col-sm-6">
 										<div class="form-input-group">
-										<span class="input-group-addon">账单类别：</span>
+											<span class="input-group-addon">对应服务：</span>
+											<div class="input-group-content">{{billInfo.billStatType.typename}}</div>
+										</div>
+									</div>
+									<div class="col-xs-12 col-sm-6">
+										<div class="form-input-group">
+										<span class="input-group-addon">结算类别：</span>
 										<div class="input-group-content">{{billInfo.billType.typename}}</div>
 										</div>
 									</div>
@@ -641,6 +961,74 @@
 											<div class="input-group-content">{{billInfo.operateRemark}}</div>
 										</div>
 									</div>
+
+									<div class="bottom12 col-sm-12  border-bottom" style="height:26px;">
+											<strong class="font16 font-black">账单详情</strong>
+									</div>
+									<div class="divide-10" style="clear:both" />
+									{{#if dayBillList}}
+									<div class="col-sm-12">
+										<div class=" nopadding-left nopadding-right nopadding-vertical">
+											<div class=" overflow-hidden fullWidth">
+												<table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+													<thead>
+														<tr role="row">
+															<th rowspan="1" colspan="1" width="">用户姓名</th>
+															<th rowspan="1" colspan="1" width="">账单日期</th>
+															<th rowspan="1" colspan="1" width="">入住状态</th>
+															<th rowspan="1" colspan="1" width="">床位(价格)</th>
+															<th rowspan="1" colspan="1" width="">餐饮等级(价格)</th>
+															<th rowspan="1" colspan="1" width="">护理等级(价格)</th>
+															<th rowspan="1" colspan="1" width="">总价格(元/天)</th>
+														</tr>
+													</thead>
+													<tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+														{{#each dayBillList as |dayBill|}}
+														<tr >
+															<td class="ellipsis" >{{dayBill.customer.name}}</td>
+															<td class="ellipsis" >{{dayBill.billTimeString}}</td>
+															<td class="ellipsis" >{{dayBill.customerStatus.typename}}</td>
+															<td class="ellipsis" >{{dayBill.customer.bed.roomBedName}}({{dayBill.total1}}元/天)</td>
+															<td class="ellipsis" >{{dayBill.diningStandard.typename}}({{dayBill.total2}}元/天)</td>
+															<td class="ellipsis" >{{dayBill.level.name}}({{dayBill.total3}}元/天)</td>
+															<td class="ellipsis" >{{dayBill.total}}</td>
+														</tr>
+														{{/each}}
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+									{{/if}}
+
+									{{#if appreciationBillList}}
+									<div class="col-sm-12">
+										<div class=" nopadding-left nopadding-right nopadding-vertical">
+											<div class=" overflow-hidden fullWidth">
+												<table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+													<thead>
+														<tr role="row">
+															<th rowspan="1" colspan="1" width="">用户姓名</th>
+															<th rowspan="1" colspan="1" width="">账单日期</th>
+															<th rowspan="1" colspan="1" width="">项目名称</th>
+															<th rowspan="1" colspan="1" width="">账单金额(元)</th>
+														</tr>
+													</thead>
+													<tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+														{{#each appreciationBillList as |dayBill|}}
+														<tr >
+															<td class="ellipsis" >{{dayBill.customer.name}}</td>
+															<td class="ellipsis" >{{dayBill.billTimeString}}</td>
+															<td class="ellipsis" >{{dayBill.exe.itemProject.item.name}}</td>
+															<td class="ellipsis" >{{dayBill.total}}</td>
+														</tr>
+														{{/each}}
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+									{{/if}}
 								</div>
 							</div>
 							<!-- 列表详细介绍 -->
@@ -662,16 +1050,25 @@
 				<!-- 列表详细介绍 -->
 				<div class="col-xs-12 nopadding-left">
 					<div class="col-xs-12 nopadding-horizontal mt20">
+						<div class="bottom12 col-sm-12  border-bottom" style="height:26px;">
+								<strong class="font16 font-black">账单信息</strong>
+						</div>
+						<div class="divide-10" style="clear:both" />
 						<div class="col-xs-12 col-sm-6">
 							<div class="form-input-group">
 							<span class="input-group-addon">用户姓名：</span>
 							<div class="input-group-content">{{billInfo.customer.name}}</div>
 							</div>
 						</div>
-
 						<div class="col-xs-12 col-sm-6">
 							<div class="form-input-group">
-							<span class="input-group-addon">账单类别：</span>
+								<span class="input-group-addon">对应服务：</span>
+								<div class="input-group-content">{{billInfo.billStatType.typename}}</div>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-6">
+							<div class="form-input-group">
+							<span class="input-group-addon">结算类别：</span>
 							<div class="input-group-content">{{billInfo.billType.typename}}</div>
 							</div>
 						</div>
@@ -717,6 +1114,74 @@
 								<div class="input-group-content">{{billInfo.remark}}</div>
 							</div>
 						</div>
+
+						<div class="bottom12 col-sm-12  border-bottom" style="height:26px;">
+								<strong class="font16 font-black">账单详情</strong>
+						</div>
+						<div class="divide-10" style="clear:both" />
+						{{#if dayBillList}}
+						<div class="col-sm-12">
+							<div class=" nopadding-left nopadding-right nopadding-vertical">
+								<div class=" overflow-hidden fullWidth">
+									<table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+										<thead>
+											<tr role="row">
+												<th rowspan="1" colspan="1" width="">用户姓名</th>
+												<th rowspan="1" colspan="1" width="">账单日期</th>
+												<th rowspan="1" colspan="1" width="">入住状态</th>
+												<th rowspan="1" colspan="1" width="">床位(价格)</th>
+												<th rowspan="1" colspan="1" width="">餐饮等级(价格)</th>
+												<th rowspan="1" colspan="1" width="">护理等级(价格)</th>
+												<th rowspan="1" colspan="1" width="">总价格(元/天)</th>
+											</tr>
+										</thead>
+										<tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+											{{#each dayBillList as |dayBill|}}
+											<tr >
+												<td class="ellipsis" >{{dayBill.customer.name}}</td>
+												<td class="ellipsis" >{{dayBill.billTimeString}}</td>
+												<td class="ellipsis" >{{dayBill.customerStatus.typename}}</td>
+												<td class="ellipsis" >{{dayBill.customer.bed.roomBedName}}({{dayBill.total1}}元/天)</td>
+												<td class="ellipsis" >{{dayBill.diningStandard.typename}}({{dayBill.total2}}元/天)</td>
+												<td class="ellipsis" >{{dayBill.level.name}}({{dayBill.total3}}元/天)</td>
+												<td class="ellipsis" >{{dayBill.total}}</td>
+											</tr>
+											{{/each}}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						{{/if}}
+
+						{{#if appreciationBillList}}
+						<div class="col-sm-12">
+							<div class=" nopadding-left nopadding-right nopadding-vertical">
+								<div class=" overflow-hidden fullWidth">
+									<table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+										<thead>
+											<tr role="row">
+												<th rowspan="1" colspan="1" width="">用户姓名</th>
+												<th rowspan="1" colspan="1" width="">账单日期</th>
+												<th rowspan="1" colspan="1" width="">项目名称</th>
+												<th rowspan="1" colspan="1" width="">账单金额(元)</th>
+											</tr>
+										</thead>
+										<tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+											{{#each appreciationBillList as |dayBill|}}
+											<tr >
+												<td class="ellipsis" >{{dayBill.customer.name}}</td>
+												<td class="ellipsis" >{{dayBill.billTimeString}}</td>
+												<td class="ellipsis" >{{dayBill.exe.itemProject.item.name}}</td>
+												<td class="ellipsis" >{{dayBill.total}}</td>
+											</tr>
+											{{/each}}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						{{/if}}
 					</div>
 				</div>
 				<!-- 列表详细介绍 -->
@@ -743,72 +1208,4 @@
 			{{/ui/mix-button}}
 		{{/bs-modal-footer}}
 	{{/bs-modal}}
-{{/if}}
-
-{{#if dayBillList}}
-<div class="col-sm-12 question-box">
-	<div class="box nopadding-left nopadding-right nopadding-vertical border blue shadow">
-		<div class="box-title">
-			<div class="title">每日账单详情</div>
-		</div>
-		<div class="box-body overflow-hidden fullWidth">
-			<table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
-				<thead>
-					<tr role="row">
-						<th rowspan="1" colspan="1" width="">用户姓名</th>
-						<th rowspan="1" colspan="1" width="">账单日期</th>
-						<th rowspan="1" colspan="1" width="">床位金额(元)</th>
-						<th rowspan="1" colspan="1" width="">餐饮金额(元)</th>
-						<th rowspan="1" colspan="1" width="">护理金额(元)</th>
-						<th rowspan="1" colspan="1" width="">总金额(元)</th>
-					</tr>
-				</thead>
-				<tbody role="alert" aria-live="polite" aria-relevant="all" class="">
-					{{#each dayBillList as |dayBill|}}
-					<tr >
-						<td class="ellipsis" >{{dayBill.customer.name}}</td>
-						<td class="ellipsis" >{{dayBill.billTimeString}}</td>
-						<td class="ellipsis" >{{dayBill.total1}}</td>
-						<td class="ellipsis" >{{dayBill.total2}}</td>
-						<td class="ellipsis" >{{dayBill.total3}}</td>
-						<td class="ellipsis" >{{dayBill.total}}</td>
-					</tr>
-					{{/each}}
-				</tbody>
-			</table>
-		</div>
-	</div>
-</div>
-{{/if}}
-
-{{#if appreciationBillList}}
-<div class="col-sm-12 question-box">
-	<div class="box nopadding-left nopadding-right nopadding-vertical border blue shadow">
-		<div class="box-title">
-			<div class="title">增值服务账单详情</div>
-		</div>
-		<div class="box-body overflow-hidden fullWidth">
-			<table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
-				<thead>
-					<tr role="row">
-						<th rowspan="1" colspan="1" width="">用户姓名</th>
-						<th rowspan="1" colspan="1" width="">账单日期</th>
-						<th rowspan="1" colspan="1" width="">项目名称</th>
-						<th rowspan="1" colspan="1" width="">账单金额(元)</th>
-					</tr>
-				</thead>
-				<tbody role="alert" aria-live="polite" aria-relevant="all" class="">
-					{{#each appreciationBillList as |dayBill|}}
-					<tr >
-						<td class="ellipsis" >{{dayBill.customer.name}}</td>
-						<td class="ellipsis" >{{dayBill.billTimeString}}</td>
-						<td class="ellipsis" >{{dayBill.exe.itemProject.item.name}}</td>
-						<td class="ellipsis" >{{dayBill.total}}</td>
-					</tr>
-					{{/each}}
-				</tbody>
-			</table>
-		</div>
-	</div>
-</div>
 {{/if}}

@@ -33,6 +33,7 @@ export default Mixin.create({
   infiniteScrollAvailable: true,
   //底部距离判断阀值
   triggerDistance: 10,
+  pageScrollY: 90,
   //是否具备触发条件
   aboveTheTrigger: false,
   //是否有更多内容
@@ -210,6 +211,7 @@ export default Mixin.create({
   },
   _hideLoading: function(){
     this.get("service_PageConstrut").set("showLoader", false);
+    this.get("service_PageConstrut").set("pageInLoading", false);
   },
   /**
   Called immediately before the infinite query starts.
@@ -499,11 +501,12 @@ export default Mixin.create({
           }
         }
         _self._listenerFired();
-
       });
       console.log("loadDom11111111111scroller",scroller);
       _self.set("_scroller",scroller);
       _self._refreshScroller();
+      //关闭转场页面
+      _self.get("service_PageConstrut").set("pageInLoading",false);
       _self.set("scrollHasReady",true);
       console.log("scrollHasReady has done");
       //从directInitScoll函数进来的需要scrollToTop
@@ -523,7 +526,8 @@ export default Mixin.create({
       return;
     }
     scroller.refresh();
-    scroller.maxScrollY = scroller.maxScrollY - 90;
+    let pageScrollY = this.get("pageScrollY");
+    scroller.maxScrollY = scroller.maxScrollY - pageScrollY;
   },
   directInitScoll(flag){
     //当从这个函数进来的加一个标志位
@@ -580,6 +584,10 @@ export default Mixin.create({
         containerDom.height(newHeight);
       }
       this._initIscroll();
+    },
+    //激活退回页面的事件处理
+    switchBackAction(){
+
     },
     //激活显示页面的事件处理,需要屏幕刷新
     switchShowAction(){

@@ -1,0 +1,55 @@
+<div class="col-sm-12">
+  <!-- BOX -->
+  <div class="box">
+    <div class="box-body">
+      <div id="datatable1_wrapper" class="dataTables_wrapper form-inline " role="grid">
+      	<div class="row">
+          <div class="col-sm-9">
+        	  <!--搜索-->
+            <div class="col-sm-3 nopadding-left">
+							<div>
+                {{callbusi/dict-selector groupCode=constants.serviceItem
+                  showName="检查内容" dictSelect="serviceItemSelect" preselected=false allowClear=true}}
+	      			</div>
+            </div>
+            <div class="col-sm-6 nopadding-left pull-left nopadding-right">
+               {{callbusi/time-search class="inline-block" text='检查日期' dateShow=dateShow chooseDate=chooseDate search="search"
+               submmit="submmit" emptied='emptied' changeBeginDateAction='changeBeginDateAction' changeEndDateAction='changeEndDateAction'}}
+            </div>
+        	  <!--搜索-->
+          </div>
+      	</div>
+        <table id="datatable1" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable" aria-describedby="datatable1_info">
+          <thead>
+            <tr role="row">
+              <th rowspan="1" colspan="1" width="">检查人</th>
+              <th rowspan="1" colspan="1" width="">检查时间</th>
+              <th rowspan="1" colspan="1" width="">检查内容</th>
+              <th rowspan="1" colspan="1" width="">检查结果</th>
+            </tr>
+          </thead>
+          {{#if serviceCheckList}}
+          <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+            {{#each serviceCheckList as |servicecheck|}}
+            <tr {{action "toDetailPage" servicecheck on="click"}}>
+              <td class="ellipsis" >{{servicecheck.staff.name}}</td>
+              <td class="ellipsis" >{{servicecheck.createTimeStr}}</td>
+              <td class="ellipsis" >{{servicecheck.item.typename}}</td>
+              <td >{{servicecheck.remark}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+          {{else}}
+          
+          {{/if}}
+        </table>
+        {{#if serviceCheckList }}
+            {{page-numbers content=serviceCheckList showFL=true numPagesToShow=5 memoryPage="memoryPage"}}
+            {{else}}
+                <h1 class="col-sm-12 center unTask"></h1>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+  <!-- /BOX -->
+</div>

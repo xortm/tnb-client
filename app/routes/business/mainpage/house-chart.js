@@ -45,15 +45,14 @@ export default BaseBusiness.extend(Pagination,{
   doQuery:function(){
     let _self = this;
     var params=this.buildQueryParams();
-    var buildingList=this.findPaged('building',params).then(function(buildingList){
-      _self.store.query('bed',{}).then(function(beds){
-        _self.set('global_dataLoader.beds',beds);
-        _self.getCurrentController().set('bedReady',true);
+    this.store.query('bed',{}).then(function(beds){
+      _self.set('global_dataLoader.beds',beds);
+      _self.getCurrentController().set('bedReady',true);
+      _self.findPaged('building',params).then(function(buildingList){
         _self.getCurrentController().set("buildingList", buildingList);
         _self.getCurrentController().send('selectBuild',buildingList.get('firstObject'));
         _self.getCurrentController().send('chooseTab','houseTab');
       });
-
     });
 
   },

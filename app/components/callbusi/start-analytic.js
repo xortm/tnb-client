@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import BaseItem from '../ui/base-ui-item';
-import Echarts from "npm:echarts";
+
 export default Ember.Component.extend({
     statusService: Ember.inject.service("current-status"),
     store: Ember.inject.service("store"),
@@ -13,7 +13,9 @@ export default Ember.Component.extend({
     chartContainer: true, //图表显示
     listAccount: 0,
     bigFlag: false,
+    hasRenderFlag: false, //是否渲染完毕
     reRenderFlag:0,
+    statTypeAryFlag:0,
     changeLargeClass: 'changeLarge',
     changeSmallClass: 'changeSmall',
     init: function() {
@@ -30,7 +32,8 @@ export default Ember.Component.extend({
                     _self.$().find("div[name='containerId']").removeClass('position-absolute');
                     $(this).removeClass(_self.get("changeSmallClass"));
                 }
-                _self.didRender();
+                _self.set("hasRenderFlag",true);
+                // _self.didRender();
             });
         });
 
@@ -63,8 +66,9 @@ export default Ember.Component.extend({
     statTypeAryObs: function() {
         //构造每个统计类型对应的口径
         var _self = this;
-        let statTypeAry = [];
         let querytypeList = this.get('querytypeList');
+        if(!querytypeList || !this.get('mapDate')){return;}
+        let statTypeAry = [];
         console.log('接收到的:querytypeList', this.get('statTypeCode') + ':' + querytypeList);
         if(!querytypeList){
           return ;
@@ -78,7 +82,8 @@ export default Ember.Component.extend({
         });
         console.log('计算得到的statTypeAry是:', this.get('statTypeCode') + ':' + statTypeAry);
         this.set('statTypeAry', statTypeAry);
-    }.observes('mapDate'),
+        this.incrementProperty("statTypeAryFlag");
+    }.observes('querytypeList',"mapDate"),
     didRender: function() {
         this.initChart();
         this.showChartData();
@@ -88,6 +93,12 @@ export default Ember.Component.extend({
     reRenderObs: function(){
       this.didRender();
     }.observes("reRenderFlag"),
+    didRenderObs: function(){
+      if ((!this.get('hasRenderFlag')) || (!this.get('mapDate')) || (!this.get('statTypeAryFlag'))) {
+          return;
+      }
+      this.didRender();
+    }.observes("hasRenderFlag","statTypeAryFlag","mapDate"),
     // doQuery: function() {
     //     var _self = this;
     //     var fildurTypeFlag = null;
@@ -197,7 +208,7 @@ export default Ember.Component.extend({
         //初始化图表
         console.log('chartName is', idName);
         $(getIdName).width(pw);
-        var myChart = Echarts.init(document.getElementById(idName));
+        var myChart = echarts.init(document.getElementById(idName));
         console.log('init myChart is', myChart);
         this.set("myChart", myChart);
 
@@ -207,6 +218,7 @@ export default Ember.Component.extend({
         if ((!this.get('mapData')) || (!this.get('mapDate')) || (!this.get('statTypeAry'))) {
             return;
         }
+        console.log("statTypeAryFlag in showChartData:",this.get('statTypeAryFlag'));
         var statTypeAry = this.get('statTypeAry');
         console.log('填充数据statTypeAry是', statTypeAry);
         var nameAry = []; //口径类型对应的名称
@@ -269,6 +281,7 @@ export default Ember.Component.extend({
         let pieDataAry = [];
         let radarDataAry = [];
         var mapData = this.get('mapData'); //结果数据对象
+        console.log("mapData in foreach:",mapData);
         var chartType = this.get('chartType'); //图表类型
         let tooltip = {}; //鼠标悬浮显示信息
         let legend = {}; //图例
@@ -346,7 +359,7 @@ export default Ember.Component.extend({
                     };
                     series.push(obj);
                     series.push(obj2);
-                } else if (statTypeCode == 'statType5' || statTypeCode == 'statType18') {
+                } else if (statTypeCode == 'statType5' || statTypeCode == 'statType18' || statTypeCode == 'statType21' || statTypeCode == 'statType22' || statTypeCode == 'statType23') {
                     let obj = {
                         type: chartType,
                         radius: '55%',
@@ -426,13 +439,13 @@ export default Ember.Component.extend({
         var yAxis = {};
         if (chartType == 'bar') {
             xAxis = {
-                type: 'value',
+                type: 'category',
                 boundaryGap: false,
-                data: realDateAry //x轴(时间)
+                data: [] //x轴(时间)
             };
             yAxis = {
-                type: 'category',
-                data: []
+                type: 'value',
+                data: realDateAry
             };
         } else if (chartType == 'pie' || chartType == 'radar') {
             xAxis = null;
@@ -459,7 +472,7 @@ export default Ember.Component.extend({
                 };
             }
         }
-        console.log(this.get("statTypeCode") + ' series is', series);
+        console.log(_self.get("statTypeCode") + ' series is', series);
         //拼接 tooltip
         if (chartType == 'pie') {
             tooltip = {
@@ -567,7 +580,7 @@ export default Ember.Component.extend({
     computedList: function() {
         //构造ember(口径名称数组)
         var _self = this;
-        if ((!this.get('mapData')) || (!this.get('mapDate'))) {
+        if ((!this.get('mapData')) || (!this.get('mapDate')) || (!this.get("statTypeAryFlag"))) {
             return;
         }
         var statTypeAry = this.get('statTypeAry'); //口径类型对应的数组(普通数组)
@@ -680,7 +693,7 @@ export default Ember.Component.extend({
             let tbody = $(getTbody);
             tbody.find("tr[typecode='" + code + "']" + " td[seq='" + seq + "']").html(data.get("statResult"));
         });
-    }.observes('mapDate'),
+    }.observes('statTypeAryFlag','mapDate'),
     // computedBigFlag:function(){
     //   var bigFlag=this.get('bigFlag');
     //   console.log('监控的bigFlag is',bigFlag);

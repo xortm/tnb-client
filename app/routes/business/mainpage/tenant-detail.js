@@ -9,6 +9,9 @@ export default BaseBusiness.extend({
         editMode: {
             refreshModel: true
         },
+        customizeModel: {
+            refreshModel: true
+        },
     },
     header_title: '租户信息',
     model() {
@@ -36,7 +39,8 @@ export default BaseBusiness.extend({
             controller.set('addFlag', '1');
         }
         if (editMode == 'edit') {//编辑租户
-            controller.set('addFlag', '2');
+            // controller.set('addFlag', '2');
+            controller.set('addFlag', '0');
             controller.set('detailEdit', false);
             this.store.findRecord('tenant', id).then(function(tenant) {
                 controller.set('tenantInfo', tenant);

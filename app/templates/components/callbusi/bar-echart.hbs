@@ -1,0 +1,24 @@
+<!-- <div class="fullwidth nopadding-left nopadding-right {{if bigFlag 'changeLarge' 'changeSmall'}}"  name='containerId'> -->
+<div class="fullwidth nopadding-left nopadding-right"  name='containerId'>
+    <div class="box border blue" style="padding:0px;margin-bottom:0px;{{if chartContainer '' 'overflow-x:auto'}}; ">
+      {{callbusi/header-echart setClickFlag=true titleShow=titleShow listContainer=listContainer chartContainer=chartContainer listClick="listClick" chartClick="chartClick" bigClick="bigClick"}}
+        <div class="box-body" style="padding-left:0px;pading-right:0px;margin-top:0px;">
+            <div name='echartContainer' style="{{if bigFlag 'height:380px;' 'height:280px;'}} " class="text-center top30 {{if chartContainer '' 'hidden'}}"></div>
+            <div class="{{if listContainer '' 'hidden'}}">
+                <table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable mt15" aria-describedby="datatable1_info">
+                  <thead>
+                      <tr role="row">
+                          <th rowspan="1" colspan="1" width="" class="center noBorder-all">时间</th>
+                          {{#each statItemAry as |statItem index|}}
+                              <th rowspan="1" colspan="1" width="" class="center noBorder-all">{{statItem.index}}</th>
+                          {{/each}}
+                      </tr>
+                  </thead>
+                  <tbody role="alert" aria-live="polite" aria-relevant="all" class="" id='{{tbodyIdName}}'>
+
+                  </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

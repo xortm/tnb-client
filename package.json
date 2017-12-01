@@ -28,7 +28,6 @@
     "ember-bootstrap": "0.11.2",
     "ember-bootstrap-changeset-validations": "0.1.1",
     "ember-bootstrap-datetimepicker": "1.0.2",
-    "ember-browserify": "^1.1.13",
     "ember-changeset": "1.2.0",
     "ember-changeset-validations": "1.2.4",
     "ember-cli": "2.7.0",
@@ -77,6 +76,7 @@
     "ember-responsive": "2.0.0",
     "ember-tether": "0.3.1",
     "ember-truth-helpers": "1.2.0",
+    "ember-version-is": "0.0.3",
     "ember-websockets": "4.0.1",
     "eonasdan-bootstrap-datetimepicker-npm": "4.17.37",
     "loader": "2.1.1",
@@ -84,11 +84,18 @@
     "mock-socket": "3.0.1",
     "moment": "2.17.1",
     "moment-timezone": "0.5.10",
+    "phantomjs-prebuilt": "^2.1.15",
     "ui-responsive": "0.3.4"
   },
   "dependencies": {
+    "broccoli-stew": "^1.5.0",
     "ember-tooltips": "^2.7.1",
     "http-proxy": "^1.13.2",
     "lodash": "^4.13.1"
+  },
+  "ember-addon": {
+    "paths": [
+      "lib/remove-tree"
+    ]
   }
 }

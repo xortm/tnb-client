@@ -8,6 +8,12 @@ export default BaseBusiness.extend({
       customerId: {
           refreshModel: true
       },
+      employeeId: {
+          refreshModel: true
+      },
+      source: {
+          refreshModel: true
+      },
       itemIdFlag: {
           refreshModel: true
       },
@@ -18,16 +24,23 @@ export default BaseBusiness.extend({
   },
   headerTitle(){
     var controller = this.getCurrentController();
-    var customerId = controller.get("customerId");
-    this.set("customerId",customerId);
+    var itemIdFlag = controller.get("itemIdFlag");
+    this.set("itemIdFlag",itemIdFlag);
   },
   headerTitleObs:function(){
-    var controller = this.getCurrentController();
-    var customerItem = controller.get("customerItem");
-    let customerName = customerItem.get("appraiseResult.appraiseCustomer.name");
-    let header_title = customerName + "老人评分详情";
+    let controller = this.getCurrentController();
+    let item = controller.get("item");
+    let source = controller.get("source");
+    let header_title;
+    if(source == "customerFlag"){
+      let customerName = item.get("appraiseResult.appraiseCustomer.name");
+      header_title = customerName + "老人评分详情";
+    }else if(source == "employeeFlag"){
+      let employeeName = item.get("appraiseResult.employee.name");
+      header_title = employeeName + "员工评分详情";
+    }
     this.set('header_title',header_title);
-  }.observes("customerId"),
+  }.observes("itemIdFlag"),
   setupController:function(controller,model){
     this._super(controller,model);
     this.headerTitle();

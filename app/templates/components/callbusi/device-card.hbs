@@ -14,6 +14,18 @@
           {{/ui/mix-button}}
         </div>
       {{/if}}
+      <!--开通直播遮罩层-->
+      {{#if device.liveMask}}
+        <div class="unbind-mask" {{action 'clickBtn' on="click" bubbles=false}}>
+          确定要开通直播吗？
+        </div>
+        <div {{action 'clickBtn' on='click' bubbles=false}}>
+          {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check"  text='确定' clickAction='startLive' startLive='startLive' clickActParams=device}}
+          {{/ui/mix-button}}
+          {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消' clickAction='undo' undo='undo' clickActParams=device}}
+          {{/ui/mix-button}}
+        </div>
+      {{/if}}
       <!--设备删除遮罩层-->
       {{#if device.delDeviceMask}}
         <div class="unbind-mask" {{action 'clickBtn' on='click' bubbles=false}}>
@@ -62,6 +74,48 @@
             </div>
             {{/if}}
           </div>
+          {{/if}}
+          {{#if device.isVideo}}
+            <!--绑定房间或床位，视频-->
+            <div class="col-sm-12 form-input-group" style='margin-top:3px;'>
+              <span class="col-sm-6 nopadding-left nopadding-right" style="color:#fff;font-size:13px;"><i class="fa {{if device.isBindRoom 'fa-dot-circle-o' 'fa-circle-o'}}" {{action 'isBindRoom' on="click" bubbles=false}}></i>绑定房间</span>
+              <span class="col-sm-6 nopadding-left nopadding-right" style="color:#fff;font-size:13px;"><i class="fa {{if device.isBindBed 'fa-dot-circle-o' 'fa-circle-o'}}" {{action 'isBindBed' on="click" bubbles=false}}></i>绑定床位</span>
+              {{#if device.isBindRoom}}
+              <div class="col-sm-12 nopadding-right nopadding-left" style='margin-top:3px;'>
+                <div class="col-sm-12 nopadding-right nopadding-left" style='margin-top:3px;'>
+                  <div class="col-sm-12 form-input-group">
+                    {{#power-select class="form-input-group" placeholder='选择楼宇楼层' options=buildList  selected=chooseBuild searchField="namePinyin"
+                    noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "selectBuild" ) as |build|}}
+                      {{build.name}}
+                    {{/power-select}}
+                  </div>
+                  <div class="col-sm-12 form-input-group">
+                    {{#power-select class="form-input-group" placeholder='选择房间' options=chooseList  selected=bindRoom searchField="namePinyin"
+                    noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "selectBindRoom" ) as |room|}}
+                      {{room.name}}
+                    {{/power-select}}
+                  </div>
+                </div>
+              </div>
+              {{else}}
+              <div class="col-sm-12 nopadding-right nopadding-left" style='margin-top:3px;'>
+                <div class="col-sm-12 nopadding-right nopadding-left" style='margin-top:3px;'>
+                  <div class="col-sm-12 form-input-group">
+                    {{#power-select class="form-input-group" placeholder='选择楼宇楼层' options=buildList  selected=chooseBuild searchField="namePinyin"
+                    noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "selectBuild" ) as |build|}}
+                      {{build.name}}
+                    {{/power-select}}
+                  </div>
+                  <div class="col-sm-12 form-input-group">
+                    {{#power-select class="form-input-group" placeholder='选择床位' options=chooseList  selected=bindBed searchField="namePinyin"
+                    noMatchesMessage="没有相关内容"	allowClear=false	onchange=(action "selectBindBed" ) as |bed|}}
+                      {{bed.roomBedName}}
+                    {{/power-select}}
+                  </div>
+                </div>
+              </div>
+              {{/if}}
+            </div>
           {{/if}}
           {{#if device.isButton}}
           <!--绑定床位，按键-->
@@ -148,6 +202,9 @@
             {{#if device.isCard}}
               {{ui/img-intergration name="avatarImg" imgSrc='assets/images/icon/physical.png'}}
             {{/if}}
+            {{#if device.isVideo}}
+              {{ui/img-intergration name="avatarImg" imgSrc='assets/images/icon/video.png'}}
+            {{/if}}
           </div>
           <div class="pull-left nopadding-left nopadding-right center" style="margin-left:10px;font-size:12px;">{{device.deviceType.typename}}</div>
           <div class=" pull-right nopadding-left" style="height:25px;margin-right:5px;width:20px;">
@@ -174,9 +231,17 @@
               </div>
           {{else}}
               <div class="col-sm-12 nopadding-left center" >
+                {{log device.bindUser device.id device.bindName}}
                 {{device.bindName}}
                 <a class="pointer" style="font-size:12px;" {{action 'unBindMask' device on='click' bubbles=false}}>解绑</a>
               </div>
+              {{#if device.isVideo}}
+              {{#unless device.viewUrl}}
+                <div class="col-sm-12 nopadding-left center" >
+                  <a class=" pointer" {{action 'openLive' device on="click" bubbles=false}}>开通直播</a>
+                </div>
+              {{/unless}}
+              {{/if}}
           {{/if}}
         {{else}}
             <div class="col-sm-12 nopadding-left center" ><span style="font-size:16px;color:green;">空闲</span>

@@ -26,6 +26,11 @@
                   <span class="profile-span">问卷内容 </span>
                   <span class="pull-right" style="line-height: 42px;margin-right: 10px;">得分：{{score}}</span>
               </li>
+              <li class=" carousel color666 border-top-1 border-bottom-1">
+                  <i class="profile-i"><img class="a-img" src="assets/images/mobile/settings.png"/></i>
+                  <span class="profile-span">压疮等级 </span>
+                  <span class="pull-right" style="line-height: 42px;margin-right: 10px;">{{levelName}}</span>
+              </li>
                   <div class="col-xs-12" style="padding-top:10px;">
                     {{#each nowResult.questions as |question|}}
                       <div style="font-size:15px;">{{question.curIndex}}.{{question.questionContent}}</div>
@@ -50,7 +55,6 @@
     {{showContent}}
   </div>
 {{/if}}
-{{#ui/mobile/gestures-container}}
 {{#if nocustomerId}}
 {{else}}
 <div class="detail-dynamicsbtn" id="eva-view-history"  style="bottom:40px;" {{action 'toResultHistory' on="tap"}}>
@@ -61,7 +65,6 @@
   <span class="padding-left-10">新增评估</span>
 </div>
 {{/if}}
-{{/ui/mobile/gestures-container}}
 {{/ui/mobile/gestures-container}}
 {{ui/container/infinite-scroll moniteData="nowResult"
 didRenderAction="didRender" didInsertElementAction="didInsertElement"}}

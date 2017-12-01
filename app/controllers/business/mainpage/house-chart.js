@@ -4,7 +4,7 @@ export default Ember.Controller.extend({
   flag: 0,
   bedShow:true,
   editModel:false,
-
+  dateService:Ember.inject.service('date-service'),
   floorsObs:function(){
     let _self = this;
     let floors = this.get('curbuilding.floors');
@@ -26,7 +26,144 @@ export default Ember.Controller.extend({
       });
     }
   }.observes('curbuilding.floors','flag'),
+  saveKind(str){
+    this.send('saveEditor',str);
+  },
   actions: {
+    //编辑器内容上传
+    saveEditor(str){
+      let _self = this;
+      let curData = this.get('curData');
+      let base = new Base64();
+      if(!str){
+        str = '<p>请添加内容</p>';
+      }
+      let remark = base.encode(str);
+      curData.set('remark',remark);
+
+      curData.save().then(function(doc){
+        _self.set('curData',doc);
+        if(curData.get('type')=='标准'){
+          _self.get('chargeList').forEach(function(doc){
+            doc.set('hasSelected',false);
+          });
+        }
+        if(curData.get('type')=='话术'){
+          _self.get('marketList').forEach(function(market){
+            market.set('hasSelected',false);
+          })
+        }
+        _self.set('editModel',false);
+        _self.send('readDetail',doc);
+        App.lookup('controller:business.mainpage').showSimPop('保存成功');
+      });
+
+      //base64处理函数
+      function Base64() {
+         // private property
+         const _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+         // public method for encoding
+         this.encode = function (input) {
+          var output = "";
+          var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+          var i = 0;
+          input = _utf8_encode(input);
+          while (i < input.length) {
+           chr1 = input.charCodeAt(i++);
+           chr2 = input.charCodeAt(i++);
+           chr3 = input.charCodeAt(i++);
+           enc1 = chr1 >> 2;
+           enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+           enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+           enc4 = chr3 & 63;
+           if (isNaN(chr2)) {
+            enc3 = enc4 = 64;
+           } else if (isNaN(chr3)) {
+            enc4 = 64;
+           }
+           output = output +
+           _keyStr.charAt(enc1) + _keyStr.charAt(enc2) +
+           _keyStr.charAt(enc3) + _keyStr.charAt(enc4);
+          }
+          return output;
+         }
+
+         // public method for decoding
+         this.decode = function (input) {
+          var output = "";
+          var chr1, chr2, chr3;
+          var enc1, enc2, enc3, enc4;
+          var i = 0;
+          input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+          while (i < input.length) {
+           enc1 = _keyStr.indexOf(input.charAt(i++));
+           enc2 = _keyStr.indexOf(input.charAt(i++));
+           enc3 = _keyStr.indexOf(input.charAt(i++));
+           enc4 = _keyStr.indexOf(input.charAt(i++));
+           chr1 = (enc1 << 2) | (enc2 >> 4);
+           chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+           chr3 = ((enc3 & 3) << 6) | enc4;
+           output = output + String.fromCharCode(chr1);
+           if (enc3 != 64) {
+            output = output + String.fromCharCode(chr2);
+           }
+           if (enc4 != 64) {
+            output = output + String.fromCharCode(chr3);
+           }
+          }
+          output = _utf8_decode(output);
+          return output;
+         }
+
+         // private method for UTF-8 encoding
+         var _utf8_encode = function (string) {
+          string = string.replace(/\r\n/g,"\n");
+          var utftext = "";
+          for (var n = 0; n < string.length; n++) {
+           var c = string.charCodeAt(n);
+           if (c < 128) {
+            utftext += String.fromCharCode(c);
+           } else if((c > 127) && (c < 2048)) {
+            utftext += String.fromCharCode((c >> 6) | 192);
+            utftext += String.fromCharCode((c & 63) | 128);
+           } else {
+            utftext += String.fromCharCode((c >> 12) | 224);
+            utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+            utftext += String.fromCharCode((c & 63) | 128);
+           }
+
+          }
+          return utftext;
+         }
+
+         // private method for UTF-8 decoding
+         var _utf8_decode = function (utftext) {
+          var string = "";
+          var i = 0;
+          var c = 0;
+          var c1 = 0;
+          var c2 = 0;
+          var c3;
+          while ( i < utftext.length ) {
+           c = utftext.charCodeAt(i);
+           if (c < 128) {
+            string += String.fromCharCode(c);
+            i++;
+           } else if((c > 191) && (c < 224)) {
+            c2 = utftext.charCodeAt(i+1);
+            string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+            i += 2;
+           } else {
+            c2 = utftext.charCodeAt(i+1);
+            c3 = utftext.charCodeAt(i+2);
+            string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+            i += 3;
+           }
+          }
+          return string;
+         }
+       };
+    },
     //选择楼宇
     selectBuild(build) {
       var _self = this;
@@ -133,7 +270,9 @@ export default Ember.Controller.extend({
       _self.set('curData',null);
       this.set('editModel',false);
     },
+    //查看内容
     readDetail(data){
+      let _self = this;
       if(data.get('type')=='标准'){
         this.get('chargeList').forEach(function(charge){
           charge.set('hasSelected',false);
@@ -155,14 +294,120 @@ export default Ember.Controller.extend({
         console.log('curData',data.get('title'),data.get('remark'));
       }
       Ember.run.schedule('afterRender',function(){
-        if(data.get('remark')){
-          $('#data-content').append(data.get('remark'));
-        }else{
-          $('#data-content').append('<div>请填写内容</div>');
-        }
+        let str = data.get('remark');
+        let base = new Base64();
+        let remark = base.decode(str);
+        if(str == _self.get('dateService').base64_encode(_self.get('dateService').base64_decode(str))) {//判断是否经过base64转码
+           $('#data-content').append(remark);
+         }else{
+           $('#data-content').append(str);
+         }
+      });
+      //base64处理函数
+      function Base64() {
+         // private property
+         const _keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+         // public method for encoding
+         this.encode = function (input) {
+          var output = "";
+          var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+          var i = 0;
+          input = _utf8_encode(input);
+          while (i < input.length) {
+           chr1 = input.charCodeAt(i++);
+           chr2 = input.charCodeAt(i++);
+           chr3 = input.charCodeAt(i++);
+           enc1 = chr1 >> 2;
+           enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+           enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+           enc4 = chr3 & 63;
+           if (isNaN(chr2)) {
+            enc3 = enc4 = 64;
+           } else if (isNaN(chr3)) {
+            enc4 = 64;
+           }
+           output = output +
+           _keyStr.charAt(enc1) + _keyStr.charAt(enc2) +
+           _keyStr.charAt(enc3) + _keyStr.charAt(enc4);
+          }
+          return output;
+         }
 
-      })
+         // public method for decoding
+         this.decode = function (input) {
+          var output = "";
+          var chr1, chr2, chr3;
+          var enc1, enc2, enc3, enc4;
+          var i = 0;
+          input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+          while (i < input.length) {
+           enc1 = _keyStr.indexOf(input.charAt(i++));
+           enc2 = _keyStr.indexOf(input.charAt(i++));
+           enc3 = _keyStr.indexOf(input.charAt(i++));
+           enc4 = _keyStr.indexOf(input.charAt(i++));
+           chr1 = (enc1 << 2) | (enc2 >> 4);
+           chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+           chr3 = ((enc3 & 3) << 6) | enc4;
+           output = output + String.fromCharCode(chr1);
+           if (enc3 != 64) {
+            output = output + String.fromCharCode(chr2);
+           }
+           if (enc4 != 64) {
+            output = output + String.fromCharCode(chr3);
+           }
+          }
+          output = _utf8_decode(output);
+          return output;
+         }
 
+         // private method for UTF-8 encoding
+         var _utf8_encode = function (string) {
+          string = string.replace(/\r\n/g,"\n");
+          var utftext = "";
+          for (var n = 0; n < string.length; n++) {
+           var c = string.charCodeAt(n);
+           if (c < 128) {
+            utftext += String.fromCharCode(c);
+           } else if((c > 127) && (c < 2048)) {
+            utftext += String.fromCharCode((c >> 6) | 192);
+            utftext += String.fromCharCode((c & 63) | 128);
+           } else {
+            utftext += String.fromCharCode((c >> 12) | 224);
+            utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+            utftext += String.fromCharCode((c & 63) | 128);
+           }
+
+          }
+          return utftext;
+         }
+
+         // private method for UTF-8 decoding
+         var _utf8_decode = function (utftext) {
+          var string = "";
+          var i = 0;
+          var c = 0;
+          var c1 = 0;
+          var c2 = 0;
+          var c3;
+          while ( i < utftext.length ) {
+           c = utftext.charCodeAt(i);
+           if (c < 128) {
+            string += String.fromCharCode(c);
+            i++;
+           } else if((c > 191) && (c < 224)) {
+            c2 = utftext.charCodeAt(i+1);
+            string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+            i += 2;
+           } else {
+            c2 = utftext.charCodeAt(i+1);
+            c3 = utftext.charCodeAt(i+2);
+            string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+            i += 3;
+           }
+          }
+          return string;
+         }
+       };
     },
     detailEditClick(){
       this.set('editModel',true);
@@ -224,6 +469,7 @@ export default Ember.Controller.extend({
       let newData = this.get('addData');
       let _self = this;
       if(newData.get('title.length')>0){
+        newData.set('remark','请添加内容');
         newData.save().then(function(){
           if(newData.get('type')=='标准'){
             _self.store.query('charging-standard',{}).then(function(chargeList){
@@ -275,9 +521,19 @@ export default Ember.Controller.extend({
       data.set('edited',true);
     },
     del(data){
+      var _self = this;
+      App.lookup('controller:business.mainpage').showConfirm("是否确定删除？",function(){
+        _self.send('cancelPassSubmit',data);
+      });
+    },
+    //弹窗确定，删除记录
+    cancelPassSubmit(data){
+      App.lookup('controller:business.mainpage').openPopTip("正在删除");
+      this.set("showpopInvitePassModal",false);
       let _self = this;
       data.set('delStatus',1);
       data.save().then(function(){
+        App.lookup('controller:business.mainpage').showPopTip("删除成功");
         if(data.get('type')=='标准'){
           _self.store.query('charging-standard',{}).then(function(chargeList){
             chargeList.forEach(function(charge){

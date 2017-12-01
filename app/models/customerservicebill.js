@@ -1,7 +1,7 @@
 import DS from 'ember-data';
 import BaseModel from './base-model';
 const {billStatus1,billStatus2,billStatus3,billType1,billType2,billType3,billType4}=Constants;
-var Customerbill = BaseModel.extend({
+export default BaseModel.extend({
   dateService: Ember.inject.service("date-service"),
   exe:DS.belongsTo('nursingplanexe'),
   total:DS.attr('number'),//账单金额
@@ -10,6 +10,8 @@ var Customerbill = BaseModel.extend({
   billYear:DS.attr('number'),//账单年
   billQuarter:DS.attr('number'),//账单季度
   billMonth:DS.attr('number'),//账单月
+  billStatus:DS.belongsTo('dicttype'),//账单结算状态
+  bill:DS.belongsTo('customerbill'),//所属总账单
   billTimeString:Ember.computed("billTime",function(){
     var billDate=this.get("billTime");
     return this.get("dateService").formatDate(billDate,"yyyy-MM-dd");
@@ -27,5 +29,3 @@ var Customerbill = BaseModel.extend({
   //   }
   // }),
 });
-
-export default Customerbill;

@@ -16,12 +16,22 @@ export default Ember.Controller.extend(InfiniteScroll,{
   chartShowObs: function(){
     var chartShow = this.get("global_curStatus.chartShow");
     this.set("chartShow",chartShow);
+    console.log("chartShow in obs:",chartShow);
+    if(!chartShow){
+      this.directInitScoll();
+    }
   }.observes("global_curStatus.chartShow").on("init"),
 
   queryObs: function(){
     let _self = this;
+    console.log("run in queryObs");
+    console.log("query obs in:",this.get("queryFlag"));
     _self._showLoading();
-    console.log("query obs in");
+    var commonInitHasCompleteFlag = this.get("global_curStatus.commonInitHasCompleteFlag");
+    console.log("queryObs run commonInitHasCompleteFlag",commonInitHasCompleteFlag);
+    if(!commonInitHasCompleteFlag){
+      return;
+    }
     // let curUser = this.get("global_curStatus").getUser();
     // this.store.query("staffcustomer",{filter:{staff:{id:curUser.get("id")}}}).then(function(staffcustomers){
     //   var staffcustomer = staffcustomers.get("firstObject");
@@ -85,10 +95,14 @@ export default Ember.Controller.extend(InfiniteScroll,{
         sort:{examDateTime:'desc'},
         // filter:{examUser:{id:customerId},
         filter:{
-        customerId:customerId,
-        "examDateTime@$gte":thirtyDate,
+        examUser:{id:customerId},
+        healthInfoQueryType:"forAll",
+        day:15,
+        // customer:{id:customerId},
+        // customer:customerId,
+        // "examDateTime@$gte":thirtyDate,
         // sourceFlag:"fromHand",
-        healthInfoQueryType:"healthAll"
+        // healthInfoQueryType:"healthAll"
         // healthInfoQueryType:"normal"
       }}).then(function(healthInfoArray){
         console.log("healthInfoArray:",healthInfoArray);
@@ -120,7 +134,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
 
     // });
 
-  }.observes("queryFlag").on("init"),
+  }.observes("queryFlag","global_curStatus.commonInitHasCompleteFlag").on("init"),
 
   queryFlagIn(){
     console.log("queryFlagIn public");
@@ -151,7 +165,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
     this.set("healthInfoList",healthInfoList);
     // this.set("healthInfoList",healthInfoList);
     this.hideAllLoading();
-    this.directInitScoll();
+    // this.directInitScoll();
     console.log("healthInfoList 111111",healthInfoList);
   }.observes("healthInfoFlag"),
   actions:{

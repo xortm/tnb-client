@@ -4,19 +4,26 @@
 		<div class="box-body">
 
 			<div class="row">
-				{{#bs-form formLayout=formLayout model=tenantModel action=(action "saveTenant") invalid=(action "invalid")}}
+				{{#bs-form formLayout=formLayout model=tenantModel  invalid=(action "invalid")}}
 					<div class="col-xs-12">
 						<p class="user-add-btn">
 							{{#if detailEdit}}
-								{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save" text='保存' }}
+								{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save" text='保存' clickAction="saveTenant" saveTenant="saveTenant"}}
 								{{/ui/mix-button}}
 								{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo" text='取消' clickAction="detailCancel" detailCancel="detailCancel" }}
 								{{/ui/mix-button}}
 							{{else}}
-								{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-edit" text='编辑' clickAction="detailEditClick" detailEditClick="detailEditClick" }}
-								{{/ui/mix-button}}
-							<!-- {{#ui/mix-button class="user-btn trash-btn" iconClass="fa fa-trash-o" text='删除' clickAction="delById" delById="delById" clickActParams=tenantInfo}}
-								{{/ui/mix-button}} -->
+								{{#if customizeModel}}
+									{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-save" text='保存' clickAction="saveTenant" saveTenant="saveTenant"}}
+									{{/ui/mix-button}}
+									{{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo" text='取消' clickAction="detailCancel" detailCancel="detailCancel" }}
+									{{/ui/mix-button}}
+								{{else}}
+									{{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-edit" text='编辑' clickAction="detailEditClick" detailEditClick="detailEditClick" }}
+									{{/ui/mix-button}}
+								<!-- {{#ui/mix-button class="user-btn trash-btn" iconClass="fa fa-trash-o" text='删除' clickAction="delById" delById="delById" clickActParams=tenantInfo}}
+									{{/ui/mix-button}} -->
+								{{/if}}
 							{{/if}}
 						</p>
 					</div>
@@ -139,7 +146,18 @@
 										<div class="font-light input-group-content-remark">{{tenantInfo.remark}}</div>
 									{{/if}}
 								</div>
-
+							</div>
+							<div class="line">
+								<div class="col-xs-12  nopadding-left ">
+									<div class="form-input-group label-normal">
+										<span class="input-group-addon">&emsp;视频域名：</span>
+										{{#if detailEdit}}
+											{{input type="text" class="full-width inline-block form-input-group label-normal form-control" value=tenantInfo.domainName placeholder=''}}
+										{{else}}
+											<div class="font-light input-group-content-remark">{{tenantInfo.domainName}}</div>
+										{{/if}}
+									</div>
+								</div>
 							</div>
 						</div>
 						<div style="clear:both" />
@@ -196,28 +214,31 @@
 							</div>
 						</div>
 					</div>
-					{{#if (eq addFlag '0')}}
-						<div class="col-sm-6">
-							<div class="form-input-group label-normal">
-								<span class="input-group-addon">&emsp;权限类别：</span>
-								<select id="sysSelect" class="inline-block input-group-content ember-select" onchange= {{ action 'systemTypeChange' value="target.value"}}>
-									 {{#if (eq  feedBus.systemType 2)}}
-										 <option value="1" >机构</option>
-											<option value="2" selected>居家</option>
-											 {{else}}
-											 <option value="1" selected>机构</option>
-											 <option value="2">居家</option>
-									 {{/if}}
+					<!--自定义权限时，显示权限树-->
+					{{#if customizeModel}}
+						{{#if (eq addFlag '0')}}
+							<div class="col-sm-6">
+								<div class="form-input-group label-normal">
+									<span class="input-group-addon">&emsp;权限类别：</span>
+									<select id="sysSelect" class="inline-block input-group-content ember-select" onchange= {{ action 'systemTypeChange' value="target.value"}}>
+										 {{#if (eq  feedBus.systemType 2)}}
+											 <option value="1" >机构</option>
+												<option value="2" selected>居家</option>
+												 {{else}}
+												 <option value="1" selected>机构</option>
+												 <option value="2">居家</option>
+										 {{/if}}
 
-								</select>
-								<p class="user-add-btn">
-									<button type="button"  class="btn btn-icon btn-turquoise btn-xs pull-right btn_xs_padding user-btn edit-btn {{paddingBorder}} "   {{action "allocateSysPrivilege" 1}} >分配全部机构权限</button>
-									<button type="button"  class="btn btn-icon btn-turquoise btn-xs pull-right btn_xs_padding user-btn edit-btn {{paddingBorder}}"   {{action "allocateSysPrivilege" 2}} >分配全部居家权限</button>
-									<button type="button"  class="btn btn-icon btn-turquoise btn-xs pull-right btn_xs_padding user-btn edit-btn {{paddingBorder}}"   {{action "allocatePublicPrivilege"}} >分配全部公众号权限</button>
-								</p>
+									</select>
+									<p class="user-add-btn">
+										<button type="button"  class="btn btn-icon btn-turquoise btn-xs pull-right btn_xs_padding user-btn edit-btn {{paddingBorder}} "   {{action "allocateSysPrivilege" 1}} >分配全部机构权限</button>
+										<button type="button"  class="btn btn-icon btn-turquoise btn-xs pull-right btn_xs_padding user-btn edit-btn {{paddingBorder}}"   {{action "allocateSysPrivilege" 2}} >分配全部居家权限</button>
+										<button type="button"  class="btn btn-icon btn-turquoise btn-xs pull-right btn_xs_padding user-btn edit-btn {{paddingBorder}}"   {{action "allocatePublicPrivilege"}} >分配全部公众号权限</button>
+									</p>
+								</div>
+								{{callbusi/tenant-privileges currentTenant=currentTenant saveFlag=saveFlag detailEdit=true editMode=editMode systemType=systemType}}
 							</div>
-							{{callbusi/tenant-privileges currentTenant=currentTenant saveFlag=saveFlag detailEdit=detailEdit editMode=editMode systemType=systemType}}
-						</div>
+						{{/if}}
 					{{/if}}
 				{{/bs-form}}
 			</div>

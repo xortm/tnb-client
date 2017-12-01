@@ -6,6 +6,7 @@ export default BaseUiItem.extend(ListItem,{
   store: Ember.inject.service("store"),
   feedBus: Ember.inject.service("feed-bus"),
   uiCapa: Ember.inject.service("ui-capability"),
+  constants:Constants,
   classStatic: true,
   isHide:true,
   classNameBindings: ['classStatic:line-item-task','isExpand:expand','outerClass'],
@@ -38,23 +39,23 @@ export default BaseUiItem.extend(ListItem,{
       this.set("dragble",true);
     }
     this._super();
-    let contentWidth = 200;
-    console.log("backTranspage:" + this.get("feedBus").get("backTranspage"));
-    //动态计算content部分宽度,只有前台转场才设置
-    var winW = document.documentElement.clientWidth|| document.body.clientWidth;
-    Ember.$(".col-xs-middle-task").width(winW);
-    var maxW = winW + 172;
-    Ember.$(".contentArea").width(maxW);
-    if(!this.get("feedBus").get("backTranspage")||this.get("feedBus").get("backTranspage")!=="task-square"){
-      let totalWidth = Ember.$(".col-xs-middle-task").width();
-      let titleWidth = Ember.$(".col-xs-middle-task .title").width();
-      contentWidth = totalWidth - titleWidth -10;
-      console.log("totalWidth:" + totalWidth + " and titleWidth:" + titleWidth);
-      this.set("contentWidth",contentWidth);
-      Ember.$(".col-xs-middle-task .content").width(contentWidth);
-    }
+    // let contentWidth = 200;
+    // console.log("backTranspage:" + this.get("feedBus").get("backTranspage"));
+    // //动态计算content部分宽度,只有前台转场才设置
+    // var winW = document.documentElement.clientWidth|| document.body.clientWidth;
+    // Ember.$(".col-xs-middle-task").width(winW);
+    // var maxW = winW + 172;
+    // Ember.$(".contentArea").width(maxW);
+    // if(!this.get("feedBus").get("backTranspage")||this.get("feedBus").get("backTranspage")!=="task-square"){
+    //   let totalWidth = Ember.$(".col-xs-middle-task").width();
+    //   let titleWidth = Ember.$(".col-xs-middle-task .title").width();
+    //   contentWidth = totalWidth - titleWidth -10;
+    //   console.log("totalWidth:" + totalWidth + " and titleWidth:" + titleWidth);
+    //   this.set("contentWidth",contentWidth);
+    //   Ember.$(".col-xs-middle-task .content").width(contentWidth);
+    // }
     //渲染完毕的标志
-    this.set("hasInsertElement",true);
+    // this.set("hasInsertElement",true);
   },
   didRender:function(){
     var winW = document.documentElement.clientWidth|| document.body.clientWidth;
@@ -92,9 +93,9 @@ export default BaseUiItem.extend(ListItem,{
       console.log("scrollFlagDomId itemIdshow ",scrollFlagDomId,itemIdshow);
       var params = {};
       if(scrollFlagDomId=="serviceCareContainer-time"){
-        params= {itemId:_self.get("item.itemId"),flag:"care",itemIdFlag:Math.random()};
+        params= {itemId:_self.get("item.itemId"),flag:"care",taskFlag:'timed',itemIdFlag:Math.random()};
       }else if(scrollFlagDomId=="serviceNurseContainer-time"){
-        params= {itemId:_self.get("item.itemId"),flag:"nurse",itemIdFlag:Math.random()};
+        params= {itemId:_self.get("item.itemId"),flag:"nurse",taskFlag:'timed',itemIdFlag:Math.random()};
       }
       console.log("scrollFlagDomId params",params);
       $("#" + itemIdshow).addClass("tapped");
@@ -104,6 +105,7 @@ export default BaseUiItem.extend(ListItem,{
           var mainpageController = App.lookup('controller:business.mainpage');
           //通过全局服务进行上下文传值
           _self.get("feedBus").set("threadData",_self.get("item"));
+          console.log("run in switch"+params.itemIdFlag);
           mainpageController.switchMainPage('task-detail',params);
         },100);
       },200);

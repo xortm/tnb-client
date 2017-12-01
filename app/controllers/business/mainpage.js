@@ -1,7 +1,6 @@
 import Ember from 'ember';
 const {callStatus_calling,callStatus_inCall,callStatus_callWait,callStatus_callFailure,callStatus_callLost,callStatus_callEnd,taskApplyStatus_apply,taskApplyStatus_applySuc,action_sign} = Constants;
 export default Ember.Controller.extend({
-  moment: Ember.inject.service(),
   pathConfiger: Ember.inject.service("path-configer"),
   service_PageConstrut:Ember.inject.service("page-constructure"),
   service_feedBus:Ember.inject.service("feed-bus"),
@@ -12,6 +11,10 @@ export default Ember.Controller.extend({
   busipageTitle: null,
   afterShowTipProcess:null,//提示后的自动操作
   isShowMobileShade:false,//手机端遮罩层显示标志位
+  showBoxFlag:false,//公众号视频直播全局的弹框 显示标志位
+  isShowVideoDetail:false,//PC视频直播全局的弹框 显示标志位
+  // videoBoxBig:true,//PC视频直播 默认放大显示
+  constants: Constants,
   //皮肤列表
   themes:Ember.computed(function(){
     var data = [{
@@ -50,20 +53,43 @@ export default Ember.Controller.extend({
   return arr;
 }),
 showPopPasschangeModal:false,
+showPopChangeTenantModal:false,//机构选择弹框标志
 showDialogModal:false,
 showImageCropper:false,
 topTipAnimationClass: "elementToFadeInAndOut",
 curRouteName:null,//当前子页面route名称
 
+tenantName:Ember.computed(function(){
+  let _self = this;
+  let currentTenantId = this.get("global_curStatus").get("tenantId");
+  console.log("currentTenantId:",currentTenantId);
+  let tenantList = this.get("global_dataLoader").get("tenantList");
+  console.log("tenantList:",tenantList);
+  let currentTenantName = "";
+  tenantList.forEach(function(tenant){
+    if(tenant.get("id") == currentTenantId){
+      currentTenantName = tenant.get("orgName");
+    }
+  });
+  console.log("currentTenantName in computed:",currentTenantName);
+  return currentTenantName;
+}),
+
 init: function () {
-  this.get("service_PageConstrut").set("mainpageController",this);
   var _self = this;
+  this.get("service_PageConstrut").set("mainpageController",this);
+  let currentTenantId = this.get("global_curStatus").get("tenantId");
+  console.log("currentTenantId:",currentTenantId);
+  let tenantList = this.get("global_dataLoader").get("tenantList");
+  console.log("tenantList:",tenantList);
+  this.set("currentTenantId",currentTenantId);
+  this.set("tenantList",tenantList);
   Ember.run.schedule("afterRender",this,function() {
     //关闭加载页面
-    if(window.cordova){
-      var sysFuncPlugin = cordova.require('org.apache.cordova.plugin.SysFuncPlugin');
-      sysFuncPlugin.closeLoadingPage();
-    }
+    // if(window.cordova && !_self.get("global_curStatus.isCloseLoadingPage")){
+    //   var sysFuncPlugin = cordova.require('org.apache.cordova.plugin.SysFuncPlugin');
+    //   sysFuncPlugin.closeLoadingPage();
+    // }
     //放入页面标题
     var title =$("h1[name='busipage-title']");
     console.log("breadcrumb-env:",$(".breadcrumb-env").get(0));
@@ -173,7 +199,209 @@ init: function () {
     });
   });
 },
+
+/***************************导航及页面跳转部分******************/
+needs: ["application"],
+breadCrumbsPath: null,//当前路径
+breadCrumbsList: [],//导航树历史路径
+
+//根据当前路径，计算导航信息
+breadCrumbsMoinitor: function () {
+  var treeList = this.get("service_PageConstrut").computeBreadCrumbs(this.get('breadCrumbsPath'));
+  console.log("treeList in mainpage",treeList);
+  this.set("breadCrumbsList",treeList);
+}.observes('breadCrumbsPath'),
+
+//切换页面
+switchMainPage:function (routeName,params,callback) {
+  console.log("switchMainPage in,routeName:" + routeName);
+  //取得当前route并记录为原有route
+  var curRouteName = this.get("curRouteName");
+  this.set("curRouteName",routeName);
+  //重置热键事件定义
+  this.get("service_feedBus").set("keyProcessAct",null);
+  //使用原route进行跟踪功能
+  this.get("service_PageConstrut").switchMainPageTrack(routeName,curRouteName,params,callback);
+},
+//刷新页面
+refreshPage:function (routeInst) {
+  console.log("refreshPage in",routeInst);
+  //刷新页面前，需要设置切换标识
+  this.get("service_PageConstrut").incrementProperty("preTransitionFlag");
+  //如果routeInst有，则刷新指定页面，否则刷新主页面
+  if(routeInst){
+    routeInst.refresh();
+  }else{
+    var mainRoute = App.lookup("route:business.mainpage");
+    mainRoute.refresh();
+  }
+},
+/***************************弹层及提示相关******************/
+showPopTip:function(msg,type,showTime,hideTime,afterShowTipProcess){
+  //如果设置了阻止显示，则忽略，线程内有效
+  if(this.get("preventShowPoptip")){
+    this.set("preventShowPoptip",false);
+    return;
+  }
+  let r = Math.random();
+  $("#pop-tip").removeClass('saving');
+  $("#pop-tip").show();
+  $("#pop-tip").html(msg);
+  $("#pop-tip").removeClass(this.get("topTipAnimationClass"));
+  $("#pop-tip").addClass(this.get("topTipAnimationClass"));
+  //添加遮罩
+  $("#ember-bootstrap-modal-container").append("<div id='bs-modal-mask' class='modal-backdrop fade in'></div>");
+  if(type===false){
+    $("#pop-tip").append("<img id='pop-gif' class='pop-gif' src='assets/images/icon/false.gif?v="+r+"' />");
+  }else{
+    if(type==="tip"){
+      $("#pop-tip").append("<img id='pop-gif' class='pop-gif' src='assets/images/icon/false.gif?v="+r+"' />");
+    }else{
+      $("#pop-tip").append("<img id='pop-gif' class='pop-gif' src='assets/images/icon/success.gif?v="+r+"' />");
+    }
+  }
+  if(afterShowTipProcess){
+    this.set("afterShowTipProcess",afterShowTipProcess);
+  }
+},
+//显示以后不消失
+openPopTip:function(msg){
+  Ember.run.later(function(){
+    $("#pop-tip").show();
+    $("#pop-tip").html(msg);
+    $("#pop-tip").addClass('saving');
+    $("#pop-tip").append("<img id='pop-gif' class='save-gif' src='assets/images/icon/saving.gif'/>");
+    //添加遮罩
+    $("#ember-bootstrap-modal-container").append("<div id='bs-modal-mask' class='modal-backdrop fade in'></div>");
+  },1);
+},
+closePopTip:function(msg){
+  $("#pop-tip").hide();
+  $("#ember-bootstrap-modal-container .modal-backdrop").remove();
+  // $("#pop-tip").html(msg);
+},
+//显示手机端老人视频直播全局的弹框
+showMobileVideoBox:function(){
+  this.set("showBoxFlag",true);
+},
+//显示PC端老人视频直播全局的弹框
+showPcVideoBox:function(deviceObjFlag,deviceObj){
+  let _self = this;
+  console.log("run in showPcVideoBox");
+  let deviceLength = deviceObj.get("length");
+  let selectDeviceObj = new Ember.A();
+  for(let i=0;i<deviceLength;i++){
+    let item = Ember.Object.create({
+      type:deviceObj.objectAt(i).get("type"),
+      customer:deviceObj.objectAt(i).get("customer"),
+      bedName:deviceObj.objectAt(i).get("bedName"),
+      roomName:deviceObj.objectAt(i).get("roomName"),
+      floorSeq:deviceObj.objectAt(i).get("floorSeq"),
+      buildingSeq:deviceObj.objectAt(i).get("buildingSeq"),
+      deviceId:deviceObj.objectAt(i).get("deviceId"),
+      hasSelected:false,
+      item: deviceObj.objectAt(i).get("item"),
+      hasConnectFlag:false,
+    });
+    selectDeviceObj.pushObject(item);
+  }
+  this.set("selectDeviceObj",selectDeviceObj);
+  this.set("deviceObjFlag",deviceObjFlag);
+  this.set("isShowVideoDetail",true);
+},
+//显示手机端按键以后的遮罩
+showMobileShade:function(msg){
+  this.set("isShowMobileShade",true);
+  this.set("mobileShadeMessage",msg);
+},
+//关闭手机端按键以后的遮罩
+closeMobileShade:function(msg){
+  this.set("isShowMobileShade",false);
+  this.set("mobileShadeMessage",msg);
+},
+//移动端保存loading
+showMobileLoading(){
+  this.set("isShowMobileLoading",true);
+},
+closeMobileLoading(){
+  this.set("isShowMobileLoading",false);
+},
+//confirm窗口
+showConfirm: function(message,confirmAction){
+  this.set("showDialogModal",true);
+  this.set("dialogMessage",message);
+  this.set("dialogConfirmAction",confirmAction);
+},
+//alert窗口
+showAlert(message){
+  //如果设置了阻止显示，则忽略，线程内有效
+  if(this.get("preventShowAlert")){
+    this.set("preventShowAlert",false);
+    return;
+  }
+  this.set("showAlertModal",true);
+  this.set("alertMessage",message);
+},
+//图片编辑窗口,参数
+popImageCropper(callback){
+  //预存回调函数
+  this.set("imgCropCallback",callback);
+  //弹窗
+  this.set("showImageCropper",true);
+},
+//显示列表页加载提示
+showTableLoading: function(tableDom){
+  console.log("tableDom showTableLoading",tableDom);
+  // tableDom.append("<div class='pageLoading loadingMainShow'>loading...</div>");
+  tableDom.append("<div class='pageLoading center position-relative'><img class='loadingMainShow' src='./assets/images/logo/loading.gif'></div>");
+
+},
+//简易弹层
+showSimPop:function(msg,type,showTime,hideTime,afterShowTipProcess){
+  //如果设置了阻止显示，则忽略，线程内有效
+  if(this.get("preventShowPoptip")){
+    this.set("preventShowPoptip",false);
+    return;
+  }
+  let r = Math.random();
+  $("#sim-pop").removeClass('saving');
+  $("#sim-pop").show();
+  $("#sim-pop").html(msg);
+  $("#sim-pop").removeClass(this.get("topTipAnimationClass"));
+  $("#sim-pop").addClass(this.get("topTipAnimationClass"));
+  if(type===false){
+    $("#sim-pop").append("<img id='pop-gif' class='pop-gif' src='assets/images/icon/false.gif?v="+r+"' />");
+  }else{
+    if(type==="tip"){
+      $("#sim-pop").append("<img id='pop-gif' class='pop-gif' src='assets/images/icon/false.gif?v="+r+"' />");
+    }else{
+      $("#sim-pop").append("<img id='pop-gif' class='pop-gif' src='assets/images/icon/success.gif?v="+r+"' />");
+    }
+  }
+  if(afterShowTipProcess){
+    this.set("afterShowTipProcess",afterShowTipProcess);
+  }
+},
+//消除列表页加载提示
+removeTableLoading: function(tableDom){
+  console.log("tableDom is",tableDom);
+  console.log("tableDom pageLoading is",tableDom.find(".pageLoading"));
+  Ember.run.later(function(){
+    tableDom.find(".pageLoading").remove();
+  },1);
+},
+
 actions:{
+  //关闭手机端老人视频直播全局的弹框
+  // closeMobileVideoBox:function(){
+  //   console.log("run in closeMobileVideoBox");
+  //   this.set("isShowVideoBox",false);
+  // },
+  //关闭PC端老人视频直播全局的弹框
+  // closePcVideoBox:function(){
+  //   console.log("run in closePcVideoBox");
+  //   this.set("isShowVideoDetail",false);
+  // },
   //刷新当前页
   refreshPage(){
     console.log("route yes");
@@ -205,6 +433,52 @@ actions:{
     console.log("routePath:" + routePath);
     this.switchMainPage(item.url);
   },
+  //主页面跳转
+  changeMainPage:function (menuLink) {
+    let _self = this;
+    //获取全局视频播放对象
+    let videoObj = _self.get("global_curStatus").get("videoObj");
+    console.log("videoObj in business:",videoObj);
+    //如果存在全局的视频播放对象,则使其停止播放,并将全局播放对象清空
+    if(videoObj){
+      videoObj.get(0).pause();
+      _self.get("global_curStatus").set("videoObj",null);
+    }
+    console.log("changeMainPage in,menuLink:" + menuLink);
+    this.switchMainPage(menuLink);
+  },
+  //弹出机构选择页面
+  popChangeTenant: function(){
+    this.set("showPopChangeTenantModal",true);
+  },
+  cancelTenantSubmit: function(){
+    this.set("showPopChangeTenantModal",false);
+  },
+  //弹出机构选择确认弹框
+  switchTenantAction: function(tenant){
+    let _self = this;
+    console.log("switchTenantAction run");
+    if(tenant.get("id") == _self.get("currentTenantId")){
+      return;
+    }
+    this.set("changeTenantName",tenant.get("orgName"));
+    this.set("changeTenantId",tenant.get("id"));
+    this.set("showDialogTenantModal",true);
+  },
+  closeTenantDialog: function(){
+    this.set("showDialogTenantModal",false);
+  },
+  //机构选择确认
+  confirmTenantDialog: function(){
+    let _self = this;
+    console.log("confirmTenantDialog run");
+    _self.set("showPopChangeTenantModal",false);
+    _self.set("showDialogTenantModal",false);
+    localStorage.setItem(Constants.uickey_tenantId,_self.get("changeTenantId"));
+    _self.get("global_curStatus").goHome(_self);
+
+  },
+
   //弹出修改密码页面
   popChangePass: function(){
     this.set("showPopPasschangeModal",true);
@@ -239,7 +513,7 @@ actions:{
     });
   },
   //退出登录
-  quit: function(){
+  quit: function(paramsFlag){
     var curUser = this.get("global_curStatus").getUser();
     var role = curUser.get('role').get('id');
     let flag = this.get("service_PageConstrut.curTransitionFlag")+1;
@@ -251,6 +525,7 @@ actions:{
     tokenInfo.save().then(function(){
       console.log('退出登录');
     });
+    localStorage.setItem(Constants.uickey_tenantId,null);
     //清空本地的user数据
     var rmkey = [];
     for (var i = 0; i < localStorage.length; i++){
@@ -274,9 +549,9 @@ actions:{
       params = {queryParams:{loginType:2}};
     }
     this.get("service_PageConstrut").set("curTransitionFlag",flag);
-    //手机端直接跳转到首页面
+    // 手机端直接跳转到首页面
     if(this.get("global_curStatus").get("isMobile")){
-      this.get("global_curStatus").toIndexPage();
+      this.get("global_curStatus").toIndexPage(paramsFlag);
       return;
     }
     console.log("need to login,params",params);
@@ -431,158 +706,6 @@ actions:{
   }
 },
 
-/***************************导航及页面跳转部分******************/
-needs: ["application"],
-breadCrumbsPath: null,//当前路径
-breadCrumbsList: [],//导航树历史路径
 
-//根据当前路径，计算导航信息
-breadCrumbsMoinitor: function () {
-  var treeList = this.get("service_PageConstrut").computeBreadCrumbs(this.get('breadCrumbsPath'));
-  console.log("treeList in mainpage",treeList);
-  this.set("breadCrumbsList",treeList);
-}.observes('breadCrumbsPath'),
 
-//切换页面
-switchMainPage:function (routeName,params) {
-  console.log("switchMainPage in,routeName:" + routeName);
-  //取得当前route并记录为原有route
-  var curRouteName = this.get("curRouteName");
-  this.set("curRouteName",routeName);
-  //重置热键事件定义
-  this.get("service_feedBus").set("keyProcessAct",null);
-  //使用原route进行跟踪功能
-  this.get("service_PageConstrut").switchMainPageTrack(routeName,curRouteName,params);
-},
-//刷新页面
-refreshPage:function (routeInst) {
-  console.log("refreshPage in",routeInst);
-  //刷新页面前，需要设置切换标识
-  this.get("service_PageConstrut").incrementProperty("preTransitionFlag");
-  //如果routeInst有，则刷新指定页面，否则刷新主页面
-  if(routeInst){
-    routeInst.refresh();
-  }else{
-    var mainRoute = App.lookup("route:business.mainpage");
-    mainRoute.refresh();
-  }
-},
-/***************************弹层及提示相关******************/
-showPopTip:function(msg,type,showTime,hideTime,afterShowTipProcess){
-  //如果设置了阻止显示，则忽略，线程内有效
-  if(this.get("preventShowPoptip")){
-    this.set("preventShowPoptip",false);
-    return;
-  }
-  let r = Math.random();
-  $("#pop-tip").removeClass('saving');
-  $("#pop-tip").show();
-  $("#pop-tip").html(msg);
-  $("#pop-tip").removeClass(this.get("topTipAnimationClass"));
-  $("#pop-tip").addClass(this.get("topTipAnimationClass"));
-  //添加遮罩
-  $("#ember-bootstrap-modal-container").append("<div id='bs-modal-mask' class='modal-backdrop fade in'></div>");
-  if(type===false){
-    $("#pop-tip").append("<img id='pop-gif' class='pop-gif' src='assets/images/icon/false.gif?v="+r+"' />");
-  }else{
-    if(type==="tip"){
-      $("#pop-tip").append("<img id='pop-gif' class='pop-gif' src='assets/images/icon/false.gif?v="+r+"' />");
-    }else{
-      $("#pop-tip").append("<img id='pop-gif' class='pop-gif' src='assets/images/icon/success.gif?v="+r+"' />");
-    }
-  }
-  if(afterShowTipProcess){
-    this.set("afterShowTipProcess",afterShowTipProcess);
-  }
-},
-//显示以后不消失
-openPopTip:function(msg){
-  Ember.run.later(function(){
-    $("#pop-tip").show();
-    $("#pop-tip").html(msg);
-    $("#pop-tip").addClass('saving');
-    $("#pop-tip").append("<img id='pop-gif' class='save-gif' src='assets/images/icon/saving.gif'/>");
-    //添加遮罩
-    $("#ember-bootstrap-modal-container").append("<div id='bs-modal-mask' class='modal-backdrop fade in'></div>");
-  },1);
-},
-closePopTip:function(msg){
-  $("#pop-tip").hide();
-  $("#ember-bootstrap-modal-container .modal-backdrop").remove();
-  // $("#pop-tip").html(msg);
-},
-//显示手机端按键以后的遮罩
-showMobileShade:function(msg){
-  this.set("isShowMobileShade",true);
-  this.set("mobileShadeMessage",msg);
-},
-//关闭手机端按键以后的遮罩
-closeMobileShade:function(msg){
-  this.set("isShowMobileShade",false);
-  this.set("mobileShadeMessage",msg);
-},
-//confirm窗口
-showConfirm: function(message,confirmAction){
-  this.set("showDialogModal",true);
-  this.set("dialogMessage",message);
-  this.set("dialogConfirmAction",confirmAction);
-},
-//alert窗口
-showAlert(message){
-  //如果设置了阻止显示，则忽略，线程内有效
-  if(this.get("preventShowAlert")){
-    this.set("preventShowAlert",false);
-    return;
-  }
-  this.set("showAlertModal",true);
-  this.set("alertMessage",message);
-},
-//图片编辑窗口,参数
-popImageCropper(callback){
-  //预存回调函数
-  this.set("imgCropCallback",callback);
-  //弹窗
-  this.set("showImageCropper",true);
-},
-//显示列表页加载提示
-showTableLoading: function(tableDom){
-  console.log("tableDom showTableLoading",tableDom);
-  // tableDom.append("<div class='pageLoading loadingMainShow'>loading...</div>");
-  tableDom.append("<div class='pageLoading center position-relative'><img class='loadingMainShow' src='./assets/images/logo/loading.gif'></div>");
-
-},
-//简易弹层
-showSimPop:function(msg,type,showTime,hideTime,afterShowTipProcess){
-  //如果设置了阻止显示，则忽略，线程内有效
-  if(this.get("preventShowPoptip")){
-    this.set("preventShowPoptip",false);
-    return;
-  }
-  let r = Math.random();
-  $("#sim-pop").removeClass('saving');
-  $("#sim-pop").show();
-  $("#sim-pop").html(msg);
-  $("#sim-pop").removeClass(this.get("topTipAnimationClass"));
-  $("#sim-pop").addClass(this.get("topTipAnimationClass"));
-  if(type===false){
-    $("#sim-pop").append("<img id='pop-gif' class='pop-gif' src='assets/images/icon/false.gif?v="+r+"' />");
-  }else{
-    if(type==="tip"){
-      $("#sim-pop").append("<img id='pop-gif' class='pop-gif' src='assets/images/icon/false.gif?v="+r+"' />");
-    }else{
-      $("#sim-pop").append("<img id='pop-gif' class='pop-gif' src='assets/images/icon/success.gif?v="+r+"' />");
-    }
-  }
-  if(afterShowTipProcess){
-    this.set("afterShowTipProcess",afterShowTipProcess);
-  }
-},
-//消除列表页加载提示
-removeTableLoading: function(tableDom){
-  console.log("tableDom is",tableDom);
-  console.log("tableDom pageLoading is",tableDom.find(".pageLoading"));
-  Ember.run.later(function(){
-    tableDom.find(".pageLoading").remove();
-  },1);
-}
 });

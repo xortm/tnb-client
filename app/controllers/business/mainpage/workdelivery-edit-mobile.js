@@ -120,7 +120,7 @@ export default Ember.Controller.extend(InfiniteScroll, {
                 }
             }
             if (source === "remark" && (edit === null || edit.length === 0)) {
-                this.set('succeed', '请输入交接内容！');
+                this.set('succeed', '请填写备注！');
                 return;
             } else if (source === "staffMail" && !this.get('emailRegular')) {
                 this.set('succeed', '请输入正确的邮箱账号！');
@@ -144,6 +144,12 @@ export default Ember.Controller.extend(InfiniteScroll, {
                     if (source === "remark") {
                         workdelivery.set("remark", edit);
                     }
+                    if (source === "illChange") {
+                        workdelivery.set("illChange", edit);
+                    }
+                    if (source === "specialRemark") {
+                        workdelivery.set("specialRemark", edit);
+                    }
                     _self.get("global_ajaxCall").set("dur-noprevent","yes");
                     var itemId = "workdeliveryEditMobileBut";
                     $("." + itemId).addClass("tapped");
@@ -151,6 +157,7 @@ export default Ember.Controller.extend(InfiniteScroll, {
                       $("." + itemId).removeClass("tapped");
                       workdelivery.save().then(function(ll) {
                           _self.set('succeed', '');
+                          _self.get("feedService").set("workdeliSelfFlag",true);
                           var mainController = App.lookup("controller:business.mainpage");
                           console.log('2222222');
                           mainController.switchMainPage("workdelivery-detail-mobile");
@@ -182,6 +189,7 @@ export default Ember.Controller.extend(InfiniteScroll, {
                 consultInfo.save().then(function() {
                     var mainController = App.lookup("controller:business.mainpage");
                     console.log('33333333');
+                    _self.get("feedService").set("workdeliSelfFlag",true);
                     mainController.switchMainPage("backvist-detail-mobile");
                 });
             });

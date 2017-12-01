@@ -1,14 +1,11 @@
 import Ember from 'ember';
 import BaseItem from './base-ui-item';
-import ImageLoadMixin from 'ember-lazy-image/mixins/image-load';
-import LazyImageMixin from 'ember-lazy-image/mixins/lazy-image';
-import InViewportMixin from 'ember-in-viewport';
 import CommonUtil from '../../utils/common';
 
 /*
  * 图片组件，集成了图片展示，以及图片上传
  */
-export default BaseItem.extend(InViewportMixin, {
+export default BaseItem.extend({
     /*定义属性*/
     isMobile: false, //是否移动端模式
     imgSrc: null, //图片路径
@@ -86,30 +83,16 @@ export default BaseItem.extend(InViewportMixin, {
         //图像加载出错时的处理
         this.set("hasDidInsert", true);
         this.$("img").error(function() {
-          if(_self.get("imgChange")){
-            let normalImgName = _self.get("imgSrc");
-            _self.set("imgChange",false);
-            _self.set("imgSrcReal",normalImgName);
-            return;
-          }
-          _self.set("imgSrcReal",_self.get("defaultSrc"));
+          Ember.run.next(function(){
+            if(_self.get("imgChange")){
+              let normalImgName = _self.get("imgSrc");
+              _self.set("imgChange",false);
+              _self.set("imgSrcReal",normalImgName);
+              return;
+            }
+            _self.set("imgSrcReal",_self.get("defaultSrc"));
+          });
         });
-
-            // console.log("errorFlag::222" + _self.get("errorFlag"));
-            // // 因为库里有数据,但不一定找到图片,所以采用了两次error事件来监听
-            // if (_self.get("errorFlag") == 1) {
-            //     $(this).attr('src', _self.get("defaultSrc"));
-            //     $(this).unbind("error");
-            //     _self.set("errorFlag", 0);
-            //     return;
-            // }
-            // _self.set("errorFlag", 1);
-            // _self.$("img").attr('src', _self.get("imgSrc"));
-            // console.log("imgSrc in imgErrObs:" +  _self.get("imgSrc"));
-            // console.log("imgErrObs");
-        // this.$("img").load(function() {
-        //   _self.set("errorFlag", 0);
-        // });
     },
     imgErrObs: function() {
         var imgSrc = this.get("imgSrc");
@@ -317,16 +300,6 @@ export default BaseItem.extend(InViewportMixin, {
         },
         // 打印图片
         printImg() {
-            //打开一个新的页面打印
-            // let bdhtml = window.document.body.innerHTML;
-            // let sprnstr = "<!--startprint-->"; //开始打印标识字符串有17个字符
-            // let eprnstr = "<!--endprint-->"; //结束打印标识字符串
-            // let prnhtml = bdhtml.substr(bdhtml.indexOf(sprnstr)+17); //从开始打印标识之后的内容
-            // prnhtml = prnhtml.substring(0,prnhtml.indexOf(eprnstr)); //截取开始标识和结束标识之间的内容
-            // var printWindow = window.open();
-            // printWindow.document.write(prnhtml);
-            // printWindow.print();
-
             //当前页面打印
             var _self = this;
             var idNumber = this.get('idNumber');
@@ -337,9 +310,6 @@ export default BaseItem.extend(InViewportMixin, {
             var printId = 'printf' + idNumber;
             $("<iframe id=" + printId + " name=" + printId + "> <html><body>ttt</body></html></iframe>")
                 .hide().appendTo("body");
-            // $('#printf15').load(function() {
-            //     alert("onload");
-            // });
             console.log(document.getElementById(printId));
             $('#'+printId+'').contents().find('body').html('<img class="width100B" src=' + _self.get("imgSrcBig") + '>');
             document.getElementById(printId).contentWindow.print();

@@ -317,8 +317,8 @@
             {{#if informationParams}}
                 <div class="bottom12">
                     <ul class="nopadding-left border-bottom">
-                        <li class="pull-left margin-right30 {{if infoParams 'select-bottom-border' ''}}" {{action "infoClick" "infoParams" on="click"}}><a href="#tab_1_1" data-toggle="tab" class="{{if infoParams 'select-title' 'noselect-title'}} the-a">基本信息</a></li>
-                        <li class="pull-left margin-right30 {{if pointParams 'select-bottom-border' ''}}" {{action "pointClick" "pointParams" on="click"}}><a href="#tab_1_3" data-toggle="tab" class="{{if pointParams 'select-title' 'noselect-title'}} the-a">生活习惯</a></li>
+                        <li id="first-pane-tab" class="pull-left margin-right30 active {{if infoParams 'select-bottom-border' ''}}" {{action "infoClick" "infoParams" on="click"}}><a href="#tab_1_1" data-toggle="tab" class="{{if infoParams 'select-title' 'noselect-title'}} the-a">基本信息</a></li>
+                        <li class="pull-left margin-right30 {{if pointParams 'select-bottom-border' ''}}" {{action "pointClick" "pointParams" on="click"}}><a href="#tab_1_3" data-toggle="tab" class="{{if pointParams 'select-title' 'noselect-title'}} the-a">老人特点</a></li>
                         <li class="pull-left margin-right30 {{if contactParams 'select-bottom-border' ''}}" {{action "contactClick" "contactParams" on="click"}}><a href="#tab_1_4" data-toggle="tab" class="{{if contactParams 'select-title' 'noselect-title'}} the-a">联系人信息</a></li>
                         <li class="pull-left margin-right30 {{if healthInfoParams 'select-bottom-border' ''}}" {{action "healthClick" "healthInfoParams" on="click"}}><a href="#tab_1_5" data-toggle="tab" class="{{if healthInfoParams 'select-title' 'noselect-title'}} the-a">健康档案</a></li>
                     </ul>
@@ -360,11 +360,99 @@
                                 {{/callbusi/customer-service-record}}
                             </div>
                         {{else}}
-                            <div class="">事件记录</div>
+                        <div class="busi-info">
+                            <div class="box-body">
+                              {{#ui/mix-button class=" user-btn pull-right" iconClass="fa-plus" text='新增老人事件' clickAction="addEvent" addEvent="addEvent" }}
+                              {{/ui/mix-button}}
+                            <div id="" class="dataTables_wrapper form-inline" role="grid">
+                              <table id="eventTable" cellpadding="0" cellspacing="0" border="0"  class="datatable table table-bordered table-hover dataTable nomargin-vertical" aria-describedby="datatable1_info">
+                                <thead>
+                                  <tr role="row">
+                                    <th rowspan="1" colspan="1" width="">老人姓名</th>
+                                    <th rowspan="1" colspan="1" width="">事件名称</th>
+                                    <th rowspan="1" colspan="1" width="">事件类型</th>
+                                    <th rowspan="1" colspan="1" width="">日期</th>
+                                    <th rowspan="1" colspan="1" width="">操作</th>
+                                  </tr>
+                                </thead>
+                                {{#if eventList}}
+                              <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
+                                  {{#each eventList as |event| }}
+                                  <tr >
+                                    <td class="ellipsis"  {{action "addEvent" event on="click"}}>{{event.customer.name}}</td>
+                                    <td class="ellipsis"  {{action "addEvent" event on="click"}}>{{event.name}}</td>
+                                    <td class="ellipsis"  {{action "addEvent" event on="click"}}>{{event.type.typename}}</td>
+                                    <td class="ellipsis" {{action "addEvent" event on="click"}} >{{event.eventTimeStr}}</td>
+                                    <td class="ellipsis"  ><a href="#" {{action "removeEvent" event on="click"}}>删除</a></td>
+                                  </tr>
+                                  {{/each}}
+                               </tbody>
+                               {{else}}
+                               <div class="nodate">暂无数据</div>
+                               {{/if}}
+                                </table>
+                              </div>
+                            </div>
+                          <!-- /BOX -->
+                        </div>
                         {{/if}}
                     {{/if}}
                 {{/if}}
             {{/if}}
         </div>
     </div>
+{{/if}}
+{{#if showEventModel}}
+    {{#bs-modal body=false footer=false header=false closedAction=(action "invitationEvent") }}
+        {{#bs-modal-header}}
+            <h4 class="modal-title">添加新老人事件</h4>
+        {{/bs-modal-header}}
+        {{#bs-modal-body}}
+        {{#bs-form formLayout=formLayout model=eventModel invalid=(action "invitationEvent")}}
+            <div class="modal-body clearfix">
+                <div class="form-group">
+                    <div class="col-sm-12" style="text-align: center;">
+                      <div class="col-xs-12 col-sm-6">
+                        <div class="form-input-group">
+                          <span class="input-group-addon">事件名称：</span>
+                            {{input  class="input-group-content" value=eventModel.name}}
+                        </div>
+                      </div>
+                      <div class="col-xs-12 col-sm-6">
+                        <div class="form-input-group">
+                          <span class="input-group-addon">事件时间：</span>
+                          {{#bs-form-element class="inline-block form-input-group" controlType="eventTime" property="eventTime" }}
+                              {{ui/addon/bs-datetimepicker date=eventModel.eventTimeDate placeholder="必填项"
+                                locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'
+                                  show="doNothing" change="changeEventTime" }}
+                          {{/bs-form-element}}
+                        </div>
+                      </div>
+                      <div class="col-xs-12 col-sm-6">
+                        <div class="form-input-group">
+                          <span class="input-group-addon">事件类型：</span>
+                          {{#bs-form-element class="inline-block form-input-group label-normal" controlType="type" property="type" }}
+                              {{callbusi/dict-selector curDict=eventModel.type groupCode='eventType' showName="事件类型"
+                              dictSelect="eventTypeSelect" value=eventModel.type preselected=false}}
+                          {{/bs-form-element}}
+                        </div>
+                      </div>
+                      <div class="col-xs-12 col-sm-12">
+                        <div class="form-input-group">
+                          <span class="input-group-addon">描述：</span>
+                            {{textarea type="text" class="full-width inline-block form-input-group label-normal form-control" value=eventModel.remark}}
+                        </div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            {{/bs-form}}
+        {{/bs-modal-body}}
+        {{#bs-modal-footer class="user-add-btn" as |footer|}}
+            {{#ui/mix-button class="user-btn edit-btn" iconClass="fa fa-check" text='保存' clickAction="saveEventAction" saveEventAction="saveEventAction" }}
+            {{/ui/mix-button}}
+            {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-mail-reply" text='取消' clickAction="invitationEvent" invitationEvent="invitationEvent" }}
+            {{/ui/mix-button}}
+        {{/bs-modal-footer}}
+    {{/bs-modal}}
 {{/if}}

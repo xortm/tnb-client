@@ -1,9 +1,9 @@
 import Ember from 'ember';
 import BaseUiItem from '../../ui/base-ui-item';
-import Echarts from "npm:echarts";
+//
 import InfiniteScroll from '../../../controllers/infinite-scroll';
 const {
-    useDrugResult1,liveIntent1
+    useDrugResult1,liveIntent1,consultChannelTel
 } = Constants;
 
 export default BaseUiItem.extend(InfiniteScroll, {
@@ -85,7 +85,11 @@ export default BaseUiItem.extend(InfiniteScroll, {
     // }.observes("planDataPushFlagT"),
     consultinfoDataObs: function() {
               console.log("flushtest T1");
+              console.log("itemIdFlag:",this.get("itemIdFlag"));
+              console.log("planDataPushFlag:",this.get("planDataPushFlag"));
         var _self = this;
+        // let planDataPushFlag = this.get("planDataPushFlag");
+        // if(!planDataPushFlag){return;}
         this._showLoading();
         var infoId = this.get('itemId');
         var source = this.get('source');
@@ -97,6 +101,7 @@ export default BaseUiItem.extend(InfiniteScroll, {
               consultStatus: _self.get('dataLoader').findDict('consultStatus1'),
               liveIntent:_self.get('dataLoader').findDict(_self.get('constants').liveIntent1),
               receiveStaff:curuser.get("employee"),
+              consultChannel: _self.get('dataLoader').findDict(_self.get('constants').consultChannelTel),
               delStatus: 0
           });
           consultinfo.save().then(function(data) {
@@ -108,6 +113,7 @@ export default BaseUiItem.extend(InfiniteScroll, {
           });
         }else{
           _self.get("store").findRecord("consultinfo", infoId).then(function(consultationData) {
+            console.log("consultationData after find:",consultationData);
               _self.get("store").query("backvist", {
                   filter: {
                       '[consultInfo][id]': infoId
@@ -115,8 +121,11 @@ export default BaseUiItem.extend(InfiniteScroll, {
               }).then(function(backvistList) {
                   backvistList = backvistList.sortBy('createDateTime').reverse();
                   consultationData.set('backVistInfos', backvistList);
-                  console.log("consultinfoData:" + consultationData);
+                  console.log("consultinfoData:",consultationData);
                   _self.set("consultinfoData", consultationData);
+                  // if(_self.get("consultinfoData").get('advGender')){
+                  //      _self.set('advGenderOther',_self.get("consultinfoData").get('advGender').get('typename'));
+                  // }
                   //_self.directInitScoll(true);
                   _self.hideAllLoading();
               });
@@ -125,26 +134,16 @@ export default BaseUiItem.extend(InfiniteScroll, {
         //重新进行tab选择
         console.log("need change refreshFlag");
         this.set("refreshFlag",this.get("itemIdFlag"));
+        _self.get("feedService").set("conDataFlag",false);
         console.log("refreshFlag after:" + this.get("refreshFlag"));
-    }.observes("planDataPushFlag", "itemIdFlag").on("init"),
+    }.observes("itemIdFlag").on("init"),
     init: function() {
         this._super(...arguments);
         this.get("service_PageConstrut").set("showLoader", false); //先关闭mainpage的
         this.set("showLoadingImgIn", true);
         var _self = this;
-        // console.log("planDataPushFlag init11", this.get("planDataPushFlag"));
-        // this.incrementProperty("planDataPushFlag");
-        // console.log("planDataPushFlag init", this.get("planDataPushFlag"));
         _self.set("clickActFlag", "tabInfo");
         _self.set("curTabCode", "tabInfo");
-        // Ember.run.schedule("afterRender", this, function() {
-        //     //设置默认显示tab页
-        //     console.log("menuitem in tab init");
-        //     // this.set("countListFlag",0);//计次
-        //     // this.set("serviceListFlag",0);//定时
-        //     //this.incrementProperty("planDataPushFlag");
-        //     // _self.queryFlagIn();
-        // });
     },
     directInitScollFlagObs: function() {
         this.send("switchShowAction");
@@ -153,14 +152,18 @@ export default BaseUiItem.extend(InfiniteScroll, {
     queryFlagIn: function() {
               console.log("flushtest T2");
         this.set('source','none');
-        this.incrementProperty("planDataPushFlag");
+        this.consultinfoDataObs();
+        // this.incrementProperty("planDataPushFlag");
     },
 
     actions: {
-          switchShowAction() {
-            console.log("switchShowAction in cd");
-            this._super();
-          },
+      switchShowAction(){
+        this.refreshScrollerAction();
+        let assessmentFlag = this.get("feedService").get("conDataFlag");
+        if(assessmentFlag){
+          this.consultinfoDataObs();
+        }
+      },
         //页面跳转
         addBackvist: function() {
           var _self = this;
@@ -191,16 +194,6 @@ export default BaseUiItem.extend(InfiniteScroll, {
             }, 200);
           });
 
-          // console.log("test addBack");
-          //   var _self = this;
-          //   var params = {
-          //       infoId: _self.get('consultinfoDataId'),
-          //       source: 'add',
-          //       itemIdFlag:Math.random()
-          //   };
-          //           console.log("test addBack1 ",params);
-          //   var mainpageController = App.lookup('controller:business.mainpage');
-          //   mainpageController.switchMainPage('backvist-detail-mobile', params);
         },
         toBackvist: function(backvist) {
             var _self = this;
@@ -272,7 +265,7 @@ export default BaseUiItem.extend(InfiniteScroll, {
         },
 
         switchTab(code) {
-            console.log('switchTab in,code:' + code);
+            console.log(' ' + code);
             this.set("curTabCode", code);
             this.set("showLoadingImgIn", false);
             if (code == "tabInfo") {
@@ -281,7 +274,7 @@ export default BaseUiItem.extend(InfiniteScroll, {
             } else {
                 this.get("dataLoader").set('conTabCode', "tabCallBack");
             }
-            this.directInitScoll();
+            // this.directInitScoll();
         },
 
         //这个是判断 list是否在hbs加载完毕标示

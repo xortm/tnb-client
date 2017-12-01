@@ -5,6 +5,7 @@ export default Ember.Component.extend(GesturesMixin,{
   feedService: Ember.inject.service('feed-bus'),
   service_PageConstrut: Ember.inject.service('page-constructure'),
   statusService: Ember.inject.service("current-status"),
+  dataLoader: Ember.inject.service("data-loader"),
 
   popContent: false,//是否显示下拉菜单
   recognizers: 'tap press',//移动端手势
@@ -32,6 +33,8 @@ export default Ember.Component.extend(GesturesMixin,{
       return;
     }
     this.set("curCustomer",curCustomer);
+    let kangyiTell = this.get("dataLoader").findConf("tell");
+    this.set("kangyiTell",kangyiTell);
   }.observes("statusService.curStatus.currentCustomer").on("init"),
   actions:{
     transPage(){

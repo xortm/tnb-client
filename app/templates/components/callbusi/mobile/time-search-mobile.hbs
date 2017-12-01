@@ -1,0 +1,7 @@
+<i class="fa fa-calendar pull-right" {{action "showTimeChoose" on='tap'}}></i>
+{{#if showFlag}}
+  <!-- {{input type="date" class="full-width" placeholder="" value=date}} -->
+  <input type="date" placeholder="请输入日期" id="FromDate" value= {{date}} name="FromDate" formart="yyyy-mm-dd" autofocus="autofocus"
+  onfocus='Constants.LOF_inputDateFocus(this)' class="date iosinput width0 height0 padding-left-5 " style="opacity:0;{{if global_curStatus.isIphone '-webkit-appearance: none;'}}"
+      onchange={{action 'searchDate'}} />
+{{/if}}

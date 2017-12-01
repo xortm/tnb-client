@@ -24,16 +24,16 @@
                 <span>&nbsp;只显示预警老人</span>
                 {{#if queryScheduled}}
                   <div class="pull-right color-white select-warning" {{action 'queryScheduled' on='click'}}>
-                    <div class="pull-left padding-left-5">否</div>
+                    <div class="pull-left padding-left-5">是</div>
                     <div class=" pull-left select-backg-true left10" style=""></div>
                   </div>
                 {{else}}
                   <div class="pull-right color-white select-warning bk-color-ccc" {{action 'queryScheduled' on='click'}}>
                     <div class=" pull-left select-backg-true right5 left5 right10" style=""></div>
-                    <div class="pull-left">是</div>
+                    <div class="pull-left">否</div>
                   </div>
                 {{/if}}
-
+                <!-- {{bs-switch off-text='否' on-text='是' size='xs' on-color='info' checked=switchState on-switch-change="queryScheduled"}} -->
             </div>
           </div>
           {{/if}}
@@ -75,7 +75,6 @@
               customer=customer showelder="showelderfeed"}}
           {{/each}}
         {{else}}
-          <div class="nodate">暂无数据</div>
         {{/if}}
       </div>
     {{else}}
@@ -95,7 +94,11 @@
   </div>
   <ul class="nopadding-left" style="height:100%;overflow:hidden;">
     <li class="height50 font18 padding-left40 weight-bold">
-      {{elderMessage}}
+      {{#if mockFlag}}
+        服务记录
+      {{else}}
+        {{elderMessage}}
+      {{/if}}
     </li>
     <li class="clear top20">
       <div class="pull-left padding-left-20">
@@ -115,32 +118,112 @@
       </div>
     </li>
     {{#if (eq showFlag "heartNewFlag")}}
-      <li class="top40 padding-left-20 font14">
-        <div class="top10  center">
-          <div class="padding-left-10 pull-left width33B">检测时间</div>
-          <div class="pull-left width33B">体检项目</div>
-          <div class="pull-left width33B">测量值</div>
-        </div>
-        {{#each heartNewList as |message|}}
+      {{#if mockFlag}}
+        <li class="top40 padding-left-20 font14">
           <div class="top10  center">
-            <div class="padding-left-10 pull-left width33B">
-              {{#if message.time}}
-              {{message.time}}
+            <div class="padding-left-10 pull-left width33B">服务时间</div>
+            <div class="pull-left width33B">服务项目</div>
+            <div class="pull-left width33B">执行情况</div>
+          </div>
+            <div class="top10  center">
+              <div class="padding-left-10 pull-left width33B">
+                6:30
+              </div>
+              <div class="pull-left width33B">穿脱衣服</div>
+              <div class="pull-left width33B">完成</div>
+            </div>
+            <div class="top10  center">
+              <div class="padding-left-10 pull-left width33B">
+                6:50
+              </div>
+              <div class="pull-left width33B">如厕协助</div>
+              <div class="pull-left width33B">完成</div>
+            </div>
+            <div class="top10  center">
+              <div class="padding-left-10 pull-left width33B">
+                7:00
+              </div>
+              <div class="pull-left width33B">经口喂食</div>
+              <div class="pull-left width33B">完成</div>
+            </div>
+            <div class="top10  center">
+              <div class="padding-left-10 pull-left width33B">
+                7:30
+              </div>
+              <div class="pull-left width33B">协助洗脸</div>
+              <div class="pull-left width33B">完成</div>
+            </div>
+            <div class="top10  center">
+              <div class="padding-left-10 pull-left width33B">
+                8:30
+              </div>
+              <div class="pull-left width33B">更换床单位 </div>
+              <div class="pull-left width33B">完成</div>
+            </div>
+            <div class="top10  center">
+              <div class="padding-left-10 pull-left width33B">
+                11:30
+              </div>
+              <div class="pull-left width33B">经口喂食</div>
+              <div class="pull-left width33B">完成</div>
+            </div>
+            <div class="top10  center">
+              <div class="padding-left-10 pull-left width33B">
+                12:30
+              </div>
+              <div class="pull-left width33B">口腔护理</div>
+              <div class="pull-left width33B">完成</div>
+            </div>
+            <div class="top10  center">
+              <div class="padding-left-10 pull-left width33B">
+                15:30
+              </div>
+              <div class="pull-left width33B">中频理疗</div>
+              <div class="pull-left width33B">完成</div>
+            </div>
+            <div class="top10  center">
+              <div class="padding-left-10 pull-left width33B">
+                15:40
+              </div>
+              <div class="pull-left width33B">经口喂水</div>
+              <div class="pull-left width33B">完成</div>
+            </div>
+            <div class="top10  center">
+              <div class="padding-left-10 pull-left width33B">
+                17:00
+              </div>
+              <div class="pull-left width33B">湿式扫床</div>
+              <div class="pull-left width33B">完成</div>
+            </div>
+        </li>
+      {{else}}
+        <li class="top40 padding-left-20 font14">
+          <div class="top10  center">
+            <div class="padding-left-10 pull-left width33B">检测时间</div>
+            <div class="pull-left width33B">体检项目</div>
+            <div class="pull-left width33B">测量值</div>
+          </div>
+          {{#each heartNewList as |message|}}
+            <div class="top10  center">
+              <div class="padding-left-10 pull-left width33B">
+                {{#if message.time}}
+                {{message.time}}
+                {{else}}
+                无
+                {{/if}}
+              </div>
+
+              {{#if (eq message.business 'healthExamType1')}}
+                <div class="pull-left width33B">{{message.healthName}}</div>
+                <div class="pull-left width33B">{{message.result}}/{{message.resultAddtion}}{{message.healthTypeUnit}}</div>
               {{else}}
-              无
+                <div class="pull-left width33B">{{message.healthName}}</div>
+                <div class="pull-left width33B">{{message.result}}{{message.healthTypeUnit}}</div>
               {{/if}}
             </div>
-
-            {{#if (eq message.business 'healthExamType1')}}
-              <div class="pull-left width33B">{{message.healthName}}</div>
-              <div class="pull-left width33B">{{message.result}}/{{message.resultAddtion}}{{message.healthTypeUnit}}</div>
-            {{else}}
-              <div class="pull-left width33B">{{message.healthName}}</div>
-              <div class="pull-left width33B">{{message.result}}{{message.healthTypeUnit}}</div>
-            {{/if}}
-          </div>
-        {{/each}}
-      </li>
+          {{/each}}
+        </li>
+      {{/if}}
     {{else if (eq showFlag "warningNewFlag")}}
       <li class="top40 padding-left-20 font14">
         <!-- <div class="top10  center">

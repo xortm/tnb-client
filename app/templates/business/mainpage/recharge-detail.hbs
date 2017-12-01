@@ -27,7 +27,7 @@
                             <div class="form-input-group">
                                 <span class="input-group-addon">充值账户：</span>
                                 {{#if detailEdit}}
-                                        {{#bs-form-element class="inline-block form-input-group" controlType="rechargeAccount" property="rechargeAccount" }}
+                                        {{#bs-form-element class="inline-block form-input-group" controlType="rechargeCustomer" property="rechargeCustomer" }}
                                             {{#power-select class="inline-block input-group-content" placeholder="必填项" options=customerList selected=rechargeModel.rechargeCustomer
                                             searchField="accountPinyin" noMatchesMessage="没有相关内容" allowClear=false onchange=(action "selectCustomer" ) as |customer|}}
                                                 {{customer.name}}
@@ -44,7 +44,7 @@
                                 {{#if detailEdit}}
                                 {{#bs-form-element class="inline-block form-input-group" controlType="rechargeAccount"  property="rechargeAccount" }}
                                   {{callbusi/dict-selector curDict=rechargeModel.rechargeAccount groupCode=constants.accountType
-                                    showName="" dictSelect="accountTypeSelect" value=rechargeModel.rechargeAccount preselected=false}}
+                                    showName="必填" dictSelect="accountTypeSelect" value=rechargeModel.rechargeAccount preselected=false}}
                                   {{/bs-form-element}}
                                 {{else}}
                                     <div class="input-group-content">{{rechargeModel.rechargeAccount.type.typename}}</div>
@@ -57,21 +57,9 @@
                             <div class="form-input-group">
                                 <span class="input-group-addon">充值金额(元)：</span>
                                 {{#if detailEdit}}
-                                  {{bs-form-element property="money" class="inline-block form-input-group" controlType="money" placeholder=""}}
+                                  {{bs-form-element property="money" class="inline-block form-input-group" controlType="money" placeholder="必填"}}
                                 {{else}}
                                     <div class="input-group-content">{{rechargeModel.money}}</div>
-                                {{/if}}
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-6">
-                            <div class="form-input-group">
-                                <span class="input-group-addon">充值时间：</span>
-                                {{#if detailEdit}}
-                                {{ui/addon/bs-datetimepicker date=rechargeModel.createDate placeholder=""
-                                  locale="zh-CN" iconClasses="fa fa-calendar" format='YYYY-MM-DD'
-                                   show="dpShowAction" change="changeCreateDateAction" }}
-                                  {{else}}
-                                    <div class="input-group-content">{{rechargeModel.createDateString}}</div>
                                 {{/if}}
                             </div>
                         </div>
@@ -81,7 +69,7 @@
                                 {{#if detailEdit}}
                                 {{#bs-form-element class="inline-block form-input-group" controlType="channel"  property="channel" }}
                                   {{callbusi/dict-selector curDict=rechargeModel.channel groupCode=constants.rechargeChannel
-                                    showName="" dictSelect="channelSelect" value=rechargeModel.channel preselected=false}}
+                                    showName="必填" dictSelect="channelSelect" value=rechargeModel.channel preselected=false}}
                                   {{/bs-form-element}}
                                 {{else}}
                                     <div class="font-light input-group-content">{{rechargeModel.channel.typename}}</div>

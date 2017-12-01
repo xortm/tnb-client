@@ -21,9 +21,11 @@ export default BaseBusiness.extend({
         if (editMode == 'edit') {
             controller.set('detailEdit', false);
             controller.set("flagEdit", true);
-            this.store.findRecord('hbeaconwarning', id).then(function(warning) {
-                controller.set('warning', warning);
-            });
+            // this.store.findRecord('hbeaconwarning', id).then(function(warning) {
+            //     controller.set('warning', warning);
+            // });
+            let warning = this.store.peekRecord('hbeaconwarning',id);
+            controller.set('warning',warning);
         } else {
             controller.set("flagEdit", false);
             controller.set('detailEdit', true);

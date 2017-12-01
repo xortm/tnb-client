@@ -1,5 +1,8 @@
 import Ember from 'ember';
 import InfiniteScroll from '../../infinite-scroll';
+import Changeset from 'ember-changeset';
+import TradeValidations from '../../../validations/customer-event';
+import lookupValidator from 'ember-changeset-validations';
 const {
     taskApplyStatus_apply,
     taskApplyStatus_applySuc,
@@ -18,6 +21,8 @@ export default Ember.Controller.extend(InfiniteScroll, {
     accountFlag:0,//标识(点击服务信息)
     projectFlag:0,//计次服务标示
     detailFlag:0,//定时服务标示
+    eventEditFlag:false,
+    showEventModel:false,
     tabFuncs: Ember.computed(function() {
         let a = new Ember.A();
         let t1 = Ember.Object.create({
@@ -44,6 +49,9 @@ export default Ember.Controller.extend(InfiniteScroll, {
         Ember.run.schedule("afterRender", this, function() {
             _self.set("clickActFlag", "user");
         });
+        let eventModel = this.get('store').createRecord("customer-event");
+       eventModel = new Changeset(eventModel, lookupValidator(TradeValidations), TradeValidations);
+       this.set("eventModel",eventModel);
     },
     planListObs:function(){
       let _self = this;
@@ -101,9 +109,11 @@ export default Ember.Controller.extend(InfiniteScroll, {
         let _self = this;
         this.get("store").findRecord('customer', _self.get('id')).then(function(customer) {
             _self.set("customer", customer);
-        });
-        this.get("store").findRecord('customer', _self.get('id')).then(function(customerInfo) {
-            _self.set("customerInfo", customerInfo);
+            _self.set("customerInfo", customer);
+            Ember.run.schedule('afterRender',function(){
+              document.getElementById('first-pane-tab').click();
+              $('#tab_1_1').addClass('active in');
+            });
         });
     },
     actions: {
@@ -122,6 +132,7 @@ export default Ember.Controller.extend(InfiniteScroll, {
         information(informationParams) {
             if (informationParams) {
                 this.set("informationParams", true);
+                this.send('infoClick',"infoParams");
                 this.set("healthParams", false);
                 this.set("serviceParams", false);
                 this.set("recordParams", false);
@@ -184,6 +195,10 @@ export default Ember.Controller.extend(InfiniteScroll, {
                 this.set("pointParams", false);
                 this.set("contactParams", false);
                 this.set("healthInfoParams", false);
+                $("#tab_1_3").removeClass('active in');
+                $("#tab_1_4").removeClass('active in');
+                $("#tab_1_5").removeClass('active in');
+                $("#tab_1_1").addClass('active in');
             }
         },
         liveClick(liveParams) {
@@ -225,8 +240,81 @@ export default Ember.Controller.extend(InfiniteScroll, {
             clickFlag = ++clickFlag;
             this.set('clickFlag', clickFlag);
         },
+        addEvent:function(eventModel){
+          if (eventModel) {
+            this.set("eventEditFlag",true);
+            eventModel= new Changeset(eventModel, lookupValidator(TradeValidations), TradeValidations);
+            this.set("eventModel",eventModel);
+          }else {
+            this.set("eventEditFlag",false);
+          }
+          this.set("showEventModel",true);
+        },
+        invitationEvent() {
+            this.set('showEventModel', false);
+        },
         refreshFuntion: function() {
           let _self=this;
         },
+        changeEventTime: function(date) {
+          this.changeTime(date, "eventModel.eventTime");
+        },
+        eventTypeSelect: function(type) {
+          this.set("eventModel.type", type);
+        },
+        removeEvent:function(eventModel){
+          var self = this;
+          App.lookup('controller:business.mainpage').showConfirm("是否确定删除此事件", function() {
+            App.lookup('controller:business.mainpage').openPopTip("正在删除");
+            eventModel.set("delStatus", 1);
+            eventModel.save().then(
+              function() {
+            var  eventList=self.get("eventList");
+              eventList.removeObject(eventModel);
+                App.lookup('controller:business.mainpage').showPopTip("删除成功");
+              }
+            );
+          });
+        },
+        saveEventAction: function(leave) {
+          var _self = this;
+         var eventModel=this.get("eventModel");
+         eventModel.set("customer",this.get("customer"));
+          var mainpageController = App.lookup('controller:business.mainpage');
+          eventModel.validate().then(function() {
+            if (eventModel.get('errors.length') === 0) {
+                _self.set("showEventModel",false);
+              App.lookup('controller:business.mainpage').openPopTip("正在保存");
+              eventModel.save().then(function() {
+                var eventEditFlag=_self.get("eventEditFlag");
+                if (!eventEditFlag) {
+                  var eventList=_self.get("eventList");
+                  eventList.pushObject(eventModel);
+                eventList =  eventList.sortBy("eventTime");
+                   var list  = new Ember.A();
+                   for (var i = eventList.length-1; i >=0; i--) {
+                    list.pushObject(eventList[i]);
+                   }
+                  _self.set("eventList",list);
+                }
+                App.lookup('controller:business.mainpage').showPopTip("保存成功");
+               eventModel = _self.get('store').createRecord("customer-event");
+               eventModel = new Changeset(eventModel, lookupValidator(TradeValidations), TradeValidations);
+               _self.set("eventModel",eventModel);
+              },function(err){
+                let error = err.errors[0];
+              });
+            } else {
+              eventModel.set("validFlag", Math.random());
+            }
+          });
+        }
+    },
+    changeTime: function(date, field) {
+      if (!date) {
+        return;
+      }
+      var stamp = this.get("dateService").timeToTimestamp(date);
+      this.set(field, stamp);
     }
 });

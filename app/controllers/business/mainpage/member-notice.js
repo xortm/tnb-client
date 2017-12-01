@@ -6,7 +6,6 @@ export default Ember.Controller.extend(InfiniteScroll,{
   infiniteModelName: "message",
   infiniteContainerName:"messageContainer",
 
-  moment: Ember.inject.service(),
   service_PageConstrut:Ember.inject.service("page-constructure"),
   mainController: Ember.inject.controller('business.mainpage'),
   pathConfiger: Ember.inject.service("path-configer"),
@@ -36,6 +35,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
       }
       console.log("messageList",messageList);
       _self.set("messageList",messageList);
+      _self.hideAllLoading();
     });
   },
 

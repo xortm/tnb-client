@@ -1,6 +1,6 @@
 import Application from './application';
 import DS from 'ember-data';
-import _ from 'lodash/lodash';
+
 
 export default Application.extend({
   normalize: function(typeClass, hash) {
@@ -8,12 +8,12 @@ export default Application.extend({
     return rtn;
   },
   normalizeQueryResponse: function(store, primaryModelClass, payload, id, requestType) {
-    let payloadQuestion = _.filter(payload.included, function (obj) {
+    let payloadQuestion = payload.included.filter( function (obj) {
       if(obj.type==="evaluatequestion"){
         return true;
       }
     });
-    let payloadModel = _.filter(payload.included, function (obj) {
+    let payloadModel = payload.included.filter( function (obj) {
       if(obj.type==="evaluatemodel"){
         return true;
       }

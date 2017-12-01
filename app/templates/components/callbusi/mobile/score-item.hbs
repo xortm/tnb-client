@@ -3,13 +3,29 @@
     {{log "scoreQusetionitem in hbs:" scoreQusetionitem}}
     {{#if (eq scoreQusetionitem.employeeIdInloop "0")}}
       {{#if hasReadyFlag}}
-        <div class="font18 top15 line-height-30 color666666 padding-left-15 center bottom10"><span class="color2FA7FD padding-0-5">养老院</span>各项评分结果</div>
+        <div class="font18 top15 line-height-30 color666666 padding-left-15 center bottom10">对<span class="color2FA7FD padding-0-5">养老院</span>各项评分结果</div>
       {{else}}
         <div class="font18 top15 line-height-30 color666666 padding-left-15 center bottom10">请对<span class="color2FA7FD padding-0-5">养老院</span>进行各项评分</div>
       {{/if}}
     {{else}}
       {{#if hasReadyFlag}}
-        <div class="font18 top15 line-height-30 color666666 padding-left-15 center bottom10"><span class="color2FA7FD padding-0-5">{{scoreQusetionitem.employee.name}}</span>各项评分结果</div>
+        {{#if employeeFlag}}
+          <div class="font18 top15 line-height-30 color666666 padding-left-15 center bottom10">
+            评价老人:<span class="color2FA7FD padding-0-5">{{scoreQusetionitem.customer.name}}</span>
+            ,平均分:<span class="color2FA7FD padding-0-5">{{scoreQusetionitem.averageScoreCustomerOfItem}}</span>分
+          </div>
+        {{else}}
+          {{#if isConsumer}}
+            <div class="font18 top15 line-height-30 color666666 padding-left-15 center bottom10">
+              被评员工:<span class="color2FA7FD padding-0-5">{{scoreQusetionitem.employee.name}}</span>
+            </div>
+          {{else}}
+            <div class="font18 top15 line-height-30 color666666 padding-left-15 center bottom10">
+              被评员工:<span class="color2FA7FD padding-0-5">{{scoreQusetionitem.employee.name}}</span>
+              ,平均分:<span class="color2FA7FD padding-0-5">{{scoreQusetionitem.averageScoreEmployeeOfItem}}</span>分
+            </div>
+          {{/if}}
+        {{/if}}
       {{else}}
         <div class="font18 top15 line-height-30 color666666 padding-left-15 center bottom10">请对<span class="color2FA7FD padding-0-5">{{scoreQusetionitem.employee.name}}</span>员工进行各项评分</div>
       {{/if}}

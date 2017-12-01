@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import BaseBusiness from '../base-business';
-import Pagination from '../pagination';
 const {
     taskStatus_begin,
     taskStatus_isPassed,
@@ -12,7 +11,7 @@ const {
     taskApplyStatus_refuseInvitation
 } = Constants;
 
-export default BaseBusiness.extend(Pagination, {
+export default BaseBusiness.extend({
     pageyModelListName: "content",
     feedService: Ember.inject.service('feed-bus'),
     dataLoader: Ember.inject.service("data-loader"),

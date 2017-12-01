@@ -60,9 +60,13 @@ export default Ember.Controller.extend({
     var checkInList=['statType1','statType2','statType3','statType4','statType5','statType6','statType7','statType8'];
     // this.set('paramList',checkInList);
     // this.set('paramShow','checkIn');
-    this.send("consultClick","consult");
+    let activeShow = this.get("activeShow");
+    if(activeShow){
+      this.send("consultClick",activeShow);
+    }else{
+      this.send("consultClick","consult");
+    }
     //默认时间(当月第一天第一分第一秒至当前时间)
-    this.set('durTypeFlag','day');
     var momentTime=this.get("dateService").getCurrentTime();//当前时间戳
     var momentDate=this.get("dateService").timestampToTime(momentTime);//当前date时间
     var params2=parseInt(momentDate.getFullYear());//年份
@@ -70,6 +74,7 @@ export default Ember.Controller.extend({
     var momentBeginTime=this.get("dateService").getFirstSecondStampOfMonth(params2,params3);//当月的第一天第一分第一秒(时间戳)
     this.set('beginDate',momentBeginTime);
     this.set('endDate',momentTime);
+    this.set('durTypeFlag','day');
     //计算 showStartDate和showEndDate
     this.set('showStartDate',momentDate.getFullYear()+'年'+params3+'月'+'1日');
     this.set('showEndDate',momentDate.getFullYear()+'年'+params3+'月'+momentDate.getDate()+'日');
@@ -89,27 +94,35 @@ export default Ember.Controller.extend({
     },
     checkInClick:function(checkIn){//入住
       this.set('paramShow',checkIn);//标识组件里面显示哪些图表
+      this.set('activeShow',checkIn);//标识组件里面显示哪些图表
       var checkInList=['statType1','statType2','statType3','statType4','statType5','statType6','statType7','statType8'];//查询哪些统计类型
       this.set('paramList',checkInList);
     },
     stayBackClick:function(stayBack){//退住
     this.set('paramShow',stayBack);
+    this.set('activeShow',stayBack);
     var stayBackList=['statType9','statType10'];
     this.set('paramList',stayBackList);
     },
     advanceClick:function(advance){//预定
     this.set('paramShow',advance);
+    this.set('activeShow',advance);
     var advanceList=[];
     this.set('paramList',advanceList);
     },
     consultClick:function(consult){//咨询
     this.set('paramShow',consult);
+    this.set('activeShow',consult);
     var consultList=['statType11','statType12','statType13','statType14','statType15','statType16','statType17'];
     this.set('paramList',consultList);
     },
+    consultClick2:function(consult2){//咨询
+    this.set('paramShow',consult2);
+    this.set('activeShow',consult2);
+    var consultList=['statType21','statType22','statType23','statType24','statType25'];
+    this.set('paramList',consultList);
+    },
     submmit(durTypeFlag,beginseaconFlag,endseaconFlag,showStartDate,showEndDate,beginDate,endDate,showBeginSeaconDate,beginseaconDate,endseaconDate,showEndSeaconDate){
-      console.log('durTypeFlag is',durTypeFlag);
-      this.set('durTypeFlag',durTypeFlag);
       this.set('beginseaconFlag',beginseaconFlag);
       this.set('endseaconFlag',endseaconFlag);
       this.set('showStartDate',showStartDate);
@@ -123,6 +136,8 @@ export default Ember.Controller.extend({
       this.set('beginseaconDate',beginseaconDate);
       this.set('endseaconDate',endseaconDate);
       this.set('showEndSeaconDate',showEndSeaconDate);
+      console.log('durTypeFlag is',durTypeFlag);
+      this.set('durTypeFlag',durTypeFlag);
       if(beginseaconFlag=='beginone'){
         this.set('seaconShow','第一季度');
       }

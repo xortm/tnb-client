@@ -8,9 +8,12 @@ export default BaseUiItem.extend({
     console.log("chartShow in component",chartShow);
     return chartShow;
   }),
-
+  clickState:false,
+  switchState:true,
   actions: {
     chartShowAction(){
+      if(this.get("clickState")){return;}
+      this.set("clickState",true);
       var chartShow = this.get("chartShow");
       console.log("chartShow::",chartShow);
       if(chartShow){
@@ -19,11 +22,19 @@ export default BaseUiItem.extend({
         this.set("chartShow",true);
       }
       this.get("global_curStatus").set("chartShow",this.get("chartShow"));
+      this.set("clickState",false);
     },
     // chartShowObs: function(){
     //   let chartShow = this.get("global_curStatus.chartShow");
     //   this.set("chartShow",chartShow);
     // }.observes("global_curStatus.chartShow"),
-
+    switchChanged(){
+      if(this.get('switchState')){
+        this.set("chartShow",true);
+      }else{
+        this.set("chartShow",false);
+      }
+      this.get("global_curStatus").set("chartShow",this.get("chartShow"));
+    },
   },
 });

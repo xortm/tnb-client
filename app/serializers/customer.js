@@ -1,6 +1,6 @@
 import Payload from './payload';
 import DS from 'ember-data';
-import _ from 'lodash/lodash';
+
 
 export default Payload.extend({
   attrs: {
@@ -30,22 +30,22 @@ export default Payload.extend({
   normalizeQueryResponse: function(store, primaryModelClass, payload, id, requestType) {
     console.log("normalizeQueryRecordResponse in,payload",payload);
     console.log("normalizeQueryRecordResponse in,id",id);
-    let payloadBed = _.filter(payload.included, function (obj) {
+    let payloadBed = payload.included.filter( function (obj) {
       if(obj.type==="bed"){
         return true;
       }
     });
-    let payloadFloor = _.filter(payload.included, function (obj) {
+    let payloadFloor = payload.included.filter( function (obj) {
       if(obj.type==="floor"){
         return true;
       }
     });
-    let payloadRoom = _.filter(payload.included, function (obj) {
+    let payloadRoom = payload.included.filter( function (obj) {
       if(obj.type==="room"){
         return true;
       }
     });
-    let payloadBuilding = _.filter(payload.included, function (obj) {
+    let payloadBuilding = payload.included.filter( function (obj) {
       if(obj.type==="building"){
         return true;
       }

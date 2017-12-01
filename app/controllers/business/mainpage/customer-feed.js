@@ -6,6 +6,8 @@ export default Ember.Controller.extend({
   theShowCustomerList : new Ember.A(),// Ember数组
   service_notification:Ember.inject.service("notification"),
   dateService: Ember.inject.service("date-service"),
+  queryScheduled:false,
+  switchState:false,
   init(){
     this._super(...arguments);
     var _self = this;
@@ -194,6 +196,11 @@ export default Ember.Controller.extend({
   },
 
   actions:{
+    switchChanged(){
+      console.log(this.get('switchState'));
+      this.send('queryScheduled');
+
+    },
     showelderfeed(type,customerId){
       $("#elderHideBtn").click(function(){//这里再添加以下
         $("#click_elder").slideLeftHide(800);
@@ -214,6 +221,11 @@ export default Ember.Controller.extend({
           customer = item;
         }
       });
+      if(customer.get('id')==246){
+        this.set('mockFlag',true);
+      }else{
+        this.set('mockFlag',false);
+      }
       this.set("customerAvatarUrl",customer.get("avatarUrl"));
       this.set("customerName",customer.get("name"));
       var customerRealBed = customer.get("realBed");

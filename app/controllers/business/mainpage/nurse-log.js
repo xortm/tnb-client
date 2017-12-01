@@ -23,7 +23,7 @@ export default Ember.Controller.extend(InfiniteScroll,{
   }.on('willDestroyElement'),
 
   showScanNurseLog: function(){
-    var itemId = "customer_scan";
+    var itemId = "nurse-log-scan";
     $("#" + itemId).addClass("tapped");
     Ember.run.later(function(){
       $("#" + itemId).removeClass("tapped");

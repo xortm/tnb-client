@@ -5,7 +5,12 @@ export default Ember.Controller.extend({
     toDevice(type){
       let code = type.get('code');
       let mainpageController = App.lookup('controller:business.mainpage');
-      mainpageController.switchMainPage('device-detail',{code:code});
+      if(code=='04'){
+        mainpageController.switchMainPage('video-detail',{code:code});
+      }else{
+        mainpageController.switchMainPage('device-detail',{code:code});
+      }
+
     }
   }
 

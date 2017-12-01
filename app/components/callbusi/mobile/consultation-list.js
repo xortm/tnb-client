@@ -33,7 +33,7 @@ export default BaseUiItem.extend({
       var _self = this;
       _self.get("dataLoader").set('conTabCode', "tabInfo");
       var params = {};
-      params= {clickActFlag:'tabInfo',itemId:_self.get("item.id"),itemIdFlag:Math.random(),source:"edit"};
+      params= {clickActFlag:'tabInfo',itemId:_self.get("item.id"),itemIdFlag:Math.random().toString(),source:"edit"};
       console.log("gotoDetail params",params);
       var itemId = "item_" + this.get("item.id");
       $("#" + itemId).addClass("tapped");

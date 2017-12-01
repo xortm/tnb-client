@@ -1,13 +1,13 @@
 <div class="col-sm-12">
   <!-- BOX -->
-  <div class="box">
+  <div class="box" style="min-height:600px;">
     <div class="box-body">
       <div class="row bottom-border-plan2">
         <div class="pointer pull-left font20" {{action 'toTemplate' on="click"}}>
-          年度设置
+          年度计划
         </div>
         <div class="pull-left left26 font20 bottom-border-template  padding-bottom10 margin-bottom-f2">
-          单周设置
+          单周计划
         </div>
         <div class="pull-right  nopadding-right nopadding-left bottom5">
           {{#ui/mix-button class="user-btn pull-left font16" iconClass="fa-users" paddingBorder="padding4 border-1-plantem" text='其他老人'  clickAction="editCustomer" editCustomer="editCustomer"}}
@@ -145,6 +145,10 @@
           <span><span style="width:14px;height:14px;display:inline-block;background-color:#00c1de;"></span>日项目</span>
           <span><span style="width:14px;height:14px;display:inline-block;background-color:#ff9900;"></span>周项目</span>
         </div>
+        <div class="col-sm-12 nopadding-left" style="font-size:14px;">
+          <div>本周已安排的日项目：{{allDayServiceName}}</div>
+          <div>本周已安排的周项目：{{allWeekServiceName}}</div>
+        </div>
         {{#if detailEdit}}
         <!-- <div class="text-center padding-top30">
             <p class="text-center user-add-btn" style="display:inline-block;margin:0 auto!important ">
@@ -215,6 +219,10 @@
                   <div class="{{if service.selected 'drug-time-color' ''}}" style="border:1px solid #ddd;margin-bottom:5px;" {{action "clickService" service on="click"}}>
                     <img src={{service.icon}} style="height:20px" />
                     <span>{{service.name}}</span>
+                    {{#if service.serviceFull}}
+                    {{#callbusi/hints-tip hasArrow=true tipValue=tipValue }}
+                    {{/callbusi/hints-tip}}
+                    {{/if}}
                   </div>
                 </div>
                 {{/each}}
@@ -232,5 +240,15 @@
 {{#ui/mix-button class="user-btn times-btn" iconClass="fa fa-undo"  text='取消' clickAction="exitServices" exitServices="exitServices"}}
 {{/ui/mix-button}}
 {{/bs-modal-footer}}
+{{/bs-modal}}
+{{/if}}
+
+{{#if serviceFull}}
+{{#bs-modal body=false footer=false header=false closedAction=(action "exitServices")}}
+{{#bs-modal-body}}
+  <div class="col-sm-12" style="text-align:center;line-height:1px;">
+    此服务项目已经排满，请先取消其他时间安排。
+  </div>
+{{/bs-modal-body}}
 {{/bs-modal}}
 {{/if}}

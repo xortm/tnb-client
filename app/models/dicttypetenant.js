@@ -10,7 +10,8 @@ var dicttypetenant = BaseModel.extend({
   typename: DS.attr('string'),//名称
   remark: DS.attr('string'),//备注
   // tenant:DS.belongsTo('Tenant'),//租户
-  typeValue: DS.attr('string'),//价格
+  typeValue: DS.attr('string'),//日价格
+  totalPrice:DS.attr('string'),//月价格 
   realTypeValue:Ember.computed("typeValue",function(){
     var typeValue=this.get("typeValue");
     if(!typeValue){

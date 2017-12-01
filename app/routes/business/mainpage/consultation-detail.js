@@ -18,6 +18,7 @@ export default BaseBusiness.extend({
         return {};
     },
     setupController(controller, model) {
+        let _self = this;
         this._super(controller, model);
         var editMode = this.getCurrentController().get('editMode');
         var id = this.getCurrentController().get('id');
@@ -38,11 +39,19 @@ export default BaseBusiness.extend({
             });
         } else {
             let consult =  this.store.createRecord('consultinfo', {});
-            consult.set('advDate',this.get('dataLoader').getNowTime())
+            consult.set('advDate',this.get('dataLoader').getNowTime());
+            consult.set('advGender',this.get('dataLoader').findDict('sexTypeFemale'));
             controller.set("flagEdit", false);
             controller.set('detailEdit', true);
             controller.set('consult',consult);
             //设置几个字典选项的默认值
+            //咨询人性别
+            let woman = Ember.Object.create({});
+            woman.set('name','女士');
+            woman.set('sex',_self.get("dataLoader").findDict('sexTypeFemale'));
+            controller.send('selectSex',woman);
+            //默认接待人
+            controller.send('selectStaff',this.get('global_curStatus').getUser().get('employee'));
             //默认咨询方式,电话
             controller.send('channelSelect',this.get("dataLoader").findDict(Constants.consultChannelTel));
             //默认了解渠道，网络媒体

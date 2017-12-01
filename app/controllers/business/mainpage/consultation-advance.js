@@ -21,7 +21,7 @@ export default Ember.Controller.extend(ScheduleValidations,{
     let _self = this;
     let busi = App.lookup("route:business");
     //通过刷新数据来同步
-    busi.rebuildBuiding(function(){
+    this.get('dataLoader').rebuildBuiding(function(){
       callback();
     });
   },
@@ -165,38 +165,64 @@ export default Ember.Controller.extend(ScheduleValidations,{
         if(computedAge){
           this.get('customerbusinessflowModel').set('customerAge',computedAge);
         }
-
-        //计算性别
-        // if(cardCode&&cardCode.length==18){
-        //   if (parseInt(cardCode.substr(16, 1)) % 2 == 1) {
-        //       let manObj = this.get("dataLoader").findDict(Constants.sexTypeMale);
-        //       console.log("manObj is", manObj);
-        //       this.get("customerbusinessflowModel").set("customerGender", manObj);
-        //   } else {
-        //       let womanObj = this.get("dataLoader").findDict(Constants.sexTypeFemale);
-        //       this.get("customerbusinessflowModel").set("customerGender", womanObj);
-        //   }
-        // }
+        if(cardCode&&cardCode.length==18){
+          if (parseInt(cardCode.substr(16, 1)) % 2 == 1) {
+              let manObj = this.get("dataLoader").findDict(Constants.sexTypeMale);
+              console.log("manObj is", manObj);
+              this.get("customerbusinessflowModel").set("customerGender", manObj);
+              this.get("customerbusinessflowInfo").set("customerGender", manObj);
+          } else {
+              let womanObj = this.get("dataLoader").findDict(Constants.sexTypeFemale);
+              this.get("customerbusinessflowModel").set("customerGender", womanObj);
+              this.get("customerbusinessflowInfo").set("customerGender", womanObj);
+          }
+        }
     },
     //根据联系人身份证计算性别
-    // computedFirstCardCode(){
-    //   let guardianFirstCardCode = this.get("customerbusinessflowModel.guardianFirstCardCode");
-    //   //计算性别
-    //   if(guardianFirstCardCode&&guardianFirstCardCode.length==18){
-    //     if (parseInt(guardianFirstCardCode.substr(16, 1)) % 2 == 1) {
-    //         let manObj = this.get("dataLoader").findDict(Constants.sexTypeMale);
-    //         this.get("customerbusinessflowModel").set("guardianFirstGener", manObj);
-    //     } else {
-    //         let womanObj = this.get("dataLoader").findDict(Constants.sexTypeFemale);
-    //         this.get("customerbusinessflowModel").set("guardianFirstGener", womanObj);
-    //     }
-    //   }
-    // }
-    sexSelect(sex){
-      this.get("customerbusinessflowModel").set("customerGender", sex);
+    computedFirstCardCode(){
+      let guardianFirstCardCode = this.get("customerbusinessflowModel.guardianFirstCardCode");
+      //计算性别
+      if(guardianFirstCardCode&&guardianFirstCardCode.length==18){
+        if (parseInt(guardianFirstCardCode.substr(16, 1)) % 2 == 1) {
+            let manObj = this.get("dataLoader").findDict(Constants.sexTypeMale);
+            this.get("customerbusinessflowModel").set("guardianFirstGener", manObj);
+            this.get("customerbusinessflowInfo").set("guardianFirstGener", manObj);
+        } else {
+            let womanObj = this.get("dataLoader").findDict(Constants.sexTypeFemale);
+            this.get("customerbusinessflowModel").set("guardianFirstGener", womanObj);
+            this.get("customerbusinessflowInfo").set("guardianFirstGener", womanObj);
+        }
+      }
     },
-    sexSelectFirst(sex){
-      this.get("customerbusinessflowModel").set("guardianFirstGener", sex);
-    }
+    sexSelect(str){
+      // this.get("customerbusinessflowModel").set("customerGender", sex);
+      let sexType;
+      if(str=='man'){//男
+        sexType = this.get("dataLoader").findDict('sexTypeMale');
+      }
+      if(str=='woman'){//女
+        sexType = this.get("dataLoader").findDict('sexTypeFemale');
+      }
+      this.set('customerbusinessflowModel.customerGender',sexType);
+      this.get("customerbusinessflowInfo").set("customerGender", sexType);
+    },
+    sexSelectFirst(str){
+      // this.get("customerbusinessflowModel").set("guardianFirstGener", sex);
+      let sexType;
+      if(str=='man'){//男
+        sexType = this.get("dataLoader").findDict('sexTypeMale');
+      }
+      if(str=='woman'){//女
+        sexType = this.get("dataLoader").findDict('sexTypeFemale');
+      }
+      this.set('customerbusinessflowModel.guardianFirstGener',sexType);
+      this.get("customerbusinessflowInfo").set("guardianFirstGener", sexType);
+    },
+    selectTown(town){
+      this.set('customerbusinessflowModel.town',town);
+    },
+    relationSelect(relationType){
+      this.set('customerbusinessflowModel.firstRelation',relationType);
+    },
   }
 });

@@ -14,7 +14,8 @@
                     <thead>
                         <tr role="row">
                             <th rowspan="1" colspan="1" width="">等级名称</th>
-                            <th rowspan="1" colspan="1" width="">等级价格(元/天)</th>
+                            <th rowspan="1" colspan="1" width="">日价格(元/天)</th>
+                            <th rowspan="1" colspan="1" width="">月价格(元/月)</th>
                             <th rowspan="1" colspan="1" width="">等级备注</th>
                         </tr>
                     </thead>
@@ -24,12 +25,12 @@
                             <tr class="gradeA odd" {{action "toDetailPage" information on="click"}}>
                                 <td class=" ellipsis ">{{information.typename}}</td>
                                 <td class=" ellipsis">{{information.typeValue}}</td>
+                                <td class=" ellipsis">{{information.totalPrice}}</td>
                                 <td class=" ellipsis">{{information.remark}}</td>
                             </tr>
                         {{/each}}
                     </tbody>
                     {{else}}
-                    <div class="nodate">暂无数据</div>
                     {{/if}}
                 </table>
             </div>
@@ -71,7 +72,7 @@
 
                         <div class="col-xs-12 col-sm-12">
                             <div class="form-input-group">
-                                <span class="input-group-addon">等级价格(元/天)：</span>
+                                <span class="input-group-addon">日价格(元/天)：</span>
                                 <div>
                                     <div class="inline-block form-input-group">
                                         {{#if showData}}
@@ -79,6 +80,21 @@
                                             {{bs-form-element property="typeValue" class="inline-block form-input-group" controlType="typeValue" placeholder="必填项"}}
                                         {{else}}
                                             <div class="font-light input-group-content">{{information.typeValue}}</div>
+                                        {{/if}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="divide-10"></div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12">
+                            <div class="form-input-group">
+                                <span class="input-group-addon">月价格(元/月)：</span>
+                                <div>
+                                    <div class="inline-block form-input-group">
+                                        {{#if showData}}
+                                            {{bs-form-element property="totalPrice" class="inline-block form-input-group" controlType="totalPrice" placeholder="必填项"}}
+                                        {{else}}
+                                            <div class="font-light input-group-content">{{information.totalPrice}}</div>
                                         {{/if}}
                                     </div>
                                 </div>

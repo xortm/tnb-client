@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import BaseBusiness from '../base-business';
 export default BaseBusiness.extend({
+    dataLoader:Ember.inject.service('data-loader'),
     queryParams: {
         id: {
             refreshModel: true
@@ -15,8 +16,11 @@ export default BaseBusiness.extend({
     },
     setupController(controller, model) {
         this._super(controller, model);
-        //var editMode = this.getCurrentController().get('editMode');
-        //var id = this.getCurrentController().get('id');s
+        controller.set('customerName','');
+        controller.set('customerNum','');
+        controller.set('addCus',false);
+        controller.set('showCus',true);
+        controller.set('showBed',false);
         //构建评估批次（主表）
         controller.set('evaluate', this.store.createRecord('evaluatebatch', {}));
         this.store.query('customer', {
@@ -41,17 +45,21 @@ export default BaseBusiness.extend({
             });
             controller.set('bedList', bedList);
         });
-        //查询可用的评估模板
-        // this.store.query('evaluatemodel', {
-        //     filter: {
-        //         useFlag: 0
-        //     }
-        // }).then(function(useModelList) {
-        //     controller.set('useModelList', useModelList);
-        //     useModelList.forEach(function(useModel) {
-        //       useModel.set('hasChoosed',false);
-        //       useModel.set('errorClass',false);
-        //     });
+        //查询可用的模板规范类型
+        // this.store.query('evaluatemodelsource',{}).then(function(sourceList){
+        //   controller.set('modelSourceList',sourceList);
+        //   controller.send('selectModelSource',sourceList.get('firstObject'));
         // });
+        let modelSourceList = new Ember.A();
+        this.get('dataLoader.modelSourceList').forEach(function(modelSource){
+          modelSourceList.pushObject(modelSource.get('modelSource'));
+        });
+        controller.set('modelSourceList',modelSourceList);
+        controller.send('selectModelSource',modelSourceList.get('firstObject'));
+        //查询可用的评估模板列表
+        this.store.query('evaluatemodel',{filter:{useFlag: 0,type:{'typecode':'evaluateType2'}}}).then(function(allModelList){
+          controller.set('allModelList',allModelList);
+        });
+
     }
 });

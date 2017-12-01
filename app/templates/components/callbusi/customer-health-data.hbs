@@ -100,37 +100,37 @@
                 <th rowspan="1" colspan="1" width="" class="text-nowrap center">体检项目</th>
                 <th rowspan="1" colspan="1" width="" class="noBorder-right"></th>
                 <th rowspan="1" colspan="1" width="" class="noBorder-all"></th>
-                <th rowspan="1" colspan="1" width="20%" class="noBorder-all text-nowrap">今天</th>
+                <th rowspan="1" colspan="1" width="20%" class="noBorder-all text-nowrap">今天({{today}})</th>
                 <th rowspan="1" colspan="1" width="" class="noBorder-all"></th>
                 <th rowspan="1" colspan="1" width="" class="noBorder-left"></th>
                 <th rowspan="1" colspan="1" width="" class="noBorder-right"></th>
                 <th rowspan="1" colspan="1" width="" class="noBorder-all"></th>
-                <th rowspan="1" colspan="1" width="20%" class="noBorder-all text-nowrap">昨天</th>
+                <th rowspan="1" colspan="1" width="20%" class="noBorder-all text-nowrap">昨天({{today_1}})</th>
                 <th rowspan="1" colspan="1" width="" class="noBorder-all"></th>
                 <th rowspan="1" colspan="1" width="" class="noBorder-left"></th>
                 <th rowspan="1" colspan="1" width="" class="noBorder-right"></th>
                 <th rowspan="1" colspan="1" width="" class="noBorder-all"></th>
-                <th rowspan="1" colspan="1" width="20%" class="noBorder-all text-nowrap">前天</th>
+                <th rowspan="1" colspan="1" width="20%" class="noBorder-all text-nowrap">前天({{today_2}})</th>
                 <th rowspan="1" colspan="1" width="" class="noBorder-all"></th>
                 <th rowspan="1" colspan="1" width="" class="noBorder-left"></th>
                 <th rowspan="1" colspan="1" width="" class="noBorder-right"></th>
                 <th rowspan="1" colspan="1" width="" class="noBorder-all"></th>
-                <th rowspan="1" colspan="1" width="20%" class="noBorder-all text-nowrap">三天前</th>
+                <th rowspan="1" colspan="1" width="20%" class="noBorder-all text-nowrap">三天前({{today_3}})</th>
                 <th rowspan="1" colspan="1" width="" class="noBorder-all"></th>
                 <th rowspan="1" colspan="1" width="" class="noBorder-left"></th>
                 <th rowspan="1" colspan="1" width="" class="noBorder-right"></th>
                 <th rowspan="1" colspan="1" width="" class="noBorder-all"></th>
-                <th rowspan="1" colspan="1" width="20%" class="noBorder-all text-nowrap">四天前</th>
+                <th rowspan="1" colspan="1" width="20%" class="noBorder-all text-nowrap">四天前({{today_4}})</th>
                 <th rowspan="1" colspan="1" width="" class="noBorder-all"></th>
                 <th rowspan="1" colspan="1" width="" class="noBorder-left"></th>
                 <th rowspan="1" colspan="1" width="" class="noBorder-right"></th>
                 <th rowspan="1" colspan="1" width="" class="noBorder-all"></th>
-                <th rowspan="1" colspan="1" width="20%" class="noBorder-all text-nowrap">五天前</th>
+                <th rowspan="1" colspan="1" width="20%" class="noBorder-all text-nowrap">五天前({{today_5}})</th>
                 <th rowspan="1" colspan="1" width="" class="noBorder-all"></th>
                 <th rowspan="1" colspan="1" width="" class="noBorder-left"></th>
                 <th rowspan="1" colspan="1" width="" class="noBorder-right"></th>
                 <th rowspan="1" colspan="1" width="" class="noBorder-all"></th>
-                <th rowspan="1" colspan="1" width="20%" class="noBorder-all text-nowrap">六天前</th>
+                <th rowspan="1" colspan="1" width="20%" class="noBorder-all text-nowrap">六天前({{today_6}})</th>
                 <th rowspan="1" colspan="1" width="" class="noBorder-all"></th>
                 <th rowspan="1" colspan="1" width="" class="noBorder-left"></th>
             </tr>
@@ -345,7 +345,7 @@
 {{#if showpopInvitePassModal}}
     {{#bs-modal body=false footer=false header=false closedAction=(action "invitation") }}
         {{#bs-modal-header}}
-            <h4 class="modal-title">添加新健康数据</h4>
+            <h4 class="modal-title add-new-showpopinvite">添加新健康数据</h4>
         {{/bs-modal-header}}
         {{#bs-modal-body}}
         {{#bs-form formLayout=formLayout model=healthModel invalid=(action "invalid")}}

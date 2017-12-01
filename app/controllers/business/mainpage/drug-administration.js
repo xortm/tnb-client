@@ -305,7 +305,7 @@ export default Ember.Controller.extend(CustomerdrugValidations,{
       }else{
         this.get('customerdrugList').forEach(function(drug){
           drug.set('selected',false);
-        })
+        });
         drug.set('selected',true);
       }
 
@@ -329,15 +329,16 @@ export default Ember.Controller.extend(CustomerdrugValidations,{
           this.contentWindow.document.getElementsByTagName('head')[0].appendChild(scripWidthSrc);
           this.contentWindow.document.getElementsByTagName('head')[0].appendChild(cssSrc);
           setTimeout(function(){
-            let bdhtml=window.document.body.innerHTML;
-            let sprnstr="<!--startprint-->";
-            let eprnstr="<!--endprint-->";
-            let prnhtml=bdhtml.substr(bdhtml.indexOf(sprnstr)+17);
-            prnhtml=prnhtml.substring(0,prnhtml.indexOf(eprnstr));
+            // let bdhtml=window.document.body.innerHTML;
+            // let sprnstr="<!--startprint-->";
+            // let eprnstr="<!--endprint-->";
+            // let prnhtml=bdhtml.substr(bdhtml.indexOf(sprnstr)+17);
+            let prnhtml=$("body div[name='printbegin']").html();
+            console.log("prnhtml is:" + prnhtml);
             $('#myiframe').contents().find('body').html(prnhtml);
             document.getElementById('myiframe').contentWindow.print();
             $('#myiframe').remove();
-          },1000)
+          },1000);
       }).appendTo('body');
     },
     //分药查看
@@ -350,15 +351,15 @@ export default Ember.Controller.extend(CustomerdrugValidations,{
       if(str==1){
         this.set('printModelFirst',true);
         this.set('printModel',false);
-        this.set('printModelAll',false)
+        this.set('printModelAll',false);
       }else if(str=='all'){
         this.set('printModelFirst',false);
         this.set('printModel',false);
-        this.set('printModelAll',true)
+        this.set('printModelAll',true);
       }else{
         this.set('printModelFirst',false);
         this.set('printModel',true);
-        this.set('printModelAll',false)
+        this.set('printModelAll',false);
       }
     },
     //时间搜索
@@ -746,7 +747,7 @@ export default Ember.Controller.extend(CustomerdrugValidations,{
             _self.set('detailDrug',false);
             _self.send('chooseDrugTab',customer);
             if(drugModel.get('editModel')=='add'){
-              customerShowList.findBy('id',customer.get('id')).set('drugCount',_self.get('customerdrugList.length')+1);
+              customerShowList.findBy('id',customer.get('id')).set('drugCount',customer.get('drugCount')+1);
             }
 
 
@@ -772,12 +773,13 @@ export default Ember.Controller.extend(CustomerdrugValidations,{
       drug.set('delStatus',1);
       drug.save().then(function(){
         _self.send('chooseDrugTab',customer);
-        customerShowList.findBy('id',customer.get('id')).set('drugCount',_self.get('customerdrugList.length')-1);
+        console.log(customer.get('drugCount'),customer.get('drugCount')-1);
+        customerShowList.findBy('id',customer.get('id')).set('drugCount',customer.get('drugCount')-1);
       },function(err){
         App.lookup('controller:business.mainpage').showPopTip("删除失败",false);
         let error = err.errors[0];
         if(error.code==="0"){
-          App.lookup('controller:business.mainpage').showAlert('该药品已安排用药计划，无法删除！')
+          App.lookup('controller:business.mainpage').showAlert('该药品已安排用药计划，无法删除！');
         }
       });
     },

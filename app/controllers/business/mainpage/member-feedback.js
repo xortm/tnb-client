@@ -6,7 +6,6 @@ export default Ember.Controller.extend(InfiniteScroll,{
   infiniteModelName: "",
   infiniteContainerName:"userMemberFeedbackContainer",
 
-  moment: Ember.inject.service(),
   service_PageConstrut:Ember.inject.service("page-constructure"),
   mainController: Ember.inject.controller('business.mainpage'),
   pathConfiger: Ember.inject.service("path-configer"),
@@ -26,7 +25,12 @@ export default Ember.Controller.extend(InfiniteScroll,{
       return intLength;
   },
 
-  queryFlagIn: function(){return;},
+  queryFlagIn: function(){
+    this.hideAllLoading();
+  },
+  init:function(){
+    this.hideAllLoading();
+  },
 
   actions:{
     feedbackTypeSelect: function(dict) {

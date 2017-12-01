@@ -1,27 +1,103 @@
 import Ember from 'ember';
-const { callStatus_noCall,callStatus_calling, callStatus_inCall,callStatus_callEnd,callStatus_callFail } = Constants;
+import config from '../config/environment';
 
 /*线程支持*/
 export default Ember.Service.extend({
   statusService: Ember.inject.service("current-status"),
   //状态监控线程
   statusWorker:null,
+  netcheckWorker:null,
+  netcheckDur: 5,
   global_curStatus:Ember.inject.service(),
   store: Ember.inject.service('store'),
   data_loader:Ember.inject.service('data-loader'),
+  //网络状况
+  netStatusBad:Ember.computed("netcheckWorker",function(){
+    if(!this.get("netcheckWorker")){
+      return false;
+    }
+    return this.get("netcheckWorker.netBad");
+  }),
+  isTestMode: function(){
+    var href = window.location.href;
+    let tempStr = href.substring(7,href.length);
+    let secStr = tempStr.split("/")[1];
+    console.log("secStr is:" + secStr);
+    //如果是测试模式，则不跳转
+    if(secStr==="tests"){
+      console.log("rtn for test");
+      return true;
+    }
+    return false;
+  },
   init() {
     var _self = this;
     this._super(...arguments);
+    //测试模式不进入
+    if(this.isTestMode()){
+      return;
+    }
     //创建保持连接的worker,3分钟一轮询
     this.statusWorker = this.createWorker("statusWorker",function(result,callback){
       _self.get("store").findAll("sysconfig").then(function(sysconfig){
         //每三分钟重置一次服务器时间和当时的系统时间
-        _self.set('data_loader.sysconfig.sysTime',sysconfig.get("firstObject").get('sysTime'));
-        console.log("sysTime in work:",sysconfig.get("firstObject").get('sysTime'));
-        _self.set('data_loader.firstLocalTime',Math.floor(new Date().getTime()/1000));
+        if(_self.get('data_loader')&&_self.get('data_loader.sysconfig')){
+          _self.set('data_loader.sysconfig.sysTime',sysconfig.get("firstObject").get('sysTime'));
+          console.log("sysTime in work:",sysconfig.get("firstObject").get('sysTime'));
+          _self.set('data_loader.firstLocalTime',Math.floor(new Date().getTime()/1000));
+        }
         callback();
       });
     },{duration:3*60});
+    //用于网络连接探测的worker
+    this.netcheckWorker = this.createWorker("netcheckWorker",function(result,callback){
+      let that = this;
+      let wholeUrl = config.wxScanurl;
+      let url = null;
+      if(wholeUrl.indexOf("index.html")>0){
+        url = wholeUrl.replace("index.html","keepalive.txt");
+      }else{
+        url = wholeUrl + "/keepalive.txt";
+      }
+      //每隔几秒发送一次针对web文件的请求，以确定是否连接正常
+      $.ajax({
+          url: url,
+          error: function(e){
+              console.log("netcheckWorker fail",e);
+              //如果失败，则缩短检测时间
+              _self.get("netcheckWorker").set("callDuration",1);
+              _self.get("netcheckWorker").processCheckFail();
+              callback();
+          },
+          success: function(){
+              console.log("netcheckWorker ok");
+              _self.get("netcheckWorker").set("callDuration",_self.get("netcheckDur"));
+              _self.get("netcheckWorker").processCheckOk();
+              callback();
+          },
+          timeout: 3000
+      });
+    },{duration:_self.get("netcheckDur")});
+    this.netcheckWorker.reopen({
+      failTime: 0,
+      netBad: false,
+      processCheckFail(){
+        //每失败一次，累加失败标志
+        this.incrementProperty("failTime");
+        //3次及以上，认为网络不通
+        if(this.get("failTime")>2){
+          _self.get("statusService").set("netConnected",false);
+          this.set("netBad",true);
+        }
+      },
+      processCheckOk(){
+        //成功以后重置相关标志
+        this.set("failTime",0);
+        _self.get("statusService").set("netConnected",true);
+        this.set("netBad",false);
+      }
+    });
+
     this.mapWorker = this.createWorker("mapWorker",function(result,callback){
       var mapObj, geolocation;
       //加载地图，调用浏览器定位服务
@@ -56,9 +132,10 @@ export default Ember.Service.extend({
       }
     },{duration:60});
 
-    //启动状态监控
+    //启动监控
     Ember.run.later(function(){
       _self.statusWorker.start();
+      _self.netcheckWorker.start();
       // _self.mapWorker.start();
     },1000);
   },
@@ -67,6 +144,7 @@ export default Ember.Service.extend({
     var _self = this;
     var Worker = Ember.Object.extend(Ember.Evented, {
       workerName: workerName,
+      busiOpt:options,
       callDuration:options.duration,//轮询间隔，单位秒
       operative:null,
       isRunning: false,//运行标志
@@ -78,7 +156,7 @@ export default Ember.Service.extend({
         });
       },
       start: function() {
-        console.log("start worker");
+        console.log("start worker:" + workerName);
         this.isRunning = true;
         this.trigger('start');
         this.run();
@@ -86,7 +164,7 @@ export default Ember.Service.extend({
       run: function(){
         var that = this;
         this.operative.process(function(result){
-          Ember.run.later(that, function() {
+          setTimeout(function() {
             mainProcess(result,function(){
               //如果未停止，间隔后继续发请求
               if(!_self.isRunning){

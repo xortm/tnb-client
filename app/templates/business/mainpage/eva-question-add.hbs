@@ -2,7 +2,7 @@
     <div class="box">
         <!-- BOX-BODY -->
         <div class="box-body">
-            {{#bs-form formLayout=formLayout model=evaModel action=(action "nextClick") invalid=(action "invalid")}}
+            {{#bs-form formLayout=formLayout model=evaModel invalid=(action "invalid")}}
                 <div class="clearfix">
                   <div class="row" style="margin-bottom:30px;">
                     <div class="choose-inline-block pointer" {{action "selectBedShow" on="click"}}>
@@ -13,22 +13,22 @@
                         <div class=" {{if showCus 'fa-dot-circle-o' 'fa-circle-o'}} choose-inline-block font20"></div>
                         <div class="choose-inline-block" style="font-size:14px;">直接选择老人</div>
                     </div>&nbsp;&nbsp;
+                    <div class=" choose-inline-block pointer" {{action "addCus" on="click"}}>
+                        <div class=" {{if addCus 'fa-dot-circle-o' 'fa-circle-o'}} choose-inline-block font20"></div>
+                        <div class="choose-inline-block" style="font-size:14px;">新增老人</div>
+                    </div>&nbsp;&nbsp;
                   </div>
 
                     <div class="row ">
                       <div class="col-xs-12 col-sm-6 nopadding-left bottom40 {{if showBed '' 'hidden'}}">
                           <div class="form-input-group label-normal">
                               <span class="input-group-addon">选择房间-床位：</span>
-                              <!-- {{#power-select class="inline-block input-group-content" placeholder="必填项" options=bedList selected=defaultBed searchField="bedPinyin" noMatchesMessage="没有相关内容" allowClear=true onchange=(action "selectBed" ) as |name|}}
-                                  {{name.roomBedName}}
-                              {{/power-select}} -->
                               {{callbusi/bed-choose class="inline-block form-input-group" bedShow=bedShow
           										selectBed="selectBed"  bedList=bedList}}
                           </div>
                       </div>
-                        <div class="col-xs-12 col-sm-6 nopadding-left bottom40">
-                            <div class="form-input-group label-normal">
-
+                        <div class="col-xs-12  nopadding-left bottom20">
+                            <div class="form-input-group label-normal col-sm-6 nopadding-left">
                                 {{#if showCus}}
                                 <span class="input-group-addon">选择老人姓名：</span>
                                 {{#bs-form-element class="inline-block form-input-group" controlType="customer" property="customer" }}
@@ -36,48 +36,35 @@
                                         {{customer.name}}
                                     {{/power-select}}
                                 {{/bs-form-element}}
-                                {{else}}
+                                {{else if showBed}}
                                 <span class="input-group-addon">老人姓名：</span>
                                 {{#bs-form-element class="inline-block form-input-group" controlType="customer" property="customer" }}
-                                <div class="font-light input-group-content">{{evaModel.customer.name}}</div>
+                                  <div class="font-light input-group-content">{{evaModel.customer.name}}</div>
                                 {{/bs-form-element}}
+                                {{else}}
+                                  <span class="input-group-addon">老人姓名：</span>
+                                  {{#bs-form-element class="inline-block form-input-group" controlType="customer" property="customer" }}
+                                    {{input type="text" class="full-width label-normal form-control" value=customerName placeholder=" 必填"}}
+                                  {{/bs-form-element}}
                                 {{/if}}
                             </div>
+                            <div class="col-sm-6 nopadding-left {{if addCus '' 'hidden'}}">
+                              <div class="form-input-group">
+                                <span class="input-group-addon">联系方式：</span>
+                                {{input type="text" class="full-width inline-block form-input-group label-normal form-control" value=customerNum placeholder=""}}
+                              </div>
+                            </div>
                         </div>
-                        <!-- <div class="line">
-                      <div class="font-big color5">选择评估模板：</div>
-                      <div class="col-sm-7 margin105 nopadding-left">
-                        <table id="datatable1" cellpadding="0" cellspacing="0" border="0" class="datatable table table-bordered table-hover dataTable mt15" aria-describedby="datatable1_info">
-                            <thead>
-                                <tr role="row">
-                                    <th class="" rowspan="1" colspan="1" width="">模板名称</th>
-                                    <th class="" rowspan="1" colspan="1" width="">模板创建时间</th>
-                                    <th class="" rowspan="1" colspan="1" width="">模板说明</th>
-                                    <th class="" rowspan="1" colspan="1" width="">模板选择</th>
-                                </tr>
-                            </thead>
-                            <tbody role="alert" aria-live="polite" aria-relevant="all" class="">
-                                {{#each useModelList as |useModel|}}
-                                    {{log "useModel item" useModel}}
-                                    <tr class="gradeA odd" {{action "chooseModel" useModel on="click"}}>
-                                        <td class="ellipsis sorting_1">{{useModel.title}}</td>
-                                        <td class="ellipsis ">{{useModel.createTime}}</td>
-                                        <td class="ellipsis ">{{useModel.remark}}</td>
-                                        <td class="ellipsis "><i class="fontLogo {{if useModel.hasChoosed 'fa-check' ''}}"></i></td>
-                                    </tr>
-                                {{/each}}
-                            </tbody>
-                        </table>
-                        <div class="next btn-reduce pointer" {{action 'nextClick' on='click'}}>
-                            <div class="nextFont">下一步</div>
+
+                        <div class="col-xs-12 col-sm-6 nopadding-left bottom20">
+                            <div class="form-input-group label-normal">
+                                <span class="input-group-addon">模板类型：</span>
+                                {{#power-select class="inline-block input-group-content" placeholder="必填项" options=modelSourceList
+                                selected=modelSource noMatchesMessage="没有相关内容" allowClear=false preselected=true onchange=(action "selectModelSource" ) as |modelSource|}}
+                                    {{modelSource.name}}
+                                {{/power-select}}
+                            </div>
                         </div>
-                      </div>
-                    </div> -->
-                        <!-- <div class="line">
-                      <div class="next btn-reduce pointer" {{action 'nextClick' on='click'}}>
-                          <div class="nextFont">下一步</div>
-                      </div>
-                    </div>                     -->
                         <div class="col-sm-12">
                             <div class="text-center padding-top30 ">
                                 <p class="text-center user-add-btn" style="display:inline-block;margin:0 auto!important ">

@@ -1,6 +1,6 @@
 import DS from 'ember-data';
 import BaseModel from './base-model';
-const {billStatus1,billStatus2,billStatus3,billType1,billType2,billType3,billType4}=Constants;
+const {billStatus0,billStatus1,billStatus2,billStatus3,billType1,billType2,billType3,billType4}=Constants;
 var Customerbill = BaseModel.extend({
   dateService: Ember.inject.service("date-service"),
   createDateTime:DS.attr('number'),//创建时间
@@ -21,6 +21,22 @@ var Customerbill = BaseModel.extend({
   billMonth:DS.attr('number'),//账单月
   billCreateType:DS.belongsTo('dicttype'),//账单创建类型
   billStatType:DS.belongsTo('dicttype'),//账单统计类型
+  operateFlag:DS.attr('number'),//1,有服务变更，0，无服务变更
+  changeService:Ember.computed('operateFlag',function(){
+    let operateFlag = this.get('operateFlag');
+    if(operateFlag==1){
+      return '有服务变更';
+    }
+  }),
+  dayBillTimeStr:Ember.computed('billTime','billQuarter',function(){
+    let billTime = this.get('billTime');
+    let billQuarter = this.get('billQuarter');
+    let str;
+    let dayStartString = this.get("dateService").formatDate(billTime,"yyyy-MM-dd");
+    let dayEndString = this.get("dateService").formatDate(billQuarter,"yyyy-MM-dd");
+    str = dayStartString + '日到' + dayEndString + '日账单';
+    return str;
+  }),
   year:Ember.computed("billYear",function(){
     let year = this.get('billYear');
     return year+'年';
@@ -41,6 +57,14 @@ var Customerbill = BaseModel.extend({
       return true;
     }
   }),
+  submitFlag:Ember.computed('billStatus',function(){
+    let status = this.get('billStatus');
+    if(status.get('typecode')==billStatus0){
+      return true;
+    }else{
+      return false;
+    }
+  }),
   billTimeString:Ember.computed("billTime",function(){
     var billDate=this.get("billTime");
     return this.get("dateService").formatDate(billDate,"yyyy-MM-dd");
@@ -54,12 +78,13 @@ var Customerbill = BaseModel.extend({
       return remark;
     }
   }),
+
   showTime:Ember.computed('billType',function(){
     let status = this.get('billType.typecode');
     let year = this.get('billYear');
     let quarter = this.get('billQuarter');
     let month = this.get('billMonth');
-    let billTimeString = this.get('billTimeString');
+    let billTimeString = this.get('dayBillTimeStr');
     if(status==billType1){
 
     }

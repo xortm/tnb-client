@@ -20,6 +20,10 @@
                     <div class="{{if recordParams 'jujia-select-color' 'noselect-color '}} top6">消费记录</div>
                 </a>
                 <div class="clear"></div>
+                <div class="pull-right user-add-btn nopadding-left ">
+                  {{#ui/form-function editNone=true removeAction="delById" delById="delById" }}
+                  {{/ui/form-function}}
+                </div>
             </div>
             {{#if informationParams}}
                 <div class="bottom12">

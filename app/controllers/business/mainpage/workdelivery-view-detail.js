@@ -1,8 +1,10 @@
 import Ember from 'ember';
 import finishService from '../../../controllers/finish-service';
+import InfiniteScroll from '../../infinite-scroll';
 
-export default Ember.Controller.extend(finishService, {
+export default Ember.Controller.extend(finishService,InfiniteScroll, {
     directInitScollFlag: 0,
+    stopScroll:true,
     dateService: Ember.inject.service("date-service"),
     feedService: Ember.inject.service('feed-bus'),
     dataLoader: Ember.inject.service("data-loader"),

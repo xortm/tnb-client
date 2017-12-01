@@ -14,6 +14,9 @@ export default BaseBusiness.extend({
       itemIdFlag: {
           refreshModel: true
       },
+      taskFlag:{
+        refreshModel:true
+      }
   },
 
   model:function(){
@@ -21,6 +24,7 @@ export default BaseBusiness.extend({
   },
   setupController:function(controller,model){
     this._super(controller,model);
+    console.log("taskFlag in route:",controller.get("taskFlag"));
     //通知进行标签处理
     controller.incrementProperty("serviceItemChangeFlag");
   },
